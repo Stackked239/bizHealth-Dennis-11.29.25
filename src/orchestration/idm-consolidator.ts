@@ -52,6 +52,13 @@ import {
 } from '../types/idm.types.js';
 import { QuestionnaireResponses, CategoryResponses } from '../types/questionnaire.types.js';
 import { CompanyProfile } from '../types/company-profile.types.js';
+import type {
+  NormalizedQuestionnaireResponses,
+  NormalizedChapter,
+  NormalizedDimension,
+  NormalizedQuestionResponse,
+  DimensionCode as NormalizedDimensionCode,
+} from '../types/normalized.types.js';
 
 // ============================================================================
 // INTERFACES
@@ -118,10 +125,14 @@ interface AnalysisResult {
 
 /**
  * Consolidator input
+ *
+ * Note: questionnaireResponses can be either the legacy QuestionnaireResponses
+ * (with categories) or the new NormalizedQuestionnaireResponses (with chapters/dimensions).
+ * The extractQuestions function handles both formats for compatibility.
  */
 export interface IDMConsolidatorInput {
   companyProfile: CompanyProfile;
-  questionnaireResponses: QuestionnaireResponses;
+  questionnaireResponses: QuestionnaireResponses | NormalizedQuestionnaireResponses;
   phase1Results: Phase1Results;
   phase2Results: Phase2Results;
   phase3Results: Phase3Results;
@@ -188,9 +199,123 @@ function calculateDimensionScore(subIndicators: SubIndicator[]): number {
 // ============================================================================
 
 /**
- * Extract questions from questionnaire responses with IDM mapping
+ * Type guard to check if questionnaire responses use the normalized chapters/dimensions structure
+ * produced by Phase 0, vs the legacy categories structure.
  */
-function extractQuestions(
+function isNormalizedQuestionnaireResponses(
+  responses: QuestionnaireResponses | NormalizedQuestionnaireResponses
+): responses is NormalizedQuestionnaireResponses {
+  return 'chapters' in responses && Array.isArray((responses as NormalizedQuestionnaireResponses).chapters);
+}
+
+/**
+ * Canonical mapping from normalized dimension codes to IDM dimension codes.
+ * This is the bridge between the Phase 0 diagnostic dimension taxonomy and the IDM categories.
+ *
+ * Phase 0 Dimension Codes → IDM Dimension Codes:
+ * - GE chapter: STR (Strategy), SAL (Sales), MKT (Marketing), CXP (Customer Experience)
+ * - PH chapter: OPS (Operations), FIN (Financials)
+ * - PL chapter: HRS (Human Resources), LDG (Leadership & Governance)
+ * - RS chapter: TIN (Technology & Innovation), IDS (IT Data & Systems), RMS (Risk Management), CMP (Compliance)
+ */
+const NORMALIZED_TO_IDM_DIMENSION_CODE: Record<NormalizedDimensionCode, DimensionCode> = {
+  'STR': 'STR',
+  'SAL': 'SAL',
+  'MKT': 'MKT',
+  'CXP': 'CXP',
+  'OPS': 'OPS',
+  'FIN': 'FIN',
+  'HRS': 'HRS',
+  'LDG': 'LDG',
+  'TIN': 'TIN',
+  'IDS': 'IDS',
+  'RMS': 'RMS',
+  'CMP': 'CMP',
+};
+
+/**
+ * Extract questions from normalized questionnaire responses (chapters/dimensions structure)
+ * This handles the Phase 0 output format with chapters → dimensions → questions hierarchy.
+ */
+function extractQuestionsFromNormalized(
+  responses: NormalizedQuestionnaireResponses
+): Question[] {
+  const questions: Question[] = [];
+
+  // Validate chapters array exists
+  if (!responses.chapters || !Array.isArray(responses.chapters)) {
+    console.error('[IDM Consolidator] No chapters found in questionnaire responses – cannot extract questions');
+    return questions;
+  }
+
+  // Iterate through chapters → dimensions → questions
+  for (const chapter of responses.chapters) {
+    if (!chapter.dimensions || !Array.isArray(chapter.dimensions)) {
+      console.warn(
+        `[IDM Consolidator] No dimensions in chapter ${chapter.chapter_code} (${chapter.name}) – skipping`
+      );
+      continue;
+    }
+
+    for (const dimension of chapter.dimensions) {
+      // Map the normalized dimension code to IDM dimension code
+      const idmDimensionCode = NORMALIZED_TO_IDM_DIMENSION_CODE[dimension.dimension_code];
+      if (!idmDimensionCode) {
+        console.warn(
+          `[IDM Consolidator] Unknown dimension code "${dimension.dimension_code}" in chapter ${chapter.chapter_code} – ` +
+          `skipping; please update NORMALIZED_TO_IDM_DIMENSION_CODE mapping if this is a new dimension`
+        );
+        continue;
+      }
+
+      if (!dimension.questions || !Array.isArray(dimension.questions) || dimension.questions.length === 0) {
+        console.warn(
+          `[IDM Consolidator] No questions in dimension ${dimension.dimension_code} (${dimension.name}) – skipping`
+        );
+        continue;
+      }
+
+      for (const q of dimension.questions) {
+        // Find the IDM question mapping for this question
+        const mapping = QUESTION_MAPPINGS.find(m => m.question_id === q.question_id);
+        if (!mapping) {
+          // Not all questions may be in the IDM mapping – this is expected for some questions
+          continue;
+        }
+
+        // Use normalized_value if available, otherwise compute from raw_response
+        let normalizedScore: number | undefined = q.normalized_value;
+        if (normalizedScore === undefined && q.raw_response !== null && q.raw_response !== undefined) {
+          if (q.response_type === 'scale' && typeof q.raw_response === 'number') {
+            normalizedScore = normalizeScaleResponse(q.raw_response);
+          } else if (q.response_type === 'percentage' && typeof q.raw_response === 'number') {
+            normalizedScore = Math.min(100, Math.max(0, q.raw_response));
+          }
+        }
+
+        questions.push({
+          question_id: q.question_id,
+          dimension_code: mapping.dimension_code,
+          sub_indicator_id: mapping.sub_indicator_id,
+          raw_response: q.raw_response,
+          normalized_score: normalizedScore,
+        });
+      }
+    }
+  }
+
+  console.log(
+    `[IDM Consolidator] Extracted ${questions.length} questions from ${responses.chapters.length} chapters`
+  );
+
+  return questions;
+}
+
+/**
+ * Extract questions from legacy questionnaire responses (categories structure)
+ * This handles the legacy format with categories → questions hierarchy.
+ */
+function extractQuestionsFromLegacy(
   questionnaireResponses: QuestionnaireResponses
 ): Question[] {
   const questions: Question[] = [];
@@ -238,6 +363,23 @@ function extractQuestions(
   }
 
   return questions;
+}
+
+/**
+ * Extract questions from questionnaire responses with IDM mapping.
+ * Supports both the normalized chapters/dimensions structure (from Phase 0)
+ * and the legacy categories structure for backward compatibility.
+ */
+function extractQuestions(
+  questionnaireResponses: QuestionnaireResponses | NormalizedQuestionnaireResponses
+): Question[] {
+  // Detect and handle the normalized chapters/dimensions format from Phase 0
+  if (isNormalizedQuestionnaireResponses(questionnaireResponses)) {
+    return extractQuestionsFromNormalized(questionnaireResponses);
+  }
+
+  // Fall back to legacy categories format
+  return extractQuestionsFromLegacy(questionnaireResponses);
 }
 
 /**
@@ -779,6 +921,10 @@ export const testExports = {
   calculateSubIndicatorScore,
   calculateDimensionScore,
   extractQuestions,
+  extractQuestionsFromNormalized,
+  extractQuestionsFromLegacy,
+  isNormalizedQuestionnaireResponses,
+  NORMALIZED_TO_IDM_DIMENSION_CODE,
   buildSubIndicators,
   buildDimensions,
   buildChapters,

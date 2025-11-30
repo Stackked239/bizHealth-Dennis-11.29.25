@@ -34,6 +34,13 @@ import {
   DimensionCodeSchema,
   ChapterCodeSchema
 } from '../src/types/idm.types';
+import {
+  testExports
+} from '../src/orchestration/idm-consolidator';
+import type {
+  NormalizedQuestionnaireResponses,
+  NormalizedChapter,
+} from '../src/types/normalized.types';
 
 // ============================================================================
 // SCHEMA VALIDATION TESTS
@@ -451,5 +458,315 @@ describe('Full IDM Validation', () => {
   it('validateIDM should return parsed data on valid input', () => {
     const parsed = validateIDM(validIDM);
     expect(parsed.meta.assessment_run_id).toBe(validIDM.meta.assessment_run_id);
+  });
+});
+
+// ============================================================================
+// IDM CONSOLIDATOR - EXTRACT QUESTIONS FROM NORMALIZED STRUCTURE TESTS
+// ============================================================================
+
+describe('IDM Consolidator - extractQuestionsFromNormalized', () => {
+  const {
+    extractQuestionsFromNormalized,
+    isNormalizedQuestionnaireResponses,
+    NORMALIZED_TO_IDM_DIMENSION_CODE,
+    extractQuestions,
+  } = testExports;
+
+  /**
+   * Create a minimal valid NormalizedQuestionnaireResponses for testing
+   */
+  function createMockNormalizedResponses(
+    chaptersData: Array<{
+      chapter_code: string;
+      name: string;
+      dimensions: Array<{
+        dimension_code: string;
+        name: string;
+        questions: Array<{
+          question_id: string;
+          raw_response: unknown;
+          normalized_value?: number;
+          response_type?: string;
+        }>;
+      }>;
+    }>
+  ): NormalizedQuestionnaireResponses {
+    return {
+      meta: {
+        response_id: 'test-response-id',
+        assessment_run_id: 'test-run-id',
+        company_profile_id: 'test-company-id',
+        questionnaire_version: 'v2025-09-16',
+        qr_transformation_version: 'v1.0.0',
+        completion_date: '2025-11-30T00:00:00Z',
+        completion_status: 'complete',
+        total_questions: 93,
+        questions_answered: 89,
+        transformed_at: '2025-11-30T00:00:00Z',
+      },
+      chapters: chaptersData.map((c) => ({
+        chapter_code: c.chapter_code as any,
+        name: c.name,
+        dimensions: c.dimensions.map((d) => ({
+          dimension_code: d.dimension_code as any,
+          name: d.name,
+          questions: d.questions.map((q) => ({
+            question_id: q.question_id,
+            question_number: 1,
+            original_prompt_text: 'Test question',
+            raw_response: q.raw_response,
+            normalized_value: q.normalized_value,
+            response_type: q.response_type || 'scale',
+            dimension_code: d.dimension_code as any,
+            sub_indicator_id: `${d.dimension_code}_001`,
+            question_weight: 1.0,
+          })),
+          dimension_metrics: {
+            avg_scale_score: 3.5,
+            avg_normalized_score: 62.5,
+            total_questions: d.questions.length,
+            questions_answered: d.questions.length,
+            completion_rate: 100,
+          },
+        })),
+        chapter_metrics: {
+          avg_score: 62.5,
+          total_questions: c.dimensions.reduce((sum, d) => sum + d.questions.length, 0),
+          questions_answered: c.dimensions.reduce((sum, d) => sum + d.questions.length, 0),
+          completion_rate: 100,
+        },
+      })),
+      overall_metrics: {
+        total_questions: 93,
+        total_answered: 89,
+        completion_rate: 95.7,
+        overall_avg_scale_score: 3.5,
+        overall_avg_normalized_score: 62.5,
+        chapter_scores: { GE: 62.5, PH: 65.0, PL: 55.0, RS: 70.0 },
+        dimension_scores: {} as any,
+      },
+      derived_metrics: {},
+    };
+  }
+
+  describe('isNormalizedQuestionnaireResponses', () => {
+    it('should return true for normalized responses with chapters array', () => {
+      const normalized = createMockNormalizedResponses([
+        {
+          chapter_code: 'GE',
+          name: 'Growth Engine',
+          dimensions: [
+            {
+              dimension_code: 'STR',
+              name: 'Strategy',
+              questions: [{ question_id: 'strategy_q1', raw_response: 3 }],
+            },
+          ],
+        },
+      ]);
+
+      expect(isNormalizedQuestionnaireResponses(normalized)).toBe(true);
+    });
+
+    it('should return false for legacy categories-based structure', () => {
+      const legacy = {
+        metadata: {},
+        categories: {
+          strategy: { questions: [] },
+        },
+        overall_metrics: {},
+      };
+
+      expect(isNormalizedQuestionnaireResponses(legacy as any)).toBe(false);
+    });
+  });
+
+  describe('NORMALIZED_TO_IDM_DIMENSION_CODE mapping', () => {
+    it('should have all 12 dimension codes mapped', () => {
+      const expectedCodes = ['STR', 'SAL', 'MKT', 'CXP', 'OPS', 'FIN', 'HRS', 'LDG', 'TIN', 'IDS', 'RMS', 'CMP'];
+      expect(Object.keys(NORMALIZED_TO_IDM_DIMENSION_CODE)).toHaveLength(12);
+      for (const code of expectedCodes) {
+        expect(NORMALIZED_TO_IDM_DIMENSION_CODE).toHaveProperty(code);
+      }
+    });
+  });
+
+  describe('extractQuestionsFromNormalized', () => {
+    it('should extract questions from multiple chapters and dimensions', () => {
+      const responses = createMockNormalizedResponses([
+        {
+          chapter_code: 'GE',
+          name: 'Growth Engine',
+          dimensions: [
+            {
+              dimension_code: 'STR',
+              name: 'Strategy',
+              questions: [
+                { question_id: 'strategy_q1', raw_response: 3, normalized_value: 50 },
+                { question_id: 'strategy_q2', raw_response: 10, normalized_value: undefined, response_type: 'percentage' },
+              ],
+            },
+            {
+              dimension_code: 'SAL',
+              name: 'Sales',
+              questions: [
+                { question_id: 'sales_q2', raw_response: 5, normalized_value: 100 },
+              ],
+            },
+          ],
+        },
+        {
+          chapter_code: 'PH',
+          name: 'Performance & Health',
+          dimensions: [
+            {
+              dimension_code: 'OPS',
+              name: 'Operations',
+              questions: [
+                { question_id: 'operations_q1', raw_response: 3, normalized_value: 50 },
+              ],
+            },
+          ],
+        },
+      ]);
+
+      const questions = extractQuestionsFromNormalized(responses);
+
+      // Should extract all 4 questions that have mappings in QUESTION_MAPPINGS
+      expect(questions.length).toBeGreaterThanOrEqual(4);
+
+      // Verify dimension codes are correctly assigned
+      const strQuestions = questions.filter((q) => q.dimension_code === 'STR');
+      const salQuestions = questions.filter((q) => q.dimension_code === 'SAL');
+      const opsQuestions = questions.filter((q) => q.dimension_code === 'OPS');
+
+      expect(strQuestions.length).toBe(2);
+      expect(salQuestions.length).toBe(1);
+      expect(opsQuestions.length).toBe(1);
+    });
+
+    it('should handle empty chapters array gracefully', () => {
+      const responses = createMockNormalizedResponses([]);
+      const questions = extractQuestionsFromNormalized(responses);
+      expect(questions).toHaveLength(0);
+    });
+
+    it('should handle dimensions with no questions', () => {
+      const responses = createMockNormalizedResponses([
+        {
+          chapter_code: 'GE',
+          name: 'Growth Engine',
+          dimensions: [
+            {
+              dimension_code: 'STR',
+              name: 'Strategy',
+              questions: [], // Empty questions array
+            },
+          ],
+        },
+      ]);
+
+      const questions = extractQuestionsFromNormalized(responses);
+      expect(questions).toHaveLength(0);
+    });
+
+    it('should skip questions without IDM mapping', () => {
+      const responses = createMockNormalizedResponses([
+        {
+          chapter_code: 'GE',
+          name: 'Growth Engine',
+          dimensions: [
+            {
+              dimension_code: 'STR',
+              name: 'Strategy',
+              questions: [
+                { question_id: 'strategy_q1', raw_response: 3 },
+                { question_id: 'unknown_question_xyz', raw_response: 5 }, // This has no mapping
+              ],
+            },
+          ],
+        },
+      ]);
+
+      const questions = extractQuestionsFromNormalized(responses);
+      // Should only include strategy_q1 which has a mapping
+      expect(questions.some((q) => q.question_id === 'strategy_q1')).toBe(true);
+      expect(questions.some((q) => q.question_id === 'unknown_question_xyz')).toBe(false);
+    });
+
+    it('should use normalized_value when available', () => {
+      const responses = createMockNormalizedResponses([
+        {
+          chapter_code: 'GE',
+          name: 'Growth Engine',
+          dimensions: [
+            {
+              dimension_code: 'STR',
+              name: 'Strategy',
+              questions: [
+                { question_id: 'strategy_q1', raw_response: 3, normalized_value: 50 },
+              ],
+            },
+          ],
+        },
+      ]);
+
+      const questions = extractQuestionsFromNormalized(responses);
+      const strategyQ1 = questions.find((q) => q.question_id === 'strategy_q1');
+
+      expect(strategyQ1).toBeDefined();
+      expect(strategyQ1?.normalized_score).toBe(50);
+    });
+
+    it('should compute normalized score from scale response when normalized_value is undefined', () => {
+      const responses = createMockNormalizedResponses([
+        {
+          chapter_code: 'GE',
+          name: 'Growth Engine',
+          dimensions: [
+            {
+              dimension_code: 'STR',
+              name: 'Strategy',
+              questions: [
+                { question_id: 'strategy_q1', raw_response: 3, normalized_value: undefined, response_type: 'scale' },
+              ],
+            },
+          ],
+        },
+      ]);
+
+      const questions = extractQuestionsFromNormalized(responses);
+      const strategyQ1 = questions.find((q) => q.question_id === 'strategy_q1');
+
+      expect(strategyQ1).toBeDefined();
+      // Scale 3 on 1-5 scale = ((3-1)/4)*100 = 50
+      expect(strategyQ1?.normalized_score).toBe(50);
+    });
+  });
+
+  describe('extractQuestions - auto-detection', () => {
+    it('should automatically detect and handle normalized chapter/dimension structure', () => {
+      const normalized = createMockNormalizedResponses([
+        {
+          chapter_code: 'GE',
+          name: 'Growth Engine',
+          dimensions: [
+            {
+              dimension_code: 'STR',
+              name: 'Strategy',
+              questions: [
+                { question_id: 'strategy_q1', raw_response: 4, normalized_value: 75 },
+              ],
+            },
+          ],
+        },
+      ]);
+
+      // The main extractQuestions function should auto-detect the format
+      const questions = extractQuestions(normalized);
+      expect(questions.length).toBeGreaterThan(0);
+      expect(questions[0].question_id).toBe('strategy_q1');
+    });
   });
 });
