@@ -1,0 +1,675 @@
+/**
+ * Phase 5 Orchestrator - Report Generation
+ *
+ * Generates branded, executive-ready HTML (and optionally PDF) reports from
+ * Phase 3 + Phase 4 outputs. Uses the IDM and master-analysis JSON as canonical inputs.
+ *
+ * Report Types Generated:
+ * 1. Comprehensive Assessment Report
+ * 2. Business Owner Report
+ * 3. Executive Brief
+ * 4. Quick Wins Action Plan
+ * 5. Risk Assessment Report
+ * 6. Implementation Roadmap
+ * 7. Financial Impact Analysis
+ * 8. Deep Dive: Growth Engine
+ * 9. Deep Dive: Performance & Health
+ * + Additional deep dives for People & Leadership, Resilience & Safeguards
+ */
+
+import * as fs from 'fs/promises';
+import * as path from 'path';
+import pino from 'pino';
+import { createLogger } from '../utils/logger.js';
+import type { IDM, ChapterCode, DimensionCode } from '../types/idm.types.js';
+import { DIMENSION_METADATA, CHAPTER_NAMES, getScoreBand as idmGetScoreBand } from '../types/idm.types.js';
+import type {
+  ReportContext,
+  ReportCompanyProfile,
+  ReportOverallHealth,
+  ReportChapter,
+  ReportDimension,
+  ReportFinding,
+  ReportRecommendation,
+  ReportRisk,
+  ReportQuickWin,
+  ReportRoadmap,
+  ReportRenderOptions,
+  GeneratedReport,
+  ReportBuilderRegistration,
+  Phase5ReportType,
+  ReportManifest,
+  BrandConfig,
+  ReportMeta,
+} from '../types/report.types.js';
+import { DEFAULT_BRAND, formatHorizon, getScoreBand } from '../types/report.types.js';
+
+// Import report builders
+import { buildComprehensiveReport } from './reports/comprehensive-report.builder.js';
+import { buildOwnersReport } from './reports/owners-report.builder.js';
+import { buildExecutiveBrief } from './reports/executive-brief.builder.js';
+import { buildQuickWinsReport } from './reports/quick-wins-report.builder.js';
+import { buildRiskReport } from './reports/risk-report.builder.js';
+import { buildRoadmapReport } from './reports/roadmap-report.builder.js';
+import { buildFinancialReport } from './reports/financial-report.builder.js';
+import { buildDeepDiveReport } from './reports/deep-dive-report.builder.js';
+
+// ============================================================================
+// TYPES
+// ============================================================================
+
+/**
+ * Phase 5 orchestrator configuration
+ */
+export interface Phase5OrchestratorConfig {
+  /** Logger instance */
+  logger?: pino.Logger;
+  /** Enable PDF rendering */
+  renderPDF?: boolean;
+  /** Custom brand configuration */
+  brand?: Partial<BrandConfig>;
+  /** Report types to generate (defaults to all) */
+  reportTypes?: Phase5ReportType[];
+}
+
+/**
+ * Phase 5 execution result
+ */
+export interface Phase5Results {
+  phase: 'phase_5';
+  status: 'complete' | 'partial' | 'failed';
+  runId: string;
+  companyName: string;
+  reportsGenerated: number;
+  reports: GeneratedReport[];
+  outputDir: string;
+  manifestPath: string;
+  metadata: {
+    startedAt: string;
+    completedAt: string;
+    durationMs: number;
+    pipelineVersion: string;
+  };
+  errors?: Array<{ reportType: Phase5ReportType; error: string }>;
+}
+
+// ============================================================================
+// PHASE 5 ORCHESTRATOR
+// ============================================================================
+
+export class Phase5Orchestrator {
+  private logger: pino.Logger;
+  private config: Phase5OrchestratorConfig;
+  private brand: BrandConfig;
+
+  constructor(config: Phase5OrchestratorConfig = {}) {
+    this.logger = config.logger || createLogger('phase5-orchestrator');
+    this.config = config;
+    this.brand = {
+      ...DEFAULT_BRAND,
+      ...config.brand,
+    };
+  }
+
+  /**
+   * Execute Phase 5 - Generate all reports
+   */
+  async executePhase5(outputDir: string, runId?: string): Promise<Phase5Results> {
+    const startTime = Date.now();
+    const startedAt = new Date().toISOString();
+
+    this.logger.info('Starting Phase 5: Report Generation');
+
+    try {
+      // Load Phase 3 and Phase 4 outputs
+      const { phase3Data, phase4Data, idm, companyProfile, detectedRunId } = await this.loadPhaseOutputs(outputDir);
+      const effectiveRunId = runId || detectedRunId;
+
+      // Build ReportContext from loaded data
+      const ctx = this.buildReportContext(phase3Data, phase4Data, idm, companyProfile, effectiveRunId);
+
+      // Create reports output directory
+      const reportsDir = path.join(outputDir, 'reports', effectiveRunId);
+      await fs.mkdir(reportsDir, { recursive: true });
+
+      // Prepare render options
+      const options: ReportRenderOptions = {
+        outputDir: reportsDir,
+        brand: this.brand,
+        includeTOC: true,
+        includePageNumbers: true,
+        includeHeaderFooter: true,
+        renderPDF: this.config.renderPDF ?? false,
+      };
+
+      // Get report builders to execute
+      const builders = this.getReportBuilders();
+      const reportTypesToGenerate = this.config.reportTypes || builders.map(b => b.type);
+
+      // Generate reports
+      const reports: GeneratedReport[] = [];
+      const errors: Array<{ reportType: Phase5ReportType; error: string }> = [];
+
+      this.logger.info({ reportTypes: reportTypesToGenerate }, `Generating ${reportTypesToGenerate.length} reports`);
+
+      // Generate reports sequentially to manage memory
+      for (const type of reportTypesToGenerate) {
+        const builder = builders.find(b => b.type === type);
+        if (!builder) {
+          this.logger.warn({ type }, 'No builder found for report type');
+          continue;
+        }
+
+        try {
+          this.logger.info({ type: builder.type, name: builder.name }, 'Generating report');
+          const report = await builder.build(ctx, options);
+          reports.push(report);
+          this.logger.info({ type: builder.type, htmlPath: report.htmlPath }, 'Report generated successfully');
+        } catch (error) {
+          const errorMsg = error instanceof Error ? error.message : String(error);
+          this.logger.error({ type: builder.type, error: errorMsg }, 'Failed to generate report');
+          errors.push({ reportType: builder.type, error: errorMsg });
+        }
+      }
+
+      // Generate manifest
+      const manifestPath = path.join(reportsDir, 'manifest.json');
+      const manifest = this.generateManifest(ctx, reports, effectiveRunId);
+      await fs.writeFile(manifestPath, JSON.stringify(manifest, null, 2));
+      this.logger.info({ manifestPath }, 'Report manifest generated');
+
+      const completedAt = new Date().toISOString();
+      const durationMs = Date.now() - startTime;
+
+      const results: Phase5Results = {
+        phase: 'phase_5',
+        status: errors.length === 0 ? 'complete' : reports.length > 0 ? 'partial' : 'failed',
+        runId: effectiveRunId,
+        companyName: ctx.companyProfile.name,
+        reportsGenerated: reports.length,
+        reports,
+        outputDir: reportsDir,
+        manifestPath,
+        metadata: {
+          startedAt,
+          completedAt,
+          durationMs,
+          pipelineVersion: '1.0.0',
+        },
+      };
+
+      if (errors.length > 0) {
+        results.errors = errors;
+      }
+
+      this.logger.info({
+        reportsGenerated: reports.length,
+        errors: errors.length,
+        durationMs,
+      }, 'Phase 5 complete');
+
+      return results;
+
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      this.logger.error({ error: errorMsg }, 'Phase 5 failed');
+      throw error;
+    }
+  }
+
+  /**
+   * Load Phase 3 and Phase 4 outputs
+   */
+  private async loadPhaseOutputs(outputDir: string): Promise<{
+    phase3Data: any;
+    phase4Data: any;
+    idm: IDM;
+    companyProfile: any;
+    detectedRunId: string;
+  }> {
+    // Load Phase 0 output (for company profile)
+    const phase0Path = path.join(outputDir, 'phase0_output.json');
+    let phase0Data: any = null;
+    try {
+      phase0Data = JSON.parse(await fs.readFile(phase0Path, 'utf-8'));
+      this.logger.info('Loaded Phase 0 output');
+    } catch (error) {
+      this.logger.warn('Phase 0 output not found, will extract company profile from other sources');
+    }
+
+    // Load Phase 3 output
+    const phase3Path = path.join(outputDir, 'phase3_output.json');
+    const phase3Data = JSON.parse(await fs.readFile(phase3Path, 'utf-8'));
+    this.logger.info('Loaded Phase 3 output');
+
+    // Load Phase 4 output
+    const phase4Path = path.join(outputDir, 'phase4_output.json');
+    let phase4Data: any = null;
+    try {
+      phase4Data = JSON.parse(await fs.readFile(phase4Path, 'utf-8'));
+      this.logger.info('Loaded Phase 4 output');
+    } catch (error) {
+      this.logger.warn('Phase 4 output not found, will use Phase 3 data only');
+    }
+
+    // Load IDM - try multiple locations
+    let idm: IDM | null = null;
+    const idmPaths = [
+      path.join(outputDir, 'idm_output.json'),
+      path.join(outputDir, 'phase4', 'idm-*.json'),
+    ];
+
+    for (const idmPath of idmPaths) {
+      try {
+        if (idmPath.includes('*')) {
+          // Glob pattern - find most recent file
+          const dir = path.dirname(idmPath);
+          const pattern = path.basename(idmPath);
+          const files = await fs.readdir(dir);
+          const matchingFiles = files.filter(f => f.startsWith('idm-') && f.endsWith('.json'));
+          if (matchingFiles.length > 0) {
+            const latestFile = matchingFiles.sort().pop()!;
+            idm = JSON.parse(await fs.readFile(path.join(dir, latestFile), 'utf-8'));
+            this.logger.info({ path: path.join(dir, latestFile) }, 'Loaded IDM');
+            break;
+          }
+        } else {
+          idm = JSON.parse(await fs.readFile(idmPath, 'utf-8'));
+          this.logger.info({ path: idmPath }, 'Loaded IDM');
+          break;
+        }
+      } catch {
+        // Continue to next path
+      }
+    }
+
+    if (!idm) {
+      // Try to extract IDM from Phase 4 output
+      if (phase4Data?.idm) {
+        idm = phase4Data.idm;
+        this.logger.info('Loaded IDM from Phase 4 output');
+      } else {
+        throw new Error('IDM not found. Please ensure Phase 4 has completed successfully.');
+      }
+    }
+
+    // Extract company profile
+    const companyProfile = phase0Data?.output?.companyProfile || this.extractCompanyProfileFromIDM(idm);
+
+    // Detect run ID
+    const detectedRunId = phase0Data?.assessment_run_id ||
+      idm.meta.assessment_run_id ||
+      `run-${Date.now()}`;
+
+    return { phase3Data, phase4Data, idm, companyProfile, detectedRunId };
+  }
+
+  /**
+   * Build ReportContext from phase outputs
+   */
+  private buildReportContext(
+    phase3Data: any,
+    phase4Data: any,
+    idm: IDM,
+    companyProfile: any,
+    runId: string
+  ): ReportContext {
+    // Build company profile
+    const reportCompanyProfile: ReportCompanyProfile = {
+      name: companyProfile?.basic_information?.company_name || 'Company',
+      industry: companyProfile?.business_focus?.primary_industry || 'General',
+      industrySector: companyProfile?.business_focus?.industry_sector,
+      companySize: companyProfile?.size_metrics?.company_size || 'Unknown',
+      employeeCount: companyProfile?.size_metrics?.employee_count,
+      annualRevenue: companyProfile?.size_metrics?.annual_revenue,
+      yearsInBusiness: companyProfile?.basic_information?.years_in_business,
+      lifecycleStage: companyProfile?.growth_context?.lifecycle_stage,
+      location: companyProfile?.basic_information?.location,
+    };
+
+    // Build overall health
+    const overallHealth: ReportOverallHealth = {
+      score: idm.scores_summary.overall_health_score,
+      band: getScoreBand(idm.scores_summary.overall_health_score),
+      status: idm.scores_summary.descriptor,
+      trajectory: idm.scores_summary.trajectory,
+    };
+
+    // Build chapters
+    const chapters: ReportChapter[] = idm.chapters.map(ch => ({
+      code: ch.chapter_code,
+      name: ch.name,
+      score: ch.score_overall,
+      band: ch.score_band,
+      benchmark: ch.benchmark ? {
+        peerPercentile: ch.benchmark.peer_percentile,
+        description: ch.benchmark.band_description,
+      } : undefined,
+      keyFindings: this.extractChapterFindings(idm, ch.chapter_code, 'strength'),
+      keyRisks: this.extractChapterFindings(idm, ch.chapter_code, 'risk'),
+      keyOpportunities: this.extractChapterFindings(idm, ch.chapter_code, 'opportunity'),
+    }));
+
+    // Build dimensions
+    const dimensions: ReportDimension[] = idm.dimensions.map(dim => ({
+      id: dim.dimension_code,
+      code: dim.dimension_code,
+      chapterCode: dim.chapter_code,
+      name: dim.name,
+      description: dim.description,
+      score: dim.score_overall,
+      band: dim.score_band,
+      benchmark: dim.benchmark ? {
+        peerPercentile: dim.benchmark.peer_percentile,
+        description: dim.benchmark.band_description,
+      } : undefined,
+      subIndicators: dim.sub_indicators.map(si => ({
+        id: si.id,
+        name: si.name,
+        score: si.score,
+        band: si.score_band,
+      })),
+      keyFindings: this.extractDimensionFindingLabels(idm, dim.dimension_code, 'strength'),
+      keyRisks: this.extractDimensionFindingLabels(idm, dim.dimension_code, 'risk'),
+      keyOpportunities: this.extractDimensionFindingLabels(idm, dim.dimension_code, 'opportunity'),
+    }));
+
+    // Build findings
+    const findings: ReportFinding[] = idm.findings.map(f => ({
+      id: f.id,
+      type: f.type,
+      dimensionCode: f.dimension_code,
+      dimensionName: DIMENSION_METADATA[f.dimension_code].name,
+      subIndicatorId: f.sub_indicator_id,
+      severity: f.severity,
+      confidenceLevel: f.confidence_level,
+      shortLabel: f.short_label,
+      narrative: f.narrative,
+      evidenceRefs: f.evidence_refs ? {
+        questionIds: f.evidence_refs.question_ids,
+        metrics: f.evidence_refs.metrics,
+        benchmarks: f.evidence_refs.benchmarks,
+      } : undefined,
+    }));
+
+    // Build recommendations
+    const quickWinIds = new Set(idm.quick_wins.map(qw => qw.recommendation_id));
+    const recommendations: ReportRecommendation[] = idm.recommendations.map(rec => ({
+      id: rec.id,
+      dimensionCode: rec.dimension_code,
+      dimensionName: DIMENSION_METADATA[rec.dimension_code].name,
+      linkedFindingIds: rec.linked_finding_ids,
+      theme: rec.theme,
+      priorityRank: rec.priority_rank,
+      impactScore: rec.impact_score,
+      effortScore: rec.effort_score,
+      horizon: rec.horizon,
+      horizonLabel: formatHorizon(rec.horizon),
+      requiredCapabilities: rec.required_capabilities,
+      actionSteps: rec.action_steps,
+      expectedOutcomes: rec.expected_outcomes,
+      isQuickWin: quickWinIds.has(rec.id),
+    }));
+
+    // Build quick wins
+    const quickWins: ReportQuickWin[] = idm.quick_wins.map(qw => {
+      const rec = recommendations.find(r => r.id === qw.recommendation_id);
+      return {
+        id: qw.recommendation_id,
+        recommendationId: qw.recommendation_id,
+        theme: rec?.theme || 'Quick Win',
+        impactScore: rec?.impactScore || 0,
+        effortScore: rec?.effortScore || 0,
+        actionSteps: rec?.actionSteps || [],
+        expectedOutcomes: rec?.expectedOutcomes || '',
+        timeframe: rec?.horizonLabel || '90 Days',
+      };
+    });
+
+    // Build risks
+    const risks: ReportRisk[] = idm.risks.map(r => ({
+      id: r.id,
+      dimensionCode: r.dimension_code,
+      dimensionName: DIMENSION_METADATA[r.dimension_code].name,
+      category: r.category,
+      severity: r.severity,
+      likelihood: r.likelihood,
+      narrative: r.narrative,
+      linkedRecommendationIds: r.linked_recommendation_ids,
+    }));
+
+    // Build roadmap
+    const roadmap: ReportRoadmap = {
+      phases: idm.roadmap.phases.map(p => ({
+        id: p.id,
+        name: p.name,
+        timeHorizon: p.time_horizon,
+        linkedRecommendationIds: p.linked_recommendation_ids,
+        narrative: p.narrative,
+      })),
+    };
+
+    // Build financial projections from Phase 4 if available
+    const financialProjections = phase4Data?.summaries?.financial_projections ? {
+      day90Value: phase4Data.summaries.financial_projections['90_day_value'],
+      annualValue: phase4Data.summaries.financial_projections.annual_value,
+      roi90Day: phase4Data.summaries.financial_projections.roi_90day,
+      totalInvestmentRequired: phase4Data.summaries.financial_projections.investment_required,
+    } : undefined;
+
+    // Build executive summary
+    const executiveSummary = phase3Data?.summary ? {
+      overview: `${reportCompanyProfile.name} overall business health score is ${overallHealth.score}/100, rated as "${overallHealth.status}".`,
+      keyStrengths: findings.filter(f => f.type === 'strength').slice(0, 3).map(f => f.shortLabel),
+      keyPriorities: findings.filter(f => f.type === 'gap' || f.type === 'risk').slice(0, 3).map(f => f.shortLabel),
+      criticalActions: recommendations.slice(0, 3).map(r => r.theme),
+    } : undefined;
+
+    // Build performance analysis from Phase 4 if available
+    const performanceAnalysis = phase4Data?.summaries?.performance_analysis;
+
+    // Key imperatives
+    const keyImperatives = idm.scores_summary.key_imperatives;
+
+    return {
+      runId,
+      companyProfile: reportCompanyProfile,
+      overallHealth,
+      executiveSummary,
+      chapters,
+      dimensions,
+      findings,
+      recommendations,
+      quickWins,
+      risks,
+      roadmap,
+      financialProjections,
+      performanceAnalysis,
+      keyImperatives,
+      metadata: {
+        generatedAt: new Date().toISOString(),
+        pipelineVersion: '1.0.0',
+        assessmentRunId: runId,
+        companyProfileId: idm.meta.company_profile_id,
+        reportType: 'all',
+      },
+    };
+  }
+
+  /**
+   * Extract company profile from IDM when Phase 0 data is not available
+   */
+  private extractCompanyProfileFromIDM(idm: IDM): any {
+    return {
+      basic_information: {
+        company_name: 'Company',
+      },
+      business_focus: {
+        primary_industry: 'General',
+      },
+      size_metrics: {
+        company_size: 'Unknown',
+      },
+    };
+  }
+
+  /**
+   * Extract chapter findings of a specific type
+   */
+  private extractChapterFindings(idm: IDM, chapterCode: ChapterCode, type: string): string[] {
+    const chapterDimensions = idm.dimensions
+      .filter(d => d.chapter_code === chapterCode)
+      .map(d => d.dimension_code);
+
+    return idm.findings
+      .filter(f => chapterDimensions.includes(f.dimension_code) && f.type === type)
+      .slice(0, 3)
+      .map(f => f.short_label);
+  }
+
+  /**
+   * Extract dimension finding labels
+   */
+  private extractDimensionFindingLabels(idm: IDM, dimensionCode: DimensionCode, type: string): string[] {
+    return idm.findings
+      .filter(f => f.dimension_code === dimensionCode && f.type === type)
+      .slice(0, 3)
+      .map(f => f.short_label);
+  }
+
+  /**
+   * Get all report builders
+   */
+  private getReportBuilders(): ReportBuilderRegistration[] {
+    return [
+      {
+        type: 'comprehensive',
+        name: 'Comprehensive Assessment Report',
+        description: 'Full assessment with all dimensions, findings, and recommendations',
+        build: buildComprehensiveReport,
+      },
+      {
+        type: 'owner',
+        name: 'Business Owner Report',
+        description: 'Executive summary focused on key takeaways and strategic priorities',
+        build: buildOwnersReport,
+      },
+      {
+        type: 'executiveBrief',
+        name: 'Executive Brief',
+        description: 'One-page executive overview with key metrics and actions',
+        build: buildExecutiveBrief,
+      },
+      {
+        type: 'quickWins',
+        name: 'Quick Wins Action Plan',
+        description: 'Focused on immediate, high-impact, low-effort improvements',
+        build: buildQuickWinsReport,
+      },
+      {
+        type: 'risk',
+        name: 'Risk Assessment Report',
+        description: 'Detailed analysis of business risks and mitigation strategies',
+        build: buildRiskReport,
+      },
+      {
+        type: 'roadmap',
+        name: 'Implementation Roadmap',
+        description: 'Phased implementation plan with milestones and dependencies',
+        build: buildRoadmapReport,
+      },
+      {
+        type: 'financial',
+        name: 'Financial Impact Analysis',
+        description: 'ROI projections, investment requirements, and value creation',
+        build: buildFinancialReport,
+      },
+      {
+        type: 'deepDive:growthEngine',
+        name: 'Growth Engine Deep Dive',
+        description: 'Detailed analysis of Strategy, Sales, Marketing, and Customer Experience',
+        build: (ctx, opts) => buildDeepDiveReport(ctx, opts, 'GE'),
+      },
+      {
+        type: 'deepDive:performanceHealth',
+        name: 'Performance & Health Deep Dive',
+        description: 'Detailed analysis of Operations and Financials',
+        build: (ctx, opts) => buildDeepDiveReport(ctx, opts, 'PH'),
+      },
+      {
+        type: 'deepDive:peopleLeadership',
+        name: 'People & Leadership Deep Dive',
+        description: 'Detailed analysis of Human Resources and Leadership & Governance',
+        build: (ctx, opts) => buildDeepDiveReport(ctx, opts, 'PL'),
+      },
+      {
+        type: 'deepDive:resilienceSafeguards',
+        name: 'Resilience & Safeguards Deep Dive',
+        description: 'Detailed analysis of Technology, IT, Risk Management, and Compliance',
+        build: (ctx, opts) => buildDeepDiveReport(ctx, opts, 'RS'),
+      },
+    ];
+  }
+
+  /**
+   * Generate report manifest
+   */
+  private generateManifest(ctx: ReportContext, reports: GeneratedReport[], runId: string): ReportManifest {
+    return {
+      runId,
+      companyName: ctx.companyProfile.name,
+      generatedAt: new Date().toISOString(),
+      healthScore: ctx.overallHealth.score,
+      healthStatus: ctx.overallHealth.status,
+      pipelineVersion: '1.0.0',
+      reports: reports.map(r => ({
+        type: r.reportType,
+        name: r.reportName,
+        html: path.basename(r.htmlPath),
+        pdf: r.pdfPath ? path.basename(r.pdfPath) : undefined,
+        meta: path.basename(r.metaPath),
+      })),
+    };
+  }
+}
+
+// ============================================================================
+// FACTORY FUNCTION
+// ============================================================================
+
+/**
+ * Create Phase 5 orchestrator with configuration
+ */
+export function createPhase5Orchestrator(config?: Phase5OrchestratorConfig): Phase5Orchestrator {
+  return new Phase5Orchestrator(config);
+}
+
+// ============================================================================
+// CLI ENTRY POINT
+// ============================================================================
+
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const args = process.argv.slice(2);
+  const outputDir = args[0] || './output';
+
+  const orchestrator = createPhase5Orchestrator({
+    renderPDF: args.includes('--render-pdf'),
+  });
+
+  orchestrator
+    .executePhase5(outputDir)
+    .then((results) => {
+      console.log('Phase 5 Report Generation Complete');
+      console.log(`Reports Generated: ${results.reportsGenerated}`);
+      console.log(`Output Directory: ${results.outputDir}`);
+      console.log(`Manifest: ${results.manifestPath}`);
+      if (results.errors && results.errors.length > 0) {
+        console.log(`Errors: ${results.errors.length}`);
+        results.errors.forEach(e => console.log(`  - ${e.reportType}: ${e.error}`));
+      }
+    })
+    .catch((error) => {
+      console.error('Phase 5 failed:', error);
+      process.exit(1);
+    });
+}
