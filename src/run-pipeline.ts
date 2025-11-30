@@ -1,15 +1,22 @@
 /**
  * BizHealth Report Pipeline - Full Pipeline Runner
  *
- * Executes the complete pipeline from Phase 0 through Phase 4:
+ * Executes the complete pipeline from Phase 0 through Phase 5:
  * - Phase 0: Raw Capture & Normalization (no API calls)
  * - Phase 1: Cross-functional AI Analyses (10 analyses via Anthropic Batch API)
  * - Phase 2: Deep-dive Cross-analysis
  * - Phase 3: Executive Synthesis
  * - Phase 4: Final Compilation & IDM Generation
+ * - Phase 5: Report Generation (9 report types as HTML)
  *
  * Usage:
- *   npx tsx src/run-pipeline.ts [webhook.json] [--phase=0-4] [--output-dir=./output]
+ *   npx tsx src/run-pipeline.ts [webhook.json] [--phase=0-5] [--output-dir=./output]
+ *
+ * Phase-specific runs:
+ *   npx tsx src/run-pipeline.ts --phase=0          # Only Phase 0
+ *   npx tsx src/run-pipeline.ts --phase=5          # Only Phase 5 (requires Phase 0-4 outputs)
+ *   npx tsx src/run-pipeline.ts --phase=0-5       # Full pipeline with reports
+ *   npx tsx src/run-pipeline.ts                    # Same as --phase=0-5 (default)
  *
  * Environment Variables Required:
  *   ANTHROPIC_API_KEY - Your Anthropic API key (required for Phase 1-3)
@@ -19,6 +26,7 @@
  *   DEFAULT_MODEL          - Claude model to use (default: claude-opus-4-20250514)
  *   BATCH_POLL_INTERVAL_MS - Poll interval for batch jobs (default: 30000)
  *   LOG_LEVEL              - Logging level (default: info)
+ *   RENDER_PDF             - Set to 'true' to render PDF versions of reports
  */
 
 import { config } from 'dotenv';
@@ -30,6 +38,7 @@ import type { WebhookPayload } from './types/webhook.types.js';
 import { consolidateIDM, IDMConsolidatorInput } from './orchestration/idm-consolidator.js';
 import { ReportType } from './reports/report-generator.js';
 import type { IDM } from './types/idm.types.js';
+import type { Phase5ReportType } from './types/report.types.js';
 
 // Load environment variables
 config();
@@ -49,6 +58,10 @@ interface PipelineConfig {
   generateReports: boolean;
   reportTypes: ReportType[];
   companyName?: string;
+  /** Phase 5: Report types to generate */
+  phase5ReportTypes?: Phase5ReportType[];
+  /** Phase 5: Render PDF versions of reports */
+  renderPDF?: boolean;
 }
 
 function parseArgs(): PipelineConfig {
@@ -57,7 +70,7 @@ function parseArgs(): PipelineConfig {
     webhookPath: './sample_webhook.json',
     outputDir: './output',
     startPhase: 0,
-    endPhase: 4,
+    endPhase: 5, // Default to full pipeline including Phase 5 reports
     skipDatabase: true, // Default to skip DB for simplicity
     generateReports: true, // Default to generate reports
     reportTypes: [
@@ -66,6 +79,8 @@ function parseArgs(): PipelineConfig {
       ReportType.QUICK_WINS_REPORT,
     ],
     companyName: undefined,
+    phase5ReportTypes: undefined, // undefined means all report types
+    renderPDF: process.env.RENDER_PDF === 'true',
   };
 
   for (const arg of args) {
@@ -93,6 +108,11 @@ function parseArgs(): PipelineConfig {
       config.reportTypes = Object.values(ReportType);
     } else if (arg.startsWith('--company-name=')) {
       config.companyName = arg.replace('--company-name=', '');
+    } else if (arg.startsWith('--render-pdf')) {
+      config.renderPDF = true;
+    } else if (arg.startsWith('--phase5-reports=')) {
+      const types = arg.replace('--phase5-reports=', '').split(',');
+      config.phase5ReportTypes = types.map(t => t.trim() as Phase5ReportType);
     } else if (!arg.startsWith('--')) {
       config.webhookPath = arg;
     }
@@ -487,6 +507,87 @@ async function executePhase4(
   }
 }
 
+/**
+ * Phase 5: Report Generation
+ */
+async function executePhase5(
+  outputDir: string,
+  pipelineConfig: PipelineConfig
+): Promise<PhaseResult> {
+  const startTime = Date.now();
+  pipelineLogger.info('Starting Phase 5: Report Generation');
+
+  // Check for required outputs from previous phases
+  const phase3OutputPath = path.join(outputDir, 'phase3_output.json');
+  const idmOutputPath = path.join(outputDir, 'idm_output.json');
+
+  if (!fs.existsSync(phase3OutputPath)) {
+    return {
+      phase: 5,
+      status: 'failed',
+      duration_ms: Date.now() - startTime,
+      error: `Phase 3 output not found at ${phase3OutputPath}. Run Phase 3 first.`,
+    };
+  }
+
+  if (!fs.existsSync(idmOutputPath)) {
+    return {
+      phase: 5,
+      status: 'failed',
+      duration_ms: Date.now() - startTime,
+      error: `IDM output not found at ${idmOutputPath}. Run Phase 4 first to generate IDM.`,
+    };
+  }
+
+  try {
+    const { createPhase5Orchestrator } = await import('./orchestration/phase5-orchestrator.js');
+
+    // Get run ID from Phase 0 output or IDM
+    let runId: string | undefined;
+    const phase0OutputPath = path.join(outputDir, 'phase0_output.json');
+    if (fs.existsSync(phase0OutputPath)) {
+      const phase0Data = JSON.parse(fs.readFileSync(phase0OutputPath, 'utf-8'));
+      runId = phase0Data.assessment_run_id;
+    }
+
+    // Create Phase 5 orchestrator
+    const orchestrator = createPhase5Orchestrator({
+      renderPDF: pipelineConfig.renderPDF,
+      reportTypes: pipelineConfig.phase5ReportTypes,
+    });
+
+    const results = await orchestrator.executePhase5(outputDir, runId);
+
+    // Save Phase 5 output
+    const phase5OutputPath = path.join(outputDir, 'phase5_output.json');
+    fs.writeFileSync(phase5OutputPath, JSON.stringify(results, null, 2));
+
+    return {
+      phase: 5,
+      status: results.status === 'failed' ? 'failed' : 'success',
+      duration_ms: Date.now() - startTime,
+      output_path: phase5OutputPath,
+      details: {
+        status: results.status,
+        reports_generated: results.reportsGenerated,
+        output_dir: results.outputDir,
+        manifest: results.manifestPath,
+      },
+    };
+  } catch (error) {
+    console.error('Phase 5 error details:', error);
+    if (error instanceof Error && error.stack) {
+      console.error('Stack trace:', error.stack);
+    }
+    return {
+      phase: 5,
+      status: 'failed',
+      duration_ms: Date.now() - startTime,
+      error: error instanceof Error ? error.message : String(error),
+    };
+  }
+}
+
 // ============================================================================
 // Main Pipeline Executor
 // ============================================================================
@@ -536,10 +637,11 @@ async function runPipeline(config: PipelineConfig): Promise<void> {
     () => executePhase2(config.outputDir),
     () => executePhase3(config.outputDir),
     () => executePhase4(config.outputDir, config),
+    () => executePhase5(config.outputDir, config),
   ];
 
   for (let phase = config.startPhase; phase <= config.endPhase; phase++) {
-    if (phase < 0 || phase > 4) {
+    if (phase < 0 || phase > 5) {
       console.warn(`Skipping invalid phase: ${phase}`);
       continue;
     }
