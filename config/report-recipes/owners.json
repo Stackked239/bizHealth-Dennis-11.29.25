@@ -1,0 +1,135 @@
+{
+  "report_id": "owners",
+  "name": "Owner's Business Health Report",
+  "version": "1.0.0",
+  "primary_audience": "owner",
+  "description": "Strategic overview designed for business owners with focus on overall health, key imperatives, ROI, and actionable next steps.",
+  "target_page_range": {
+    "min": 15,
+    "max": 25
+  },
+  "brand_config": {
+    "primary_color": "#212653",
+    "accent_color": "#969423",
+    "font_heading": "Montserrat",
+    "font_body": "Open Sans"
+  },
+  "default_tone_tags": ["executive", "strategic", "action_oriented"],
+  "sections": [
+    {
+      "id": "cover",
+      "title": "Business Health Assessment",
+      "description": "Cover page with health score and company information",
+      "data_sources": [
+        { "id": "meta", "from": "meta" },
+        { "id": "health_score", "from": "scores_summary.overall_health_score" },
+        { "id": "descriptor", "from": "scores_summary.descriptor" }
+      ],
+      "visual_type": "score_tile",
+      "layout_hints": { "page_break_after": true }
+    },
+    {
+      "id": "executive_summary",
+      "title": "Executive Summary",
+      "description": "One-page strategic overview of business health",
+      "data_sources": [
+        { "id": "scores_summary", "from": "scores_summary" },
+        { "id": "key_imperatives", "from": "scores_summary.key_imperatives" },
+        { "id": "top_recommendations", "from": "recommendations", "sort": { "field": "priority_rank", "direction": "asc" }, "limit": 3 }
+      ],
+      "tone_tags": ["executive", "summary"],
+      "visual_type": "narrative",
+      "layout_hints": { "page_break_after": true }
+    },
+    {
+      "id": "health_dashboard",
+      "title": "Business Health Dashboard",
+      "description": "Visual scorecard across all 4 chapters and 12 dimensions",
+      "data_sources": [
+        { "id": "chapters", "from": "chapters" },
+        { "id": "dimensions", "from": "dimensions" }
+      ],
+      "tone_tags": ["analytical"],
+      "visual_type": "radar_chart",
+      "layout_hints": { "page_break_after": true }
+    },
+    {
+      "id": "critical_findings",
+      "title": "Critical Findings",
+      "description": "Top 5-7 findings requiring owner attention",
+      "data_sources": [
+        { "id": "critical", "from": "findings", "filters": [{ "type": "risk" }], "sort": { "field": "severity", "direction": "desc" }, "limit": 5 },
+        { "id": "gaps", "from": "findings", "filters": [{ "type": "gap" }], "limit": 2 }
+      ],
+      "tone_tags": ["urgent", "executive"],
+      "visual_type": "callout_box",
+      "layout_hints": { "highlight_threshold": 40 }
+    },
+    {
+      "id": "strengths",
+      "title": "Competitive Strengths",
+      "description": "Areas of excellence and competitive advantage",
+      "data_sources": [
+        { "id": "strengths", "from": "findings", "filters": [{ "type": "strength" }], "limit": 5 }
+      ],
+      "tone_tags": ["motivational", "summary"],
+      "visual_type": "bullet_list"
+    },
+    {
+      "id": "strategic_priorities",
+      "title": "Strategic Priorities",
+      "description": "Top strategic imperatives with expected impact",
+      "data_sources": [
+        { "id": "recommendations", "from": "recommendations", "sort": { "field": "priority_rank", "direction": "asc" }, "limit": 5 }
+      ],
+      "tone_tags": ["strategic", "action_oriented"],
+      "visual_type": "numbered_list",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "quick_wins",
+      "title": "Quick Wins: 30-Day Actions",
+      "description": "Immediate high-impact actions for the next 30 days",
+      "data_sources": [
+        { "id": "quick_wins", "from": "quick_wins" },
+        { "id": "recommendations", "from": "recommendations", "filters": [{ "field": "horizon", "operator": "eq", "value": "90_days" }], "limit": 5 }
+      ],
+      "tone_tags": ["action_oriented", "urgent"],
+      "visual_type": "checklist",
+      "layout_hints": { "show_score_badge": true }
+    },
+    {
+      "id": "risk_summary",
+      "title": "Risk Summary",
+      "description": "Key business risks requiring attention",
+      "data_sources": [
+        { "id": "risks", "from": "risks", "sort": { "field": "severity", "direction": "desc" }, "limit": 5 }
+      ],
+      "tone_tags": ["executive", "urgent"],
+      "visual_type": "table",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "roadmap_overview",
+      "title": "Implementation Roadmap",
+      "description": "High-level phased approach to improvement",
+      "data_sources": [
+        { "id": "roadmap", "from": "roadmap.phases" }
+      ],
+      "tone_tags": ["strategic"],
+      "visual_type": "timeline"
+    },
+    {
+      "id": "next_steps",
+      "title": "Recommended Next Steps",
+      "description": "Immediate actions and engagement recommendations",
+      "data_sources": [
+        { "id": "top_recs", "from": "recommendations", "limit": 3 },
+        { "id": "quick_wins", "from": "quick_wins" }
+      ],
+      "tone_tags": ["action_oriented", "directive"],
+      "visual_type": "numbered_list",
+      "layout_hints": { "page_break_before": true }
+    }
+  ]
+}

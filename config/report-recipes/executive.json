@@ -1,0 +1,104 @@
+{
+  "report_id": "executive",
+  "name": "Executive Summary Report",
+  "version": "1.0.0",
+  "primary_audience": "executive",
+  "description": "Concise C-suite oriented report with strategic insights, key metrics, and board-ready presentation format.",
+  "target_page_range": {
+    "min": 5,
+    "max": 10
+  },
+  "brand_config": {
+    "primary_color": "#212653",
+    "accent_color": "#969423",
+    "font_heading": "Montserrat",
+    "font_body": "Open Sans"
+  },
+  "default_tone_tags": ["executive", "strategic", "summary"],
+  "sections": [
+    {
+      "id": "headline",
+      "title": "Business Health Assessment",
+      "description": "Headline metrics and health status",
+      "data_sources": [
+        { "id": "health_score", "from": "scores_summary.overall_health_score" },
+        { "id": "descriptor", "from": "scores_summary.descriptor" },
+        { "id": "trajectory", "from": "scores_summary.trajectory" }
+      ],
+      "visual_type": "metric_card",
+      "layout_hints": { "columns": 3, "alignment": "center" }
+    },
+    {
+      "id": "chapter_scores",
+      "title": "Performance by Chapter",
+      "description": "Scores across the four main business chapters",
+      "data_sources": [
+        { "id": "chapters", "from": "chapters" }
+      ],
+      "visual_type": "score_tiles_row",
+      "layout_hints": { "columns": 4 }
+    },
+    {
+      "id": "key_imperatives",
+      "title": "Key Strategic Imperatives",
+      "description": "Top 3 strategic priorities",
+      "data_sources": [
+        { "id": "imperatives", "from": "scores_summary.key_imperatives" }
+      ],
+      "tone_tags": ["executive", "strategic"],
+      "visual_type": "bullet_list"
+    },
+    {
+      "id": "critical_risks",
+      "title": "Critical Risks",
+      "description": "Risks requiring immediate executive attention",
+      "data_sources": [
+        { "id": "risks", "from": "risks", "sort": { "field": "severity", "direction": "desc" }, "limit": 3 }
+      ],
+      "tone_tags": ["urgent", "executive"],
+      "visual_type": "callout_box",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "strengths_weaknesses",
+      "title": "Strengths & Challenges",
+      "description": "Balanced view of highest and lowest performing areas",
+      "data_sources": [
+        { "id": "top_dims", "from": "dimensions", "sort": { "field": "score_overall", "direction": "desc" }, "limit": 3 },
+        { "id": "bottom_dims", "from": "dimensions", "sort": { "field": "score_overall", "direction": "asc" }, "limit": 3 }
+      ],
+      "tone_tags": ["analytical", "summary"],
+      "visual_type": "comparison_table"
+    },
+    {
+      "id": "recommendations_preview",
+      "title": "Priority Recommendations",
+      "description": "Top 3 strategic recommendations",
+      "data_sources": [
+        { "id": "recommendations", "from": "recommendations", "sort": { "field": "priority_rank", "direction": "asc" }, "limit": 3 }
+      ],
+      "tone_tags": ["strategic", "action_oriented"],
+      "visual_type": "numbered_list",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "roadmap_summary",
+      "title": "Implementation Timeline",
+      "description": "High-level roadmap phases",
+      "data_sources": [
+        { "id": "phases", "from": "roadmap.phases" }
+      ],
+      "visual_type": "timeline"
+    },
+    {
+      "id": "call_to_action",
+      "title": "Recommended Next Steps",
+      "description": "Immediate executive actions",
+      "data_sources": [
+        { "id": "quick_wins", "from": "quick_wins" }
+      ],
+      "tone_tags": ["directive", "action_oriented"],
+      "visual_type": "checklist"
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "report_id": "managers_sales_marketing",
+  "name": "Sales & Marketing Manager Report",
+  "version": "1.0.0",
+  "primary_audience": "manager_sales_marketing",
+  "description": "Detailed report for Sales and Marketing managers with focus on Strategy, Sales, Marketing, and Customer Experience dimensions.",
+  "target_page_range": {
+    "min": 10,
+    "max": 15
+  },
+  "brand_config": {
+    "primary_color": "#212653",
+    "accent_color": "#969423",
+    "font_heading": "Montserrat",
+    "font_body": "Open Sans"
+  },
+  "default_tone_tags": ["tactical", "action_oriented", "detailed"],
+  "sections": [
+    {
+      "id": "department_overview",
+      "title": "Revenue Engine Overview",
+      "description": "Performance summary for Growth Engine chapter",
+      "data_sources": [
+        { "id": "chapter", "from": "chapters[chapter_code=GE]" },
+        { "id": "dimensions", "from": "dimensions", "filters": [{ "dimension_codes": ["STR", "SAL", "MKT", "CXP"] }] }
+      ],
+      "visual_type": "score_tiles_row",
+      "layout_hints": { "columns": 4 }
+    },
+    {
+      "id": "strategy_deep_dive",
+      "title": "Strategy Assessment",
+      "description": "Detailed analysis of strategic positioning and planning",
+      "data_sources": [
+        { "id": "dimension", "from": "dimensions[dimension_code=STR]" },
+        { "id": "sub_indicators", "from": "dimensions[dimension_code=STR].sub_indicators" },
+        { "id": "findings", "from": "findings", "filters": [{ "dimension_codes": ["STR"] }] }
+      ],
+      "tone_tags": ["analytical", "strategic"],
+      "visual_type": "bar_chart",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "sales_deep_dive",
+      "title": "Sales Performance",
+      "description": "Detailed analysis of sales effectiveness and pipeline",
+      "data_sources": [
+        { "id": "dimension", "from": "dimensions[dimension_code=SAL]" },
+        { "id": "sub_indicators", "from": "dimensions[dimension_code=SAL].sub_indicators" },
+        { "id": "findings", "from": "findings", "filters": [{ "dimension_codes": ["SAL"] }] }
+      ],
+      "tone_tags": ["tactical", "analytical"],
+      "visual_type": "bar_chart",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "marketing_deep_dive",
+      "title": "Marketing Effectiveness",
+      "description": "Detailed analysis of brand, acquisition, and ROI",
+      "data_sources": [
+        { "id": "dimension", "from": "dimensions[dimension_code=MKT]" },
+        { "id": "sub_indicators", "from": "dimensions[dimension_code=MKT].sub_indicators" },
+        { "id": "findings", "from": "findings", "filters": [{ "dimension_codes": ["MKT"] }] }
+      ],
+      "tone_tags": ["tactical", "analytical"],
+      "visual_type": "bar_chart",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "cxp_deep_dive",
+      "title": "Customer Experience",
+      "description": "Detailed analysis of customer satisfaction and retention",
+      "data_sources": [
+        { "id": "dimension", "from": "dimensions[dimension_code=CXP]" },
+        { "id": "sub_indicators", "from": "dimensions[dimension_code=CXP].sub_indicators" },
+        { "id": "findings", "from": "findings", "filters": [{ "dimension_codes": ["CXP"] }] }
+      ],
+      "tone_tags": ["tactical", "analytical"],
+      "visual_type": "bar_chart",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "department_recommendations",
+      "title": "Sales & Marketing Recommendations",
+      "description": "Prioritized actions for your department",
+      "data_sources": [
+        { "id": "recommendations", "from": "recommendations", "filters": [{ "dimension_codes": ["STR", "SAL", "MKT", "CXP"] }], "sort": { "field": "priority_rank", "direction": "asc" } }
+      ],
+      "tone_tags": ["action_oriented", "tactical"],
+      "visual_type": "numbered_list",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "quick_wins",
+      "title": "Quick Wins for Your Team",
+      "description": "Immediate actions your team can take",
+      "data_sources": [
+        { "id": "quick_wins", "from": "quick_wins" },
+        { "id": "recs", "from": "recommendations", "filters": [{ "dimension_codes": ["STR", "SAL", "MKT", "CXP"] }, { "field": "horizon", "operator": "eq", "value": "90_days" }] }
+      ],
+      "tone_tags": ["action_oriented", "urgent"],
+      "visual_type": "checklist"
+    },
+    {
+      "id": "kpis",
+      "title": "Key Performance Indicators",
+      "description": "Metrics to track for improvement",
+      "data_sources": [
+        { "id": "dimensions", "from": "dimensions", "filters": [{ "dimension_codes": ["STR", "SAL", "MKT", "CXP"] }] }
+      ],
+      "tone_tags": ["analytical", "tactical"],
+      "visual_type": "kpi_dashboard"
+    }
+  ]
+}

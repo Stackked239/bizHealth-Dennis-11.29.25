@@ -1,0 +1,114 @@
+{
+  "report_id": "managers_financials",
+  "name": "Finance Manager Report",
+  "version": "1.0.0",
+  "primary_audience": "manager_financials",
+  "description": "Detailed report for Finance managers with focus on financial health, cash management, profitability, and growth readiness.",
+  "target_page_range": {
+    "min": 8,
+    "max": 12
+  },
+  "brand_config": {
+    "primary_color": "#212653",
+    "accent_color": "#969423",
+    "font_heading": "Montserrat",
+    "font_body": "Open Sans"
+  },
+  "default_tone_tags": ["analytical", "detailed", "tactical"],
+  "sections": [
+    {
+      "id": "department_overview",
+      "title": "Financial Health Overview",
+      "description": "Performance summary for Financials dimension",
+      "data_sources": [
+        { "id": "dimension", "from": "dimensions[dimension_code=FIN]" },
+        { "id": "chapter", "from": "chapters[chapter_code=PH]" }
+      ],
+      "visual_type": "score_tiles_row"
+    },
+    {
+      "id": "financials_deep_dive",
+      "title": "Financial Assessment",
+      "description": "Detailed analysis of financial health and management practices",
+      "data_sources": [
+        { "id": "dimension", "from": "dimensions[dimension_code=FIN]" },
+        { "id": "sub_indicators", "from": "dimensions[dimension_code=FIN].sub_indicators" }
+      ],
+      "tone_tags": ["analytical", "detailed"],
+      "visual_type": "bar_chart",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "sub_indicator_breakdown",
+      "title": "Financial Sub-Indicators",
+      "description": "Performance across financial sub-indicators",
+      "data_sources": [
+        { "id": "sub_indicators", "from": "dimensions[dimension_code=FIN].sub_indicators" }
+      ],
+      "visual_type": "table"
+    },
+    {
+      "id": "findings",
+      "title": "Financial Findings",
+      "description": "Key insights from the financial assessment",
+      "data_sources": [
+        { "id": "findings", "from": "findings", "filters": [{ "dimension_codes": ["FIN"] }] }
+      ],
+      "tone_tags": ["analytical"],
+      "visual_type": "bullet_list",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "risk_exposure",
+      "title": "Financial Risk Exposure",
+      "description": "Financial risks and their potential impact",
+      "data_sources": [
+        { "id": "risks", "from": "risks", "filters": [{ "dimension_codes": ["FIN"] }] },
+        { "id": "rms_dim", "from": "dimensions[dimension_code=RMS]" }
+      ],
+      "tone_tags": ["analytical", "urgent"],
+      "visual_type": "risk_matrix"
+    },
+    {
+      "id": "recommendations",
+      "title": "Financial Recommendations",
+      "description": "Prioritized actions for financial improvement",
+      "data_sources": [
+        { "id": "recommendations", "from": "recommendations", "filters": [{ "dimension_codes": ["FIN"] }], "sort": { "field": "priority_rank", "direction": "asc" } }
+      ],
+      "tone_tags": ["action_oriented", "tactical"],
+      "visual_type": "numbered_list",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "quick_wins",
+      "title": "Quick Wins for Finance",
+      "description": "Immediate actions for financial improvement",
+      "data_sources": [
+        { "id": "recs", "from": "recommendations", "filters": [{ "dimension_codes": ["FIN"] }, { "field": "horizon", "operator": "eq", "value": "90_days" }] }
+      ],
+      "tone_tags": ["action_oriented", "urgent"],
+      "visual_type": "checklist"
+    },
+    {
+      "id": "compliance_alignment",
+      "title": "Compliance Alignment",
+      "description": "Financial compliance considerations",
+      "data_sources": [
+        { "id": "cmp_dim", "from": "dimensions[dimension_code=CMP]" },
+        { "id": "cmp_findings", "from": "findings", "filters": [{ "dimension_codes": ["CMP"] }], "limit": 3 }
+      ],
+      "tone_tags": ["analytical"],
+      "visual_type": "bullet_list"
+    },
+    {
+      "id": "kpis",
+      "title": "Financial KPIs",
+      "description": "Key metrics to track",
+      "data_sources": [
+        { "id": "dimension", "from": "dimensions[dimension_code=FIN]" }
+      ],
+      "visual_type": "kpi_dashboard"
+    }
+  ]
+}

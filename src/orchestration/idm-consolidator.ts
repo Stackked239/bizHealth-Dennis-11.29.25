@@ -1,0 +1,791 @@
+/**
+ * BizHealth.ai IDM Consolidator (Phase 3.5)
+ *
+ * Consolidates Phase 1, 2, and 3 analysis outputs into a validated
+ * Insights Data Model (IDM) JSON structure.
+ *
+ * Responsibilities:
+ * - Compute chapter and dimension scores from questionnaire data
+ * - Extract findings, recommendations, and risks from analysis phases
+ * - Identify quick wins based on impact/effort thresholds
+ * - Build implementation roadmap
+ * - Validate final IDM against Zod schemas
+ */
+
+import { v4 as uuidv4 } from 'uuid';
+import {
+  IDM,
+  IDMSchema,
+  Meta,
+  Chapter,
+  Dimension,
+  SubIndicator,
+  Question,
+  Finding,
+  Recommendation,
+  QuickWin,
+  Risk,
+  RoadmapPhase,
+  Roadmap,
+  ScoresSummary,
+  ChapterCode,
+  ChapterCodeSchema,
+  DimensionCode,
+  DimensionCodeSchema,
+  ScoreBand,
+  Trajectory,
+  FindingType,
+  RecommendationHorizon,
+  CHAPTER_NAMES,
+  DIMENSION_METADATA,
+  SUB_INDICATOR_DEFINITIONS,
+  QUESTION_MAPPINGS,
+  getScoreBand,
+  getChapterForDimension,
+  getDimensionsForChapter,
+  calculateChapterScore,
+  calculateOverallHealthScore,
+  getHealthDescriptor,
+  determineTrajectory,
+  getQuestionsForDimension,
+  getQuestionsForSubIndicator
+} from '../types/idm.types.js';
+import { QuestionnaireResponses, CategoryResponses } from '../types/questionnaire.types.js';
+import { CompanyProfile } from '../types/company-profile.types.js';
+
+// ============================================================================
+// INTERFACES
+// ============================================================================
+
+/**
+ * Phase 1 results structure
+ */
+interface Phase1Results {
+  tier1: {
+    revenue_engine?: AnalysisResult;
+    operational_excellence?: AnalysisResult;
+    financial_strategic?: AnalysisResult;
+    people_leadership?: AnalysisResult;
+    compliance_sustainability?: AnalysisResult;
+  };
+  tier2: {
+    growth_readiness?: AnalysisResult;
+    market_position?: AnalysisResult;
+    resource_optimization?: AnalysisResult;
+    risk_resilience?: AnalysisResult;
+    scalability_readiness?: AnalysisResult;
+  };
+}
+
+/**
+ * Phase 2 results structure
+ */
+interface Phase2Results {
+  cross_dimensional?: AnalysisResult;
+  strategic_recommendations?: AnalysisResult;
+  consolidated_risks?: AnalysisResult;
+  growth_opportunities?: AnalysisResult;
+  implementation_roadmap?: AnalysisResult;
+}
+
+/**
+ * Phase 3 results structure
+ */
+interface Phase3Results {
+  executive_summary?: AnalysisResult;
+  scorecard?: AnalysisResult;
+  action_matrix?: AnalysisResult;
+  investment_roadmap?: AnalysisResult;
+  final_recommendations?: AnalysisResult;
+}
+
+/**
+ * Individual analysis result
+ */
+interface AnalysisResult {
+  analysis_id: string;
+  analysis_type: string;
+  status: 'complete' | 'failed';
+  content: string;
+  metadata?: {
+    input_tokens: number;
+    output_tokens: number;
+    thinking_tokens?: number;
+    model: string;
+    execution_time_ms: number;
+  };
+}
+
+/**
+ * Consolidator input
+ */
+export interface IDMConsolidatorInput {
+  companyProfile: CompanyProfile;
+  questionnaireResponses: QuestionnaireResponses;
+  phase1Results: Phase1Results;
+  phase2Results: Phase2Results;
+  phase3Results: Phase3Results;
+  assessmentRunId?: string;
+}
+
+/**
+ * Consolidator output
+ */
+export interface IDMConsolidatorOutput {
+  idm: IDM;
+  validationPassed: boolean;
+  validationErrors: string[];
+}
+
+// ============================================================================
+// SCORE CALCULATION
+// ============================================================================
+
+/**
+ * Normalize a 1-5 scale response to 0-100
+ */
+function normalizeScaleResponse(value: number): number {
+  // 1-5 scale -> 0-100
+  return Math.round(((value - 1) / 4) * 100);
+}
+
+/**
+ * Calculate sub-indicator score from questions
+ */
+function calculateSubIndicatorScore(
+  subIndicatorId: string,
+  questions: Question[]
+): number {
+  const relatedQuestions = questions.filter(q => q.sub_indicator_id === subIndicatorId);
+  if (relatedQuestions.length === 0) return 0;
+
+  const mappings = getQuestionsForSubIndicator(subIndicatorId);
+  let weightedSum = 0;
+  let totalWeight = 0;
+
+  for (const q of relatedQuestions) {
+    const mapping = mappings.find(m => m.question_id === q.question_id);
+    const weight = mapping?.weight || 1.0;
+    const score = q.normalized_score ?? 0;
+    weightedSum += score * weight;
+    totalWeight += weight;
+  }
+
+  return totalWeight > 0 ? Math.round(weightedSum / totalWeight) : 0;
+}
+
+/**
+ * Calculate dimension score from sub-indicators
+ */
+function calculateDimensionScore(subIndicators: SubIndicator[]): number {
+  if (subIndicators.length === 0) return 0;
+  const sum = subIndicators.reduce((acc, si) => acc + si.score, 0);
+  return Math.round(sum / subIndicators.length);
+}
+
+// ============================================================================
+// DATA EXTRACTION
+// ============================================================================
+
+/**
+ * Extract questions from questionnaire responses with IDM mapping
+ */
+function extractQuestions(
+  questionnaireResponses: QuestionnaireResponses
+): Question[] {
+  const questions: Question[] = [];
+
+  // Category ID to questionnaire category key mapping
+  const categoryMapping: Record<string, keyof typeof questionnaireResponses.categories> = {
+    'strategy': 'strategy',
+    'sales': 'sales',
+    'marketing': 'marketing',
+    'customer_experience': 'customer_experience',
+    'operations': 'operations',
+    'financials': 'financials',
+    'human_resources': 'human_resources',
+    'leadership_governance': 'leadership_governance',
+    'technology_innovation': 'technology_innovation',
+    'it_data_systems': 'it_data_systems',
+    'risk_sustainability': 'risk_sustainability',
+    'compliance_legal': 'compliance_legal'
+  };
+
+  for (const [categoryId, categoryKey] of Object.entries(categoryMapping)) {
+    const category = questionnaireResponses.categories[categoryKey];
+    if (!category) continue;
+
+    for (const q of category.questions) {
+      const mapping = QUESTION_MAPPINGS.find(m => m.question_id === q.question_id);
+      if (!mapping) continue;
+
+      // Normalize score based on response type
+      let normalizedScore: number | undefined;
+      if (q.response_type === 'scale' && typeof q.response_value === 'number') {
+        normalizedScore = normalizeScaleResponse(q.response_value);
+      } else if (q.response_type === 'percentage' && typeof q.response_value === 'number') {
+        normalizedScore = Math.min(100, Math.max(0, q.response_value));
+      }
+
+      questions.push({
+        question_id: q.question_id,
+        dimension_code: mapping.dimension_code,
+        sub_indicator_id: mapping.sub_indicator_id,
+        raw_response: q.response_value,
+        normalized_score: normalizedScore
+      });
+    }
+  }
+
+  return questions;
+}
+
+/**
+ * Build sub-indicators for a dimension
+ */
+function buildSubIndicators(
+  dimensionCode: DimensionCode,
+  questions: Question[]
+): SubIndicator[] {
+  const definitions = SUB_INDICATOR_DEFINITIONS[dimensionCode];
+  const dimensionQuestions = questions.filter(q => q.dimension_code === dimensionCode);
+
+  return definitions.map(def => {
+    const contributingQuestions = dimensionQuestions.filter(
+      q => q.sub_indicator_id === def.id
+    );
+    const score = calculateSubIndicatorScore(def.id, dimensionQuestions);
+
+    return {
+      id: def.id,
+      dimension_code: dimensionCode,
+      name: def.name,
+      score,
+      score_band: getScoreBand(score),
+      contributing_question_ids: contributingQuestions.map(q => q.question_id)
+    };
+  });
+}
+
+/**
+ * Build dimensions from questions
+ */
+function buildDimensions(questions: Question[]): Dimension[] {
+  const dimensions: Dimension[] = [];
+
+  for (const code of DimensionCodeSchema.options) {
+    const metadata = DIMENSION_METADATA[code];
+    const subIndicators = buildSubIndicators(code, questions);
+    const scoreOverall = calculateDimensionScore(subIndicators);
+
+    dimensions.push({
+      dimension_code: code,
+      chapter_code: metadata.chapter,
+      name: metadata.name,
+      description: metadata.description,
+      score_overall: scoreOverall,
+      score_band: getScoreBand(scoreOverall),
+      sub_indicators: subIndicators
+    });
+  }
+
+  return dimensions;
+}
+
+/**
+ * Build chapters from dimensions
+ */
+function buildChapters(dimensions: Dimension[]): Chapter[] {
+  const chapters: Chapter[] = [];
+
+  for (const code of ChapterCodeSchema.options) {
+    const chapterDimensions = dimensions.filter(d => d.chapter_code === code);
+    const scoreOverall = calculateChapterScore(dimensions, code);
+
+    chapters.push({
+      chapter_code: code,
+      name: CHAPTER_NAMES[code],
+      score_overall: scoreOverall,
+      score_band: getScoreBand(scoreOverall)
+    });
+  }
+
+  return chapters;
+}
+
+// ============================================================================
+// FINDINGS EXTRACTION
+// ============================================================================
+
+/**
+ * Extract findings from Phase 1-3 content
+ */
+function extractFindings(
+  dimensions: Dimension[],
+  phase1Results: Phase1Results,
+  phase2Results: Phase2Results,
+  phase3Results: Phase3Results
+): Finding[] {
+  const findings: Finding[] = [];
+
+  // Generate findings based on dimension scores
+  for (const dimension of dimensions) {
+    // Strengths (Excellence tier)
+    if (dimension.score_overall >= 80) {
+      findings.push({
+        id: `finding-strength-${dimension.dimension_code}`,
+        dimension_code: dimension.dimension_code,
+        type: 'strength',
+        severity: 'Low',
+        confidence_level: 'High',
+        short_label: `${dimension.name} Excellence`,
+        narrative: `${dimension.name} demonstrates strong performance at ${dimension.score_overall}/100, placing it in the Excellence tier. This represents a competitive advantage.`,
+        evidence_refs: {
+          metrics: [`${dimension.dimension_code}_score`]
+        }
+      });
+    }
+
+    // Gaps (Attention tier)
+    if (dimension.score_overall >= 40 && dimension.score_overall < 60) {
+      findings.push({
+        id: `finding-gap-${dimension.dimension_code}`,
+        dimension_code: dimension.dimension_code,
+        type: 'gap',
+        severity: 'Medium',
+        confidence_level: 'High',
+        short_label: `${dimension.name} Performance Gap`,
+        narrative: `${dimension.name} shows moderate performance at ${dimension.score_overall}/100. This gap presents improvement opportunities that should be addressed within 6-12 months.`,
+        evidence_refs: {
+          metrics: [`${dimension.dimension_code}_score`]
+        }
+      });
+    }
+
+    // Risks (Critical tier)
+    if (dimension.score_overall < 40) {
+      findings.push({
+        id: `finding-risk-${dimension.dimension_code}`,
+        dimension_code: dimension.dimension_code,
+        type: 'risk',
+        severity: 'Critical',
+        confidence_level: 'High',
+        short_label: `${dimension.name} Critical Underperformance`,
+        narrative: `${dimension.name} is at critical levels with a score of ${dimension.score_overall}/100. Immediate intervention is required to mitigate business risk.`,
+        evidence_refs: {
+          metrics: [`${dimension.dimension_code}_score`]
+        }
+      });
+    }
+
+    // Sub-indicator level findings
+    for (const si of dimension.sub_indicators) {
+      if (si.score >= 80) {
+        findings.push({
+          id: `finding-strength-${si.id}`,
+          dimension_code: dimension.dimension_code,
+          sub_indicator_id: si.id,
+          type: 'strength',
+          severity: 'Low',
+          confidence_level: 'High',
+          short_label: `Strong ${si.name}`,
+          narrative: `${si.name} within ${dimension.name} shows exceptional performance at ${si.score}/100.`,
+          evidence_refs: {
+            question_ids: si.contributing_question_ids
+          }
+        });
+      } else if (si.score < 40) {
+        findings.push({
+          id: `finding-gap-${si.id}`,
+          dimension_code: dimension.dimension_code,
+          sub_indicator_id: si.id,
+          type: 'gap',
+          severity: 'High',
+          confidence_level: 'High',
+          short_label: `${si.name} Gap`,
+          narrative: `${si.name} within ${dimension.name} requires attention with a score of ${si.score}/100.`,
+          evidence_refs: {
+            question_ids: si.contributing_question_ids
+          }
+        });
+      }
+    }
+  }
+
+  return findings;
+}
+
+// ============================================================================
+// RECOMMENDATIONS EXTRACTION
+// ============================================================================
+
+/**
+ * Extract and generate recommendations
+ */
+function extractRecommendations(
+  dimensions: Dimension[],
+  findings: Finding[],
+  phase2Results: Phase2Results,
+  phase3Results: Phase3Results
+): Recommendation[] {
+  const recommendations: Recommendation[] = [];
+  let priorityRank = 1;
+
+  // Sort dimensions by score (lowest first for prioritization)
+  const sortedDimensions = [...dimensions].sort((a, b) => a.score_overall - b.score_overall);
+
+  for (const dimension of sortedDimensions) {
+    if (dimension.score_overall >= 80) continue; // Skip excellence tier
+
+    const linkedFindings = findings
+      .filter(f => f.dimension_code === dimension.dimension_code && (f.type === 'gap' || f.type === 'risk'))
+      .map(f => f.id);
+
+    if (linkedFindings.length === 0) continue;
+
+    // Determine horizon based on severity
+    let horizon: RecommendationHorizon;
+    if (dimension.score_overall < 40) {
+      horizon = '90_days';
+    } else if (dimension.score_overall < 60) {
+      horizon = '12_months';
+    } else {
+      horizon = '24_months_plus';
+    }
+
+    // Calculate impact and effort scores
+    const impactScore = 100 - dimension.score_overall; // Higher gap = higher potential impact
+    const effortScore = dimension.score_overall < 40 ? 70 : 50; // Critical issues often need more effort
+
+    recommendations.push({
+      id: `rec-${dimension.dimension_code}-${priorityRank}`,
+      dimension_code: dimension.dimension_code,
+      linked_finding_ids: linkedFindings,
+      theme: `${dimension.name} Improvement Initiative`,
+      priority_rank: priorityRank,
+      impact_score: impactScore,
+      effort_score: effortScore,
+      horizon,
+      required_capabilities: [dimension.name, 'Change Management'],
+      action_steps: [
+        `Conduct detailed ${dimension.name.toLowerCase()} assessment`,
+        `Develop improvement plan with measurable KPIs`,
+        `Implement quick wins within first 30 days`,
+        `Monitor progress and adjust approach`,
+        `Document and share best practices`
+      ],
+      expected_outcomes: `Improve ${dimension.name} score from ${dimension.score_overall} to ${Math.min(100, dimension.score_overall + 20)} within the target horizon.`
+    });
+
+    priorityRank++;
+  }
+
+  return recommendations;
+}
+
+// ============================================================================
+// QUICK WINS IDENTIFICATION
+// ============================================================================
+
+/**
+ * Identify quick wins from recommendations
+ */
+function identifyQuickWins(recommendations: Recommendation[]): QuickWin[] {
+  // Quick wins: high impact (>60), low effort (<50), short horizon (90_days)
+  const quickWinRecommendations = recommendations.filter(r =>
+    r.impact_score >= 60 &&
+    r.effort_score < 50 &&
+    r.horizon === '90_days'
+  );
+
+  // Also include top 3 by impact/effort ratio if we don't have enough
+  if (quickWinRecommendations.length < 3) {
+    const byRatio = [...recommendations]
+      .sort((a, b) => (b.impact_score / b.effort_score) - (a.impact_score / a.effort_score))
+      .slice(0, 5);
+
+    for (const rec of byRatio) {
+      if (!quickWinRecommendations.find(qw => qw.id === rec.id)) {
+        quickWinRecommendations.push(rec);
+      }
+      if (quickWinRecommendations.length >= 5) break;
+    }
+  }
+
+  return quickWinRecommendations.map(r => ({
+    recommendation_id: r.id
+  }));
+}
+
+// ============================================================================
+// RISKS EXTRACTION
+// ============================================================================
+
+/**
+ * Extract risks from findings and dimensions
+ */
+function extractRisks(
+  dimensions: Dimension[],
+  findings: Finding[],
+  phase2Results: Phase2Results
+): Risk[] {
+  const risks: Risk[] = [];
+
+  // Generate risks from critical findings
+  const riskFindings = findings.filter(f => f.type === 'risk' || f.severity === 'Critical');
+
+  for (const finding of riskFindings) {
+    risks.push({
+      id: `risk-${finding.id}`,
+      dimension_code: finding.dimension_code,
+      severity: finding.severity,
+      likelihood: 'High',
+      narrative: finding.narrative,
+      category: DIMENSION_METADATA[finding.dimension_code].name
+    });
+  }
+
+  // Add systemic risks for very low-scoring dimensions
+  const criticalDimensions = dimensions.filter(d => d.score_overall < 40);
+  for (const dim of criticalDimensions) {
+    const existingRisk = risks.find(r =>
+      r.dimension_code === dim.dimension_code &&
+      r.id.includes('finding-risk')
+    );
+
+    if (!existingRisk) {
+      risks.push({
+        id: `risk-systemic-${dim.dimension_code}`,
+        dimension_code: dim.dimension_code,
+        severity: 'High',
+        likelihood: 'Medium',
+        narrative: `Systemic risk identified in ${dim.name} due to critical performance level (${dim.score_overall}/100).`,
+        category: 'Systemic'
+      });
+    }
+  }
+
+  return risks;
+}
+
+// ============================================================================
+// ROADMAP BUILDING
+// ============================================================================
+
+/**
+ * Build implementation roadmap from recommendations
+ */
+function buildRoadmap(recommendations: Recommendation[]): Roadmap {
+  const phases: RoadmapPhase[] = [];
+
+  // Phase 1: Quick Wins (0-90 days)
+  const phase1Recs = recommendations.filter(r => r.horizon === '90_days');
+  if (phase1Recs.length > 0) {
+    phases.push({
+      id: 'phase-1',
+      name: 'Foundation & Quick Wins',
+      time_horizon: '0-90 days',
+      linked_recommendation_ids: phase1Recs.map(r => r.id),
+      narrative: 'Focus on immediate value creation through quick wins and critical risk mitigation. Build momentum with visible early successes.'
+    });
+  }
+
+  // Phase 2: Core Improvements (3-12 months)
+  const phase2Recs = recommendations.filter(r => r.horizon === '12_months');
+  if (phase2Recs.length > 0) {
+    phases.push({
+      id: 'phase-2',
+      name: 'Core Capability Building',
+      time_horizon: '3-12 months',
+      linked_recommendation_ids: phase2Recs.map(r => r.id),
+      narrative: 'Implement foundational improvements across key dimensions. Establish new processes and capabilities.'
+    });
+  }
+
+  // Phase 3: Strategic Transformation (12-24+ months)
+  const phase3Recs = recommendations.filter(r => r.horizon === '24_months_plus');
+  if (phase3Recs.length > 0) {
+    phases.push({
+      id: 'phase-3',
+      name: 'Strategic Transformation',
+      time_horizon: '12-24+ months',
+      linked_recommendation_ids: phase3Recs.map(r => r.id),
+      narrative: 'Execute long-term strategic initiatives. Transform organizational capabilities for sustained competitive advantage.'
+    });
+  }
+
+  // Add a continuous improvement phase if no phases
+  if (phases.length === 0) {
+    phases.push({
+      id: 'phase-continuous',
+      name: 'Continuous Improvement',
+      time_horizon: 'Ongoing',
+      linked_recommendation_ids: recommendations.slice(0, 3).map(r => r.id),
+      narrative: 'Maintain focus on continuous improvement across all dimensions to sustain excellence.'
+    });
+  }
+
+  return { phases };
+}
+
+// ============================================================================
+// SCORES SUMMARY
+// ============================================================================
+
+/**
+ * Build scores summary
+ */
+function buildScoresSummary(
+  chapters: Chapter[],
+  dimensions: Dimension[],
+  findings: Finding[]
+): ScoresSummary {
+  const overallScore = calculateOverallHealthScore(chapters);
+  const descriptor = getHealthDescriptor(overallScore);
+  const trajectory = determineTrajectory(overallScore);
+
+  // Extract key imperatives from lowest-scoring dimensions
+  const sortedDimensions = [...dimensions].sort((a, b) => a.score_overall - b.score_overall);
+  const keyImperatives = sortedDimensions
+    .slice(0, 3)
+    .map(d => `Improve ${d.name} (currently ${d.score_overall}/100)`);
+
+  return {
+    overall_health_score: overallScore,
+    descriptor,
+    trajectory,
+    key_imperatives: keyImperatives
+  };
+}
+
+// ============================================================================
+// MAIN CONSOLIDATOR
+// ============================================================================
+
+/**
+ * IDM Consolidator class
+ */
+export class IDMConsolidator {
+  private input: IDMConsolidatorInput;
+
+  constructor(input: IDMConsolidatorInput) {
+    this.input = input;
+  }
+
+  /**
+   * Consolidate all inputs into a validated IDM
+   */
+  consolidate(): IDMConsolidatorOutput {
+    const {
+      companyProfile,
+      questionnaireResponses,
+      phase1Results,
+      phase2Results,
+      phase3Results,
+      assessmentRunId
+    } = this.input;
+
+    // Build meta
+    const meta: Meta = {
+      assessment_run_id: assessmentRunId || uuidv4(),
+      company_profile_id: companyProfile.metadata.profile_id,
+      created_at: new Date().toISOString(),
+      methodology_version: '1.0.0',
+      scoring_version: '1.0.0',
+      idm_schema_version: '1.0.0'
+    };
+
+    // Extract questions from questionnaire
+    const questions = extractQuestions(questionnaireResponses);
+
+    // Build dimensions from questions
+    const dimensions = buildDimensions(questions);
+
+    // Build chapters from dimensions
+    const chapters = buildChapters(dimensions);
+
+    // Extract findings
+    const findings = extractFindings(dimensions, phase1Results, phase2Results, phase3Results);
+
+    // Extract recommendations
+    const recommendations = extractRecommendations(dimensions, findings, phase2Results, phase3Results);
+
+    // Identify quick wins
+    const quickWins = identifyQuickWins(recommendations);
+
+    // Extract risks
+    const risks = extractRisks(dimensions, findings, phase2Results);
+
+    // Build roadmap
+    const roadmap = buildRoadmap(recommendations);
+
+    // Build scores summary
+    const scoresSummary = buildScoresSummary(chapters, dimensions, findings);
+
+    // Construct IDM
+    const idmData: IDM = {
+      meta,
+      chapters,
+      dimensions,
+      questions,
+      findings,
+      recommendations,
+      quick_wins: quickWins,
+      risks,
+      roadmap,
+      scores_summary: scoresSummary
+    };
+
+    // Validate against schema
+    const validationResult = IDMSchema.safeParse(idmData);
+
+    if (validationResult.success) {
+      return {
+        idm: validationResult.data,
+        validationPassed: true,
+        validationErrors: []
+      };
+    } else {
+      // Extract validation errors
+      const errors = validationResult.error.errors.map(e =>
+        `${e.path.join('.')}: ${e.message}`
+      );
+
+      console.error('IDM Validation Failed:', errors);
+
+      // Return the IDM anyway but flag validation failure
+      return {
+        idm: idmData,
+        validationPassed: false,
+        validationErrors: errors
+      };
+    }
+  }
+}
+
+/**
+ * Convenience function to consolidate IDM
+ */
+export function consolidateIDM(input: IDMConsolidatorInput): IDMConsolidatorOutput {
+  const consolidator = new IDMConsolidator(input);
+  return consolidator.consolidate();
+}
+
+/**
+ * Export for testing
+ */
+export const testExports = {
+  normalizeScaleResponse,
+  calculateSubIndicatorScore,
+  calculateDimensionScore,
+  extractQuestions,
+  buildSubIndicators,
+  buildDimensions,
+  buildChapters,
+  extractFindings,
+  extractRecommendations,
+  identifyQuickWins,
+  extractRisks,
+  buildRoadmap,
+  buildScoresSummary
+};

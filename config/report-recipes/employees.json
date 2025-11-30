@@ -1,0 +1,85 @@
+{
+  "report_id": "employees",
+  "name": "Employee Business Health Summary",
+  "version": "1.0.0",
+  "primary_audience": "employees",
+  "description": "Accessible summary for all employees with focus on company health, culture, and how their work contributes to improvement.",
+  "target_page_range": {
+    "min": 3,
+    "max": 6
+  },
+  "brand_config": {
+    "primary_color": "#212653",
+    "accent_color": "#969423",
+    "font_heading": "Montserrat",
+    "font_body": "Open Sans"
+  },
+  "default_tone_tags": ["supportive", "motivational", "summary"],
+  "sections": [
+    {
+      "id": "welcome",
+      "title": "Our Business Health Journey",
+      "description": "Introduction to the assessment and why it matters",
+      "data_sources": [
+        { "id": "health_score", "from": "scores_summary.overall_health_score" },
+        { "id": "descriptor", "from": "scores_summary.descriptor" }
+      ],
+      "tone_tags": ["supportive", "motivational"],
+      "visual_type": "score_tile",
+      "layout_hints": { "alignment": "center" }
+    },
+    {
+      "id": "what_we_do_well",
+      "title": "What We Do Well",
+      "description": "Celebrating our strengths and competitive advantages",
+      "data_sources": [
+        { "id": "strengths", "from": "findings", "filters": [{ "type": "strength" }], "limit": 5 },
+        { "id": "top_dims", "from": "dimensions", "sort": { "field": "score_overall", "direction": "desc" }, "limit": 3 }
+      ],
+      "tone_tags": ["motivational", "supportive"],
+      "visual_type": "bullet_list"
+    },
+    {
+      "id": "where_we_grow",
+      "title": "Where We're Growing",
+      "description": "Areas of focus for improvement",
+      "data_sources": [
+        { "id": "focus_areas", "from": "dimensions", "sort": { "field": "score_overall", "direction": "asc" }, "limit": 3 }
+      ],
+      "tone_tags": ["educational", "supportive"],
+      "visual_type": "bullet_list"
+    },
+    {
+      "id": "team_focus",
+      "title": "How We Can All Contribute",
+      "description": "Ways every team member can support improvement",
+      "data_sources": [
+        { "id": "quick_wins", "from": "quick_wins" },
+        { "id": "recommendations", "from": "recommendations", "limit": 3 }
+      ],
+      "tone_tags": ["action_oriented", "supportive"],
+      "visual_type": "checklist"
+    },
+    {
+      "id": "culture_spotlight",
+      "title": "Culture & People Focus",
+      "description": "How we're investing in our people",
+      "data_sources": [
+        { "id": "hrs_dimension", "from": "dimensions[dimension_code=HRS]" },
+        { "id": "hrs_findings", "from": "findings", "filters": [{ "dimension_codes": ["HRS"] }], "limit": 3 }
+      ],
+      "tone_tags": ["supportive", "motivational"],
+      "visual_type": "narrative"
+    },
+    {
+      "id": "whats_next",
+      "title": "What's Next",
+      "description": "Our improvement journey and what to expect",
+      "data_sources": [
+        { "id": "roadmap", "from": "roadmap.phases" }
+      ],
+      "tone_tags": ["educational", "motivational"],
+      "visual_type": "timeline"
+    }
+  ]
+}

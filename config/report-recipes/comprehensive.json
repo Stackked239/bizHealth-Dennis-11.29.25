@@ -1,0 +1,190 @@
+{
+  "report_id": "comprehensive",
+  "name": "Comprehensive Business Health Report",
+  "version": "1.0.0",
+  "primary_audience": "owner",
+  "description": "Complete business health assessment covering all 12 dimensions with detailed analysis, findings, and recommendations. The definitive reference document.",
+  "target_page_range": {
+    "min": 35,
+    "max": 50
+  },
+  "brand_config": {
+    "primary_color": "#212653",
+    "accent_color": "#969423",
+    "font_heading": "Montserrat",
+    "font_body": "Open Sans"
+  },
+  "default_tone_tags": ["executive", "detailed", "analytical"],
+  "sections": [
+    {
+      "id": "cover",
+      "title": "Business Health Assessment",
+      "description": "Cover page with company information and assessment metadata",
+      "data_sources": [
+        { "id": "meta", "from": "meta" },
+        { "id": "health_score", "from": "scores_summary.overall_health_score" }
+      ],
+      "visual_type": "none",
+      "layout_hints": { "page_break_after": true }
+    },
+    {
+      "id": "table_of_contents",
+      "title": "Table of Contents",
+      "data_sources": [],
+      "visual_type": "none",
+      "layout_hints": { "page_break_after": true }
+    },
+    {
+      "id": "executive_overview",
+      "title": "Executive Overview",
+      "description": "High-level summary of business health status, trajectory, and key imperatives",
+      "data_sources": [
+        { "id": "scores_summary", "from": "scores_summary" },
+        { "id": "chapters", "from": "chapters" },
+        { "id": "top_findings", "from": "findings", "filters": [{ "type": "risk" }], "sort": { "field": "severity", "direction": "desc" }, "limit": 5 }
+      ],
+      "tone_tags": ["executive", "strategic", "summary"],
+      "visual_type": "score_tiles_row",
+      "layout_hints": { "page_break_after": true }
+    },
+    {
+      "id": "health_scorecard",
+      "title": "Business Health Scorecard",
+      "description": "Visual dashboard of all dimension scores with tier classifications",
+      "data_sources": [
+        { "id": "dimensions", "from": "dimensions" },
+        { "id": "chapters", "from": "chapters" }
+      ],
+      "tone_tags": ["analytical"],
+      "visual_type": "radar_chart",
+      "layout_hints": { "page_break_after": true }
+    },
+    {
+      "id": "chapter_ge",
+      "title": "Growth Engine",
+      "description": "Deep dive into Strategy, Sales, Marketing, and Customer Experience",
+      "data_sources": [
+        { "id": "chapter", "from": "chapters[chapter_code=GE]" },
+        { "id": "dimensions", "from": "dimensions", "filters": [{ "chapter_codes": ["GE"] }] },
+        { "id": "findings", "from": "findings", "filters": [{ "dimension_codes": ["STR", "SAL", "MKT", "CXP"] }] },
+        { "id": "recommendations", "from": "recommendations", "filters": [{ "dimension_codes": ["STR", "SAL", "MKT", "CXP"] }] }
+      ],
+      "tone_tags": ["detailed", "analytical"],
+      "visual_type": "bar_chart",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "chapter_ph",
+      "title": "Performance & Health",
+      "description": "Deep dive into Operations and Financials",
+      "data_sources": [
+        { "id": "chapter", "from": "chapters[chapter_code=PH]" },
+        { "id": "dimensions", "from": "dimensions", "filters": [{ "chapter_codes": ["PH"] }] },
+        { "id": "findings", "from": "findings", "filters": [{ "dimension_codes": ["OPS", "FIN"] }] },
+        { "id": "recommendations", "from": "recommendations", "filters": [{ "dimension_codes": ["OPS", "FIN"] }] }
+      ],
+      "tone_tags": ["detailed", "analytical"],
+      "visual_type": "bar_chart",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "chapter_pl",
+      "title": "People & Leadership",
+      "description": "Deep dive into Human Resources and Leadership & Governance",
+      "data_sources": [
+        { "id": "chapter", "from": "chapters[chapter_code=PL]" },
+        { "id": "dimensions", "from": "dimensions", "filters": [{ "chapter_codes": ["PL"] }] },
+        { "id": "findings", "from": "findings", "filters": [{ "dimension_codes": ["HRS", "LDG"] }] },
+        { "id": "recommendations", "from": "recommendations", "filters": [{ "dimension_codes": ["HRS", "LDG"] }] }
+      ],
+      "tone_tags": ["detailed", "analytical"],
+      "visual_type": "bar_chart",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "chapter_rs",
+      "title": "Resilience & Safeguards",
+      "description": "Deep dive into Technology, IT, Risk Management, and Compliance",
+      "data_sources": [
+        { "id": "chapter", "from": "chapters[chapter_code=RS]" },
+        { "id": "dimensions", "from": "dimensions", "filters": [{ "chapter_codes": ["RS"] }] },
+        { "id": "findings", "from": "findings", "filters": [{ "dimension_codes": ["TIN", "IDS", "RMS", "CMP"] }] },
+        { "id": "recommendations", "from": "recommendations", "filters": [{ "dimension_codes": ["TIN", "IDS", "RMS", "CMP"] }] }
+      ],
+      "tone_tags": ["detailed", "analytical"],
+      "visual_type": "bar_chart",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "findings_summary",
+      "title": "Key Findings Summary",
+      "description": "Consolidated view of all strengths, gaps, risks, and opportunities",
+      "data_sources": [
+        { "id": "strengths", "from": "findings", "filters": [{ "type": "strength" }], "limit": 10 },
+        { "id": "gaps", "from": "findings", "filters": [{ "type": "gap" }], "limit": 10 },
+        { "id": "risks", "from": "findings", "filters": [{ "type": "risk" }], "limit": 10 },
+        { "id": "opportunities", "from": "findings", "filters": [{ "type": "opportunity" }], "limit": 10 }
+      ],
+      "tone_tags": ["analytical", "summary"],
+      "visual_type": "table",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "recommendations",
+      "title": "Strategic Recommendations",
+      "description": "Prioritized recommendations with action steps and expected outcomes",
+      "data_sources": [
+        { "id": "all_recommendations", "from": "recommendations", "sort": { "field": "priority_rank", "direction": "asc" } }
+      ],
+      "tone_tags": ["action_oriented", "strategic"],
+      "visual_type": "numbered_list",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "quick_wins",
+      "title": "Quick Wins",
+      "description": "High-impact, low-effort actions for immediate implementation",
+      "data_sources": [
+        { "id": "quick_wins", "from": "quick_wins" },
+        { "id": "recommendations", "from": "recommendations" }
+      ],
+      "tone_tags": ["action_oriented", "urgent"],
+      "visual_type": "checklist",
+      "layout_hints": { "show_score_badge": true }
+    },
+    {
+      "id": "risk_register",
+      "title": "Risk Register",
+      "description": "Identified risks with severity, likelihood, and mitigation recommendations",
+      "data_sources": [
+        { "id": "risks", "from": "risks", "sort": { "field": "severity", "direction": "desc" } }
+      ],
+      "tone_tags": ["analytical", "urgent"],
+      "visual_type": "risk_matrix",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "implementation_roadmap",
+      "title": "Implementation Roadmap",
+      "description": "Phased implementation plan with timeline and milestones",
+      "data_sources": [
+        { "id": "roadmap", "from": "roadmap.phases" },
+        { "id": "recommendations", "from": "recommendations" }
+      ],
+      "tone_tags": ["strategic", "action_oriented"],
+      "visual_type": "roadmap_timeline",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "appendix",
+      "title": "Appendix: Methodology & Scoring",
+      "description": "Assessment methodology, scoring framework, and data sources",
+      "data_sources": [
+        { "id": "meta", "from": "meta" }
+      ],
+      "tone_tags": ["technical", "detailed"],
+      "visual_type": "text_block",
+      "layout_hints": { "page_break_before": true }
+    }
+  ]
+}

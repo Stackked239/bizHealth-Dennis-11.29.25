@@ -1,0 +1,131 @@
+{
+  "report_id": "managers_strategy",
+  "name": "Strategy & Planning Manager Report",
+  "version": "1.0.0",
+  "primary_audience": "manager_strategy",
+  "description": "Detailed report for Strategy and Planning managers with focus on strategic positioning, risk management, compliance, and leadership alignment.",
+  "target_page_range": {
+    "min": 10,
+    "max": 15
+  },
+  "brand_config": {
+    "primary_color": "#212653",
+    "accent_color": "#969423",
+    "font_heading": "Montserrat",
+    "font_body": "Open Sans"
+  },
+  "default_tone_tags": ["strategic", "analytical", "detailed"],
+  "sections": [
+    {
+      "id": "department_overview",
+      "title": "Strategic Overview",
+      "description": "Cross-functional performance summary",
+      "data_sources": [
+        { "id": "chapters", "from": "chapters" },
+        { "id": "overall_score", "from": "scores_summary" }
+      ],
+      "visual_type": "radar_chart"
+    },
+    {
+      "id": "strategy_deep_dive",
+      "title": "Strategy Assessment",
+      "description": "Detailed analysis of strategic planning and positioning",
+      "data_sources": [
+        { "id": "dimension", "from": "dimensions[dimension_code=STR]" },
+        { "id": "sub_indicators", "from": "dimensions[dimension_code=STR].sub_indicators" }
+      ],
+      "tone_tags": ["strategic", "analytical"],
+      "visual_type": "bar_chart",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "leadership_alignment",
+      "title": "Leadership & Governance Assessment",
+      "description": "Analysis of leadership effectiveness and governance",
+      "data_sources": [
+        { "id": "dimension", "from": "dimensions[dimension_code=LDG]" },
+        { "id": "sub_indicators", "from": "dimensions[dimension_code=LDG].sub_indicators" }
+      ],
+      "tone_tags": ["strategic", "analytical"],
+      "visual_type": "bar_chart",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "risk_management",
+      "title": "Risk Management Assessment",
+      "description": "Analysis of risk identification and mitigation capabilities",
+      "data_sources": [
+        { "id": "dimension", "from": "dimensions[dimension_code=RMS]" },
+        { "id": "sub_indicators", "from": "dimensions[dimension_code=RMS].sub_indicators" }
+      ],
+      "tone_tags": ["analytical", "detailed"],
+      "visual_type": "bar_chart",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "compliance",
+      "title": "Compliance Assessment",
+      "description": "Analysis of regulatory compliance and policy adherence",
+      "data_sources": [
+        { "id": "dimension", "from": "dimensions[dimension_code=CMP]" },
+        { "id": "sub_indicators", "from": "dimensions[dimension_code=CMP].sub_indicators" }
+      ],
+      "tone_tags": ["analytical", "detailed"],
+      "visual_type": "bar_chart",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "cross_dimensional_findings",
+      "title": "Cross-Dimensional Findings",
+      "description": "Strategic insights across all dimensions",
+      "data_sources": [
+        { "id": "findings", "from": "findings", "filters": [{ "dimension_codes": ["STR", "LDG", "RMS", "CMP"] }] }
+      ],
+      "tone_tags": ["strategic", "analytical"],
+      "visual_type": "bullet_list"
+    },
+    {
+      "id": "enterprise_risks",
+      "title": "Enterprise Risk Register",
+      "description": "Comprehensive view of business risks",
+      "data_sources": [
+        { "id": "all_risks", "from": "risks", "sort": { "field": "severity", "direction": "desc" } }
+      ],
+      "tone_tags": ["strategic", "urgent"],
+      "visual_type": "risk_matrix",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "recommendations",
+      "title": "Strategic Recommendations",
+      "description": "Prioritized strategic actions",
+      "data_sources": [
+        { "id": "recommendations", "from": "recommendations", "filters": [{ "dimension_codes": ["STR", "LDG", "RMS", "CMP"] }], "sort": { "field": "priority_rank", "direction": "asc" } }
+      ],
+      "tone_tags": ["action_oriented", "strategic"],
+      "visual_type": "numbered_list",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "roadmap_detail",
+      "title": "Implementation Roadmap",
+      "description": "Detailed phased implementation plan",
+      "data_sources": [
+        { "id": "roadmap", "from": "roadmap.phases" },
+        { "id": "recommendations", "from": "recommendations" }
+      ],
+      "tone_tags": ["strategic"],
+      "visual_type": "roadmap_timeline",
+      "layout_hints": { "page_break_before": true }
+    },
+    {
+      "id": "kpis",
+      "title": "Strategic KPIs",
+      "description": "Key metrics for strategic monitoring",
+      "data_sources": [
+        { "id": "dimensions", "from": "dimensions", "filters": [{ "dimension_codes": ["STR", "LDG", "RMS", "CMP"] }] }
+      ],
+      "visual_type": "kpi_dashboard"
+    }
+  ]
+}
