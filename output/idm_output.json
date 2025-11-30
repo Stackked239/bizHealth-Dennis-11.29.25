@@ -1,0 +1,2236 @@
+{
+  "meta": {
+    "assessment_run_id": "4fd8d702-c64e-4f07-8230-39ab790381b0",
+    "company_profile_id": "b24e8f34-aee2-40c4-b30b-92d87bf21ac2",
+    "created_at": "2025-11-30T02:25:49.812Z",
+    "methodology_version": "1.0.0",
+    "scoring_version": "1.0.0",
+    "idm_schema_version": "1.0.0"
+  },
+  "chapters": [
+    {
+      "chapter_code": "GE",
+      "name": "Growth Engine",
+      "score_overall": 49,
+      "score_band": "Attention"
+    },
+    {
+      "chapter_code": "PH",
+      "name": "Performance & Health",
+      "score_overall": 51,
+      "score_band": "Attention"
+    },
+    {
+      "chapter_code": "PL",
+      "name": "People & Leadership",
+      "score_overall": 43,
+      "score_band": "Attention"
+    },
+    {
+      "chapter_code": "RS",
+      "name": "Resilience & Safeguards",
+      "score_overall": 70,
+      "score_band": "Proficiency"
+    }
+  ],
+  "dimensions": [
+    {
+      "dimension_code": "STR",
+      "chapter_code": "GE",
+      "name": "Strategy",
+      "description": "Strategic planning, market positioning, and growth strategy",
+      "score_overall": 45,
+      "score_band": "Attention",
+      "sub_indicators": [
+        {
+          "id": "STR_001",
+          "dimension_code": "STR",
+          "name": "Competitive Differentiation",
+          "score": 50,
+          "score_band": "Attention",
+          "contributing_question_ids": [
+            "strategy_q1"
+          ]
+        },
+        {
+          "id": "STR_002",
+          "dimension_code": "STR",
+          "name": "Market Position",
+          "score": 10,
+          "score_band": "Critical",
+          "contributing_question_ids": [
+            "strategy_q2"
+          ]
+        },
+        {
+          "id": "STR_003",
+          "dimension_code": "STR",
+          "name": "Growth Planning",
+          "score": 42,
+          "score_band": "Attention",
+          "contributing_question_ids": [
+            "strategy_q3",
+            "strategy_q4",
+            "strategy_q5"
+          ]
+        },
+        {
+          "id": "STR_004",
+          "dimension_code": "STR",
+          "name": "Strategic Review Process",
+          "score": 50,
+          "score_band": "Attention",
+          "contributing_question_ids": [
+            "strategy_q6"
+          ]
+        },
+        {
+          "id": "STR_005",
+          "dimension_code": "STR",
+          "name": "Exit/Growth Strategy",
+          "score": 75,
+          "score_band": "Proficiency",
+          "contributing_question_ids": [
+            "strategy_q7"
+          ]
+        }
+      ]
+    },
+    {
+      "dimension_code": "SAL",
+      "chapter_code": "GE",
+      "name": "Sales",
+      "description": "Sales effectiveness, pipeline management, and revenue generation",
+      "score_overall": 70,
+      "score_band": "Proficiency",
+      "sub_indicators": [
+        {
+          "id": "SAL_001",
+          "dimension_code": "SAL",
+          "name": "Sales Target Alignment",
+          "score": 100,
+          "score_band": "Excellence",
+          "contributing_question_ids": [
+            "sales_q1",
+            "sales_q2"
+          ]
+        },
+        {
+          "id": "SAL_002",
+          "dimension_code": "SAL",
+          "name": "Pipeline Management",
+          "score": 75,
+          "score_band": "Proficiency",
+          "contributing_question_ids": [
+            "sales_q3"
+          ]
+        },
+        {
+          "id": "SAL_003",
+          "dimension_code": "SAL",
+          "name": "Sales Cycle Efficiency",
+          "score": 3,
+          "score_band": "Critical",
+          "contributing_question_ids": [
+            "sales_q4",
+            "sales_q5",
+            "sales_q6"
+          ]
+        },
+        {
+          "id": "SAL_004",
+          "dimension_code": "SAL",
+          "name": "Customer Retention",
+          "score": 98,
+          "score_band": "Excellence",
+          "contributing_question_ids": [
+            "sales_q7"
+          ]
+        },
+        {
+          "id": "SAL_005",
+          "dimension_code": "SAL",
+          "name": "Upselling Effectiveness",
+          "score": 75,
+          "score_band": "Proficiency",
+          "contributing_question_ids": [
+            "sales_q8"
+          ]
+        }
+      ]
+    },
+    {
+      "dimension_code": "MKT",
+      "chapter_code": "GE",
+      "name": "Marketing",
+      "description": "Brand awareness, customer acquisition, and marketing ROI",
+      "score_overall": 31,
+      "score_band": "Critical",
+      "sub_indicators": [
+        {
+          "id": "MKT_001",
+          "dimension_code": "MKT",
+          "name": "Brand Awareness",
+          "score": 75,
+          "score_band": "Proficiency",
+          "contributing_question_ids": [
+            "marketing_q1"
+          ]
+        },
+        {
+          "id": "MKT_002",
+          "dimension_code": "MKT",
+          "name": "Customer Targeting",
+          "score": 75,
+          "score_band": "Proficiency",
+          "contributing_question_ids": [
+            "marketing_q5"
+          ]
+        },
+        {
+          "id": "MKT_003",
+          "dimension_code": "MKT",
+          "name": "Marketing Economics (CAC/LTV)",
+          "score": 0,
+          "score_band": "Critical",
+          "contributing_question_ids": [
+            "marketing_q6",
+            "marketing_q7",
+            "marketing_q8"
+          ]
+        },
+        {
+          "id": "MKT_004",
+          "dimension_code": "MKT",
+          "name": "Marketing ROI",
+          "score": 7,
+          "score_band": "Critical",
+          "contributing_question_ids": [
+            "marketing_q9"
+          ]
+        },
+        {
+          "id": "MKT_005",
+          "dimension_code": "MKT",
+          "name": "Channel Strategy",
+          "score": 0,
+          "score_band": "Critical",
+          "contributing_question_ids": [
+            "marketing_q2",
+            "marketing_q3",
+            "marketing_q4"
+          ]
+        }
+      ]
+    },
+    {
+      "dimension_code": "CXP",
+      "chapter_code": "GE",
+      "name": "Customer Experience",
+      "description": "Customer satisfaction, retention, and experience quality",
+      "score_overall": 50,
+      "score_band": "Attention",
+      "sub_indicators": [
+        {
+          "id": "CXP_001",
+          "dimension_code": "CXP",
+          "name": "Customer Feedback Systems",
+          "score": 50,
+          "score_band": "Attention",
+          "contributing_question_ids": [
+            "customer_experience_q1"
+          ]
+        },
+        {
+          "id": "CXP_002",
+          "dimension_code": "CXP",
+          "name": "Customer Satisfaction",
+          "score": 75,
+          "score_band": "Proficiency",
+          "contributing_question_ids": [
+            "customer_experience_q2",
+            "customer_experience_q4",
+            "customer_experience_q5"
+          ]
+        },
+        {
+          "id": "CXP_003",
+          "dimension_code": "CXP",
+          "name": "Net Promoter Score",
+          "score": 75,
+          "score_band": "Proficiency",
+          "contributing_question_ids": [
+            "customer_experience_q3"
+          ]
+        },
+        {
+          "id": "CXP_004",
+          "dimension_code": "CXP",
+          "name": "Issue Resolution",
+          "score": 50,
+          "score_band": "Attention",
+          "contributing_question_ids": [
+            "customer_experience_q6"
+          ]
+        },
+        {
+          "id": "CXP_005",
+          "dimension_code": "CXP",
+          "name": "Response Time",
+          "score": 0,
+          "score_band": "Critical",
+          "contributing_question_ids": [
+            "customer_experience_q7"
+          ]
+        }
+      ]
+    },
+    {
+      "dimension_code": "OPS",
+      "chapter_code": "PH",
+      "name": "Operations",
+      "description": "Operational efficiency, process optimization, and workflow management",
+      "score_overall": 62,
+      "score_band": "Proficiency",
+      "sub_indicators": [
+        {
+          "id": "OPS_001",
+          "dimension_code": "OPS",
+          "name": "Operational Efficiency",
+          "score": 50,
+          "score_band": "Attention",
+          "contributing_question_ids": [
+            "operations_q1"
+          ]
+        },
+        {
+          "id": "OPS_002",
+          "dimension_code": "OPS",
+          "name": "Process Documentation",
+          "score": 75,
+          "score_band": "Proficiency",
+          "contributing_question_ids": [
+            "operations_q2"
+          ]
+        },
+        {
+          "id": "OPS_003",
+          "dimension_code": "OPS",
+          "name": "Operational Reliability",
+          "score": 100,
+          "score_band": "Excellence",
+          "contributing_question_ids": [
+            "operations_q4"
+          ]
+        },
+        {
+          "id": "OPS_004",
+          "dimension_code": "OPS",
+          "name": "Lean Practices",
+          "score": 50,
+          "score_band": "Attention",
+          "contributing_question_ids": [
+            "operations_q5"
+          ]
+        },
+        {
+          "id": "OPS_005",
+          "dimension_code": "OPS",
+          "name": "Resource Utilization",
+          "score": 34,
+          "score_band": "Critical",
+          "contributing_question_ids": [
+            "operations_q3",
+            "operations_q6"
+          ]
+        }
+      ]
+    },
+    {
+      "dimension_code": "FIN",
+      "chapter_code": "PH",
+      "name": "Financials",
+      "description": "Financial health, profitability, and fiscal management",
+      "score_overall": 39,
+      "score_band": "Critical",
+      "sub_indicators": [
+        {
+          "id": "FIN_001",
+          "dimension_code": "FIN",
+          "name": "Financial Controls",
+          "score": 25,
+          "score_band": "Critical",
+          "contributing_question_ids": [
+            "financials_q1",
+            "financials_q3"
+          ]
+        },
+        {
+          "id": "FIN_002",
+          "dimension_code": "FIN",
+          "name": "Cash Management",
+          "score": 0,
+          "score_band": "Critical",
+          "contributing_question_ids": [
+            "financials_q2",
+            "financials_q4",
+            "financials_q5",
+            "financials_q6",
+            "financials_q9"
+          ]
+        },
+        {
+          "id": "FIN_003",
+          "dimension_code": "FIN",
+          "name": "Profitability",
+          "score": 19,
+          "score_band": "Critical",
+          "contributing_question_ids": [
+            "financials_q7",
+            "financials_q8"
+          ]
+        },
+        {
+          "id": "FIN_004",
+          "dimension_code": "FIN",
+          "name": "Financial Planning",
+          "score": 75,
+          "score_band": "Proficiency",
+          "contributing_question_ids": [
+            "financials_q10",
+            "financials_q11"
+          ]
+        },
+        {
+          "id": "FIN_005",
+          "dimension_code": "FIN",
+          "name": "Growth Readiness",
+          "score": 75,
+          "score_band": "Proficiency",
+          "contributing_question_ids": [
+            "financials_q12"
+          ]
+        }
+      ]
+    },
+    {
+      "dimension_code": "HRS",
+      "chapter_code": "PL",
+      "name": "Human Resources",
+      "description": "Talent management, culture, and employee engagement",
+      "score_overall": 46,
+      "score_band": "Attention",
+      "sub_indicators": [
+        {
+          "id": "HRS_001",
+          "dimension_code": "HRS",
+          "name": "HR Infrastructure",
+          "score": 50,
+          "score_band": "Attention",
+          "contributing_question_ids": [
+            "human_resources_q1"
+          ]
+        },
+        {
+          "id": "HRS_002",
+          "dimension_code": "HRS",
+          "name": "Company Culture",
+          "score": 32,
+          "score_band": "Critical",
+          "contributing_question_ids": [
+            "human_resources_q2",
+            "human_resources_q5",
+            "human_resources_q6"
+          ]
+        },
+        {
+          "id": "HRS_003",
+          "dimension_code": "HRS",
+          "name": "Talent Acquisition",
+          "score": 50,
+          "score_band": "Attention",
+          "contributing_question_ids": [
+            "human_resources_q3"
+          ]
+        },
+        {
+          "id": "HRS_004",
+          "dimension_code": "HRS",
+          "name": "Employee Development",
+          "score": 50,
+          "score_band": "Attention",
+          "contributing_question_ids": [
+            "human_resources_q4"
+          ]
+        },
+        {
+          "id": "HRS_005",
+          "dimension_code": "HRS",
+          "name": "Performance Management",
+          "score": 50,
+          "score_band": "Attention",
+          "contributing_question_ids": [
+            "human_resources_q7"
+          ]
+        }
+      ]
+    },
+    {
+      "dimension_code": "LDG",
+      "chapter_code": "PL",
+      "name": "Leadership & Governance",
+      "description": "Leadership effectiveness, decision-making, and organizational governance",
+      "score_overall": 40,
+      "score_band": "Attention",
+      "sub_indicators": [
+        {
+          "id": "LDG_001",
+          "dimension_code": "LDG",
+          "name": "Leadership Effectiveness",
+          "score": 50,
+          "score_band": "Attention",
+          "contributing_question_ids": [
+            "leadership_q1"
+          ]
+        },
+        {
+          "id": "LDG_002",
+          "dimension_code": "LDG",
+          "name": "Decision-Making Structure",
+          "score": 35,
+          "score_band": "Critical",
+          "contributing_question_ids": [
+            "leadership_q2",
+            "leadership_q5"
+          ]
+        },
+        {
+          "id": "LDG_003",
+          "dimension_code": "LDG",
+          "name": "Board Oversight",
+          "score": 17,
+          "score_band": "Critical",
+          "contributing_question_ids": [
+            "leadership_q3",
+            "leadership_q4"
+          ]
+        },
+        {
+          "id": "LDG_004",
+          "dimension_code": "LDG",
+          "name": "Leadership Culture",
+          "score": 50,
+          "score_band": "Attention",
+          "contributing_question_ids": [
+            "leadership_q6"
+          ]
+        },
+        {
+          "id": "LDG_005",
+          "dimension_code": "LDG",
+          "name": "Development & Mentorship",
+          "score": 50,
+          "score_band": "Attention",
+          "contributing_question_ids": [
+            "leadership_q7"
+          ]
+        }
+      ]
+    },
+    {
+      "dimension_code": "TIN",
+      "chapter_code": "RS",
+      "name": "Technology & Innovation",
+      "description": "Technology adoption, innovation culture, and digital transformation",
+      "score_overall": 55,
+      "score_band": "Attention",
+      "sub_indicators": [
+        {
+          "id": "TIN_001",
+          "dimension_code": "TIN",
+          "name": "Technology Investment",
+          "score": 0,
+          "score_band": "Critical",
+          "contributing_question_ids": [
+            "technology_q1"
+          ]
+        },
+        {
+          "id": "TIN_002",
+          "dimension_code": "TIN",
+          "name": "Innovation Culture",
+          "score": 75,
+          "score_band": "Proficiency",
+          "contributing_question_ids": [
+            "technology_q3"
+          ]
+        },
+        {
+          "id": "TIN_003",
+          "dimension_code": "TIN",
+          "name": "Technology Adoption",
+          "score": 75,
+          "score_band": "Proficiency",
+          "contributing_question_ids": [
+            "technology_q4",
+            "technology_q5"
+          ]
+        },
+        {
+          "id": "TIN_004",
+          "dimension_code": "TIN",
+          "name": "Automation Utilization",
+          "score": 50,
+          "score_band": "Attention",
+          "contributing_question_ids": [
+            "technology_q6"
+          ]
+        },
+        {
+          "id": "TIN_005",
+          "dimension_code": "TIN",
+          "name": "Innovation Impact",
+          "score": 73,
+          "score_band": "Proficiency",
+          "contributing_question_ids": [
+            "technology_q2",
+            "technology_q7"
+          ]
+        }
+      ]
+    },
+    {
+      "dimension_code": "IDS",
+      "chapter_code": "RS",
+      "name": "IT, Data & Systems",
+      "description": "IT infrastructure, data management, and cybersecurity",
+      "score_overall": 88,
+      "score_band": "Excellence",
+      "sub_indicators": [
+        {
+          "id": "IDS_001",
+          "dimension_code": "IDS",
+          "name": "IT Infrastructure",
+          "score": 90,
+          "score_band": "Excellence",
+          "contributing_question_ids": [
+            "it_infrastructure_q1",
+            "it_infrastructure_q7"
+          ]
+        },
+        {
+          "id": "IDS_002",
+          "dimension_code": "IDS",
+          "name": "Network Effectiveness",
+          "score": 100,
+          "score_band": "Excellence",
+          "contributing_question_ids": [
+            "it_infrastructure_q2"
+          ]
+        },
+        {
+          "id": "IDS_003",
+          "dimension_code": "IDS",
+          "name": "Cybersecurity",
+          "score": 75,
+          "score_band": "Proficiency",
+          "contributing_question_ids": [
+            "it_infrastructure_q3"
+          ]
+        },
+        {
+          "id": "IDS_004",
+          "dimension_code": "IDS",
+          "name": "Data Management",
+          "score": 100,
+          "score_band": "Excellence",
+          "contributing_question_ids": [
+            "it_infrastructure_q4",
+            "it_infrastructure_q5"
+          ]
+        },
+        {
+          "id": "IDS_005",
+          "dimension_code": "IDS",
+          "name": "IT Scalability",
+          "score": 75,
+          "score_band": "Proficiency",
+          "contributing_question_ids": [
+            "it_infrastructure_q6"
+          ]
+        }
+      ]
+    },
+    {
+      "dimension_code": "RMS",
+      "chapter_code": "RS",
+      "name": "Risk Management & Sustainability",
+      "description": "Risk identification, mitigation, and business continuity",
+      "score_overall": 59,
+      "score_band": "Attention",
+      "sub_indicators": [
+        {
+          "id": "RMS_001",
+          "dimension_code": "RMS",
+          "name": "Risk Outlook",
+          "score": 50,
+          "score_band": "Attention",
+          "contributing_question_ids": [
+            "risk_management_q1"
+          ]
+        },
+        {
+          "id": "RMS_002",
+          "dimension_code": "RMS",
+          "name": "Risk Identification",
+          "score": 75,
+          "score_band": "Proficiency",
+          "contributing_question_ids": [
+            "risk_management_q2"
+          ]
+        },
+        {
+          "id": "RMS_003",
+          "dimension_code": "RMS",
+          "name": "Risk Mitigation",
+          "score": 50,
+          "score_band": "Attention",
+          "contributing_question_ids": [
+            "risk_management_q3",
+            "risk_management_q5"
+          ]
+        },
+        {
+          "id": "RMS_004",
+          "dimension_code": "RMS",
+          "name": "Business Continuity",
+          "score": 69,
+          "score_band": "Proficiency",
+          "contributing_question_ids": [
+            "risk_management_q4",
+            "risk_management_q6",
+            "risk_management_q7"
+          ]
+        },
+        {
+          "id": "RMS_005",
+          "dimension_code": "RMS",
+          "name": "Strategic Adaptability",
+          "score": 50,
+          "score_band": "Attention",
+          "contributing_question_ids": [
+            "risk_management_q8"
+          ]
+        }
+      ]
+    },
+    {
+      "dimension_code": "CMP",
+      "chapter_code": "RS",
+      "name": "Compliance",
+      "description": "Regulatory compliance, policy adherence, and legal requirements",
+      "score_overall": 77,
+      "score_band": "Proficiency",
+      "sub_indicators": [
+        {
+          "id": "CMP_001",
+          "dimension_code": "CMP",
+          "name": "Compliance Awareness",
+          "score": 75,
+          "score_band": "Proficiency",
+          "contributing_question_ids": [
+            "compliance_q1",
+            "compliance_q3",
+            "compliance_q8"
+          ]
+        },
+        {
+          "id": "CMP_002",
+          "dimension_code": "CMP",
+          "name": "Policy Adherence",
+          "score": 75,
+          "score_band": "Proficiency",
+          "contributing_question_ids": [
+            "compliance_q2"
+          ]
+        },
+        {
+          "id": "CMP_003",
+          "dimension_code": "CMP",
+          "name": "Compliance Monitoring",
+          "score": 60,
+          "score_band": "Proficiency",
+          "contributing_question_ids": [
+            "compliance_q4",
+            "compliance_q5"
+          ]
+        },
+        {
+          "id": "CMP_004",
+          "dimension_code": "CMP",
+          "name": "Documentation",
+          "score": 75,
+          "score_band": "Proficiency",
+          "contributing_question_ids": [
+            "compliance_q6"
+          ]
+        },
+        {
+          "id": "CMP_005",
+          "dimension_code": "CMP",
+          "name": "Incident Reporting",
+          "score": 100,
+          "score_band": "Excellence",
+          "contributing_question_ids": [
+            "compliance_q7"
+          ]
+        }
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "question_id": "strategy_q1",
+      "dimension_code": "STR",
+      "sub_indicator_id": "STR_001",
+      "raw_response": 3,
+      "normalized_score": 50
+    },
+    {
+      "question_id": "strategy_q2",
+      "dimension_code": "STR",
+      "sub_indicator_id": "STR_002",
+      "raw_response": 10,
+      "normalized_score": 10
+    },
+    {
+      "question_id": "strategy_q3",
+      "dimension_code": "STR",
+      "sub_indicator_id": "STR_003",
+      "raw_response": 15,
+      "normalized_score": 15
+    },
+    {
+      "question_id": "strategy_q4",
+      "dimension_code": "STR",
+      "sub_indicator_id": "STR_003",
+      "raw_response": 20,
+      "normalized_score": 20
+    },
+    {
+      "question_id": "strategy_q5",
+      "dimension_code": "STR",
+      "sub_indicator_id": "STR_003",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "strategy_q6",
+      "dimension_code": "STR",
+      "sub_indicator_id": "STR_004",
+      "raw_response": 3,
+      "normalized_score": 50
+    },
+    {
+      "question_id": "strategy_q7",
+      "dimension_code": "STR",
+      "sub_indicator_id": "STR_005",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "sales_q1",
+      "dimension_code": "SAL",
+      "sub_indicator_id": "SAL_001",
+      "raw_response": {
+        "b2b_percentage": 100,
+        "b2c_percentage": null,
+        "wholesale_percentage": null,
+        "retail_percentage": null,
+        "online_percentage": null
+      },
+      "normalized_score": 100
+    },
+    {
+      "question_id": "sales_q2",
+      "dimension_code": "SAL",
+      "sub_indicator_id": "SAL_001",
+      "raw_response": 5,
+      "normalized_score": 100
+    },
+    {
+      "question_id": "sales_q3",
+      "dimension_code": "SAL",
+      "sub_indicator_id": "SAL_002",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "sales_q4",
+      "dimension_code": "SAL",
+      "sub_indicator_id": "SAL_003",
+      "raw_response": 270
+    },
+    {
+      "question_id": "sales_q5",
+      "dimension_code": "SAL",
+      "sub_indicator_id": "SAL_003",
+      "raw_response": 10,
+      "normalized_score": 10
+    },
+    {
+      "question_id": "sales_q6",
+      "dimension_code": "SAL",
+      "sub_indicator_id": "SAL_003",
+      "raw_response": 70000
+    },
+    {
+      "question_id": "sales_q7",
+      "dimension_code": "SAL",
+      "sub_indicator_id": "SAL_004",
+      "raw_response": 98,
+      "normalized_score": 98
+    },
+    {
+      "question_id": "sales_q8",
+      "dimension_code": "SAL",
+      "sub_indicator_id": "SAL_005",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "marketing_q1",
+      "dimension_code": "MKT",
+      "sub_indicator_id": "MKT_001",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "marketing_q2",
+      "dimension_code": "MKT",
+      "sub_indicator_id": "MKT_005",
+      "raw_response": 4
+    },
+    {
+      "question_id": "marketing_q3",
+      "dimension_code": "MKT",
+      "sub_indicator_id": "MKT_005",
+      "raw_response": "Email Marketing, Content, Events/Conferences, SEO"
+    },
+    {
+      "question_id": "marketing_q4",
+      "dimension_code": "MKT",
+      "sub_indicator_id": "MKT_005",
+      "raw_response": null
+    },
+    {
+      "question_id": "marketing_q5",
+      "dimension_code": "MKT",
+      "sub_indicator_id": "MKT_002",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "marketing_q6",
+      "dimension_code": "MKT",
+      "sub_indicator_id": "MKT_003",
+      "raw_response": 54000
+    },
+    {
+      "question_id": "marketing_q7",
+      "dimension_code": "MKT",
+      "sub_indicator_id": "MKT_003",
+      "raw_response": 1000000
+    },
+    {
+      "question_id": "marketing_q8",
+      "dimension_code": "MKT",
+      "sub_indicator_id": "MKT_003",
+      "raw_response": 1,
+      "normalized_score": 1
+    },
+    {
+      "question_id": "marketing_q9",
+      "dimension_code": "MKT",
+      "sub_indicator_id": "MKT_004",
+      "raw_response": 7.2,
+      "normalized_score": 7
+    },
+    {
+      "question_id": "customer_experience_q1",
+      "dimension_code": "CXP",
+      "sub_indicator_id": "CXP_001",
+      "raw_response": 3,
+      "normalized_score": 50
+    },
+    {
+      "question_id": "customer_experience_q2",
+      "dimension_code": "CXP",
+      "sub_indicator_id": "CXP_002",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "customer_experience_q3",
+      "dimension_code": "CXP",
+      "sub_indicator_id": "CXP_003",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "customer_experience_q4",
+      "dimension_code": "CXP",
+      "sub_indicator_id": "CXP_002",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "customer_experience_q5",
+      "dimension_code": "CXP",
+      "sub_indicator_id": "CXP_002",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "customer_experience_q6",
+      "dimension_code": "CXP",
+      "sub_indicator_id": "CXP_004",
+      "raw_response": 3,
+      "normalized_score": 50
+    },
+    {
+      "question_id": "customer_experience_q7",
+      "dimension_code": "CXP",
+      "sub_indicator_id": "CXP_005",
+      "raw_response": 24
+    },
+    {
+      "question_id": "operations_q1",
+      "dimension_code": "OPS",
+      "sub_indicator_id": "OPS_001",
+      "raw_response": 3,
+      "normalized_score": 50
+    },
+    {
+      "question_id": "operations_q2",
+      "dimension_code": "OPS",
+      "sub_indicator_id": "OPS_002",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "operations_q3",
+      "dimension_code": "OPS",
+      "sub_indicator_id": "OPS_005",
+      "raw_response": null
+    },
+    {
+      "question_id": "operations_q4",
+      "dimension_code": "OPS",
+      "sub_indicator_id": "OPS_003",
+      "raw_response": 5,
+      "normalized_score": 100
+    },
+    {
+      "question_id": "operations_q5",
+      "dimension_code": "OPS",
+      "sub_indicator_id": "OPS_004",
+      "raw_response": 3,
+      "normalized_score": 50
+    },
+    {
+      "question_id": "operations_q6",
+      "dimension_code": "OPS",
+      "sub_indicator_id": "OPS_005",
+      "raw_response": {
+        "space_utilization": 75,
+        "equipment_utilization": 50,
+        "personnel_utilization": 80
+      },
+      "normalized_score": 68
+    },
+    {
+      "question_id": "financials_q1",
+      "dimension_code": "FIN",
+      "sub_indicator_id": "FIN_001",
+      "raw_response": null
+    },
+    {
+      "question_id": "financials_q2",
+      "dimension_code": "FIN",
+      "sub_indicator_id": "FIN_002",
+      "raw_response": 1500000
+    },
+    {
+      "question_id": "financials_q3",
+      "dimension_code": "FIN",
+      "sub_indicator_id": "FIN_001",
+      "raw_response": 3,
+      "normalized_score": 50
+    },
+    {
+      "question_id": "financials_q4",
+      "dimension_code": "FIN",
+      "sub_indicator_id": "FIN_002",
+      "raw_response": 1500000
+    },
+    {
+      "question_id": "financials_q5",
+      "dimension_code": "FIN",
+      "sub_indicator_id": "FIN_002",
+      "raw_response": 3499999.97
+    },
+    {
+      "question_id": "financials_q6",
+      "dimension_code": "FIN",
+      "sub_indicator_id": "FIN_002",
+      "raw_response": null
+    },
+    {
+      "question_id": "financials_q7",
+      "dimension_code": "FIN",
+      "sub_indicator_id": "FIN_003",
+      "raw_response": 32,
+      "normalized_score": 32
+    },
+    {
+      "question_id": "financials_q8",
+      "dimension_code": "FIN",
+      "sub_indicator_id": "FIN_003",
+      "raw_response": 640000
+    },
+    {
+      "question_id": "financials_q9",
+      "dimension_code": "FIN",
+      "sub_indicator_id": "FIN_002",
+      "raw_response": 4
+    },
+    {
+      "question_id": "financials_q10",
+      "dimension_code": "FIN",
+      "sub_indicator_id": "FIN_004",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "financials_q11",
+      "dimension_code": "FIN",
+      "sub_indicator_id": "FIN_004",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "financials_q12",
+      "dimension_code": "FIN",
+      "sub_indicator_id": "FIN_005",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "human_resources_q1",
+      "dimension_code": "HRS",
+      "sub_indicator_id": "HRS_001",
+      "raw_response": 3,
+      "normalized_score": 50
+    },
+    {
+      "question_id": "human_resources_q2",
+      "dimension_code": "HRS",
+      "sub_indicator_id": "HRS_002",
+      "raw_response": 2,
+      "normalized_score": 25
+    },
+    {
+      "question_id": "human_resources_q3",
+      "dimension_code": "HRS",
+      "sub_indicator_id": "HRS_003",
+      "raw_response": 3,
+      "normalized_score": 50
+    },
+    {
+      "question_id": "human_resources_q4",
+      "dimension_code": "HRS",
+      "sub_indicator_id": "HRS_004",
+      "raw_response": 3,
+      "normalized_score": 50
+    },
+    {
+      "question_id": "human_resources_q5",
+      "dimension_code": "HRS",
+      "sub_indicator_id": "HRS_002",
+      "raw_response": 19.9,
+      "normalized_score": 20
+    },
+    {
+      "question_id": "human_resources_q6",
+      "dimension_code": "HRS",
+      "sub_indicator_id": "HRS_002",
+      "raw_response": 3,
+      "normalized_score": 50
+    },
+    {
+      "question_id": "human_resources_q7",
+      "dimension_code": "HRS",
+      "sub_indicator_id": "HRS_005",
+      "raw_response": 3,
+      "normalized_score": 50
+    },
+    {
+      "question_id": "leadership_q1",
+      "dimension_code": "LDG",
+      "sub_indicator_id": "LDG_001",
+      "raw_response": 3,
+      "normalized_score": 50
+    },
+    {
+      "question_id": "leadership_q2",
+      "dimension_code": "LDG",
+      "sub_indicator_id": "LDG_002",
+      "raw_response": 3,
+      "normalized_score": 50
+    },
+    {
+      "question_id": "leadership_q3",
+      "dimension_code": "LDG",
+      "sub_indicator_id": "LDG_003",
+      "raw_response": 2,
+      "normalized_score": 25
+    },
+    {
+      "question_id": "leadership_q4",
+      "dimension_code": "LDG",
+      "sub_indicator_id": "LDG_003",
+      "raw_response": false,
+      "normalized_score": 0
+    },
+    {
+      "question_id": "leadership_q5",
+      "dimension_code": "LDG",
+      "sub_indicator_id": "LDG_002",
+      "raw_response": 2,
+      "normalized_score": 25
+    },
+    {
+      "question_id": "leadership_q6",
+      "dimension_code": "LDG",
+      "sub_indicator_id": "LDG_004",
+      "raw_response": 3,
+      "normalized_score": 50
+    },
+    {
+      "question_id": "leadership_q7",
+      "dimension_code": "LDG",
+      "sub_indicator_id": "LDG_005",
+      "raw_response": 3,
+      "normalized_score": 50
+    },
+    {
+      "question_id": "technology_q1",
+      "dimension_code": "TIN",
+      "sub_indicator_id": "TIN_001",
+      "raw_response": 2500000
+    },
+    {
+      "question_id": "technology_q2",
+      "dimension_code": "TIN",
+      "sub_indicator_id": "TIN_005",
+      "raw_response": 70,
+      "normalized_score": 70
+    },
+    {
+      "question_id": "technology_q3",
+      "dimension_code": "TIN",
+      "sub_indicator_id": "TIN_002",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "technology_q4",
+      "dimension_code": "TIN",
+      "sub_indicator_id": "TIN_003",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "technology_q5",
+      "dimension_code": "TIN",
+      "sub_indicator_id": "TIN_003",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "technology_q6",
+      "dimension_code": "TIN",
+      "sub_indicator_id": "TIN_004",
+      "raw_response": 3,
+      "normalized_score": 50
+    },
+    {
+      "question_id": "technology_q7",
+      "dimension_code": "TIN",
+      "sub_indicator_id": "TIN_005",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "it_infrastructure_q1",
+      "dimension_code": "IDS",
+      "sub_indicator_id": "IDS_001",
+      "raw_response": 5,
+      "normalized_score": 100
+    },
+    {
+      "question_id": "it_infrastructure_q2",
+      "dimension_code": "IDS",
+      "sub_indicator_id": "IDS_002",
+      "raw_response": 5,
+      "normalized_score": 100
+    },
+    {
+      "question_id": "it_infrastructure_q3",
+      "dimension_code": "IDS",
+      "sub_indicator_id": "IDS_003",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "it_infrastructure_q4",
+      "dimension_code": "IDS",
+      "sub_indicator_id": "IDS_004",
+      "raw_response": 5,
+      "normalized_score": 100
+    },
+    {
+      "question_id": "it_infrastructure_q5",
+      "dimension_code": "IDS",
+      "sub_indicator_id": "IDS_004",
+      "raw_response": 5,
+      "normalized_score": 100
+    },
+    {
+      "question_id": "it_infrastructure_q6",
+      "dimension_code": "IDS",
+      "sub_indicator_id": "IDS_005",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "it_infrastructure_q7",
+      "dimension_code": "IDS",
+      "sub_indicator_id": "IDS_001",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "risk_management_q1",
+      "dimension_code": "RMS",
+      "sub_indicator_id": "RMS_001",
+      "raw_response": 3,
+      "normalized_score": 50
+    },
+    {
+      "question_id": "risk_management_q2",
+      "dimension_code": "RMS",
+      "sub_indicator_id": "RMS_002",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "risk_management_q3",
+      "dimension_code": "RMS",
+      "sub_indicator_id": "RMS_003",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "risk_management_q4",
+      "dimension_code": "RMS",
+      "sub_indicator_id": "RMS_004",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "risk_management_q5",
+      "dimension_code": "RMS",
+      "sub_indicator_id": "RMS_003",
+      "raw_response": 2,
+      "normalized_score": 25
+    },
+    {
+      "question_id": "risk_management_q6",
+      "dimension_code": "RMS",
+      "sub_indicator_id": "RMS_004",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "risk_management_q7",
+      "dimension_code": "RMS",
+      "sub_indicator_id": "RMS_004",
+      "raw_response": 3,
+      "normalized_score": 50
+    },
+    {
+      "question_id": "risk_management_q8",
+      "dimension_code": "RMS",
+      "sub_indicator_id": "RMS_005",
+      "raw_response": 3,
+      "normalized_score": 50
+    },
+    {
+      "question_id": "compliance_q1",
+      "dimension_code": "CMP",
+      "sub_indicator_id": "CMP_001",
+      "raw_response": 5,
+      "normalized_score": 100
+    },
+    {
+      "question_id": "compliance_q2",
+      "dimension_code": "CMP",
+      "sub_indicator_id": "CMP_002",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "compliance_q3",
+      "dimension_code": "CMP",
+      "sub_indicator_id": "CMP_001",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "compliance_q4",
+      "dimension_code": "CMP",
+      "sub_indicator_id": "CMP_003",
+      "raw_response": 3,
+      "normalized_score": 50
+    },
+    {
+      "question_id": "compliance_q5",
+      "dimension_code": "CMP",
+      "sub_indicator_id": "CMP_003",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "compliance_q6",
+      "dimension_code": "CMP",
+      "sub_indicator_id": "CMP_004",
+      "raw_response": 4,
+      "normalized_score": 75
+    },
+    {
+      "question_id": "compliance_q7",
+      "dimension_code": "CMP",
+      "sub_indicator_id": "CMP_005",
+      "raw_response": 5,
+      "normalized_score": 100
+    },
+    {
+      "question_id": "compliance_q8",
+      "dimension_code": "CMP",
+      "sub_indicator_id": "CMP_001",
+      "raw_response": 280000
+    }
+  ],
+  "findings": [
+    {
+      "id": "finding-gap-STR",
+      "dimension_code": "STR",
+      "type": "gap",
+      "severity": "Medium",
+      "confidence_level": "High",
+      "short_label": "Strategy Performance Gap",
+      "narrative": "Strategy shows moderate performance at 45/100. This gap presents improvement opportunities that should be addressed within 6-12 months.",
+      "evidence_refs": {
+        "metrics": [
+          "STR_score"
+        ]
+      }
+    },
+    {
+      "id": "finding-gap-STR_002",
+      "dimension_code": "STR",
+      "sub_indicator_id": "STR_002",
+      "type": "gap",
+      "severity": "High",
+      "confidence_level": "High",
+      "short_label": "Market Position Gap",
+      "narrative": "Market Position within Strategy requires attention with a score of 10/100.",
+      "evidence_refs": {
+        "question_ids": [
+          "strategy_q2"
+        ]
+      }
+    },
+    {
+      "id": "finding-strength-SAL_001",
+      "dimension_code": "SAL",
+      "sub_indicator_id": "SAL_001",
+      "type": "strength",
+      "severity": "Low",
+      "confidence_level": "High",
+      "short_label": "Strong Sales Target Alignment",
+      "narrative": "Sales Target Alignment within Sales shows exceptional performance at 100/100.",
+      "evidence_refs": {
+        "question_ids": [
+          "sales_q1",
+          "sales_q2"
+        ]
+      }
+    },
+    {
+      "id": "finding-gap-SAL_003",
+      "dimension_code": "SAL",
+      "sub_indicator_id": "SAL_003",
+      "type": "gap",
+      "severity": "High",
+      "confidence_level": "High",
+      "short_label": "Sales Cycle Efficiency Gap",
+      "narrative": "Sales Cycle Efficiency within Sales requires attention with a score of 3/100.",
+      "evidence_refs": {
+        "question_ids": [
+          "sales_q4",
+          "sales_q5",
+          "sales_q6"
+        ]
+      }
+    },
+    {
+      "id": "finding-strength-SAL_004",
+      "dimension_code": "SAL",
+      "sub_indicator_id": "SAL_004",
+      "type": "strength",
+      "severity": "Low",
+      "confidence_level": "High",
+      "short_label": "Strong Customer Retention",
+      "narrative": "Customer Retention within Sales shows exceptional performance at 98/100.",
+      "evidence_refs": {
+        "question_ids": [
+          "sales_q7"
+        ]
+      }
+    },
+    {
+      "id": "finding-risk-MKT",
+      "dimension_code": "MKT",
+      "type": "risk",
+      "severity": "Critical",
+      "confidence_level": "High",
+      "short_label": "Marketing Critical Underperformance",
+      "narrative": "Marketing is at critical levels with a score of 31/100. Immediate intervention is required to mitigate business risk.",
+      "evidence_refs": {
+        "metrics": [
+          "MKT_score"
+        ]
+      }
+    },
+    {
+      "id": "finding-gap-MKT_003",
+      "dimension_code": "MKT",
+      "sub_indicator_id": "MKT_003",
+      "type": "gap",
+      "severity": "High",
+      "confidence_level": "High",
+      "short_label": "Marketing Economics (CAC/LTV) Gap",
+      "narrative": "Marketing Economics (CAC/LTV) within Marketing requires attention with a score of 0/100.",
+      "evidence_refs": {
+        "question_ids": [
+          "marketing_q6",
+          "marketing_q7",
+          "marketing_q8"
+        ]
+      }
+    },
+    {
+      "id": "finding-gap-MKT_004",
+      "dimension_code": "MKT",
+      "sub_indicator_id": "MKT_004",
+      "type": "gap",
+      "severity": "High",
+      "confidence_level": "High",
+      "short_label": "Marketing ROI Gap",
+      "narrative": "Marketing ROI within Marketing requires attention with a score of 7/100.",
+      "evidence_refs": {
+        "question_ids": [
+          "marketing_q9"
+        ]
+      }
+    },
+    {
+      "id": "finding-gap-MKT_005",
+      "dimension_code": "MKT",
+      "sub_indicator_id": "MKT_005",
+      "type": "gap",
+      "severity": "High",
+      "confidence_level": "High",
+      "short_label": "Channel Strategy Gap",
+      "narrative": "Channel Strategy within Marketing requires attention with a score of 0/100.",
+      "evidence_refs": {
+        "question_ids": [
+          "marketing_q2",
+          "marketing_q3",
+          "marketing_q4"
+        ]
+      }
+    },
+    {
+      "id": "finding-gap-CXP",
+      "dimension_code": "CXP",
+      "type": "gap",
+      "severity": "Medium",
+      "confidence_level": "High",
+      "short_label": "Customer Experience Performance Gap",
+      "narrative": "Customer Experience shows moderate performance at 50/100. This gap presents improvement opportunities that should be addressed within 6-12 months.",
+      "evidence_refs": {
+        "metrics": [
+          "CXP_score"
+        ]
+      }
+    },
+    {
+      "id": "finding-gap-CXP_005",
+      "dimension_code": "CXP",
+      "sub_indicator_id": "CXP_005",
+      "type": "gap",
+      "severity": "High",
+      "confidence_level": "High",
+      "short_label": "Response Time Gap",
+      "narrative": "Response Time within Customer Experience requires attention with a score of 0/100.",
+      "evidence_refs": {
+        "question_ids": [
+          "customer_experience_q7"
+        ]
+      }
+    },
+    {
+      "id": "finding-strength-OPS_003",
+      "dimension_code": "OPS",
+      "sub_indicator_id": "OPS_003",
+      "type": "strength",
+      "severity": "Low",
+      "confidence_level": "High",
+      "short_label": "Strong Operational Reliability",
+      "narrative": "Operational Reliability within Operations shows exceptional performance at 100/100.",
+      "evidence_refs": {
+        "question_ids": [
+          "operations_q4"
+        ]
+      }
+    },
+    {
+      "id": "finding-gap-OPS_005",
+      "dimension_code": "OPS",
+      "sub_indicator_id": "OPS_005",
+      "type": "gap",
+      "severity": "High",
+      "confidence_level": "High",
+      "short_label": "Resource Utilization Gap",
+      "narrative": "Resource Utilization within Operations requires attention with a score of 34/100.",
+      "evidence_refs": {
+        "question_ids": [
+          "operations_q3",
+          "operations_q6"
+        ]
+      }
+    },
+    {
+      "id": "finding-risk-FIN",
+      "dimension_code": "FIN",
+      "type": "risk",
+      "severity": "Critical",
+      "confidence_level": "High",
+      "short_label": "Financials Critical Underperformance",
+      "narrative": "Financials is at critical levels with a score of 39/100. Immediate intervention is required to mitigate business risk.",
+      "evidence_refs": {
+        "metrics": [
+          "FIN_score"
+        ]
+      }
+    },
+    {
+      "id": "finding-gap-FIN_001",
+      "dimension_code": "FIN",
+      "sub_indicator_id": "FIN_001",
+      "type": "gap",
+      "severity": "High",
+      "confidence_level": "High",
+      "short_label": "Financial Controls Gap",
+      "narrative": "Financial Controls within Financials requires attention with a score of 25/100.",
+      "evidence_refs": {
+        "question_ids": [
+          "financials_q1",
+          "financials_q3"
+        ]
+      }
+    },
+    {
+      "id": "finding-gap-FIN_002",
+      "dimension_code": "FIN",
+      "sub_indicator_id": "FIN_002",
+      "type": "gap",
+      "severity": "High",
+      "confidence_level": "High",
+      "short_label": "Cash Management Gap",
+      "narrative": "Cash Management within Financials requires attention with a score of 0/100.",
+      "evidence_refs": {
+        "question_ids": [
+          "financials_q2",
+          "financials_q4",
+          "financials_q5",
+          "financials_q6",
+          "financials_q9"
+        ]
+      }
+    },
+    {
+      "id": "finding-gap-FIN_003",
+      "dimension_code": "FIN",
+      "sub_indicator_id": "FIN_003",
+      "type": "gap",
+      "severity": "High",
+      "confidence_level": "High",
+      "short_label": "Profitability Gap",
+      "narrative": "Profitability within Financials requires attention with a score of 19/100.",
+      "evidence_refs": {
+        "question_ids": [
+          "financials_q7",
+          "financials_q8"
+        ]
+      }
+    },
+    {
+      "id": "finding-gap-HRS",
+      "dimension_code": "HRS",
+      "type": "gap",
+      "severity": "Medium",
+      "confidence_level": "High",
+      "short_label": "Human Resources Performance Gap",
+      "narrative": "Human Resources shows moderate performance at 46/100. This gap presents improvement opportunities that should be addressed within 6-12 months.",
+      "evidence_refs": {
+        "metrics": [
+          "HRS_score"
+        ]
+      }
+    },
+    {
+      "id": "finding-gap-HRS_002",
+      "dimension_code": "HRS",
+      "sub_indicator_id": "HRS_002",
+      "type": "gap",
+      "severity": "High",
+      "confidence_level": "High",
+      "short_label": "Company Culture Gap",
+      "narrative": "Company Culture within Human Resources requires attention with a score of 32/100.",
+      "evidence_refs": {
+        "question_ids": [
+          "human_resources_q2",
+          "human_resources_q5",
+          "human_resources_q6"
+        ]
+      }
+    },
+    {
+      "id": "finding-gap-LDG",
+      "dimension_code": "LDG",
+      "type": "gap",
+      "severity": "Medium",
+      "confidence_level": "High",
+      "short_label": "Leadership & Governance Performance Gap",
+      "narrative": "Leadership & Governance shows moderate performance at 40/100. This gap presents improvement opportunities that should be addressed within 6-12 months.",
+      "evidence_refs": {
+        "metrics": [
+          "LDG_score"
+        ]
+      }
+    },
+    {
+      "id": "finding-gap-LDG_002",
+      "dimension_code": "LDG",
+      "sub_indicator_id": "LDG_002",
+      "type": "gap",
+      "severity": "High",
+      "confidence_level": "High",
+      "short_label": "Decision-Making Structure Gap",
+      "narrative": "Decision-Making Structure within Leadership & Governance requires attention with a score of 35/100.",
+      "evidence_refs": {
+        "question_ids": [
+          "leadership_q2",
+          "leadership_q5"
+        ]
+      }
+    },
+    {
+      "id": "finding-gap-LDG_003",
+      "dimension_code": "LDG",
+      "sub_indicator_id": "LDG_003",
+      "type": "gap",
+      "severity": "High",
+      "confidence_level": "High",
+      "short_label": "Board Oversight Gap",
+      "narrative": "Board Oversight within Leadership & Governance requires attention with a score of 17/100.",
+      "evidence_refs": {
+        "question_ids": [
+          "leadership_q3",
+          "leadership_q4"
+        ]
+      }
+    },
+    {
+      "id": "finding-gap-TIN",
+      "dimension_code": "TIN",
+      "type": "gap",
+      "severity": "Medium",
+      "confidence_level": "High",
+      "short_label": "Technology & Innovation Performance Gap",
+      "narrative": "Technology & Innovation shows moderate performance at 55/100. This gap presents improvement opportunities that should be addressed within 6-12 months.",
+      "evidence_refs": {
+        "metrics": [
+          "TIN_score"
+        ]
+      }
+    },
+    {
+      "id": "finding-gap-TIN_001",
+      "dimension_code": "TIN",
+      "sub_indicator_id": "TIN_001",
+      "type": "gap",
+      "severity": "High",
+      "confidence_level": "High",
+      "short_label": "Technology Investment Gap",
+      "narrative": "Technology Investment within Technology & Innovation requires attention with a score of 0/100.",
+      "evidence_refs": {
+        "question_ids": [
+          "technology_q1"
+        ]
+      }
+    },
+    {
+      "id": "finding-strength-IDS",
+      "dimension_code": "IDS",
+      "type": "strength",
+      "severity": "Low",
+      "confidence_level": "High",
+      "short_label": "IT, Data & Systems Excellence",
+      "narrative": "IT, Data & Systems demonstrates strong performance at 88/100, placing it in the Excellence tier. This represents a competitive advantage.",
+      "evidence_refs": {
+        "metrics": [
+          "IDS_score"
+        ]
+      }
+    },
+    {
+      "id": "finding-strength-IDS_001",
+      "dimension_code": "IDS",
+      "sub_indicator_id": "IDS_001",
+      "type": "strength",
+      "severity": "Low",
+      "confidence_level": "High",
+      "short_label": "Strong IT Infrastructure",
+      "narrative": "IT Infrastructure within IT, Data & Systems shows exceptional performance at 90/100.",
+      "evidence_refs": {
+        "question_ids": [
+          "it_infrastructure_q1",
+          "it_infrastructure_q7"
+        ]
+      }
+    },
+    {
+      "id": "finding-strength-IDS_002",
+      "dimension_code": "IDS",
+      "sub_indicator_id": "IDS_002",
+      "type": "strength",
+      "severity": "Low",
+      "confidence_level": "High",
+      "short_label": "Strong Network Effectiveness",
+      "narrative": "Network Effectiveness within IT, Data & Systems shows exceptional performance at 100/100.",
+      "evidence_refs": {
+        "question_ids": [
+          "it_infrastructure_q2"
+        ]
+      }
+    },
+    {
+      "id": "finding-strength-IDS_004",
+      "dimension_code": "IDS",
+      "sub_indicator_id": "IDS_004",
+      "type": "strength",
+      "severity": "Low",
+      "confidence_level": "High",
+      "short_label": "Strong Data Management",
+      "narrative": "Data Management within IT, Data & Systems shows exceptional performance at 100/100.",
+      "evidence_refs": {
+        "question_ids": [
+          "it_infrastructure_q4",
+          "it_infrastructure_q5"
+        ]
+      }
+    },
+    {
+      "id": "finding-gap-RMS",
+      "dimension_code": "RMS",
+      "type": "gap",
+      "severity": "Medium",
+      "confidence_level": "High",
+      "short_label": "Risk Management & Sustainability Performance Gap",
+      "narrative": "Risk Management & Sustainability shows moderate performance at 59/100. This gap presents improvement opportunities that should be addressed within 6-12 months.",
+      "evidence_refs": {
+        "metrics": [
+          "RMS_score"
+        ]
+      }
+    },
+    {
+      "id": "finding-strength-CMP_005",
+      "dimension_code": "CMP",
+      "sub_indicator_id": "CMP_005",
+      "type": "strength",
+      "severity": "Low",
+      "confidence_level": "High",
+      "short_label": "Strong Incident Reporting",
+      "narrative": "Incident Reporting within Compliance shows exceptional performance at 100/100.",
+      "evidence_refs": {
+        "question_ids": [
+          "compliance_q7"
+        ]
+      }
+    }
+  ],
+  "recommendations": [
+    {
+      "id": "rec-MKT-1",
+      "dimension_code": "MKT",
+      "linked_finding_ids": [
+        "finding-risk-MKT",
+        "finding-gap-MKT_003",
+        "finding-gap-MKT_004",
+        "finding-gap-MKT_005"
+      ],
+      "theme": "Marketing Improvement Initiative",
+      "priority_rank": 1,
+      "impact_score": 69,
+      "effort_score": 70,
+      "horizon": "90_days",
+      "required_capabilities": [
+        "Marketing",
+        "Change Management"
+      ],
+      "action_steps": [
+        "Conduct detailed marketing assessment",
+        "Develop improvement plan with measurable KPIs",
+        "Implement quick wins within first 30 days",
+        "Monitor progress and adjust approach",
+        "Document and share best practices"
+      ],
+      "expected_outcomes": "Improve Marketing score from 31 to 51 within the target horizon."
+    },
+    {
+      "id": "rec-FIN-2",
+      "dimension_code": "FIN",
+      "linked_finding_ids": [
+        "finding-risk-FIN",
+        "finding-gap-FIN_001",
+        "finding-gap-FIN_002",
+        "finding-gap-FIN_003"
+      ],
+      "theme": "Financials Improvement Initiative",
+      "priority_rank": 2,
+      "impact_score": 61,
+      "effort_score": 70,
+      "horizon": "90_days",
+      "required_capabilities": [
+        "Financials",
+        "Change Management"
+      ],
+      "action_steps": [
+        "Conduct detailed financials assessment",
+        "Develop improvement plan with measurable KPIs",
+        "Implement quick wins within first 30 days",
+        "Monitor progress and adjust approach",
+        "Document and share best practices"
+      ],
+      "expected_outcomes": "Improve Financials score from 39 to 59 within the target horizon."
+    },
+    {
+      "id": "rec-LDG-3",
+      "dimension_code": "LDG",
+      "linked_finding_ids": [
+        "finding-gap-LDG",
+        "finding-gap-LDG_002",
+        "finding-gap-LDG_003"
+      ],
+      "theme": "Leadership & Governance Improvement Initiative",
+      "priority_rank": 3,
+      "impact_score": 60,
+      "effort_score": 50,
+      "horizon": "12_months",
+      "required_capabilities": [
+        "Leadership & Governance",
+        "Change Management"
+      ],
+      "action_steps": [
+        "Conduct detailed leadership & governance assessment",
+        "Develop improvement plan with measurable KPIs",
+        "Implement quick wins within first 30 days",
+        "Monitor progress and adjust approach",
+        "Document and share best practices"
+      ],
+      "expected_outcomes": "Improve Leadership & Governance score from 40 to 60 within the target horizon."
+    },
+    {
+      "id": "rec-STR-4",
+      "dimension_code": "STR",
+      "linked_finding_ids": [
+        "finding-gap-STR",
+        "finding-gap-STR_002"
+      ],
+      "theme": "Strategy Improvement Initiative",
+      "priority_rank": 4,
+      "impact_score": 55,
+      "effort_score": 50,
+      "horizon": "12_months",
+      "required_capabilities": [
+        "Strategy",
+        "Change Management"
+      ],
+      "action_steps": [
+        "Conduct detailed strategy assessment",
+        "Develop improvement plan with measurable KPIs",
+        "Implement quick wins within first 30 days",
+        "Monitor progress and adjust approach",
+        "Document and share best practices"
+      ],
+      "expected_outcomes": "Improve Strategy score from 45 to 65 within the target horizon."
+    },
+    {
+      "id": "rec-HRS-5",
+      "dimension_code": "HRS",
+      "linked_finding_ids": [
+        "finding-gap-HRS",
+        "finding-gap-HRS_002"
+      ],
+      "theme": "Human Resources Improvement Initiative",
+      "priority_rank": 5,
+      "impact_score": 54,
+      "effort_score": 50,
+      "horizon": "12_months",
+      "required_capabilities": [
+        "Human Resources",
+        "Change Management"
+      ],
+      "action_steps": [
+        "Conduct detailed human resources assessment",
+        "Develop improvement plan with measurable KPIs",
+        "Implement quick wins within first 30 days",
+        "Monitor progress and adjust approach",
+        "Document and share best practices"
+      ],
+      "expected_outcomes": "Improve Human Resources score from 46 to 66 within the target horizon."
+    },
+    {
+      "id": "rec-CXP-6",
+      "dimension_code": "CXP",
+      "linked_finding_ids": [
+        "finding-gap-CXP",
+        "finding-gap-CXP_005"
+      ],
+      "theme": "Customer Experience Improvement Initiative",
+      "priority_rank": 6,
+      "impact_score": 50,
+      "effort_score": 50,
+      "horizon": "12_months",
+      "required_capabilities": [
+        "Customer Experience",
+        "Change Management"
+      ],
+      "action_steps": [
+        "Conduct detailed customer experience assessment",
+        "Develop improvement plan with measurable KPIs",
+        "Implement quick wins within first 30 days",
+        "Monitor progress and adjust approach",
+        "Document and share best practices"
+      ],
+      "expected_outcomes": "Improve Customer Experience score from 50 to 70 within the target horizon."
+    },
+    {
+      "id": "rec-TIN-7",
+      "dimension_code": "TIN",
+      "linked_finding_ids": [
+        "finding-gap-TIN",
+        "finding-gap-TIN_001"
+      ],
+      "theme": "Technology & Innovation Improvement Initiative",
+      "priority_rank": 7,
+      "impact_score": 45,
+      "effort_score": 50,
+      "horizon": "12_months",
+      "required_capabilities": [
+        "Technology & Innovation",
+        "Change Management"
+      ],
+      "action_steps": [
+        "Conduct detailed technology & innovation assessment",
+        "Develop improvement plan with measurable KPIs",
+        "Implement quick wins within first 30 days",
+        "Monitor progress and adjust approach",
+        "Document and share best practices"
+      ],
+      "expected_outcomes": "Improve Technology & Innovation score from 55 to 75 within the target horizon."
+    },
+    {
+      "id": "rec-RMS-8",
+      "dimension_code": "RMS",
+      "linked_finding_ids": [
+        "finding-gap-RMS"
+      ],
+      "theme": "Risk Management & Sustainability Improvement Initiative",
+      "priority_rank": 8,
+      "impact_score": 41,
+      "effort_score": 50,
+      "horizon": "12_months",
+      "required_capabilities": [
+        "Risk Management & Sustainability",
+        "Change Management"
+      ],
+      "action_steps": [
+        "Conduct detailed risk management & sustainability assessment",
+        "Develop improvement plan with measurable KPIs",
+        "Implement quick wins within first 30 days",
+        "Monitor progress and adjust approach",
+        "Document and share best practices"
+      ],
+      "expected_outcomes": "Improve Risk Management & Sustainability score from 59 to 79 within the target horizon."
+    },
+    {
+      "id": "rec-OPS-9",
+      "dimension_code": "OPS",
+      "linked_finding_ids": [
+        "finding-gap-OPS_005"
+      ],
+      "theme": "Operations Improvement Initiative",
+      "priority_rank": 9,
+      "impact_score": 38,
+      "effort_score": 50,
+      "horizon": "24_months_plus",
+      "required_capabilities": [
+        "Operations",
+        "Change Management"
+      ],
+      "action_steps": [
+        "Conduct detailed operations assessment",
+        "Develop improvement plan with measurable KPIs",
+        "Implement quick wins within first 30 days",
+        "Monitor progress and adjust approach",
+        "Document and share best practices"
+      ],
+      "expected_outcomes": "Improve Operations score from 62 to 82 within the target horizon."
+    },
+    {
+      "id": "rec-SAL-10",
+      "dimension_code": "SAL",
+      "linked_finding_ids": [
+        "finding-gap-SAL_003"
+      ],
+      "theme": "Sales Improvement Initiative",
+      "priority_rank": 10,
+      "impact_score": 30,
+      "effort_score": 50,
+      "horizon": "24_months_plus",
+      "required_capabilities": [
+        "Sales",
+        "Change Management"
+      ],
+      "action_steps": [
+        "Conduct detailed sales assessment",
+        "Develop improvement plan with measurable KPIs",
+        "Implement quick wins within first 30 days",
+        "Monitor progress and adjust approach",
+        "Document and share best practices"
+      ],
+      "expected_outcomes": "Improve Sales score from 70 to 90 within the target horizon."
+    }
+  ],
+  "quick_wins": [
+    {
+      "recommendation_id": "rec-LDG-3"
+    },
+    {
+      "recommendation_id": "rec-STR-4"
+    },
+    {
+      "recommendation_id": "rec-HRS-5"
+    },
+    {
+      "recommendation_id": "rec-CXP-6"
+    },
+    {
+      "recommendation_id": "rec-MKT-1"
+    }
+  ],
+  "risks": [
+    {
+      "id": "risk-finding-risk-MKT",
+      "dimension_code": "MKT",
+      "severity": "Critical",
+      "likelihood": "High",
+      "narrative": "Marketing is at critical levels with a score of 31/100. Immediate intervention is required to mitigate business risk.",
+      "category": "Marketing"
+    },
+    {
+      "id": "risk-finding-risk-FIN",
+      "dimension_code": "FIN",
+      "severity": "Critical",
+      "likelihood": "High",
+      "narrative": "Financials is at critical levels with a score of 39/100. Immediate intervention is required to mitigate business risk.",
+      "category": "Financials"
+    }
+  ],
+  "roadmap": {
+    "phases": [
+      {
+        "id": "phase-1",
+        "name": "Foundation & Quick Wins",
+        "time_horizon": "0-90 days",
+        "linked_recommendation_ids": [
+          "rec-MKT-1",
+          "rec-FIN-2"
+        ],
+        "narrative": "Focus on immediate value creation through quick wins and critical risk mitigation. Build momentum with visible early successes."
+      },
+      {
+        "id": "phase-2",
+        "name": "Core Capability Building",
+        "time_horizon": "3-12 months",
+        "linked_recommendation_ids": [
+          "rec-LDG-3",
+          "rec-STR-4",
+          "rec-HRS-5",
+          "rec-CXP-6",
+          "rec-TIN-7",
+          "rec-RMS-8"
+        ],
+        "narrative": "Implement foundational improvements across key dimensions. Establish new processes and capabilities."
+      },
+      {
+        "id": "phase-3",
+        "name": "Strategic Transformation",
+        "time_horizon": "12-24+ months",
+        "linked_recommendation_ids": [
+          "rec-OPS-9",
+          "rec-SAL-10"
+        ],
+        "narrative": "Execute long-term strategic initiatives. Transform organizational capabilities for sustained competitive advantage."
+      }
+    ]
+  },
+  "scores_summary": {
+    "overall_health_score": 53,
+    "descriptor": "Needs Improvement",
+    "trajectory": "Flat",
+    "key_imperatives": [
+      "Improve Marketing (currently 31/100)",
+      "Improve Financials (currently 39/100)",
+      "Improve Leadership & Governance (currently 40/100)"
+    ]
+  }
+}

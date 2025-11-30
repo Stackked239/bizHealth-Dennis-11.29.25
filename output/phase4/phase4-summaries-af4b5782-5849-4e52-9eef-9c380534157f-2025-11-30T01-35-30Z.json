@@ -1,0 +1,119 @@
+{
+  "phase": "phase_4",
+  "status": "complete",
+  "company_profile_id": "af4b5782-5849-4e52-9eef-9c380534157f",
+  "phase3_reference": "phase3_output.json",
+  "summaries": {
+    "strength_summary": "Customer Retention (98%) | Operational Reliability (5/5) | Compliance Excellence (4.14/5)",
+    "challenge_summary": "Cultural Dysfunction (2.0/5) | Acquisition Efficiency (1% conversion) | Profitability Gap (32% vs 42% benchmark)",
+    "trajectory_summary": "Mixed trajectory with improvement opportunities",
+    "aspirational_outcome": "Transform to industry-leading performance through systematic excellence",
+    "findings": [
+      {
+        "title": "Cultural Transformation Required",
+        "description": "Cultural dysfunction (2.0/5.0) undermining all operations",
+        "severity": "Critical",
+        "affected_areas": [
+          "People",
+          "Operations",
+          "Revenue"
+        ],
+        "timeframe": "Immediate - 6 months"
+      }
+    ],
+    "health_status": {
+      "descriptor": "Stable - Requires Strategic Attention",
+      "score": 72,
+      "explanation": "Overall health score indicates stable - requires strategic attention organizational state"
+    },
+    "performance_analysis": {
+      "top3_categories": [
+        "Compliance",
+        "Operations",
+        "Revenue"
+      ],
+      "top_performance_avg": 3.8,
+      "bottom3_categories": [
+        "People",
+        "Financial",
+        "Growth"
+      ],
+      "bottom_performance_avg": 2.9,
+      "performance_gap": 0.9
+    },
+    "imperatives": [
+      {
+        "title": "Transform Culture from Liability to Asset",
+        "priority": "Critical",
+        "description": "CEO-led cultural renewal program",
+        "timeframe": "0-12 months",
+        "expected_roi": 5.2
+      }
+    ],
+    "financial_projections": {
+      "90_day_value": 1250000,
+      "annual_value": 5000000,
+      "roi_90day": 8.3,
+      "investment_required": 150000
+    },
+    "quick_wins": [
+      {
+        "title": "Response Time Reduction",
+        "timeframe": "30 days",
+        "investment": 25000,
+        "expected_value": 200000,
+        "roi": 8
+      }
+    ],
+    "trend_analysis": {
+      "declining_categories": [
+        "People Leadership",
+        "Financial Health"
+      ],
+      "stable_categories": [
+        "Operations",
+        "Compliance"
+      ],
+      "improving_categories": []
+    },
+    "benchmarking": {
+      "overall_percentile": 50,
+      "categories": {
+        "Revenue Engine": 45,
+        "Operations": 70,
+        "Financial": 40,
+        "People": 35,
+        "Compliance": 75
+      }
+    },
+    "risk_assessment": {
+      "high_risk_areas": [
+        "People Leadership",
+        "Growth Capability"
+      ],
+      "risk_count": 3,
+      "mitigation_priority": "Immediate"
+    },
+    "interdependencies": [
+      {
+        "source": "People Leadership",
+        "impacts": [
+          "Operations",
+          "Revenue",
+          "Financial"
+        ],
+        "description": "Cultural health affects all organizational dimensions"
+      }
+    ]
+  },
+  "metadata": {
+    "compiled_at": "2025-11-30T01:35:30.609Z",
+    "compiler_version": "1.0.0",
+    "compilation_method": "typescript",
+    "data_sources": {
+      "phase1": true,
+      "phase2": true,
+      "phase3": true
+    }
+  }
+}

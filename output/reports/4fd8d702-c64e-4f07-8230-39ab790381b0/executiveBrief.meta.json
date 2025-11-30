@@ -1,0 +1,28 @@
+{
+  "reportType": "executiveBrief",
+  "reportName": "Executive Brief",
+  "generatedAt": "2025-11-30T03:06:33.670Z",
+  "companyName": "EWM Global",
+  "runId": "4fd8d702-c64e-4f07-8230-39ab790381b0",
+  "healthScore": 53,
+  "healthBand": "Attention",
+  "pageSuggestionEstimate": 1,
+  "sections": [
+    {
+      "id": "score",
+      "title": "Health Score"
+    },
+    {
+      "id": "metrics",
+      "title": "Key Metrics"
+    },
+    {
+      "id": "actions",
+      "title": "Critical Actions"
+    }
+  ],
+  "brand": {
+    "primaryColor": "#212653",
+    "accentColor": "#969423"
+  }
+}

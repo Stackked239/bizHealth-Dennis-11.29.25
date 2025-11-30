@@ -52,4 +52,4 @@ data/
 # Test coverage
 coverage/
 # Output directories (generated at runtime)
-output/
+# output/ - commented out to sync output files to repository

@@ -1,0 +1,64 @@
+{
+  "reportType": "comprehensive",
+  "reportName": "Comprehensive Assessment Report",
+  "generatedAt": "2025-11-30T03:06:33.669Z",
+  "companyName": "EWM Global",
+  "runId": "4fd8d702-c64e-4f07-8230-39ab790381b0",
+  "healthScore": 53,
+  "healthBand": "Attention",
+  "pageSuggestionEstimate": 23,
+  "sections": [
+    {
+      "id": "executive-summary",
+      "title": "Executive Summary"
+    },
+    {
+      "id": "scorecard",
+      "title": "Business Health Scorecard"
+    },
+    {
+      "id": "findings",
+      "title": "Key Findings"
+    },
+    {
+      "id": "recommendations",
+      "title": "Strategic Recommendations"
+    },
+    {
+      "id": "quick-wins",
+      "title": "Quick Wins"
+    },
+    {
+      "id": "risks",
+      "title": "Risk Assessment"
+    },
+    {
+      "id": "roadmap",
+      "title": "Implementation Roadmap"
+    },
+    {
+      "id": "financial",
+      "title": "Financial Impact"
+    },
+    {
+      "id": "chapter-GE",
+      "title": "Growth Engine"
+    },
+    {
+      "id": "chapter-PH",
+      "title": "Performance & Health"
+    },
+    {
+      "id": "chapter-PL",
+      "title": "People & Leadership"
+    },
+    {
+      "id": "chapter-RS",
+      "title": "Resilience & Safeguards"
+    }
+  ],
+  "brand": {
+    "primaryColor": "#212653",
+    "accentColor": "#969423"
+  }
+}

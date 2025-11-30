@@ -1,0 +1,32 @@
+{
+  "config": {
+    "webhookPath": "./sample_webhook.json",
+    "outputDir": "./output",
+    "startPhase": 5,
+    "endPhase": 5,
+    "skipDatabase": true,
+    "generateReports": true,
+    "reportTypes": [
+      "comprehensive_report",
+      "owners_report",
+      "quick_wins_report"
+    ],
+    "renderPDF": false
+  },
+  "results": [
+    {
+      "phase": 5,
+      "status": "success",
+      "duration_ms": 62,
+      "output_path": "output/phase5_output.json",
+      "details": {
+        "status": "complete",
+        "reports_generated": 11,
+        "output_dir": "output/reports/4fd8d702-c64e-4f07-8230-39ab790381b0",
+        "manifest": "output/reports/4fd8d702-c64e-4f07-8230-39ab790381b0/manifest.json"
+      }
+    }
+  ],
+  "total_duration_ms": 64,
+  "completed_at": "2025-11-30T03:06:33.678Z"
+}
