@@ -1,12 +1,12 @@
 {
   "reportType": "comprehensive",
   "reportName": "Comprehensive Assessment Report",
-  "generatedAt": "2025-11-30T03:06:33.669Z",
+  "generatedAt": "2025-11-30T22:24:24.703Z",
   "companyName": "EWM Global",
   "runId": "4fd8d702-c64e-4f07-8230-39ab790381b0",
   "healthScore": 53,
   "healthBand": "Attention",
-  "pageSuggestionEstimate": 23,
+  "pageSuggestionEstimate": 68,
   "sections": [
     {
       "id": "executive-summary",
@@ -17,27 +17,55 @@
       "title": "Business Health Scorecard"
     },
     {
-      "id": "findings",
-      "title": "Key Findings"
+      "id": "strategy",
+      "title": "Strategy & Revenue Engine"
     },
     {
-      "id": "recommendations",
+      "id": "operations",
+      "title": "Operational Excellence"
+    },
+    {
+      "id": "financial",
+      "title": "Financial Health"
+    },
+    {
+      "id": "people",
+      "title": "People & Leadership"
+    },
+    {
+      "id": "compliance",
+      "title": "Compliance & Sustainability"
+    },
+    {
+      "id": "cross-dimensional",
+      "title": "Cross-Dimensional Synthesis"
+    },
+    {
+      "id": "strategic-recommendations",
       "title": "Strategic Recommendations"
-    },
-    {
-      "id": "quick-wins",
-      "title": "Quick Wins"
     },
     {
       "id": "risks",
       "title": "Risk Assessment"
     },
     {
+      "id": "growth",
+      "title": "Growth Opportunities"
+    },
+    {
       "id": "roadmap",
       "title": "Implementation Roadmap"
     },
     {
-      "id": "financial",
+      "id": "findings",
+      "title": "Detailed Findings"
+    },
+    {
+      "id": "quick-wins",
+      "title": "Quick Wins"
+    },
+    {
+      "id": "financial-impact",
       "title": "Financial Impact"
     },
     {

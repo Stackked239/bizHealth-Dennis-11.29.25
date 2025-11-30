@@ -43,6 +43,7 @@ import type {
   ReportMeta,
 } from '../types/report.types.js';
 import { DEFAULT_BRAND, formatHorizon, getScoreBand } from '../types/report.types.js';
+import { NarrativeExtractionService, NarrativeContent } from '../services/narrative-extraction.service.js';
 
 // Import report builders
 import { buildComprehensiveReport } from './reports/comprehensive-report.builder.js';
@@ -121,12 +122,12 @@ export class Phase5Orchestrator {
     this.logger.info('Starting Phase 5: Report Generation');
 
     try {
-      // Load Phase 3 and Phase 4 outputs
-      const { phase3Data, phase4Data, idm, companyProfile, detectedRunId } = await this.loadPhaseOutputs(outputDir);
+      // Load all phase outputs including Phase 1 & 2 for narrative content
+      const { phase0Data, phase1Data, phase2Data, phase3Data, phase4Data, idm, companyProfile, detectedRunId } = await this.loadPhaseOutputs(outputDir);
       const effectiveRunId = runId || detectedRunId;
 
-      // Build ReportContext from loaded data
-      const ctx = this.buildReportContext(phase3Data, phase4Data, idm, companyProfile, effectiveRunId);
+      // Build ReportContext from loaded data with narrative content
+      const ctx = this.buildReportContext(phase1Data, phase2Data, phase3Data, phase4Data, idm, companyProfile, effectiveRunId);
 
       // Create reports output directory
       const reportsDir = path.join(outputDir, 'reports', effectiveRunId);
@@ -218,9 +219,13 @@ export class Phase5Orchestrator {
   }
 
   /**
-   * Load Phase 3 and Phase 4 outputs
+   * Load all phase outputs for report generation
+   * Now includes Phase 1 and Phase 2 for narrative content
    */
   private async loadPhaseOutputs(outputDir: string): Promise<{
+    phase0Data: any;
+    phase1Data: any;
+    phase2Data: any;
     phase3Data: any;
     phase4Data: any;
     idm: IDM;
@@ -235,6 +240,26 @@ export class Phase5Orchestrator {
       this.logger.info('Loaded Phase 0 output');
     } catch (error) {
       this.logger.warn('Phase 0 output not found, will extract company profile from other sources');
+    }
+
+    // Load Phase 1 output (for Tier 1 & Tier 2 narrative content)
+    const phase1Path = path.join(outputDir, 'phase1_output.json');
+    let phase1Data: any = null;
+    try {
+      phase1Data = JSON.parse(await fs.readFile(phase1Path, 'utf-8'));
+      this.logger.info('Loaded Phase 1 output for narrative content');
+    } catch (error) {
+      this.logger.warn('Phase 1 output not found, narrative content will be limited');
+    }
+
+    // Load Phase 2 output (for cross-dimensional analysis narrative content)
+    const phase2Path = path.join(outputDir, 'phase2_output.json');
+    let phase2Data: any = null;
+    try {
+      phase2Data = JSON.parse(await fs.readFile(phase2Path, 'utf-8'));
+      this.logger.info('Loaded Phase 2 output for narrative content');
+    } catch (error) {
+      this.logger.warn('Phase 2 output not found, narrative content will be limited');
     }
 
     // Load Phase 3 output
@@ -301,19 +326,37 @@ export class Phase5Orchestrator {
       idm.meta.assessment_run_id ||
       `run-${Date.now()}`;
 
-    return { phase3Data, phase4Data, idm, companyProfile, detectedRunId };
+    return { phase0Data, phase1Data, phase2Data, phase3Data, phase4Data, idm, companyProfile, detectedRunId };
   }
 
   /**
    * Build ReportContext from phase outputs
+   * Now includes narrative content extraction from Phase 1, 2, and 3
    */
   private buildReportContext(
+    phase1Data: any,
+    phase2Data: any,
     phase3Data: any,
     phase4Data: any,
     idm: IDM,
     companyProfile: any,
     runId: string
   ): ReportContext {
+    // Extract narrative content from all phases
+    let narrativeContent: NarrativeContent | undefined;
+    try {
+      narrativeContent = NarrativeExtractionService.extract(
+        phase1Data || {},
+        phase2Data || {},
+        phase3Data || {}
+      );
+      this.logger.info({
+        totalWords: narrativeContent.metadata.totalWords,
+        contentSufficient: narrativeContent.metadata.contentSufficient
+      }, 'Narrative content extracted');
+    } catch (error) {
+      this.logger.warn({ error }, 'Failed to extract narrative content, reports will use structured data only');
+    }
     // Build company profile
     const reportCompanyProfile: ReportCompanyProfile = {
       name: companyProfile?.basic_information?.company_name || 'Company',
@@ -493,6 +536,7 @@ export class Phase5Orchestrator {
         companyProfileId: idm.meta.company_profile_id,
         reportType: 'all',
       },
+      narrativeContent,
     };
   }
 
