@@ -7,6 +7,7 @@
  */
 
 import type { DimensionCode, ChapterCode } from './idm.types.js';
+import type { NarrativeContent } from '../services/narrative-extraction.service.js';
 
 // ============================================================================
 // BRAND CONFIGURATION
@@ -305,6 +306,9 @@ export interface ReportContext {
 
   /** Report metadata */
   metadata: ReportMetadata;
+
+  /** Extracted narrative content from AI analyses */
+  narrativeContent?: NarrativeContent;
 }
 
 // ============================================================================

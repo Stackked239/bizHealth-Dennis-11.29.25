@@ -2,11 +2,11 @@
  * Business Owner Report Builder
  *
  * Generates an executive summary report for business owners including:
- * - One-page executive overview with health score
- * - Top 3 strengths and top 3 priorities
- * - Key financial implications
- * - Strategic imperatives summary
- * - Quick wins
+ * - Executive overview with AI-generated narrative content
+ * - Health score and trajectory
+ * - Priority actions with AI analysis
+ * - Strategic recommendations
+ * - Key risks to address
  */
 
 import * as fs from 'fs/promises';
@@ -22,9 +22,11 @@ import {
   generateProgressBar,
 } from './html-template.js';
 import { calculateROI } from '../../types/report.types.js';
+import { NarrativeExtractionService } from '../../services/narrative-extraction.service.js';
+import { logger } from '../../utils/logger.js';
 
 /**
- * Build business owner report
+ * Build business owner report with integrated narrative content
  */
 export async function buildOwnersReport(
   ctx: ReportContext,
@@ -33,11 +35,20 @@ export async function buildOwnersReport(
   const reportType = 'owner';
   const reportName = 'Business Owner Report';
 
+  logger.info('Building owners report with narrative integration');
+
+  // Get narrative content from context
+  const narratives = ctx.narrativeContent;
+  const hasNarratives = narratives && narratives.metadata?.contentSufficient;
+
   // Get top 3 strengths and priorities
   const strengths = ctx.findings.filter(f => f.type === 'strength').slice(0, 3);
   const priorities = ctx.findings.filter(f => f.type === 'gap' || f.type === 'risk').slice(0, 3);
   const topRecommendations = ctx.recommendations.slice(0, 5);
   const quickWins = ctx.quickWins.slice(0, 3);
+
+  // Generate narrative CSS styles
+  const narrativeStyles = generateOwnerNarrativeStyles(options.brand.primaryColor, options.brand.accentColor);
 
   const html = wrapHtmlDocument(`
     ${generateReportHeader(ctx, reportName, 'Executive Summary for Business Leadership')}
@@ -62,7 +73,11 @@ export async function buildOwnersReport(
         </div>
       </div>
 
-      ${ctx.executiveSummary ? `
+      ${narratives?.phase3?.executive ? `
+        <div class="narrative-content">
+          ${NarrativeExtractionService.markdownToHtml(narratives.phase3.executive)}
+        </div>
+      ` : ctx.executiveSummary ? `
         <div class="callout info">
           <p>${escapeHtml(ctx.executiveSummary.overview)}</p>
         </div>
@@ -86,40 +101,56 @@ export async function buildOwnersReport(
       </div>
     </section>
 
-    <section class="section page-break">
-      <h2>Key Insights</h2>
-
-      <div class="grid grid-2">
-        <div>
-          <h3 style="color: #28a745;">Top Strengths</h3>
-          ${strengths.length > 0 ? `
-            <ul>
-              ${strengths.map(s => `
-                <li>
-                  <strong>${escapeHtml(s.shortLabel)}</strong>
-                  <br><small>${escapeHtml(s.dimensionName)}</small>
-                </li>
-              `).join('')}
-            </ul>
-          ` : '<p>No significant strengths identified.</p>'}
+    ${narratives?.phase3?.actionMatrix ? `
+      <section class="section page-break">
+        <h2>Priority Actions</h2>
+        <div class="narrative-content">
+          ${NarrativeExtractionService.markdownToHtml(narratives.phase3.actionMatrix)}
         </div>
-        <div>
-          <h3 style="color: #dc3545;">Priority Areas</h3>
-          ${priorities.length > 0 ? `
-            <ul>
-              ${priorities.map(p => `
-                <li>
-                  <strong>${escapeHtml(p.shortLabel)}</strong>
-                  <br><small>${escapeHtml(p.dimensionName)} - ${p.type}</small>
-                </li>
-              `).join('')}
-            </ul>
-          ` : '<p>No critical priorities identified.</p>'}
-        </div>
-      </div>
-    </section>
+      </section>
+    ` : `
+      <section class="section page-break">
+        <h2>Key Insights</h2>
 
-    ${ctx.keyImperatives.length > 0 ? `
+        <div class="grid grid-2">
+          <div>
+            <h3 style="color: #28a745;">Top Strengths</h3>
+            ${strengths.length > 0 ? `
+              <ul>
+                ${strengths.map(s => `
+                  <li>
+                    <strong>${escapeHtml(s.shortLabel)}</strong>
+                    <br><small>${escapeHtml(s.dimensionName)}</small>
+                  </li>
+                `).join('')}
+              </ul>
+            ` : '<p>No significant strengths identified.</p>'}
+          </div>
+          <div>
+            <h3 style="color: #dc3545;">Priority Areas</h3>
+            ${priorities.length > 0 ? `
+              <ul>
+                ${priorities.map(p => `
+                  <li>
+                    <strong>${escapeHtml(p.shortLabel)}</strong>
+                    <br><small>${escapeHtml(p.dimensionName)} - ${p.type}</small>
+                  </li>
+                `).join('')}
+              </ul>
+            ` : '<p>No critical priorities identified.</p>'}
+          </div>
+        </div>
+      </section>
+    `}
+
+    ${narratives?.phase2?.strategicRecommendations ? `
+      <section class="section">
+        <h2>Strategic Recommendations</h2>
+        <div class="narrative-content">
+          ${NarrativeExtractionService.markdownToHtml(narratives.phase2.strategicRecommendations)}
+        </div>
+      </section>
+    ` : ctx.keyImperatives.length > 0 ? `
       <section class="section">
         <h2>Strategic Imperatives</h2>
         <div class="callout warning">
@@ -127,6 +158,15 @@ export async function buildOwnersReport(
           <ol>
             ${ctx.keyImperatives.map(i => `<li>${escapeHtml(i)}</li>`).join('')}
           </ol>
+        </div>
+      </section>
+    ` : ''}
+
+    ${narratives?.phase2?.consolidatedRisks ? `
+      <section class="section">
+        <h2>Key Risks to Address</h2>
+        <div class="narrative-content">
+          ${NarrativeExtractionService.markdownToHtml(narratives.phase2.consolidatedRisks)}
         </div>
       </section>
     ` : ''}
@@ -215,11 +255,16 @@ export async function buildOwnersReport(
       </div>
     </section>
 
-    ${generateReportFooter(ctx)}
+    ${generateOwnerReportFooter(ctx, narratives)}
   `, {
     title: `${reportName} - ${ctx.companyProfile.name}`,
     brand: options.brand,
+    customCSS: narrativeStyles,
   });
+
+  logger.info({
+    contentWords: narratives?.metadata?.totalWords || 0
+  }, 'Owners report built');
 
   // Write HTML file
   const htmlPath = path.join(options.outputDir, `${reportType}.html`);
@@ -272,4 +317,85 @@ function formatCurrency(value?: number): string {
     return `$${(value / 1000).toFixed(0)}K`;
   }
   return `$${value}`;
+}
+
+/**
+ * Generate owner report footer with word count
+ */
+function generateOwnerReportFooter(ctx: ReportContext, narratives: any): string {
+  const year = new Date().getFullYear();
+  const wordCount = narratives?.metadata?.totalWords || 0;
+
+  return `
+    <footer class="report-footer">
+      <p>&copy; ${year} BizHealth.ai - Confidential Business Assessment Report</p>
+      <p>Assessment ID: ${ctx.runId}</p>
+      ${wordCount > 0 ? `<p>Narrative Content: ${wordCount.toLocaleString()} words</p>` : ''}
+    </footer>
+  `;
+}
+
+/**
+ * Generate CSS styles for narrative content in owner report
+ */
+function generateOwnerNarrativeStyles(primaryColor: string, accentColor: string): string {
+  return `
+    /* Narrative Content Styles */
+    .narrative-content {
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      border-left: 4px solid ${accentColor};
+    }
+
+    .narrative-content .bh-h2 {
+      font-size: 1.4rem;
+      color: ${primaryColor};
+      margin-top: 1.25em;
+      margin-bottom: 0.5em;
+      border-bottom: 2px solid ${accentColor};
+      padding-bottom: 0.5rem;
+    }
+
+    .narrative-content .bh-h3 {
+      font-size: 1.2rem;
+      color: ${primaryColor};
+      margin-top: 1em;
+      margin-bottom: 0.5em;
+    }
+
+    .narrative-content .bh-h4 {
+      font-size: 1.05rem;
+      color: #555;
+      margin-top: 1em;
+      margin-bottom: 0.5em;
+    }
+
+    .narrative-content .bh-p {
+      margin: 1em 0;
+      line-height: 1.7;
+    }
+
+    .narrative-content .bh-ul,
+    .narrative-content .bh-ol {
+      margin: 1em 0;
+      padding-left: 1.5em;
+    }
+
+    .narrative-content .bh-li,
+    .narrative-content .bh-li-num {
+      margin: 0.5em 0;
+      line-height: 1.6;
+    }
+
+    .narrative-content .bh-empty {
+      color: #999;
+      font-style: italic;
+    }
+
+    .narrative-content strong {
+      color: ${primaryColor};
+    }
+  `;
 }
