@@ -439,7 +439,7 @@ Based on positioning:
 
 For each dimension (Competitive Position, Innovation Capability, Technology Advantage, Market Dynamics, Strategic Differentiation):
 
-```json
+\`\`\`json
 {
   "dimension": "Competitive Position Strength",
   "score": "3.2/5.0",
@@ -455,7 +455,7 @@ For each dimension (Competitive Position, Innovation Capability, Technology Adva
   "investment_required": "$100K-150K in brand development, differentiation strategy",
   "strategic_priority": "High - competitive positioning critical for sustainable growth"
 }
-```
+\`\`\`
 
 #### Step 7: Competitive Strategy Recommendations
 
@@ -1020,7 +1020,7 @@ ${JSON.stringify(companyProfile, null, 2)}
 - Brand Awareness: ${marketingData?.questions?.find(q => q.question_id === 'marketing_q1')?.response_value || 'N/A'}/5.0
 
 **Current Challenges**:
-${pain_points.current_challenges.filter(c => c.toLowerCase().includes('compet') || c.toLowerCase().includes('market') || c.toLowerCase().includes('innovat')).map(c => \`- \${c}\`).join('\\n') || '- None specifically competitive/innovation-related'}
+${pain_points.current_challenges.filter(c => c.toLowerCase().includes('compet') || c.toLowerCase().includes('market') || c.toLowerCase().includes('innovat')).map(c => '- ' + c).join('\n') || '- None specifically competitive/innovation-related'}
 
 ---
 
@@ -1037,7 +1037,7 @@ ${JSON.stringify(operationalExcellenceSummary.executive_summary, null, 2)}
 
 1. **Technology Infrastructure Assessment**:
    - Infrastructure Quality: ${technologyData?.questions?.find(q => q.question_id === 'tech_q1')?.response_value || 'N/A'}/5.0
-   - Technology Investment: ${technologyData?.questions?.find(q => q.question_id === 'tech_q2')?.response_value ? \`$\${technologyData.questions.find(q => q.question_id === 'tech_q2').response_value.toLocaleString()}\` : 'N/A'} annually
+   - Technology Investment: ${technologyData?.questions?.find(q => q.question_id === 'tech_q2')?.response_value ? '$' + technologyData.questions.find(q => q.question_id === 'tech_q2').response_value.toLocaleString() : 'N/A'} annually
    - Competitive Implication: Does technology provide competitive advantage or disadvantage?
 
 2. **Process Innovation and Continuous Improvement**:
@@ -1128,7 +1128,7 @@ ${JSON.stringify(technologyData, null, 2)}
 
 **Key Innovation Data**:
 - Technology Infrastructure: ${technologyData?.questions?.find(q => q.question_id === 'tech_q1')?.response_value || 'N/A'}/5.0
-- Annual Technology Investment: ${technologyData?.questions?.find(q => q.question_id === 'tech_q2')?.response_value ? \`$\${technologyData.questions.find(q => q.question_id === 'tech_q2').response_value.toLocaleString()}\` : 'N/A'}
+- Annual Technology Investment: ${technologyData?.questions?.find(q => q.question_id === 'tech_q2')?.response_value ? '$' + technologyData.questions.find(q => q.question_id === 'tech_q2').response_value.toLocaleString() : 'N/A'}
 - Automation Adoption: ${technologyData?.questions?.find(q => q.question_id === 'tech_q3')?.response_value || 'N/A'}/5.0
 - Innovation Culture: ${technologyData?.questions?.find(q => q.question_id === 'tech_q4')?.response_value || 'N/A'}/5.0
 - Digital Maturity: ${technologyData?.questions?.find(q => q.question_id === 'tech_q5')?.response_value || 'N/A'}/5.0

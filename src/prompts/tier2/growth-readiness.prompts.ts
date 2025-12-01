@@ -388,7 +388,7 @@ Categories:
 
 For each dimension (Financial, Operational, People, Market, Technology):
 
-```json
+\`\`\`json
 {
   "dimension": "Financial Capacity",
   "readiness_score": "2.5/5.0",
@@ -404,7 +404,7 @@ For each dimension (Financial, Operational, People, Market, Technology):
   "investment_required": "$500K-750K in external funding (equity or credit facility)",
   "time_to_ready": "3-6 months to secure funding and deploy into growth infrastructure"
 }
-```
+\`\`\`
 
 **Overall Readiness Score**: Average across 5 dimensions
 
@@ -1000,11 +1000,11 @@ ${JSON.stringify(companyProfile, null, 2)}
 - Revenue Trajectory: ${growth_context.growth_stage_indicators.revenue_trajectory}
 
 **Current Challenges** (Self-Identified):
-${pain_points.current_challenges.map(c => \`- \${c}\`).join('\\n')}
+${pain_points.current_challenges.map(c => '- ' + c).join('\n')}
 
 **Strategic Goals**:
-${strategyData?.questions?.find(q => q.question_id === 'strategy_q4')?.response_value ? \`- Sales Growth Target: \${strategyData.questions.find(q => q.question_id === 'strategy_q4').response_value}%\` : ''}
-${strategyData?.questions?.find(q => q.question_id === 'strategy_q6')?.response_value_text ? \`- Top 3 Goals: \${strategyData.questions.find(q => q.question_id === 'strategy_q6').response_value_text}\` : ''}
+${strategyData?.questions?.find(q => q.question_id === 'strategy_q4')?.response_value ? '- Sales Growth Target: ' + strategyData.questions.find(q => q.question_id === 'strategy_q4').response_value + '%' : ''}
+${strategyData?.questions?.find(q => q.question_id === 'strategy_q6')?.response_value_text ? '- Top 3 Goals: ' + strategyData.questions.find(q => q.question_id === 'strategy_q6').response_value_text : ''}
 
 ---
 
@@ -1025,9 +1025,9 @@ ${JSON.stringify(revenueEngineSummary.executive_summary, null, 2)}
    - Growth Implication: ${revenueEngineSummary.component_assessments?.sales?.key_metrics?.pipeline_management?.interpretation || 'Assess scalability of current sales process'}
 
 2. **Marketing Lead Generation Scalability**:
-   - CAC: ${salesData?.questions?.find(q => q.question_id === 'marketing_q4')?.response_value ? \`$\${marketingData.questions.find(q => q.question_id === 'marketing_q4').response_value.toLocaleString()}\` : 'N/A'}
-   - LTV: ${marketingData?.questions?.find(q => q.question_id === 'marketing_q5')?.response_value ? \`$\${marketingData.questions.find(q => q.question_id === 'marketing_q5').response_value.toLocaleString()}\` : 'N/A'}
-   - CAC:LTV Ratio: ${marketingData?.category_metadata?.calculated_metrics?.cac_ltv_ratio ? \`1:\${marketingData.category_metadata.calculated_metrics.cac_ltv_ratio.toFixed(1)}\` : 'Calculate from data'}
+   - CAC: ${salesData?.questions?.find(q => q.question_id === 'marketing_q4')?.response_value ? '$' + marketingData.questions.find(q => q.question_id === 'marketing_q4').response_value.toLocaleString() : 'N/A'}
+   - LTV: ${marketingData?.questions?.find(q => q.question_id === 'marketing_q5')?.response_value ? '$' + marketingData.questions.find(q => q.question_id === 'marketing_q5').response_value.toLocaleString() : 'N/A'}
+   - CAC:LTV Ratio: ${marketingData?.category_metadata?.calculated_metrics?.cac_ltv_ratio ? '1:' + marketingData.category_metadata.calculated_metrics.cac_ltv_ratio.toFixed(1) : 'Calculate from data'}
    - Growth Implication: Assess whether unit economics can support scaled customer acquisition
 
 3. **Sales-Marketing Alignment**:
@@ -1089,7 +1089,7 @@ ${JSON.stringify(operationalExcellenceSummary.executive_summary, null, 2)}
 
 2. **Technology Infrastructure Capacity**:
    - Infrastructure Scalability: ${technologyData?.questions?.find(q => q.question_id === 'tech_q1')?.response_value || 'N/A'}/5.0
-   - Technology Investment: ${technologyData?.questions?.find(q => q.question_id === 'tech_q2')?.response_value ? \`$\${technologyData.questions.find(q => q.question_id === 'tech_q2').response_value.toLocaleString()}\` : 'N/A'}
+   - Technology Investment: ${technologyData?.questions?.find(q => q.question_id === 'tech_q2')?.response_value ? '$' + technologyData.questions.find(q => q.question_id === 'tech_q2').response_value.toLocaleString() : 'N/A'}
    - Growth Implication: Are systems adequate for scaling or will they become bottlenecks?
 
 3. **Operational Efficiency**:
@@ -1114,8 +1114,8 @@ ${JSON.stringify(financialStrategicSummary.executive_summary, null, 2)}
 **Key Findings Relevant to Growth Readiness**:
 
 1. **Cash Position and Runway**:
-   - Cash on Hand: ${questionnaireResponses.categories.financials?.questions?.find(q => q.question_id === 'fin_q1')?.response_value ? \`$\${questionnaireResponses.categories.financials.questions.find(q => q.question_id === 'fin_q1').response_value.toLocaleString()}\` : 'N/A'}
-   - Monthly Burn Rate: ${questionnaireResponses.categories.financials?.questions?.find(q => q.question_id === 'fin_q2')?.response_value ? \`$\${questionnaireResponses.categories.financials.questions.find(q => q.question_id === 'fin_q2').response_value.toLocaleString()}\` : 'N/A'}
+   - Cash on Hand: ${questionnaireResponses.categories.financials?.questions?.find(q => q.question_id === 'fin_q1')?.response_value ? '$' + questionnaireResponses.categories.financials.questions.find(q => q.question_id === 'fin_q1').response_value.toLocaleString() : 'N/A'}
+   - Monthly Burn Rate: ${questionnaireResponses.categories.financials?.questions?.find(q => q.question_id === 'fin_q2')?.response_value ? '$' + questionnaireResponses.categories.financials.questions.find(q => q.question_id === 'fin_q2').response_value.toLocaleString() : 'N/A'}
    - Cash Runway: Calculate from data
    - Growth Implication: Is runway sufficient for growth investment phase?
 
@@ -1189,7 +1189,7 @@ ${JSON.stringify(technologyData, null, 2)}
 
 **Key Technology Data for Growth**:
 - Infrastructure Assessment: ${technologyData?.questions?.find(q => q.question_id === 'tech_q1')?.response_value || 'N/A'}/5.0
-- Technology Investment (Annual): ${technologyData?.questions?.find(q => q.question_id === 'tech_q2')?.response_value ? \`$\${technologyData.questions.find(q => q.question_id === 'tech_q2').response_value.toLocaleString()}\` : 'N/A'}
+- Technology Investment (Annual): ${technologyData?.questions?.find(q => q.question_id === 'tech_q2')?.response_value ? '$' + technologyData.questions.find(q => q.question_id === 'tech_q2').response_value.toLocaleString() : 'N/A'}
 - Automation Adoption: ${technologyData?.questions?.find(q => q.question_id === 'tech_q3')?.response_value || 'N/A'}/5.0
 - Digital Maturity: ${technologyData?.questions?.find(q => q.question_id === 'tech_q5')?.response_value || 'N/A'}/5.0
 

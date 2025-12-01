@@ -226,10 +226,10 @@ This is a **Tier 2 interconnection analysis**, which means:
 **Purpose**: Prioritize efficiency initiatives by ROI and implementation difficulty
 
 **ROI Calculation**:
-```
+\`\`\`
 ROI = (Annual Savings - Annual Costs) / Implementation Cost
 Payback Period = Implementation Cost / Annual Net Savings
-```
+\`\`\`
 
 **Matrix Dimensions**:
 - **X-Axis**: Implementation Complexity (Low, Medium, High)

@@ -1,8 +1,10 @@
 {
-  "benchmark_version": "1.0",
-  "last_updated": "2025-12-01",
-  "description": "BizHealth.ai industry benchmark data for chapter and overall health score comparisons",
-  "source": "Aggregated SMB benchmark studies, industry surveys, and proprietary analysis",
+  "metadata": {
+    "benchmark_version": "1.0",
+    "last_updated": "2025-12-01",
+    "description": "BizHealth.ai industry benchmark data for chapter and overall health score comparisons",
+    "source": "Aggregated SMB benchmark studies, industry surveys, and proprietary analysis"
+  },
   "industries": {
     "technology_consulting": {
       "display_name": "Technology Consulting",
