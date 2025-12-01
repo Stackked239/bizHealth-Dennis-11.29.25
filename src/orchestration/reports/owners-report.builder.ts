@@ -25,6 +25,14 @@ import { calculateROI } from '../../types/report.types.js';
 import { NarrativeExtractionService } from '../../services/narrative-extraction.service.js';
 import { logger } from '../../utils/logger.js';
 
+// Import visual enhancement components
+import {
+  generateKeyTakeaways,
+  generateExecutiveHighlights,
+  generateOverallBenchmarkCallout,
+} from './components/index.js';
+import { getChapterIcon } from './constants/index.js';
+
 /**
  * Build business owner report with integrated narrative content
  */
@@ -50,6 +58,11 @@ export async function buildOwnersReport(
   // Generate narrative CSS styles
   const narrativeStyles = generateOwnerNarrativeStyles(options.brand.primaryColor, options.brand.accentColor);
 
+  // Generate visual enhancement components
+  const keyTakeawaysHtml = generateKeyTakeaways(ctx);
+  const executiveHighlightsHtml = generateExecutiveHighlights(ctx);
+  const overallBenchmarkHtml = generateOverallBenchmarkCallout(ctx);
+
   const html = wrapHtmlDocument(`
     ${generateReportHeader(ctx, reportName, 'Executive Summary for Business Leadership')}
 
@@ -73,6 +86,15 @@ export async function buildOwnersReport(
         </div>
       </div>
 
+      <!-- Executive Highlights Summary -->
+      ${executiveHighlightsHtml}
+
+      <!-- Key Takeaways Box -->
+      ${keyTakeawaysHtml}
+
+      <!-- Benchmark Callout -->
+      ${overallBenchmarkHtml}
+
       ${narratives?.phase3?.executive ? `
         <div class="narrative-content">
           ${NarrativeExtractionService.markdownToHtml(narratives.phase3.executive)}
@@ -90,11 +112,19 @@ export async function buildOwnersReport(
         ${ctx.chapters.map(ch => `
           <div class="card">
             <div class="card-header">
-              <span class="card-title">${escapeHtml(ch.name)}</span>
+              <span class="card-title">
+                <span style="margin-right: 0.5rem;">${getChapterIcon(ch.code)}</span>
+                ${escapeHtml(ch.name)}
+              </span>
               <span class="band-badge ${ch.band}">${ch.score}/100</span>
             </div>
             <div class="card-body">
               ${generateProgressBar(ch.score, 100, options.brand)}
+              ${ch.benchmark ? `
+                <div style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">
+                  ${ch.benchmark.peerPercentile}th percentile vs peers
+                </div>
+              ` : ''}
             </div>
           </div>
         `).join('')}
@@ -336,7 +366,7 @@ function generateOwnerReportFooter(ctx: ReportContext, narratives: any): string 
 }
 
 /**
- * Generate CSS styles for narrative content in owner report
+ * Generate CSS styles for narrative content and visual enhancements in owner report
  */
 function generateOwnerNarrativeStyles(primaryColor: string, accentColor: string): string {
   return `
@@ -396,6 +426,143 @@ function generateOwnerNarrativeStyles(primaryColor: string, accentColor: string)
 
     .narrative-content strong {
       color: ${primaryColor};
+    }
+
+    /* ============================================
+       VISUAL ENHANCEMENT STYLES
+       ============================================ */
+
+    /* KEY TAKEAWAYS BOX */
+    .key-takeaways {
+      background: linear-gradient(135deg, ${primaryColor} 0%, #2a3366 100%);
+      color: #fff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      box-shadow: 0 4px 12px rgba(33, 38, 83, 0.3);
+    }
+
+    .key-takeaways .takeaway-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 2px solid rgba(150, 148, 35, 0.5);
+      padding-bottom: 0.75rem;
+    }
+
+    .key-takeaways .takeaway-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin: 0.75rem 0;
+      padding: 0.5rem;
+      background: rgba(255,255,255,0.1);
+      border-radius: 6px;
+    }
+
+    .key-takeaways .takeaway-icon {
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .key-takeaways .takeaway-text {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* BENCHMARK CALLOUT BOXES */
+    .benchmark-callout {
+      background: #e7f3ff;
+      border: 1px solid #b8daff;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .benchmark-callout .benchmark-icon {
+      font-size: 2rem;
+      color: ${primaryColor};
+    }
+
+    .benchmark-callout .benchmark-content { flex: 1; }
+
+    .benchmark-callout .benchmark-label {
+      font-size: 0.85rem;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .benchmark-callout .benchmark-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: ${primaryColor};
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .benchmark-callout .benchmark-context {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    /* EXECUTIVE HIGHLIGHTS */
+    .executive-highlights {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .highlight-card {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      border-top: 4px solid ${primaryColor};
+    }
+
+    .highlight-card .highlight-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .highlight-card .highlight-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: ${primaryColor};
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .highlight-card .highlight-label {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 0.25rem;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .executive-highlights { grid-template-columns: repeat(2, 1fr); }
+      .benchmark-callout { flex-direction: column; text-align: center; }
+      .key-takeaways .takeaway-item { flex-direction: column; align-items: flex-start; }
+    }
+
+    /* PRINT OPTIMIZATIONS */
+    @media print {
+      .key-takeaways {
+        background: ${primaryColor} !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .benchmark-callout { page-break-inside: avoid; }
+      .executive-highlights { grid-template-columns: repeat(4, 1fr); }
     }
   `;
 }

@@ -16,3 +16,9 @@ export { buildRiskReport } from './risk-report.builder.js';
 export { buildRoadmapReport } from './roadmap-report.builder.js';
 export { buildFinancialReport } from './financial-report.builder.js';
 export { buildDeepDiveReport } from './deep-dive-report.builder.js';
+
+// Visual enhancement components
+export * from './components/index.js';
+
+// Constants (icons, etc.)
+export * from './constants/index.js';
