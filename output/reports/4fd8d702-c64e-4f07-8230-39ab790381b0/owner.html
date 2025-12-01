@@ -655,6 +655,143 @@
     .narrative-content strong {
       color: #212653;
     }
+
+    /* ============================================
+       VISUAL ENHANCEMENT STYLES
+       ============================================ */
+
+    /* KEY TAKEAWAYS BOX */
+    .key-takeaways {
+      background: linear-gradient(135deg, #212653 0%, #2a3366 100%);
+      color: #fff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      box-shadow: 0 4px 12px rgba(33, 38, 83, 0.3);
+    }
+
+    .key-takeaways .takeaway-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 2px solid rgba(150, 148, 35, 0.5);
+      padding-bottom: 0.75rem;
+    }
+
+    .key-takeaways .takeaway-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin: 0.75rem 0;
+      padding: 0.5rem;
+      background: rgba(255,255,255,0.1);
+      border-radius: 6px;
+    }
+
+    .key-takeaways .takeaway-icon {
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .key-takeaways .takeaway-text {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* BENCHMARK CALLOUT BOXES */
+    .benchmark-callout {
+      background: #e7f3ff;
+      border: 1px solid #b8daff;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .benchmark-callout .benchmark-icon {
+      font-size: 2rem;
+      color: #212653;
+    }
+
+    .benchmark-callout .benchmark-content { flex: 1; }
+
+    .benchmark-callout .benchmark-label {
+      font-size: 0.85rem;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .benchmark-callout .benchmark-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #212653;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .benchmark-callout .benchmark-context {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    /* EXECUTIVE HIGHLIGHTS */
+    .executive-highlights {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .highlight-card {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      border-top: 4px solid #212653;
+    }
+
+    .highlight-card .highlight-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .highlight-card .highlight-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #212653;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .highlight-card .highlight-label {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 0.25rem;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .executive-highlights { grid-template-columns: repeat(2, 1fr); }
+      .benchmark-callout { flex-direction: column; text-align: center; }
+      .key-takeaways .takeaway-item { flex-direction: column; align-items: flex-start; }
+    }
+
+    /* PRINT OPTIMIZATIONS */
+    @media print {
+      .key-takeaways {
+        background: #212653 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .benchmark-callout { page-break-inside: avoid; }
+      .executive-highlights { grid-template-columns: repeat(4, 1fr); }
+    }
   
   </style>
 </head>
@@ -689,6 +826,66 @@
           </p>
         </div>
       </div>
+
+      <!-- Executive Highlights Summary -->
+      
+    <div class="executive-highlights">
+      <div class="highlight-card">
+        <div class="highlight-icon">🎯</div>
+        <div class="highlight-value">53</div>
+        <div class="highlight-label">Health Score</div>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon">✅</div>
+        <div class="highlight-value">8</div>
+        <div class="highlight-label">Strengths</div>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon">⚠️</div>
+        <div class="highlight-value">22</div>
+        <div class="highlight-label">Issues to Address</div>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon">🚀</div>
+        <div class="highlight-value">5</div>
+        <div class="highlight-label">Quick Wins</div>
+      </div>
+    </div>
+  
+
+      <!-- Key Takeaways Box -->
+      
+    <div class="key-takeaways">
+      <div class="takeaway-title">
+        <span>📋</span> KEY TAKEAWAYS
+      </div>
+      
+        <div class="takeaway-item">
+          <span class="takeaway-icon">✅</span>
+          <span class="takeaway-text">
+            <strong>Top Strength:</strong> Strong Sales Target Alignment
+          </span>
+        </div>
+      
+        <div class="takeaway-item">
+          <span class="takeaway-icon">⚠️</span>
+          <span class="takeaway-text">
+            <strong>Critical Issue:</strong> Marketing Critical Underperformance
+          </span>
+        </div>
+      
+        <div class="takeaway-item">
+          <span class="takeaway-icon">🎯</span>
+          <span class="takeaway-text">
+            <strong>Top Priority:</strong> Marketing Improvement Initiative
+          </span>
+        </div>
+      
+    </div>
+  
+
+      <!-- Benchmark Callout -->
+      
 
       
         <div class="narrative-content">
@@ -795,7 +992,10 @@ The board must treat this as a "code blue" emergency. With immediate interventio
         
           <div class="card">
             <div class="card-header">
-              <span class="card-title">Growth Engine</span>
+              <span class="card-title">
+                <span style="margin-right: 0.5rem;">🚀</span>
+                Growth Engine
+              </span>
               <span class="band-badge Attention">49/100</span>
             </div>
             <div class="card-body">
@@ -806,12 +1006,16 @@ The board must treat this as a "code blue" emergency. With immediate interventio
       </div>
     </div>
   
+              
             </div>
           </div>
         
           <div class="card">
             <div class="card-header">
-              <span class="card-title">Performance &amp; Health</span>
+              <span class="card-title">
+                <span style="margin-right: 0.5rem;">💪</span>
+                Performance &amp; Health
+              </span>
               <span class="band-badge Attention">51/100</span>
             </div>
             <div class="card-body">
@@ -822,12 +1026,16 @@ The board must treat this as a "code blue" emergency. With immediate interventio
       </div>
     </div>
   
+              
             </div>
           </div>
         
           <div class="card">
             <div class="card-header">
-              <span class="card-title">People &amp; Leadership</span>
+              <span class="card-title">
+                <span style="margin-right: 0.5rem;">👥</span>
+                People &amp; Leadership
+              </span>
               <span class="band-badge Attention">43/100</span>
             </div>
             <div class="card-body">
@@ -838,12 +1046,16 @@ The board must treat this as a "code blue" emergency. With immediate interventio
       </div>
     </div>
   
+              
             </div>
           </div>
         
           <div class="card">
             <div class="card-header">
-              <span class="card-title">Resilience &amp; Safeguards</span>
+              <span class="card-title">
+                <span style="margin-right: 0.5rem;">🛡️</span>
+                Resilience &amp; Safeguards
+              </span>
               <span class="band-badge Proficiency">70/100</span>
             </div>
             <div class="card-body">
@@ -854,6 +1066,7 @@ The board must treat this as a "code blue" emergency. With immediate interventio
       </div>
     </div>
   
+              
             </div>
           </div>
         

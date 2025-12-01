@@ -8,16 +8,18 @@ export {
   generateKeyTakeaways,
   generateKeyTakeawaysFromData,
   generateExecutiveHighlights,
-  KeyTakeaway,
 } from './key-takeaways.component.js';
+
+export type { KeyTakeaway } from './key-takeaways.component.js';
 
 export {
   generateEvidenceCitation,
   generateEvidenceCitationsForDimension,
   generateEvidenceCitationsFromFindings,
   generateInsightCardWithEvidence,
-  EvidenceCitation,
 } from './evidence-citation.component.js';
+
+export type { EvidenceCitation } from './evidence-citation.component.js';
 
 export {
   generateBenchmarkCallout,
@@ -27,5 +29,6 @@ export {
   generateAllChapterBenchmarks,
   generateBenchmarkSummaryTable,
   generateScoreBarWithBenchmark,
-  BenchmarkCalloutData,
 } from './benchmark-callout.component.js';
+
+export type { BenchmarkCalloutData } from './benchmark-callout.component.js';

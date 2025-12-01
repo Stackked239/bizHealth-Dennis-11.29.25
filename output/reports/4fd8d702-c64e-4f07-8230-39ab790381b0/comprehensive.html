@@ -677,6 +677,327 @@
       align-items: center;
       justify-content: space-between;
     }
+
+    /* ============================================
+       VISUAL ENHANCEMENT STYLES
+       ============================================ */
+
+    /* KEY TAKEAWAYS BOX */
+    .key-takeaways {
+      background: linear-gradient(135deg, #212653 0%, #2a3366 100%);
+      color: #fff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      box-shadow: 0 4px 12px rgba(33, 38, 83, 0.3);
+    }
+
+    .key-takeaways .takeaway-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 2px solid rgba(150, 148, 35, 0.5);
+      padding-bottom: 0.75rem;
+    }
+
+    .key-takeaways .takeaway-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin: 0.75rem 0;
+      padding: 0.5rem;
+      background: rgba(255,255,255,0.1);
+      border-radius: 6px;
+    }
+
+    .key-takeaways .takeaway-icon {
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .key-takeaways .takeaway-text {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* EVIDENCE CITATION BLOCKS */
+    .evidence-citation {
+      background: #f8f9fa;
+      border-left: 4px solid #969423;
+      border-radius: 0 8px 8px 0;
+      padding: 0.75rem 1rem;
+      margin: 0.75rem 0 1.25rem 0;
+      font-size: 0.9rem;
+    }
+
+    .evidence-citation .citation-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .evidence-citation .citation-icon {
+      color: #969423;
+    }
+
+    .evidence-citation .question-ref {
+      color: #666;
+      font-size: 0.85rem;
+    }
+
+    .evidence-citation .response-text {
+      color: #333;
+      font-style: italic;
+      margin: 0.5rem 0;
+      padding-left: 1rem;
+      border-left: 2px solid #ddd;
+    }
+
+    .evidence-citation .benchmark-comparison {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid #e0e0e0;
+      font-size: 0.85rem;
+    }
+
+    .evidence-citation .benchmark-comparison.above { color: #28a745; }
+    .evidence-citation .benchmark-comparison.below { color: #dc3545; }
+    .evidence-citation .benchmark-comparison.at { color: #6c757d; }
+
+    /* BENCHMARK CALLOUT BOXES */
+    .benchmark-callout {
+      background: #e7f3ff;
+      border: 1px solid #b8daff;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .benchmark-callout .benchmark-icon {
+      font-size: 2rem;
+      color: #212653;
+    }
+
+    .benchmark-callout .benchmark-content { flex: 1; }
+
+    .benchmark-callout .benchmark-label {
+      font-size: 0.85rem;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .benchmark-callout .benchmark-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #212653;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .benchmark-callout .benchmark-context {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    /* COLOR-CODED INSIGHT CARDS */
+    .insight-card {
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 0.75rem 0;
+      border-left: 4px solid;
+    }
+
+    .insight-card.strength { background: #d4edda; border-left-color: #28a745; }
+    .insight-card.strength .insight-label { color: #155724; }
+
+    .insight-card.weakness { background: #f8d7da; border-left-color: #dc3545; }
+    .insight-card.weakness .insight-label { color: #721c24; }
+
+    .insight-card.opportunity { background: #cce5ff; border-left-color: #0d6efd; }
+    .insight-card.opportunity .insight-label { color: #004085; }
+
+    .insight-card.warning { background: #fff3cd; border-left-color: #ffc107; }
+    .insight-card.warning .insight-label { color: #856404; }
+
+    .insight-card .insight-label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.25rem;
+    }
+
+    .insight-card .insight-title {
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .insight-card .insight-detail {
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    /* CHAPTER HEADER ENHANCEMENTS */
+    .chapter-header-enhanced {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid #969423;
+    }
+
+    .chapter-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #212653 0%, #2a3366 100%);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 2px 8px rgba(33, 38, 83, 0.3);
+    }
+
+    .chapter-title-group { flex: 1; }
+
+    .chapter-title-group h2 {
+      margin: 0;
+      font-size: 1.75rem;
+      color: #212653;
+      page-break-before: auto;
+    }
+
+    .chapter-subtitle {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.25rem;
+    }
+
+    /* DIMENSION HEADER */
+    .dimension-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .dimension-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: #212653;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    /* EXECUTIVE HIGHLIGHTS */
+    .executive-highlights {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .highlight-card {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      border-top: 4px solid #212653;
+    }
+
+    .highlight-card .highlight-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .highlight-card .highlight-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #212653;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .highlight-card .highlight-label {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 0.25rem;
+    }
+
+    /* SCORE BAR ENHANCEMENTS */
+    .score-bar-container {
+      background: #e9ecef;
+      border-radius: 12px;
+      height: 24px;
+      overflow: hidden;
+      margin: 0.5rem 0;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 0.75rem;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: width 0.3s ease;
+    }
+
+    .score-bar-fill.critical { background: linear-gradient(90deg, #dc3545, #e4606d); }
+    .score-bar-fill.attention { background: linear-gradient(90deg, #ffc107, #ffcd39); color: #333; }
+    .score-bar-fill.proficiency { background: linear-gradient(90deg, #969423, #b0ad2e); }
+    .score-bar-fill.excellence { background: linear-gradient(90deg, #28a745, #34ce57); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .executive-highlights { grid-template-columns: repeat(2, 1fr); }
+      .benchmark-callout { flex-direction: column; text-align: center; }
+      .key-takeaways .takeaway-item { flex-direction: column; align-items: flex-start; }
+    }
+
+    /* PRINT OPTIMIZATIONS */
+    @media print {
+      .key-takeaways {
+        background: #212653 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .evidence-citation {
+        border-left-color: #969423 !important;
+        background: #f8f9fa !important;
+      }
+
+      .insight-card { page-break-inside: avoid; }
+      .benchmark-callout { page-break-inside: avoid; }
+
+      .chapter-icon, .dimension-icon {
+        background: #212653 !important;
+      }
+
+      .executive-highlights { grid-template-columns: repeat(4, 1fr); }
+    }
   
   </style>
 </head>
@@ -720,6 +1041,66 @@
           </p>
         </div>
       </div>
+
+      <!-- Executive Highlights Summary -->
+      
+    <div class="executive-highlights">
+      <div class="highlight-card">
+        <div class="highlight-icon">🎯</div>
+        <div class="highlight-value">53</div>
+        <div class="highlight-label">Health Score</div>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon">✅</div>
+        <div class="highlight-value">8</div>
+        <div class="highlight-label">Strengths</div>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon">⚠️</div>
+        <div class="highlight-value">22</div>
+        <div class="highlight-label">Issues to Address</div>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon">🚀</div>
+        <div class="highlight-value">5</div>
+        <div class="highlight-label">Quick Wins</div>
+      </div>
+    </div>
+  
+
+      <!-- Key Takeaways Box -->
+      
+    <div class="key-takeaways">
+      <div class="takeaway-title">
+        <span>📋</span> KEY TAKEAWAYS
+      </div>
+      
+        <div class="takeaway-item">
+          <span class="takeaway-icon">✅</span>
+          <span class="takeaway-text">
+            <strong>Top Strength:</strong> Strong Sales Target Alignment
+          </span>
+        </div>
+      
+        <div class="takeaway-item">
+          <span class="takeaway-icon">⚠️</span>
+          <span class="takeaway-text">
+            <strong>Critical Issue:</strong> Marketing Critical Underperformance
+          </span>
+        </div>
+      
+        <div class="takeaway-item">
+          <span class="takeaway-icon">🎯</span>
+          <span class="takeaway-text">
+            <strong>Top Priority:</strong> Marketing Improvement Initiative
+          </span>
+        </div>
+      
+    </div>
+  
+
+      <!-- Overall Benchmark Callout -->
+      
 
       
         <div class="narrative-content">
@@ -830,6 +1211,7 @@ The board must treat this as a "code blue" emergency. With immediate interventio
     </section>
   </div>
 <div id="scorecard">
+      
     <section class="section page-break">
       <div class="section-header">
         <h2>Business Health Scorecard</h2>
@@ -964,14 +1346,23 @@ The board must treat this as a "code blue" emergency. With immediate interventio
         </tbody>
       </table>
     </section>
-  </div>
+  
+      
+    </div>
 
       <div id="strategy">
     <section class="section page-break">
-      <div class="section-header">
-        <h2>Strategy &amp; Revenue Engine</h2>
-        <span class="section-score">49/100</span>
+      
+    <div class="chapter-header-enhanced">
+      <div class="chapter-icon">🚀</div>
+      <div class="chapter-title-group">
+        <h2>Strategy & Revenue Engine</h2>
+        <div class="chapter-subtitle">General Industry Analysis</div>
       </div>
+      <span class="section-score">49/100</span>
+    </div>
+  
+      
       <div class="narrative-content">
         <h2 class="bh-h2">REVENUE ENGINE ANALYSIS: EWM Global</h2></p><h3 class="bh-h3">1. Current State Assessment</h3></p><h4 class="bh-h4">Revenue Profile</h4>
 EWM Global operates as a specialized B2B fintech provider with strong fundamentals but significant growth constraints:
@@ -1072,10 +1463,17 @@ EWM Global has built an exceptional customer value proposition but must dramatic
   </div>
       <div id="operations">
     <section class="section page-break">
-      <div class="section-header">
+      
+    <div class="chapter-header-enhanced">
+      <div class="chapter-icon">💪</div>
+      <div class="chapter-title-group">
         <h2>Operational Excellence</h2>
-        <span class="section-score">51/100</span>
+        <div class="chapter-subtitle">General Industry Analysis</div>
       </div>
+      <span class="section-score">51/100</span>
+    </div>
+  
+      
       <div class="narrative-content">
         <h2 class="bh-h2">OPERATIONAL EXCELLENCE ANALYSIS</h2>
 <h3 class="bh-h3">EWM Global - Fintech Services</h3></p><h4 class="bh-h4">1. CURRENT STATE ASSESSMENT</h4></p><p class="bh-p">EWM Global demonstrates a mixed operational profile with notable strengths in reliability but opportunities for efficiency improvements:</p><p class="bh-p"><strong>Operational Maturity Score: 3.75/5.0</strong>
@@ -1202,10 +1600,13 @@ The combination of strong reliability and documentation provides an excellent fo
   </div>
       <div id="financial">
     <section class="section page-break">
+      
       <div class="section-header">
         <h2>Financial Health &amp; Strategic Position</h2>
         
       </div>
+    
+      
       <div class="narrative-content">
         <h2 class="bh-h2">FINANCIAL STRATEGIC ANALYSIS: EWM GLOBAL</h2></p><h3 class="bh-h3">1. CURRENT STATE ASSESSMENT</h3></p><h4 class="bh-h4">Financial Health Overview</h4>
 EWM Global presents a mixed financial profile with several concerning indicators despite positive growth trajectory:</p><p class="bh-p"><strong>Key Financial Metrics:</strong>
@@ -1298,10 +1699,17 @@ EWM Global presents a mixed financial profile with several concerning indicators
   </div>
       <div id="people">
     <section class="section page-break">
-      <div class="section-header">
-        <h2>People, Leadership &amp; Culture</h2>
-        <span class="section-score">43/100</span>
+      
+    <div class="chapter-header-enhanced">
+      <div class="chapter-icon">👥</div>
+      <div class="chapter-title-group">
+        <h2>People, Leadership & Culture</h2>
+        <div class="chapter-subtitle">General Industry Analysis</div>
       </div>
+      <span class="section-score">43/100</span>
+    </div>
+  
+      
       <div class="narrative-content">
         <h2 class="bh-h2">PEOPLE LEADERSHIP ANALYSIS: EWM Global</h2></p><h3 class="bh-h3">1. CURRENT STATE ASSESSMENT</h3></p><h4 class="bh-h4">Leadership Capability</h4>
 <ul class="bh-ul"><li class="bh-li"><strong>Overall Leadership Score: 2.67/5.0</strong> - Significantly below industry benchmarks</li>
@@ -1406,10 +1814,17 @@ ROI: Expected 15-20% productivity improvement = $3.9-5.2M annual value</p>
   </div>
       <div id="compliance">
     <section class="section page-break">
-      <div class="section-header">
-        <h2>Compliance &amp; Sustainability</h2>
-        <span class="section-score">70/100</span>
+      
+    <div class="chapter-header-enhanced">
+      <div class="chapter-icon">🛡️</div>
+      <div class="chapter-title-group">
+        <h2>Compliance & Sustainability</h2>
+        <div class="chapter-subtitle">General Industry Analysis</div>
       </div>
+      <span class="section-score">70/100</span>
+    </div>
+  
+      
       <div class="narrative-content">
         <h2 class="bh-h2">COMPLIANCE & SUSTAINABILITY ANALYSIS: EWM GLOBAL</h2></p><h3 class="bh-h3">1. CURRENT STATE ASSESSMENT</h3></p><h4 class="bh-h4">Compliance Maturity Profile</h4>
 EWM Global demonstrates <strong>strong compliance maturity</strong> with an overall compliance score of <strong>4.14/5</strong>, significantly above the industry median of 3.6/5. As a fintech serving financial services companies, this elevated compliance posture is critical and appropriate.</p><p class="bh-p"><strong>Key Compliance Indicators:</strong>
@@ -1546,10 +1961,13 @@ This comprehensive approach will transform EWM Global's compliance function from
 
       <div id="cross-dimensional">
     <section class="section page-break">
+      
       <div class="section-header">
         <h2>Cross-Dimensional Strategic Synthesis</h2>
         
       </div>
+    
+      
       <div class="narrative-content">
         <h2 class="bh-h2">CROSS-DIMENSIONAL STRATEGIC SYNTHESIS: EWM GLOBAL</h2></p><h3 class="bh-h3">EXECUTIVE SUMMARY</h3></p><p class="bh-p">EWM Global presents a stark paradox: a company with world-class customer relationships and technical capabilities facing imminent collapse due to catastrophic leadership and financial management failures. This synthesis of 10 comprehensive analyses reveals a business where exceptional strengths are neutralized by interconnected systemic failures, creating an urgent need for transformational intervention within 30 days.</p><h3 class="bh-h3">1. CROSS-CUTTING PATTERNS</h3></p><h4 class="bh-h4">Universal Crisis Indicators</h4>
 Across all 10 analyses, four critical patterns emerge consistently:</p><p class="bh-p"><strong>1. Imminent Financial Collapse</strong>
@@ -1751,10 +2169,13 @@ Weak Leadership (2.67/5)
   </div>
       <div id="strategic-recommendations">
     <section class="section page-break">
+      
       <div class="section-header">
         <h2>Strategic Recommendations</h2>
         
       </div>
+    
+      
       <div class="narrative-content">
         <h2 class="bh-h2">STRATEGIC RECOMMENDATIONS FOR EWM GLOBAL</h2></p><p class="bh-p">Based on the comprehensive Phase 1 analyses, here are 15 prioritized strategic recommendations to address EWM Global's critical situation and transform it into a sustainable growth company.</p><h3 class="bh-h3">IMMEDIATE SURVIVAL RECOMMENDATIONS (0-30 Days)</h3></p><h4 class="bh-h4">1. <strong>Emergency Financial Stabilization</strong></h4>
 <strong>Priority</strong>: CRITICAL
@@ -2007,10 +2428,13 @@ The path from crisis to market leadership is clear but requires immediate, decis
   </div>
       <div id="risks">
     <section class="section page-break">
+      
       <div class="section-header">
         <h2>Risk Assessment</h2>
         
       </div>
+    
+      
       <div class="narrative-content">
         <h2 class="bh-h2">COMPREHENSIVE RISK ASSESSMENT: EWM GLOBAL</h2></p><h3 class="bh-h3">EXECUTIVE SUMMARY</h3>
 EWM Global faces <strong>15 critical and high-severity risks</strong> that threaten its survival within 30-60 days. The most severe risk is imminent insolvency with only 1.1 months of cash runway. Multiple risks are interconnected and cascading, creating a compound crisis that requires immediate board intervention.</p><h3 class="bh-h3">TIER 1: EXISTENTIAL RISKS (Immediate Action Required)</h3></p><h4 class="bh-h4">1. CASH RUNWAY EXHAUSTION</h4>
@@ -2247,10 +2671,13 @@ Compliance Risk → Customer Defection → Revenue Loss → Deeper Crisis
   </div>
       <div id="growth">
     <section class="section page-break">
+      
       <div class="section-header">
         <h2>Growth Opportunities</h2>
         
       </div>
+    
+      
       <div class="narrative-content">
         <h2 class="bh-h2">STRATEGIC GROWTH OPPORTUNITIES: EWM GLOBAL</h2></p><h3 class="bh-h3">CRITICAL CONTEXT</h3>
 EWM Global faces an immediate existential crisis with 1.1 months of cash runway. All growth opportunities must be evaluated through the lens of survival first, stabilization second, and growth third. The company possesses exceptional assets (98% retention, $1M LTV, industry-leading compliance) trapped by severe operational and financial constraints.</p><p class="bh-p">---</p><h3 class="bh-h3">OPPORTUNITY 1: EMERGENCY CUSTOMER EXPANSION PROGRAM</h3>
@@ -2513,10 +2940,13 @@ Each opportunity builds upon previous ones, creating a compound effect that can 
   </div>
       <div id="roadmap">
     <section class="section page-break">
+      
       <div class="section-header">
         <h2>Implementation Roadmap</h2>
         
       </div>
+    
+      
       <div class="narrative-content">
         <h2 class="bh-h2">STRATEGIC IMPLEMENTATION ROADMAP: EWM GLOBAL TRANSFORMATION</h2></p><h3 class="bh-h3">EXECUTIVE OVERVIEW</h3></p><p class="bh-p">EWM Global faces an immediate existential crisis requiring emergency action within 30 days. This roadmap prioritizes survival first, followed by stabilization and eventual growth. Without immediate cash infusion and leadership intervention, the company will cease operations within 45 days.</p><p class="bh-p"><strong>Critical Success Factor</strong>: Board must act decisively within 72 hours to initiate Phase 1.</p><p class="bh-p">---</p><h3 class="bh-h3">PHASE 1: FOUNDATION (0-3 MONTHS)</h3>
 <h4 class="bh-h4">SURVIVAL & CRISIS MANAGEMENT</h4></p><p class="bh-p"><strong>Phase Objective</strong>: Extend runway from 1.1 to 6+ months while preserving core capabilities</p><h4 class="bh-h4">Week 1-2: Emergency Response (Board-Led)</h4></p><p class="bh-p"><strong>1. Financial Lifeline</strong>

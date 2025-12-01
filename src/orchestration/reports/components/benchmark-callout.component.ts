@@ -11,7 +11,7 @@ import { escapeHtml } from '../html-template.js';
 /**
  * Benchmark callout data structure
  */
-interface BenchmarkCalloutData {
+export interface BenchmarkCalloutData {
   entityName: string;
   entityType: 'chapter' | 'dimension' | 'overall';
   score: number;
@@ -284,5 +284,3 @@ function percentileToZScore(percentile: number): number {
 
   return zScores[closest] || 0;
 }
-
-export { BenchmarkCalloutData };
