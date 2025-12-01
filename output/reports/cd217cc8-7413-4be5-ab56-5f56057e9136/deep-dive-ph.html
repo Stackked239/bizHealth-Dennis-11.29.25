@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="BizHealth.ai Report Generator v1.0">
+  <title>Performance &amp; Health Deep Dive - EWM Global</title>
+  <style>
+    
+    /* Base Reset and Typography */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      font-family: 'Open Sans', Arial, sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #333;
+      background: #fff;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+      color: #212653;
+      margin-bottom: 0.5em;
+      line-height: 1.3;
+    }
+
+    h1 { font-size: 2.5rem; font-weight: 700; }
+    h2 { font-size: 2rem; font-weight: 600; page-break-before: always; }
+    h2:first-of-type { page-break-before: auto; }
+    h3 { font-size: 1.5rem; font-weight: 600; }
+    h4 { font-size: 1.25rem; font-weight: 500; }
+    h5 { font-size: 1.1rem; font-weight: 500; }
+
+    p {
+      margin-bottom: 1em;
+    }
+
+    /* Links */
+    a {
+      color: #969423;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Lists */
+    ul, ol {
+      margin-left: 1.5em;
+      margin-bottom: 1em;
+    }
+
+    li {
+      margin-bottom: 0.5em;
+    }
+
+    /* Page Layout */
+    .report-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .page {
+      padding: 2rem 0;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    /* Header */
+    .report-header {
+      text-align: center;
+      padding: 2rem 0;
+      border-bottom: 4px solid #212653;
+      margin-bottom: 2rem;
+    }
+
+    .report-header .logo {
+      max-height: 60px;
+      margin-bottom: 1rem;
+    }
+
+    .report-header h1 {
+      margin-bottom: 0.5rem;
+    }
+
+    .report-header .subtitle {
+      font-size: 1.25rem;
+      color: #666;
+    }
+
+    .report-header .company-name {
+      font-size: 1.5rem;
+      color: #969423;
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+
+    .report-header .date {
+      font-size: 0.9rem;
+      color: #888;
+      margin-top: 0.5rem;
+    }
+
+    /* Footer */
+    .report-footer {
+      text-align: center;
+      padding: 1rem 0;
+      border-top: 2px solid #eee;
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    @media print {
+      .report-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    }
+
+    /* Section Styles */
+    .section {
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #969423;
+    }
+
+    .section-icon {
+      font-size: 1.5rem;
+      margin-right: 0.75rem;
+    }
+
+    /* Score Cards */
+    .score-card {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #212653 0%, #212653dd 100%);
+      color: #fff;
+      min-width: 150px;
+    }
+
+    .score-card .score-value {
+      font-size: 3rem;
+      font-weight: 700;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    .score-card .score-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .score-card.small {
+      padding: 0.75rem;
+      min-width: 100px;
+    }
+
+    .score-card.small .score-value {
+      font-size: 1.75rem;
+    }
+
+    /* Health Score Display */
+    .health-score-display {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+    }
+
+    .health-score-circle {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #212653 0%, #212653cc 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    .health-score-circle .score {
+      font-size: 3.5rem;
+      font-weight: 700;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+      line-height: 1;
+    }
+
+    .health-score-circle .out-of {
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    .health-score-details {
+      text-align: left;
+    }
+
+    .health-score-details .status {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .health-score-details .trajectory {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      color: #666;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    th {
+      background: #212653;
+      color: #fff;
+      font-weight: 600;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    tr:hover {
+      background: #f0f0f0;
+    }
+
+    /* Score Table */
+    .score-table th:first-child {
+      width: 40%;
+    }
+
+    .score-table td.score {
+      font-weight: 600;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    /* Band Badge */
+    .band-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .band-badge.Excellence { background: #d4edda; color: #155724; }
+    .band-badge.Proficiency { background: #fff3cd; color: #856404; }
+    .band-badge.Attention { background: #ffeeba; color: #856404; }
+    .band-badge.Critical { background: #f8d7da; color: #721c24; }
+
+    /* Priority Badge */
+    .priority-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .priority-badge.high { background: #dc3545; color: #fff; }
+    .priority-badge.medium { background: #ffc107; color: #333; }
+    .priority-badge.low { background: #28a745; color: #fff; }
+
+    /* Cards */
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #212653;
+      margin: 0;
+    }
+
+    .card-body {
+      font-size: 0.95rem;
+    }
+
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+    @media (max-width: 768px) {
+      .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Flex Layout */
+    .flex { display: flex; }
+    .flex-wrap { flex-wrap: wrap; }
+    .flex-center { align-items: center; justify-content: center; }
+    .flex-between { justify-content: space-between; }
+    .gap-1 { gap: 0.5rem; }
+    .gap-2 { gap: 1rem; }
+    .gap-3 { gap: 1.5rem; }
+
+    /* Utility Classes */
+    .text-center { text-align: center; }
+    .text-right { text-align: right; }
+    .mt-1 { margin-top: 0.5rem; }
+    .mt-2 { margin-top: 1rem; }
+    .mt-3 { margin-top: 1.5rem; }
+    .mb-1 { margin-bottom: 0.5rem; }
+    .mb-2 { margin-bottom: 1rem; }
+    .mb-3 { margin-bottom: 1.5rem; }
+    .p-1 { padding: 0.5rem; }
+    .p-2 { padding: 1rem; }
+    .p-3 { padding: 1.5rem; }
+
+    /* Quick Win Card */
+    .quick-win-card {
+      background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+      border-left: 4px solid #969423;
+      padding: 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+    }
+
+    .quick-win-card .title {
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .quick-win-card .metrics {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.75rem;
+    }
+
+    .quick-win-card .metrics span {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* Risk Card */
+    .risk-card {
+      border-left: 4px solid #dc3545;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .risk-card.high { border-left-color: #dc3545; }
+    .risk-card.medium { border-left-color: #ffc107; }
+    .risk-card.low { border-left-color: #28a745; }
+
+    .risk-card .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .risk-card .category {
+      font-weight: 600;
+      color: #212653;
+    }
+
+    /* Finding Card */
+    .finding-card {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+    }
+
+    .finding-card.strength { background: #d4edda; border-left: 4px solid #28a745; }
+    .finding-card.gap { background: #f8d7da; border-left: 4px solid #dc3545; }
+    .finding-card.risk { background: #ffeeba; border-left: 4px solid #ffc107; }
+    .finding-card.opportunity { background: #cce5ff; border-left: 4px solid #0d6efd; }
+
+    .finding-card .label {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .finding-card .dimension {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Roadmap Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.5rem;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: #212653;
+      border-radius: 3px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 1.5rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -1.75rem;
+      top: 0.5rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #969423;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 3px #212653;
+    }
+
+    .timeline-item .phase-name {
+      font-weight: 600;
+      color: #212653;
+      font-size: 1.1rem;
+    }
+
+    .timeline-item .time-horizon {
+      font-size: 0.9rem;
+      color: #969423;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Callout Box */
+    .callout {
+      padding: 1.25rem;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+    }
+
+    .callout.info {
+      background: #e7f3ff;
+      border-left: 4px solid #0d6efd;
+    }
+
+    .callout.success {
+      background: #d4edda;
+      border-left: 4px solid #28a745;
+    }
+
+    .callout.warning {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+    }
+
+    .callout.danger {
+      background: #f8d7da;
+      border-left: 4px solid #dc3545;
+    }
+
+    .callout .title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      height: 24px;
+      background: #e9ecef;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .progress-bar .fill {
+      height: 100%;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: width 0.3s ease;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        font-size: 11pt;
+      }
+
+      .report-container {
+        max-width: none;
+        padding: 0;
+      }
+
+      .page-break {
+        page-break-before: always;
+      }
+
+      h2 {
+        page-break-before: always;
+      }
+
+      h2:first-of-type {
+        page-break-before: auto;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+    }
+  
+    
+  </style>
+</head>
+<body>
+  <div class="report-container">
+    
+    
+    <header class="report-header">
+      <h1>Performance &amp; Health Deep Dive</h1>
+      <p class="subtitle">Operations &amp; Financial Health</p>
+      <p class="company-name">EWM Global</p>
+      <p class="date">Assessment Date: December 1, 2025</p>
+    </header>
+  
+
+    <section class="section">
+      <h2>Chapter Overview</h2>
+
+      <div class="health-score-display" style="background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);">
+        <div class="health-score-circle" style="width: 140px; height: 140px;">
+          <span class="score" style="font-size: 2.5rem;">51</span>
+          <span class="out-of" style="font-size: 0.9rem;">/ 100</span>
+        </div>
+        <div class="health-score-details">
+          <p class="status" style="font-size: 1.25rem;">Performance &amp; Health</p>
+          <p><span class="band-badge Attention">Attention</span></p>
+          
+        </div>
+      </div>
+
+      <p class="mt-3">This chapter evaluates your organization's operational efficiency and financial health, including process effectiveness, resource utilization, profitability, and fiscal management.</p>
+
+      <div class="callout warning mt-3">
+        <div class="title">Chapter Assessment</div>
+        <p>
+          This chapter shows moderate performance with room for improvement. Targeted interventions can yield significant gains.
+        </p>
+      </div>
+    </section>
+
+    <section class="section page-break">
+      <h2>Dimension Scorecard</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>Score</th>
+            <th>Band</th>
+            <th>Progress</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+            <tr>
+              <td><strong>Operations</strong></td>
+              <td class="score">62/100</td>
+              <td><span class="band-badge Proficiency">Proficiency</span></td>
+              <td style="width: 200px;">
+    <div class="progress-bar">
+      <div class="fill" style="width: 62%; background: #969423;">
+        62%
+      </div>
+    </div>
+  </td>
+            </tr>
+          
+            <tr>
+              <td><strong>Financials</strong></td>
+              <td class="score">39/100</td>
+              <td><span class="band-badge Critical">Critical</span></td>
+              <td style="width: 200px;">
+    <div class="progress-bar">
+      <div class="fill" style="width: 39%; background: #dc3545;">
+        39%
+      </div>
+    </div>
+  </td>
+            </tr>
+          
+        </tbody>
+      </table>
+    </section>
+
+    
+      <section class="section page-break">
+        <h2>Operations Analysis</h2>
+
+        <div class="flex gap-3 mb-3">
+          <div class="score-card small">
+            <div class="score-value">62</div>
+            <div class="score-label">Score</div>
+          </div>
+          <div>
+            <p><span class="band-badge Proficiency">Proficiency</span></p>
+            
+          </div>
+        </div>
+
+        <p class="mb-3">Operational efficiency, process optimization, and workflow management</p>
+
+        
+          <h3>Sub-Indicators</h3>
+          <table class="mb-3">
+            <thead>
+              <tr>
+                <th>Sub-Indicator</th>
+                <th>Score</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>Operational Efficiency</td>
+                  <td class="score">50/100</td>
+                  <td><span class="band-badge Attention">Attention</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Process Documentation</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Operational Reliability</td>
+                  <td class="score">100/100</td>
+                  <td><span class="band-badge Excellence">Excellence</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Lean Practices</td>
+                  <td class="score">50/100</td>
+                  <td><span class="band-badge Attention">Attention</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Resource Utilization</td>
+                  <td class="score">34/100</td>
+                  <td><span class="band-badge Critical">Critical</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+          <h3>Key Strengths</h3>
+          <ul class="mb-3">
+            <li>Strong Operational Reliability</li>
+          </ul>
+        
+
+        
+
+        
+      </section>
+    
+      <section class="section page-break">
+        <h2>Financials Analysis</h2>
+
+        <div class="flex gap-3 mb-3">
+          <div class="score-card small">
+            <div class="score-value">39</div>
+            <div class="score-label">Score</div>
+          </div>
+          <div>
+            <p><span class="band-badge Critical">Critical</span></p>
+            
+          </div>
+        </div>
+
+        <p class="mb-3">Financial health, profitability, and fiscal management</p>
+
+        
+          <h3>Sub-Indicators</h3>
+          <table class="mb-3">
+            <thead>
+              <tr>
+                <th>Sub-Indicator</th>
+                <th>Score</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>Financial Controls</td>
+                  <td class="score">25/100</td>
+                  <td><span class="band-badge Critical">Critical</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Cash Management</td>
+                  <td class="score">0/100</td>
+                  <td><span class="band-badge Critical">Critical</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Profitability</td>
+                  <td class="score">19/100</td>
+                  <td><span class="band-badge Critical">Critical</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Financial Planning</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Growth Readiness</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+
+        
+          <h3>Key Risks</h3>
+          <ul class="mb-3">
+            <li>Financials Critical Underperformance</li>
+          </ul>
+        
+
+        
+      </section>
+    
+
+    <section class="section page-break">
+      <h2>Chapter Findings Summary</h2>
+
+      <div class="grid grid-4 mb-3">
+        <div class="score-card small" style="background: linear-gradient(135deg, #28a745, #1e7e34);">
+          <div class="score-value">1</div>
+          <div class="score-label">Strengths</div>
+        </div>
+        <div class="score-card small" style="background: linear-gradient(135deg, #dc3545, #c82333);">
+          <div class="score-value">4</div>
+          <div class="score-label">Gaps</div>
+        </div>
+        <div class="score-card small" style="background: linear-gradient(135deg, #ffc107, #d39e00);">
+          <div class="score-value">1</div>
+          <div class="score-label">Risks</div>
+        </div>
+        <div class="score-card small" style="background: linear-gradient(135deg, #0d6efd, #0b5ed7);">
+          <div class="score-value">0</div>
+          <div class="score-label">Opportunities</div>
+        </div>
+      </div>
+
+      
+        <h3>Strengths</h3>
+        
+          <div class="finding-card strength">
+            <div class="label">Strong Operational Reliability</div>
+            <div class="dimension">Operations</div>
+            <p>Operational Reliability within Operations shows exceptional performance at 100/100.</p>
+          </div>
+        
+      
+
+      
+        <h3 class="mt-3">Gaps</h3>
+        
+          <div class="finding-card gap">
+            <div class="label">Resource Utilization Gap</div>
+            <div class="dimension">Operations</div>
+            <p>Resource Utilization within Operations requires attention with a score of 34/100.</p>
+          </div>
+        
+          <div class="finding-card gap">
+            <div class="label">Financial Controls Gap</div>
+            <div class="dimension">Financials</div>
+            <p>Financial Controls within Financials requires attention with a score of 25/100.</p>
+          </div>
+        
+          <div class="finding-card gap">
+            <div class="label">Cash Management Gap</div>
+            <div class="dimension">Financials</div>
+            <p>Cash Management within Financials requires attention with a score of 0/100.</p>
+          </div>
+        
+          <div class="finding-card gap">
+            <div class="label">Profitability Gap</div>
+            <div class="dimension">Financials</div>
+            <p>Profitability within Financials requires attention with a score of 19/100.</p>
+          </div>
+        
+      
+
+      
+        <h3 class="mt-3">Risks</h3>
+        
+          <div class="finding-card risk">
+            <div class="label">Financials Critical Underperformance</div>
+            <div class="dimension">Financials</div>
+            <p>Financials is at critical levels with a score of 39/100. Immediate intervention is required to mitigate business risk.</p>
+          </div>
+        
+      
+
+      
+    </section>
+
+    
+      <section class="section page-break">
+        <h2>Chapter Recommendations</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Priority</th>
+              <th>Recommendation</th>
+              <th>Dimension</th>
+              <th>Timeline</th>
+              <th>ROI</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td><strong>#2</strong></td>
+                <td>
+                  Financials Improvement Initiative
+                  
+                </td>
+                <td>Financials</td>
+                <td>0-90 Days</td>
+                <td><strong>0.87x</strong></td>
+              </tr>
+            
+              <tr>
+                <td><strong>#9</strong></td>
+                <td>
+                  Operations Improvement Initiative
+                  
+                </td>
+                <td>Operations</td>
+                <td>12-24+ Months</td>
+                <td><strong>0.76x</strong></td>
+              </tr>
+            
+          </tbody>
+        </table>
+
+        <h3 class="mt-3">Top Recommendation Details</h3>
+        
+          <div class="card mb-2">
+            <div class="card-header">
+              <span class="card-title">Financials Improvement Initiative</span>
+              <span class="band-badge Excellence">
+                0-90 Days
+              </span>
+            </div>
+            <div class="card-body">
+              <div class="flex gap-3 mb-2">
+                <span><strong>Impact:</strong> 61/100</span>
+                <span><strong>Effort:</strong> 70/100</span>
+                <span><strong>ROI:</strong> 0.87x</span>
+              </div>
+
+              <h5>Action Steps:</h5>
+              <ol>
+                <li>Conduct detailed financials assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
+              </ol>
+
+              <p class="mt-2"><strong>Expected Outcomes:</strong> Improve Financials score from 39 to 59 within the target horizon.</p>
+            </div>
+          </div>
+        
+          <div class="card mb-2">
+            <div class="card-header">
+              <span class="card-title">Operations Improvement Initiative</span>
+              <span class="band-badge Attention">
+                12-24+ Months
+              </span>
+            </div>
+            <div class="card-body">
+              <div class="flex gap-3 mb-2">
+                <span><strong>Impact:</strong> 38/100</span>
+                <span><strong>Effort:</strong> 50/100</span>
+                <span><strong>ROI:</strong> 0.76x</span>
+              </div>
+
+              <h5>Action Steps:</h5>
+              <ol>
+                <li>Conduct detailed operations assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
+              </ol>
+
+              <p class="mt-2"><strong>Expected Outcomes:</strong> Improve Operations score from 62 to 82 within the target horizon.</p>
+            </div>
+          </div>
+        
+      </section>
+    
+
+    
+      <section class="section">
+        <h2>Chapter Risk Assessment</h2>
+
+        
+          <div class="risk-card low">
+            <div class="header">
+              <span class="category">Financials</span>
+              <span class="priority-badge medium">
+                Severity: Critical
+              </span>
+            </div>
+            <p>Financials is at critical levels with a score of 39/100. Immediate intervention is required to mitigate business risk.</p>
+          </div>
+        
+      </section>
+    
+
+    <section class="section">
+      <h2>Next Steps</h2>
+
+      <div class="callout success">
+        <div class="title">Recommended Actions for Performance &amp; Health</div>
+        <ol style="margin-bottom: 0;">
+          <li>Review the dimension analysis to understand specific strengths and gaps</li>
+          <li>Prioritize quick wins for immediate impact</li>
+          <li>Address critical risks within the next 30-90 days</li>
+          <li>Develop detailed implementation plans for top recommendations</li>
+          <li>Establish KPIs and tracking mechanisms for ongoing improvement</li>
+        </ol>
+      </div>
+    </section>
+
+    
+    <footer class="report-footer">
+      <p>&copy; 2025 BizHealth.ai - Confidential Business Assessment Report</p>
+      <p>Assessment ID: cd217cc8-7413-4be5-ab56-5f56057e9136</p>
+    </footer>
+  
+  
+  </div>
+</body>
+</html>

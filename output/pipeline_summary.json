@@ -2,7 +2,7 @@
   "config": {
     "webhookPath": "./sample_webhook.json",
     "outputDir": "./output",
-    "startPhase": 5,
+    "startPhase": 0,
     "endPhase": 5,
     "skipDatabase": true,
     "generateReports": true,
@@ -15,18 +15,42 @@
   },
   "results": [
     {
-      "phase": 5,
+      "phase": 0,
       "status": "success",
-      "duration_ms": 112,
-      "output_path": "output/phase5_output.json",
+      "duration_ms": 92,
+      "output_path": "output/phase0_output.json",
       "details": {
-        "status": "complete",
-        "reports_generated": 11,
-        "output_dir": "output/reports/4fd8d702-c64e-4f07-8230-39ab790381b0",
-        "manifest": "output/reports/4fd8d702-c64e-4f07-8230-39ab790381b0/manifest.json"
+        "assessment_run_id": "cd217cc8-7413-4be5-ab56-5f56057e9136",
+        "company_profile_id": "ewm-global-478cbd43",
+        "phases_completed": {
+          "raw_capture": true,
+          "cp_normalization": true,
+          "qr_normalization": true,
+          "benchmark_retrieval": true,
+          "index_update": true
+        },
+        "stats": {
+          "totalEntries": 1,
+          "byStatus": {
+            "raw_captured": 0,
+            "normalized": 0,
+            "ready_for_analysis": 1,
+            "analysis_complete": 0,
+            "error": 0
+          },
+          "byCompany": {
+            "ewm-global-478cbd43": 1
+          }
+        }
       }
+    },
+    {
+      "phase": 1,
+      "status": "failed",
+      "duration_ms": 0,
+      "error": "ANTHROPIC_API_KEY environment variable is required for Phase 1"
     }
   ],
-  "total_duration_ms": 114,
-  "completed_at": "2025-12-01T03:45:07.453Z"
+  "total_duration_ms": 95,
+  "completed_at": "2025-12-01T04:05:45.422Z"
 }

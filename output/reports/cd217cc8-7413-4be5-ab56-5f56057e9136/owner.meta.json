@@ -1,0 +1,36 @@
+{
+  "reportType": "owner",
+  "reportName": "Business Owner Report",
+  "generatedAt": "2025-12-01T04:06:17.061Z",
+  "companyName": "EWM Global",
+  "runId": "cd217cc8-7413-4be5-ab56-5f56057e9136",
+  "healthScore": 53,
+  "healthBand": "Attention",
+  "pageSuggestionEstimate": 3,
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Business Health at a Glance"
+    },
+    {
+      "id": "insights",
+      "title": "Key Insights"
+    },
+    {
+      "id": "recommendations",
+      "title": "Top Recommendations"
+    },
+    {
+      "id": "quick-wins",
+      "title": "Quick Wins"
+    },
+    {
+      "id": "next-steps",
+      "title": "Next Steps"
+    }
+  ],
+  "brand": {
+    "primaryColor": "#212653",
+    "accentColor": "#969423"
+  }
+}
