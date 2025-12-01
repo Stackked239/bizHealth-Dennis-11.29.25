@@ -1,0 +1,134 @@
+{
+  "phase1": {
+    "tier1": {
+      "revenue_engine": {
+        "path": "tier1.revenue_engine.content",
+        "words": 849,
+        "has_content": true
+      },
+      "operational_excellence": {
+        "path": "tier1.operational_excellence.content",
+        "words": 720,
+        "has_content": true
+      },
+      "financial_strategic": {
+        "path": "tier1.financial_strategic.content",
+        "words": 820,
+        "has_content": true
+      },
+      "people_leadership": {
+        "path": "tier1.people_leadership.content",
+        "words": 666,
+        "has_content": true
+      },
+      "compliance_sustainability": {
+        "path": "tier1.compliance_sustainability.content",
+        "words": 1006,
+        "has_content": true
+      },
+      "execution_metadata": {
+        "path": "tier1.execution_metadata.content",
+        "words": 0,
+        "has_content": false
+      }
+    },
+    "tier2": {
+      "growth_readiness": {
+        "path": "tier2.growth_readiness.content",
+        "words": 1167,
+        "has_content": true
+      },
+      "market_position": {
+        "path": "tier2.market_position.content",
+        "words": 1060,
+        "has_content": true
+      },
+      "resource_optimization": {
+        "path": "tier2.resource_optimization.content",
+        "words": 1020,
+        "has_content": true
+      },
+      "risk_resilience": {
+        "path": "tier2.risk_resilience.content",
+        "words": 1159,
+        "has_content": true
+      },
+      "scalability_readiness": {
+        "path": "tier2.scalability_readiness.content",
+        "words": 1279,
+        "has_content": true
+      },
+      "execution_metadata": {
+        "path": "tier2.execution_metadata.content",
+        "words": 0,
+        "has_content": false
+      }
+    }
+  },
+  "phase2": {
+    "analyses": {
+      "cross": {
+        "path": "analyses.cross.content",
+        "words": 1242,
+        "has_content": true
+      },
+      "strategic": {
+        "path": "analyses.strategic.content",
+        "words": 1416,
+        "has_content": true
+      },
+      "consolidated": {
+        "path": "analyses.consolidated.content",
+        "words": 1433,
+        "has_content": true
+      },
+      "growth": {
+        "path": "analyses.growth.content",
+        "words": 1429,
+        "has_content": true
+      },
+      "implementation": {
+        "path": "analyses.implementation.content",
+        "words": 1797,
+        "has_content": true
+      }
+    }
+  },
+  "phase3": {
+    "analyses": {
+      "executive": {
+        "path": "analyses.executive.content",
+        "words": 935,
+        "has_content": true
+      },
+      "scorecard": {
+        "path": "analyses.scorecard.content",
+        "words": 1878,
+        "has_content": true
+      },
+      "action": {
+        "path": "analyses.action.content",
+        "words": 1894,
+        "has_content": true
+      },
+      "investment": {
+        "path": "analyses.investment.content",
+        "words": 1619,
+        "has_content": true
+      },
+      "final": {
+        "path": "analyses.final.content",
+        "words": 2864,
+        "has_content": true
+      }
+    }
+  },
+  "summary": {
+    "overall_health_score": 72,
+    "health_status": "Stable - Requires Strategic Attention",
+    "critical_risks_count": 3,
+    "high_priority_actions_count": 8,
+    "total_investment_required": "$250K - $500K (12-month horizon)",
+    "expected_roi": "3.5x over 18 months"
+  }
+}
