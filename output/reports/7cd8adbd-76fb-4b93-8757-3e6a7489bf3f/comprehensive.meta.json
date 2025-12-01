@@ -1,0 +1,92 @@
+{
+  "reportType": "comprehensive",
+  "reportName": "Comprehensive Assessment Report",
+  "generatedAt": "2025-12-01T04:49:12.932Z",
+  "companyName": "EWM Global",
+  "runId": "7cd8adbd-76fb-4b93-8757-3e6a7489bf3f",
+  "healthScore": 53,
+  "healthBand": "Attention",
+  "pageSuggestionEstimate": 74,
+  "sections": [
+    {
+      "id": "executive-summary",
+      "title": "Executive Summary"
+    },
+    {
+      "id": "scorecard",
+      "title": "Business Health Scorecard"
+    },
+    {
+      "id": "strategy",
+      "title": "Strategy & Revenue Engine"
+    },
+    {
+      "id": "operations",
+      "title": "Operational Excellence"
+    },
+    {
+      "id": "financial",
+      "title": "Financial Health"
+    },
+    {
+      "id": "people",
+      "title": "People & Leadership"
+    },
+    {
+      "id": "compliance",
+      "title": "Compliance & Sustainability"
+    },
+    {
+      "id": "cross-dimensional",
+      "title": "Cross-Dimensional Synthesis"
+    },
+    {
+      "id": "strategic-recommendations",
+      "title": "Strategic Recommendations"
+    },
+    {
+      "id": "risks",
+      "title": "Risk Assessment"
+    },
+    {
+      "id": "growth",
+      "title": "Growth Opportunities"
+    },
+    {
+      "id": "roadmap",
+      "title": "Implementation Roadmap"
+    },
+    {
+      "id": "findings",
+      "title": "Detailed Findings"
+    },
+    {
+      "id": "quick-wins",
+      "title": "Quick Wins"
+    },
+    {
+      "id": "financial-impact",
+      "title": "Financial Impact"
+    },
+    {
+      "id": "chapter-GE",
+      "title": "Growth Engine"
+    },
+    {
+      "id": "chapter-PH",
+      "title": "Performance & Health"
+    },
+    {
+      "id": "chapter-PL",
+      "title": "People & Leadership"
+    },
+    {
+      "id": "chapter-RS",
+      "title": "Resilience & Safeguards"
+    }
+  ],
+  "brand": {
+    "primaryColor": "#212653",
+    "accentColor": "#969423"
+  }
+}
