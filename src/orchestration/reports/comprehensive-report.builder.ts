@@ -135,9 +135,9 @@ export async function buildComprehensiveReport(
     `<div id="quick-wins">${generateQuickWinsSection(ctx)}</div>`,
     `<div id="financial-impact">${generateFinancialSection(ctx)}</div>`,
 
-    // Chapter deep dives
+    // Chapter deep dives with benchmark callouts and evidence citations
     ...ctx.chapters.map(ch =>
-      `<div id="chapter-${ch.code}">${generateChapterSection(ch, ctx.dimensions)}</div>`
+      `<div id="chapter-${ch.code}">${generateChapterSection(ch, ctx.dimensions, ctx)}</div>`
     ),
 
     // Footer with word count
@@ -724,11 +724,28 @@ function generateNarrativeStyles(primaryColor: string, accentColor: string): str
     .score-bar-fill.proficiency { background: linear-gradient(90deg, ${accentColor}, #b0ad2e); }
     .score-bar-fill.excellence { background: linear-gradient(90deg, #28a745, #34ce57); }
 
+    /* FINDINGS GRID LAYOUT */
+    .findings-grid {
+      margin-top: 1rem;
+    }
+
+    .insight-cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .insight-cards-container .insight-card {
+      margin: 0;
+    }
+
     /* RESPONSIVE */
     @media (max-width: 768px) {
       .executive-highlights { grid-template-columns: repeat(2, 1fr); }
       .benchmark-callout { flex-direction: column; text-align: center; }
       .key-takeaways .takeaway-item { flex-direction: column; align-items: flex-start; }
+      .insight-cards-container { grid-template-columns: 1fr; }
     }
 
     /* PRINT OPTIMIZATIONS */

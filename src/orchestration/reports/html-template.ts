@@ -18,6 +18,14 @@ import type {
 } from '../../types/report.types.js';
 import { DEFAULT_BRAND, getBandColor, formatHorizon, calculateROI } from '../../types/report.types.js';
 
+// Import visual enhancement components
+import {
+  generateEvidenceCitationsForDimension,
+  generateInsightCardWithEvidence,
+  generateChapterBenchmarkCallout,
+  generateDimensionBenchmarkCallout,
+} from './components/index.js';
+
 // ============================================================================
 // BASE STYLES
 // ============================================================================
@@ -817,15 +825,19 @@ export function generateScorecardSection(ctx: ReportContext): string {
 }
 
 /**
- * Generate findings section
+ * Generate findings section with visual insight cards
  */
 export function generateFindingsSection(ctx: ReportContext, title: string = 'Key Findings'): string {
-  const { findings } = ctx;
+  const { findings, dimensions } = ctx;
 
   const strengths = findings.filter(f => f.type === 'strength');
   const gaps = findings.filter(f => f.type === 'gap');
   const risks = findings.filter(f => f.type === 'risk');
   const opportunities = findings.filter(f => f.type === 'opportunity');
+
+  // Helper to get dimension for a finding
+  const getDimensionForFinding = (finding: ReportFinding) =>
+    dimensions.find(d => d.code === finding.dimensionCode);
 
   return `
     <section class="section page-break">
@@ -833,25 +845,43 @@ export function generateFindingsSection(ctx: ReportContext, title: string = 'Key
         <h2>${escapeHtml(title)}</h2>
       </div>
 
-      ${strengths.length > 0 ? `
-        <h3>Strengths (${strengths.length})</h3>
-        ${strengths.map(f => generateFindingCard(f)).join('')}
-      ` : ''}
+      <div class="findings-grid">
+        ${strengths.length > 0 ? `
+          <h3>✅ Strengths (${strengths.length})</h3>
+          <div class="insight-cards-container">
+            ${strengths.slice(0, 5).map(f =>
+              generateInsightCardWithEvidence(f, getDimensionForFinding(f))
+            ).join('')}
+          </div>
+        ` : ''}
 
-      ${gaps.length > 0 ? `
-        <h3 class="mt-3">Gaps (${gaps.length})</h3>
-        ${gaps.map(f => generateFindingCard(f)).join('')}
-      ` : ''}
+        ${gaps.length > 0 ? `
+          <h3 class="mt-3">❌ Gaps Identified (${gaps.length})</h3>
+          <div class="insight-cards-container">
+            ${gaps.slice(0, 5).map(f =>
+              generateInsightCardWithEvidence(f, getDimensionForFinding(f))
+            ).join('')}
+          </div>
+        ` : ''}
 
-      ${risks.length > 0 ? `
-        <h3 class="mt-3">Risks (${risks.length})</h3>
-        ${risks.map(f => generateFindingCard(f)).join('')}
-      ` : ''}
+        ${risks.length > 0 ? `
+          <h3 class="mt-3">⚠️ Risks (${risks.length})</h3>
+          <div class="insight-cards-container">
+            ${risks.slice(0, 4).map(f =>
+              generateInsightCardWithEvidence(f, getDimensionForFinding(f))
+            ).join('')}
+          </div>
+        ` : ''}
 
-      ${opportunities.length > 0 ? `
-        <h3 class="mt-3">Opportunities (${opportunities.length})</h3>
-        ${opportunities.map(f => generateFindingCard(f)).join('')}
-      ` : ''}
+        ${opportunities.length > 0 ? `
+          <h3 class="mt-3">📈 Opportunities (${opportunities.length})</h3>
+          <div class="insight-cards-container">
+            ${opportunities.slice(0, 4).map(f =>
+              generateInsightCardWithEvidence(f, getDimensionForFinding(f))
+            ).join('')}
+          </div>
+        ` : ''}
+      </div>
     </section>
   `;
 }
@@ -1042,10 +1072,18 @@ export function generateRoadmapSection(ctx: ReportContext): string {
 }
 
 /**
- * Generate chapter deep dive section
+ * Generate chapter deep dive section with benchmark callouts
  */
-export function generateChapterSection(chapter: ReportChapter, dimensions: ReportDimension[]): string {
+export function generateChapterSection(
+  chapter: ReportChapter,
+  dimensions: ReportDimension[],
+  ctx?: ReportContext
+): string {
   const chapterDimensions = dimensions.filter(d => d.chapterCode === chapter.code);
+  const industryName = ctx?.companyProfile?.industry || 'industry';
+
+  // Generate benchmark callout for chapter
+  const benchmarkCallout = generateChapterBenchmarkCallout(chapter, industryName);
 
   return `
     <section class="section page-break">
@@ -1064,6 +1102,9 @@ export function generateChapterSection(chapter: ReportChapter, dimensions: Repor
         </div>
       </div>
 
+      <!-- Benchmark Callout -->
+      ${benchmarkCallout}
+
       ${chapter.keyFindings.length > 0 ? `
         <h4>Key Findings</h4>
         <ul>
@@ -1072,15 +1113,25 @@ export function generateChapterSection(chapter: ReportChapter, dimensions: Repor
       ` : ''}
 
       <h3 class="mt-3">Dimension Analysis</h3>
-      ${chapterDimensions.map(dim => generateDimensionCard(dim)).join('')}
+      ${chapterDimensions.map(dim => generateDimensionCard(dim, ctx)).join('')}
     </section>
   `;
 }
 
 /**
- * Generate dimension card
+ * Generate dimension card with evidence citations and benchmark callouts
  */
-export function generateDimensionCard(dim: ReportDimension): string {
+export function generateDimensionCard(dim: ReportDimension, ctx?: ReportContext): string {
+  const industryName = ctx?.companyProfile?.industry || 'industry';
+
+  // Generate evidence citation for this dimension
+  const evidenceCitation = ctx
+    ? generateEvidenceCitationsForDimension(ctx, dim.code, 1)
+    : '';
+
+  // Generate dimension benchmark callout
+  const dimensionBenchmark = generateDimensionBenchmarkCallout(dim, industryName);
+
   return `
     <div class="card mb-2">
       <div class="card-header">
@@ -1089,6 +1140,12 @@ export function generateDimensionCard(dim: ReportDimension): string {
       </div>
       <div class="card-body">
         <p class="mb-2">${escapeHtml(dim.description)}</p>
+
+        <!-- Dimension Benchmark Callout -->
+        ${dimensionBenchmark}
+
+        <!-- Evidence Citation -->
+        ${evidenceCitation}
 
         ${dim.subIndicators.length > 0 ? `
           <h5>Sub-Indicators</h5>
