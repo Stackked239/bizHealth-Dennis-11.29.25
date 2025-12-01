@@ -1,85 +1,175 @@
 # BizHealth.ai Pipeline
 
-> **AI-Powered Business Health Assessment & Comprehensive Report Generation**
+> **AI-Powered Business Health Assessment & Report Generation System**
 
-Transform business questionnaire data into actionable insights using Claude AI's advanced analysis capabilities. Generate 11 professional HTML reports in under 15 minutes.
+Transform business questionnaire data into comprehensive, actionable insights using Claude AI. Generate 11 professional HTML reports in under 15 minutes.
 
 [![Pipeline Status](https://img.shields.io/badge/status-operational-success)](https://github.com/Stackked239/bizHealth-Dennis-11.29.25)
-[![Phases](https://img.shields.io/badge/phases-0--5%20complete-blue)](https://github.com/Stackked239/bizHealth-Dennis-11.29.25)
+[![Phases](https://img.shields.io/badge/phases-6%20complete-blue)](https://github.com/Stackked239/bizHealth-Dennis-11.29.25)
 [![Reports](https://img.shields.io/badge/reports-11%20types-orange)](https://github.com/Stackked239/bizHealth-Dennis-11.29.25)
 [![AI Model](https://img.shields.io/badge/AI-Claude%20Opus%204-purple)](https://www.anthropic.com/)
 
 ---
 
-## 🆕 Recent Updates
+## 🚀 Quick Start
 
-**December 1, 2025** - Latest Pipeline Run & Critical Fixes
-- ✅ **Fixed**: TypeScript ES module export errors preventing Phase 5 execution
-- ✅ **Success**: Phase 5 now generates all 11 reports in ~104ms
-- ✅ **Verified**: Complete pipeline execution with EWM Global sample data
-- 📊 **Latest Run**: `7cd8adbd-76fb-4b93-8757-3e6a7489bf3f` (Generated at 04:53:42 UTC)
-- 🔧 **Technical**: Separated type exports using `export type` syntax for TypeScript interfaces
+```bash
+# 1. Clone the repository
+git clone https://github.com/Stackked239/bizHealth-Dennis-11.29.25.git
+cd bizHealth-Dennis-11.29.25/workflow-export
 
-**Pipeline Status**: ✅ All phases operational, 100% success rate
+# 2. Install dependencies
+npm install
+
+# 3. Configure your API key
+cp .env.example .env
+# Add your ANTHROPIC_API_KEY to .env
+
+# 4. Run the pipeline
+npx tsx src/run-pipeline.ts
+
+# 5. View your reports
+open output/reports/*/comprehensive.html
+```
+
+**Duration**: 10-15 minutes | **Output**: 11 professional HTML reports
 
 ---
 
-## Table of Contents
+## 📋 Table of Contents
 
 - [What Is This?](#what-is-this)
-- [Quick Start](#quick-start)
+- [Key Features](#key-features)
 - [Pipeline Architecture](#pipeline-architecture)
-- [Project Structure](#project-structure)
+- [Installation](#installation)
+- [Usage](#usage)
 - [Phase Documentation](#phase-documentation)
-- [Usage Examples](#usage-examples)
-- [Configuration](#configuration)
-- [Sample Output](#sample-output)
 - [Reports Generated](#reports-generated)
-- [Testing](#testing)
+- [Configuration](#configuration)
+- [Sample Data](#sample-data)
 - [Troubleshooting](#troubleshooting)
 - [Performance & Costs](#performance--costs)
-- [Documentation](#documentation)
+- [Recent Updates](#recent-updates)
+- [Support](#support)
 
 ---
 
 ## What Is This?
 
-The **BizHealth.ai Pipeline** is a complete end-to-end system that transforms business assessment data into comprehensive, actionable insights.
+BizHealth.ai Pipeline is an **end-to-end AI-powered business assessment system** that transforms questionnaire responses into comprehensive strategic insights and professional reports.
 
-### What It Does
+### The Flow
 
 ```
-Business Assessment (93 Questions)
-           ↓
-    AI Analysis (20+ Analyses)
-           ↓
-  Canonical Data Model (IDM)
-           ↓
-  Professional Reports (11 HTML)
+📝 93 Business Questions
+        ↓
+🤖 20 AI Analyses (Claude Opus 4)
+        ↓
+📊 Canonical Data Model (IDM)
+        ↓
+📄 11 Professional HTML Reports
 ```
 
-**In**: JSON webhook with questionnaire responses
-**Out**: 11 professional HTML reports + structured data model
+### What You Get
 
-### Key Capabilities
+**Input**: JSON webhook with 93 questionnaire responses across 12 business dimensions
 
-✅ **20 AI-Powered Analyses** using Claude Opus 4
-✅ **12 Business Dimensions** evaluated across 4 strategic chapters
-✅ **Canonical IDM** (Insights Data Model) for report generation
-✅ **11 Professional Reports** for different stakeholders
-✅ **Health Scoring** with industry benchmarking
-✅ **Action Plans** with quick wins and implementation roadmaps
-
-### Technology Stack
-
-- **Runtime**: Node.js 18+ with TypeScript
-- **AI Engine**: Anthropic Claude Opus 4
-- **Data Processing**: Python 3.9+
-- **API**: Anthropic Batch API for cost optimization
+**Output**:
+- 📊 Overall Business Health Score (0-100)
+- 📈 12 Dimension Scores with benchmarking
+- 🎯 30+ Strategic findings (strengths, weaknesses, opportunities, threats)
+- 💡 10+ Prioritized recommendations
+- ⚡ 5+ Quick wins for immediate impact
+- ⚠️ Risk assessment with mitigation strategies
+- 🗺️ 18-month implementation roadmap
+- 📄 11 Stakeholder-specific HTML reports
 
 ---
 
-## Quick Start
+## 🎯 Key Features
+
+✅ **AI-Powered Analysis** - 20 deep analyses using Claude Opus 4
+✅ **12 Business Dimensions** - Comprehensive coverage across 4 strategic chapters
+✅ **Industry Benchmarking** - Compare against industry standards
+✅ **Stakeholder Reports** - 11 tailored reports for different audiences
+✅ **Actionable Insights** - Quick wins, roadmaps, and implementation plans
+✅ **Professional Quality** - Executive-grade HTML reports, ready to present
+✅ **Fast Execution** - Complete pipeline in 10-15 minutes
+✅ **Cost Optimized** - Uses Anthropic Batch API for 50% cost reduction
+
+---
+
+## 🏗️ Pipeline Architecture
+
+### 6-Phase Execution Pipeline
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                   BIZHEALTH AI PIPELINE                      │
+│                 6 Phases • 20 AI Analyses                    │
+└─────────────────────────────────────────────────────────────┘
+
+📥 INPUT: sample_webhook.json (93 questions)
+   │
+   ├─► PHASE 0: Data Normalization                    (~26ms)
+   │   • Validate questionnaire responses
+   │   • Create company profile snapshot
+   │   • Map to 12 business dimensions
+   │   • Retrieve industry benchmarks
+   │   📄 Output: phase0_output.json (95 KB)
+   │
+   ├─► PHASE 1: 10 Foundational AI Analyses          (4-5 min)
+   │   • Revenue Engine Analysis
+   │   • Operational Excellence
+   │   • Financial & Strategic Health
+   │   • People & Leadership
+   │   • Compliance & Sustainability
+   │   • Growth Readiness
+   │   • Market Position
+   │   • Resource Optimization
+   │   • Risk & Resilience
+   │   • Scalability Readiness
+   │   📄 Output: phase1_output.json (76 KB)
+   │
+   ├─► PHASE 2: Cross-Dimensional Analysis           (2-3 min)
+   │   • Cross-dimensional synthesis
+   │   • Strategic recommendations (15+)
+   │   • Consolidated risk assessment (18+)
+   │   • Growth opportunities (10+)
+   │   • Implementation roadmap
+   │   📄 Output: phase2_output.json (57 KB)
+   │
+   ├─► PHASE 3: Executive Synthesis                  (2-3 min)
+   │   • Executive summary
+   │   • Business health scorecard
+   │   • Action matrix (prioritized)
+   │   • Investment roadmap
+   │   • Final recommendations
+   │   📄 Output: phase3_output.json (67 KB)
+   │   🎯 Generates: Overall Health Score
+   │
+   ├─► PHASE 4: IDM Generation                        (<1 sec)
+   │   • Compile canonical Insights Data Model
+   │   • 4 strategic chapters
+   │   • 12 business dimensions
+   │   • 30+ structured findings
+   │   • 10+ recommendations
+   │   📄 Output: idm_output.json (61 KB)
+   │   ⭐ Single source of truth for reports
+   │
+   └─► PHASE 5: Report Generation                     (~63ms)
+       • Generate 11 HTML reports
+       • Integrate 26,253 words of AI narrative
+       • Apply professional styling
+       • Create report manifest
+       📄 Output: 11 reports (554 KB total)
+
+📤 OUTPUT: Professional Reports + Structured Data
+```
+
+---
+
+## 🔧 Installation
 
 ### Prerequisites
 
@@ -87,631 +177,57 @@ Business Assessment (93 Questions)
 - **Python** 3.9+ ([download](https://python.org/))
 - **Anthropic API Key** ([get one](https://console.anthropic.com/))
 
-### Installation
+### Setup Steps
 
 ```bash
-# Clone repository
+# 1. Clone repository
 git clone https://github.com/Stackked239/bizHealth-Dennis-11.29.25.git
-cd bizHealth-Dennis-11.29.25
+cd bizHealth-Dennis-11.29.25/workflow-export
 
-# Install dependencies
+# 2. Install Node.js dependencies
 npm install
 
-# Configure API key
+# 3. Create environment file
 cp .env.example .env
-# Edit .env and add your ANTHROPIC_API_KEY
+
+# 4. Edit .env and add your Anthropic API key
+# ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
-### Run the Complete Pipeline
+### Verify Installation
 
 ```bash
-# Execute all phases (0-5)
-npx tsx src/run-pipeline.ts
+# Check Node.js version
+node --version  # Should be 18+
+
+# Check Python version
+python3 --version  # Should be 3.9+
+
+# Test pipeline configuration
+npx tsx src/run-pipeline.ts --help
 ```
 
-**Expected Duration**: 10-15 minutes
-**Expected Output**: 11 HTML reports in `output/reports/[run-id]/`
+---
 
-### View Results
+## 💻 Usage
+
+### Run Complete Pipeline
 
 ```bash
-# Open comprehensive report in browser
-open output/reports/*/comprehensive.html
-
-# Or list all reports
-ls -lh output/reports/*/
-```
-
----
-
-## Pipeline Architecture
-
-```
-┌───────────────────────────────────────────────────────────────────┐
-│                     BIZHEALTH AI PIPELINE                          │
-│                    6 Phases · 20+ AI Analyses                      │
-└───────────────────────────────────────────────────────────────────┘
-
-📥 INPUT: Business Assessment Webhook (JSON)
-   │  93 questions across 12 business dimensions
-   │
-   ├─────────────────────────────────────────────────────────────────
-   │
-   ├─▶ PHASE 0: Data Normalization                      (~26ms)
-   │   │
-   │   ├─ Validate 93 questionnaire responses
-   │   ├─ Create immutable company profile snapshot
-   │   ├─ Map responses to 12 business dimensions
-   │   └─ Retrieve industry benchmarks
-   │
-   │   📄 Output: phase0_output.json (95 KB)
-   │
-   ├─────────────────────────────────────────────────────────────────
-   │
-   ├─▶ PHASE 1: 10 Foundational AI Analyses            (4-5 min)
-   │   │  Model: Claude Opus 4 (32K tokens, 16K thinking)
-   │   │  Processing: Anthropic Batch API (parallel)
-   │   │
-   │   ├─ 1. Revenue Engine Analysis
-   │   ├─ 2. Operational Excellence
-   │   ├─ 3. Financial & Strategic Health
-   │   ├─ 4. People & Leadership
-   │   ├─ 5. Compliance & Sustainability
-   │   ├─ 6. Growth Readiness
-   │   ├─ 7. Market Position
-   │   ├─ 8. Resource Optimization
-   │   ├─ 9. Risk & Resilience
-   │   └─ 10. Scalability Readiness
-   │
-   │   📄 Output: phase1_output.json (76 KB)
-   │
-   ├─────────────────────────────────────────────────────────────────
-   │
-   ├─▶ PHASE 2: Cross-Dimensional Analysis             (2-3 min)
-   │   │  Synthesizes insights across Phase 1
-   │   │
-   │   ├─ Cross-Dimensional Synthesis
-   │   ├─ Strategic Recommendations (15+)
-   │   ├─ Consolidated Risk Assessment (18+)
-   │   ├─ Growth Opportunities (10+)
-   │   └─ Implementation Roadmap (18 months)
-   │
-   │   📄 Output: phase2_output.json (57 KB)
-   │
-   ├─────────────────────────────────────────────────────────────────
-   │
-   ├─▶ PHASE 3: Executive Synthesis                    (2-3 min)
-   │   │  Creates C-suite ready summaries
-   │   │
-   │   ├─ Executive Summary
-   │   ├─ Scorecard (Business Health Score 0-100)
-   │   ├─ Action Matrix (prioritized by urgency/impact)
-   │   ├─ Investment Roadmap (with ROI projections)
-   │   └─ Final Recommendations
-   │
-   │   📄 Output: phase3_output.json (67 KB)
-   │   🎯 Key: Overall Health Score Generated
-   │
-   ├─────────────────────────────────────────────────────────────────
-   │
-   ├─▶ PHASE 4: IDM Generation                         (<1 sec)
-   │   │  Compiles canonical data model
-   │   │
-   │   └─ Insights Data Model (IDM)
-   │       ├─ 4 Strategic Chapters
-   │       ├─ 12 Business Dimensions
-   │       ├─ 30+ Structured Findings
-   │       ├─ 10+ Prioritized Recommendations
-   │       ├─ 5+ Quick Wins
-   │       └─ Risk Assessment
-   │
-   │   📄 Output: idm_output.json (61 KB)
-   │   ⭐ Single source of truth for reports
-   │
-   ├─────────────────────────────────────────────────────────────────
-   │
-   └─▶ PHASE 5: Report Generation                      (<1 sec)
-       │  Creates 11 professional HTML reports
-       │
-       ├─ Strategic Overview (3 reports)
-       │  ├─ Comprehensive Assessment (199 KB)
-       │  ├─ Business Owner Report (85 KB)
-       │  └─ Executive Brief (19 KB)
-       │
-       ├─ Action Plans (4 reports)
-       │  ├─ Quick Wins Action Plan (25 KB)
-       │  ├─ Risk Assessment Report (21 KB)
-       │  ├─ Implementation Roadmap (29 KB)
-       │  └─ Financial Impact Analysis (25 KB)
-       │
-       └─ Deep Dives (4 reports)
-          ├─ Growth Engine Deep Dive (35 KB)
-          ├─ Performance & Health Deep Dive (27 KB)
-          ├─ People & Leadership Deep Dive (26 KB)
-          └─ Resilience & Safeguards Deep Dive (32 KB)
-
-       📄 Output: 11 HTML reports (596 KB total)
-       📋 Manifest: Report catalog with metadata
-
-📤 OUTPUT: Professional Reports + Structured Data
-   └─ Ready to view in any web browser
-```
-
----
-
-## Project Structure
-
-```
-bizHealth-Dennis-11.29.25/
-│
-├── 📁 src/                              Source code
-│   ├── run-pipeline.ts                  ⭐ Main orchestrator
-│   ├── phase0-index.ts                  Phase 0 entry point
-│   ├── index.ts                         Legacy Phase 1 entry
-│   │
-│   ├── 📁 orchestration/                Phase orchestrators
-│   │   ├── phase0-orchestrator.ts       Data normalization
-│   │   ├── phase1-orchestrator.ts       10 foundational analyses
-│   │   ├── phase2-orchestrator.ts       Cross-dimensional synthesis
-│   │   ├── phase3-orchestrator.ts       Executive summaries
-│   │   ├── phase4-orchestrator.ts       IDM generation
-│   │   ├── phase5-orchestrator.ts       Report generation
-│   │   └── idm-consolidator.ts          IDM builder
-│   │
-│   ├── 📁 prompts/                      AI analysis prompts
-│   │   ├── tier1/                       Core dimension prompts
-│   │   │   ├── revenue-engine.prompts.ts
-│   │   │   ├── operational-excellence.prompts.ts
-│   │   │   ├── financial-strategic.prompts.ts
-│   │   │   ├── people-leadership.prompts.ts
-│   │   │   └── compliance-sustainability.prompts.ts
-│   │   └── tier2/                       Cross-cutting prompts
-│   │       ├── growth-readiness.prompts.ts
-│   │       ├── market-position.prompts.ts
-│   │       ├── resource-optimization.prompts.ts
-│   │       ├── risk-resilience.prompts.ts
-│   │       └── scalability-readiness.prompts.ts
-│   │
-│   ├── 📁 services/                     Core services
-│   │   ├── anthropic-batch.ts           Batch API client
-│   │   ├── assessment-index.ts          Assessment tracking
-│   │   └── benchmark-lookup-service.ts  Benchmark matching
-│   │
-│   ├── 📁 types/                        TypeScript schemas
-│   │   ├── webhook.types.ts             Input data types
-│   │   ├── normalized.types.ts          Phase 0 types
-│   │   ├── idm.types.ts                 IDM schema
-│   │   └── ...
-│   │
-│   └── 📁 utils/                        Utilities
-│       ├── logger.ts                    Structured logging
-│       └── errors.ts                    Error handling
-│
-├── 📁 scripts/                          Python & utility scripts
-│   ├── phase4-idm-compiler.py           IDM compiler
-│   ├── idm_models.py                    Python IDM models
-│   └── 📁 report-generator/             HTML report generators
-│
-├── 📁 output/                           ⭐ Generated outputs
-│   ├── idm_output.json                  Canonical IDM (61 KB)
-│   ├── phase0_output.json               Normalized data (95 KB)
-│   ├── phase1_output.json               10 analyses (76 KB)
-│   ├── phase2_output.json               5 syntheses (57 KB)
-│   ├── phase3_output.json               5 exec outputs (67 KB)
-│   ├── phase4_output.json               Phase 4 metadata
-│   ├── phase5_output.json               Phase 5 metadata
-│   ├── pipeline_summary.json            Execution summary
-│   │
-│   └── 📁 reports/[run-id]/             11 HTML reports
-│       ├── comprehensive.html           (199 KB)
-│       ├── owner.html                   (85 KB)
-│       ├── executiveBrief.html          (19 KB)
-│       ├── quickWins.html               (25 KB)
-│       ├── risk.html                    (21 KB)
-│       ├── roadmap.html                 (29 KB)
-│       ├── financial.html               (25 KB)
-│       ├── deep-dive-ge.html            (35 KB)
-│       ├── deep-dive-ph.html            (27 KB)
-│       ├── deep-dive-pl.html            (26 KB)
-│       ├── deep-dive-rs.html            (32 KB)
-│       └── manifest.json                Report catalog
-│
-├── 📁 samples/                          25 test webhooks
-│   ├── webhook_001_startup_tech.json
-│   ├── webhook_002_restaurant_chain.json
-│   └── ... (23 more industry samples)
-│
-├── 📁 config/                           Configuration files
-│   ├── question-mapping.json
-│   └── 📁 report-recipes/               Report templates
-│
-├── 📄 README.md                         ⭐ This file
-├── 📄 README_COMPLETE.md                Full guide (1,100+ lines)
-├── 📄 PIPELINE_EXECUTION_REPORT.md      Execution analysis (1,450+ lines)
-├── 📄 IDM_CONSOLIDATION_BUG_REPORT.md   Known issues & fixes
-├── 📄 LOCAL-SETUP-GUIDE.md              Setup instructions
-│
-├── package.json                         Node dependencies
-├── tsconfig.json                        TypeScript config
-└── .env                                 ⚙️ API configuration
-```
-
----
-
-## Phase Documentation
-
-### Phase 0: Data Normalization
-**Duration**: ~26ms
-**AI Required**: No
-
-**Purpose**: Transform raw webhook data into clean, validated structures
-
-**Process**:
-1. Validate 93 questionnaire responses
-2. Create immutable snapshot of company profile
-3. Map responses to 12 business dimensions (across 4 chapters)
-4. Retrieve benchmark data by industry, size, and revenue
-
-**Output**: `output/phase0_output.json` (95 KB)
-
-**Key Features**:
-- SHA-256 hashing for data integrity
-- Snapshot isolation prevents data drift
-- Dimension mapping for analysis preparation
-- Industry benchmark matching
-
----
-
-### Phase 1: 10 Foundational AI Analyses
-**Duration**: 4-5 minutes
-**AI Required**: Yes (Claude Opus 4)
-
-**Configuration**:
-- **Model**: `claude-opus-4-20250514`
-- **Max Tokens**: 32,000 output tokens per analysis
-- **Thinking Budget**: 16,000 tokens for extended reasoning
-- **Temperature**: 1.0
-- **Processing**: Anthropic Batch API (parallel execution)
-
-**Analyses**:
-
-**Tier 1 - Core Dimensions** (5 analyses):
-1. **Revenue Engine** - Sales, marketing, customer acquisition, pricing strategy
-2. **Operational Excellence** - Processes, efficiency, quality control, delivery
-3. **Financial & Strategic Health** - Cash flow, profitability, strategic planning
-4. **People & Leadership** - Culture, talent management, leadership effectiveness
-5. **Compliance & Sustainability** - Regulatory compliance, governance, ESG
-
-**Tier 2 - Cross-Cutting** (5 analyses):
-6. **Growth Readiness** - Scalability assessment, market opportunity analysis
-7. **Market Position** - Competitive advantage, differentiation, brand strength
-8. **Resource Optimization** - Technology utilization, infrastructure efficiency
-9. **Risk & Resilience** - Threat assessment, vulnerabilities, business continuity
-10. **Scalability Readiness** - Systems and processes for sustainable growth
-
-**Output**: `output/phase1_output.json` (76 KB)
-
-**Typical Execution**:
-- Two batch jobs (Tier 1 and Tier 2) run in parallel
-- Each batch: 5 analyses processed simultaneously
-- Total time: 4-5 minutes depending on API load
-
----
-
-### Phase 2: Cross-Dimensional Analysis
-**Duration**: 2-3 minutes
-**AI Required**: Yes (Claude Opus 4)
-
-**Purpose**: Synthesize insights across all Phase 1 analyses to identify patterns, contradictions, and strategic opportunities
-
-**Analyses**:
-
-1. **Cross-Dimensional Synthesis**
-   - Identifies patterns across all 10 Phase 1 analyses
-   - Finds reinforcing factors and contradictions
-   - Maps hidden connections between business areas
-   - Identifies root causes and strategic leverage points
-
-2. **Strategic Recommendations**
-   - 15+ prioritized strategic recommendations
-   - Implementation steps for each recommendation
-   - Expected outcomes and success metrics
-   - Investment requirements and timelines
-   - Dependencies and prerequisite actions
-
-3. **Consolidated Risk Assessment**
-   - 18+ risks categorized by severity (Critical/High/Medium/Low)
-   - Detailed mitigation strategies for each risk
-   - Monitoring indicators and early warning signs
-   - Integrated risk mitigation roadmap
-   - Probability and impact scoring
-
-4. **Growth Opportunities**
-   - 10+ prioritized growth opportunities
-   - Impact assessment (Critical/High/Medium)
-   - Required capabilities and resource investments
-   - Success metrics and measurement frameworks
-   - Implementation timeframes
-
-5. **Implementation Roadmap**
-   - 18-month phased implementation plan
-   - 4 phases: Foundation → Stabilization → Growth → Optimization
-   - Dependencies and critical path analysis
-   - Resource requirements by phase
-   - Governance structure and decision points
-
-**Output**: `output/phase2_output.json` (57 KB)
-
----
-
-### Phase 3: Executive Synthesis
-**Duration**: 2-3 minutes
-**AI Required**: Yes (Claude Opus 4)
-
-**Purpose**: Create executive-ready summaries and actionable frameworks for C-suite stakeholders
-
-**Analyses**:
-
-1. **Executive Summary**
-   - High-level overview optimized for C-suite consumption
-   - Key findings and critical issues requiring attention
-   - Top 3 strategic priorities
-   - Quick wins for immediate impact
-   - Strategic imperatives for long-term success
-
-2. **Scorecard**
-   - Business health scores by dimension (0-5 scale)
-   - Benchmarking vs. industry standards
-   - Performance trends and trajectories
-   - Red/yellow/green status indicators
-   - Historical comparison (if available)
-
-3. **Action Matrix**
-   - Prioritized actions by urgency and impact
-   - Ownership and accountability assignments
-   - Quick wins vs. strategic initiatives
-   - 30/60/90-day action plans
-   - Resource requirements per action
-
-4. **Investment Roadmap**
-   - Financial investment requirements by initiative
-   - Expected ROI and payback periods
-   - Funding sources and timing recommendations
-   - Break-even analysis
-   - Risk-adjusted returns
-
-5. **Final Recommendations**
-   - Consolidated top recommendations integrating all analyses
-   - Change management considerations
-   - Success metrics and KPIs
-   - Governance and monitoring frameworks
-   - Communication strategy
-
-**Key Output**: **Overall Health Score** (0-100 scale)
-
-**Output**: `output/phase3_output.json` (67 KB)
-
----
-
-### Phase 4: IDM Generation
-**Duration**: <1 second
-**AI Required**: No
-
-**Purpose**: Compile all analyses into the canonical Insights Data Model (IDM)
-
-**The IDM Structure**:
-
-```json
-{
-  "meta": {
-    "idm_version": "1.0",
-    "assessment_run_id": "...",
-    "company_profile_id": "...",
-    "company_name": "...",
-    "generated_at": "2025-12-01T02:38:55.081Z"
-  },
-  "chapters": [
-    {
-      "chapter_code": "GE",
-      "chapter_name": "Growth Engine",
-      "score": 3.2,
-      "score_band": "needs_improvement",
-      "dimensions": [
-        {
-          "dimension_code": "STR",
-          "dimension_name": "Strategy",
-          "questions": [...]
-        }
-      ]
-    }
-  ],
-  "findings": [
-    {
-      "finding_id": "...",
-      "type": "strength|weakness|opportunity|threat",
-      "severity": "critical|high|medium|low",
-      "category": "...",
-      "description": "...",
-      "implications": "..."
-    }
-  ],
-  "recommendations": [
-    {
-      "recommendation_id": "...",
-      "priority": "high|medium|low",
-      "horizon": "immediate|short_term|long_term",
-      "category": "...",
-      "title": "...",
-      "description": "...",
-      "expected_impact": "..."
-    }
-  ],
-  "quick_wins": [...],
-  "risks": [...],
-  "roadmap": {
-    "phases": [...]
-  },
-  "scores_summary": {
-    "overall_score": 53,
-    "health_status": "Needs Improvement"
-  }
-}
-```
-
-**IDM Features**:
-- ✅ Single source of truth for all reports
-- ✅ 12 dimensions with scores and benchmarks
-- ✅ 30+ structured findings with severity ratings
-- ✅ 10+ validated recommendations with priorities
-- ✅ Quick wins identified by impact/effort analysis
-- ✅ Risk assessment with likelihood × impact ratings
-- ✅ Implementation roadmap with phases and dependencies
-- ✅ Question-level data for detailed drill-down
-
-**Output**: `output/idm_output.json` (61 KB)
-
-**Technologies**: TypeScript + Python for IDM compilation
-
----
-
-### Phase 5: Report Generation
-**Duration**: <1 second
-**AI Required**: No
-
-**Purpose**: Generate 11 professional HTML reports from the IDM
-
-**Narrative Integration**:
-- **26,253 words** of AI-generated content integrated
-- **Phase 1**: 9,746 words
-- **Phase 2**: 7,317 words
-- **Phase 3**: 9,190 words
-
-**Reports Generated**:
-
-**Strategic Overview** (3 reports):
-
-1. **Comprehensive Assessment Report** (199 KB)
-   - Complete business analysis across all dimensions
-   - All findings, recommendations, and action items
-   - Full narrative content from all AI analyses
-   - Executive summary with health score
-   - Detailed scorecards and metrics
-
-2. **Business Owner Report** (85 KB)
-   - Owner-focused insights and priorities
-   - Financial impact analysis
-   - Strategic imperatives
-   - Resource allocation recommendations
-   - Investment roadmap
-
-3. **Executive Brief** (19 KB)
-   - C-suite optimized summary
-   - Top 3 priorities
-   - Critical issues requiring immediate attention
-   - Key metrics dashboard
-   - One-page executive view
-
-**Action Plans** (4 reports):
-
-4. **Quick Wins Action Plan** (25 KB)
-   - Immediate opportunities (30-90 days)
-   - High impact, low effort initiatives
-   - Resource requirements
-   - Expected ROI
-   - Implementation steps
-
-5. **Risk Assessment Report** (21 KB)
-   - Risk analysis and categorization
-   - Mitigation strategies
-   - Monitoring frameworks
-   - Early warning indicators
-   - Risk heat maps
-
-6. **Implementation Roadmap** (29 KB)
-   - 18-month phased plan
-   - Phase dependencies and critical path
-   - Resource allocation timeline
-   - Milestones and deliverables
-   - Governance structure
-
-7. **Financial Impact Analysis** (25 KB)
-   - Financial projections by initiative
-   - ROI calculations
-   - Investment requirements
-   - Break-even analysis
-   - Funding recommendations
-
-**Deep Dive Reports** (4 reports):
-
-8. **Growth Engine Deep Dive** (35 KB)
-   - Revenue and sales detailed analysis
-   - Customer acquisition strategies
-   - Marketing effectiveness
-   - Pricing optimization
-   - Sales process analysis
-
-9. **Performance & Health Deep Dive** (27 KB)
-   - Operational excellence analysis
-   - Process efficiency
-   - Quality metrics
-   - Resource utilization
-   - Technology infrastructure
-
-10. **People & Leadership Deep Dive** (26 KB)
-    - Culture and engagement analysis
-    - Talent management assessment
-    - Leadership effectiveness
-    - Organizational structure
-    - Succession planning
-
-11. **Resilience & Safeguards Deep Dive** (32 KB)
-    - Risk and compliance analysis
-    - Business continuity planning
-    - Regulatory compliance
-    - Cybersecurity posture
-    - Crisis management readiness
-
-**Output**: `output/reports/[run-id]/` (596 KB total)
-
-**Report Features**:
-- ✅ Professional HTML formatting
-- ✅ Browser-viewable (no special software needed)
-- ✅ Print-ready layouts
-- ✅ Interactive charts and visualizations
-- ✅ Executive-grade presentation quality
-- ✅ Metadata for programmatic access
-
----
-
-## Usage Examples
-
-### Complete Pipeline Execution
-
-```bash
-# Run all phases (0-5) with default sample data
+# Execute all 6 phases (0-5)
 npx tsx src/run-pipeline.ts
 
 # Expected output:
-# ================================================================================
-# BIZHEALTH REPORT PIPELINE
-# ================================================================================
-# Webhook:    ./sample_webhook.json
-# Output Dir: ./output
-# Phases:     0 → 5
-# ================================================================================
-#
-# ✓ Phase 0: SUCCESS (Duration: 26ms)
-# ✓ Phase 1: SUCCESS (Duration: 4m 24s)
-# ✓ Phase 2: SUCCESS (Duration: 2m 19s)
-# ✓ Phase 3: SUCCESS (Duration: 3m 6s)
-# ✓ Phase 4: SUCCESS (Duration: 0.02s)
-# ✓ Phase 5: SUCCESS (Duration: 0.61s)
-#
+# ✓ Phase 0: SUCCESS (26ms)
+# ✓ Phase 1: SUCCESS (4m 24s)
+# ✓ Phase 2: SUCCESS (2m 19s)
+# ✓ Phase 3: SUCCESS (3m 6s)
+# ✓ Phase 4: SUCCESS (0.02s)
+# ✓ Phase 5: SUCCESS (0.06s)
 # Total Duration: 10m 15s
-# All phases completed successfully!
 ```
 
-### Individual Phase Execution
+### Run Individual Phases
 
 ```bash
 # Phase 0 only (data normalization)
@@ -727,28 +243,24 @@ npx tsx src/run-pipeline.ts --phase=4
 npx tsx src/run-pipeline.ts --phase=5
 ```
 
-### Phase Range Execution
+### Run Phase Ranges
 
 ```bash
 # Run phases 0-2 only
 npx tsx src/run-pipeline.ts --phase=0-2
 
-# Run phases 2-4 only (requires Phase 0-1 outputs)
-npx tsx src/run-pipeline.ts --phase=2-4
-
 # Run phases 3-5 only (requires Phase 0-2 outputs)
 npx tsx src/run-pipeline.ts --phase=3-5
 ```
 
-### Custom Webhook Processing
+### Use Custom Webhook Data
 
 ```bash
-# Use your own webhook data
+# Use your own webhook file
 npx tsx src/run-pipeline.ts path/to/your-webhook.json
 
-# Use a specific sample webhook
+# Use a sample webhook
 npx tsx src/run-pipeline.ts samples/webhook_001_startup_tech.json
-npx tsx src/run-pipeline.ts samples/webhook_012_software_saas.json
 
 # Process multiple webhooks
 for webhook in samples/*.json; do
@@ -766,25 +278,223 @@ npx tsx src/run-pipeline.ts --output-dir=./custom-output
 npx tsx src/run-pipeline.ts --output-dir=./reports/acme-corp
 ```
 
-### Validation and Testing
+---
 
-```bash
-# Validate IDM file exists and is valid JSON
-cat output/idm_output.json | python3 -m json.tool > /dev/null && echo "✓ Valid"
+## 📖 Phase Documentation
 
-# Check all reports generated
-ls -lh output/reports/*/
+### Phase 0: Data Normalization
+**Duration**: ~26ms | **AI**: No
 
-# View comprehensive report
-open output/reports/*/comprehensive.html
+Transforms raw webhook data into clean, validated structures.
 
-# Check pipeline summary
-cat output/pipeline_summary.json
-```
+**Process**:
+1. Validate 93 questionnaire responses
+2. Create immutable company profile snapshot
+3. Map responses to 12 business dimensions
+4. Retrieve industry benchmarks
+
+**Output**: `phase0_output.json` (95 KB)
 
 ---
 
-## Configuration
+### Phase 1: 10 Foundational AI Analyses
+**Duration**: 4-5 minutes | **AI**: Yes (Claude Opus 4)
+
+**Configuration**:
+- Model: `claude-opus-4-20250514`
+- Max Tokens: 32,000 per analysis
+- Thinking Budget: 16,000 tokens
+- Processing: Anthropic Batch API (parallel)
+
+**Analyses**:
+
+**Tier 1 - Core Dimensions** (5):
+1. Revenue Engine - Sales, marketing, customer acquisition
+2. Operational Excellence - Processes, efficiency, quality
+3. Financial & Strategic Health - Cash flow, profitability
+4. People & Leadership - Culture, talent, leadership
+5. Compliance & Sustainability - Regulatory, governance, ESG
+
+**Tier 2 - Cross-Cutting** (5):
+6. Growth Readiness - Scalability assessment
+7. Market Position - Competitive advantage
+8. Resource Optimization - Technology utilization
+9. Risk & Resilience - Threat assessment
+10. Scalability Readiness - Systems for growth
+
+**Output**: `phase1_output.json` (76 KB)
+
+---
+
+### Phase 2: Cross-Dimensional Analysis
+**Duration**: 2-3 minutes | **AI**: Yes (Claude Opus 4)
+
+Synthesizes insights across all Phase 1 analyses.
+
+**Deliverables**:
+1. **Cross-Dimensional Synthesis** - Patterns and connections
+2. **Strategic Recommendations** - 15+ prioritized actions
+3. **Consolidated Risk Assessment** - 18+ risks with mitigation
+4. **Growth Opportunities** - 10+ prioritized opportunities
+5. **Implementation Roadmap** - 18-month phased plan
+
+**Output**: `phase2_output.json` (57 KB)
+
+---
+
+### Phase 3: Executive Synthesis
+**Duration**: 2-3 minutes | **AI**: Yes (Claude Opus 4)
+
+Creates executive-ready summaries for C-suite stakeholders.
+
+**Deliverables**:
+1. **Executive Summary** - C-suite optimized overview
+2. **Scorecard** - Business health scores by dimension
+3. **Action Matrix** - Prioritized by urgency and impact
+4. **Investment Roadmap** - Financial requirements and ROI
+5. **Final Recommendations** - Integrated strategic guidance
+
+**Key Output**: Overall Health Score (0-100)
+
+**Output**: `phase3_output.json` (67 KB)
+
+---
+
+### Phase 4: IDM Generation
+**Duration**: <1 second | **AI**: No
+
+Compiles all analyses into the canonical Insights Data Model (IDM).
+
+**IDM Structure**:
+- 4 Strategic Chapters (Growth Engine, Performance, People, Resilience)
+- 12 Business Dimensions with scores
+- 30+ Structured findings (SWOT)
+- 10+ Prioritized recommendations
+- 5+ Quick wins
+- Risk assessment with mitigation
+- Implementation roadmap
+
+**Output**: `idm_output.json` (61 KB)
+⭐ Single source of truth for all reports
+
+---
+
+### Phase 5: Report Generation
+**Duration**: ~63ms | **AI**: No
+
+Generates 11 professional HTML reports from the IDM.
+
+**Narrative Integration**: 26,253 words of AI-generated content
+- Phase 1: 9,746 words
+- Phase 2: 7,317 words
+- Phase 3: 9,190 words
+
+**Reports**: See [Reports Generated](#reports-generated) section
+
+**Output**: 11 HTML files (554 KB total) + manifest
+
+---
+
+## 📄 Reports Generated
+
+### Strategic Overview Reports (3)
+
+#### 1. Comprehensive Assessment Report
+**Size**: 215 KB | **Audience**: All stakeholders
+
+Complete business analysis across all dimensions with full AI narrative, findings, recommendations, and roadmap.
+
+**Best For**: Board presentations, strategic planning, complete assessments
+
+---
+
+#### 2. Business Owner Report
+**Size**: 100 KB | **Audience**: Owners, founders, partners
+
+Owner-focused insights with financial impact analysis, strategic imperatives, and resource allocation recommendations.
+
+**Best For**: Strategic decision-making, investment planning
+
+---
+
+#### 3. Executive Brief
+**Size**: 19 KB | **Audience**: C-suite, board members
+
+One-page executive summary with top 3 priorities, critical issues, and key metrics dashboard.
+
+**Best For**: Board meetings, quick reviews, high-level updates
+
+---
+
+### Action Plan Reports (4)
+
+#### 4. Quick Wins Action Plan
+**Size**: 25 KB | **Audience**: Operations teams, managers
+
+5+ immediate opportunities (30-90 days) with high impact and low effort.
+
+**Best For**: Building momentum, demonstrating progress
+
+---
+
+#### 5. Risk Assessment Report
+**Size**: 21 KB | **Audience**: Risk managers, compliance officers
+
+Comprehensive risk inventory with mitigation strategies and monitoring frameworks.
+
+**Best For**: Risk management, compliance reviews
+
+---
+
+#### 6. Implementation Roadmap
+**Size**: 29 KB | **Audience**: Project managers, operations leaders
+
+18-month phased plan with dependencies, resources, and milestones.
+
+**Best For**: Strategic planning, project management
+
+---
+
+#### 7. Financial Impact Analysis
+**Size**: 25 KB | **Audience**: CFO, financial planners
+
+Financial projections, ROI calculations, and investment requirements.
+
+**Best For**: Financial planning, budget allocation
+
+---
+
+### Deep Dive Reports (4)
+
+#### 8. Growth Engine Deep Dive
+**Size**: 35 KB | **Chapter**: Growth Engine
+
+Revenue, sales, customer acquisition, marketing, and pricing analysis.
+
+---
+
+#### 9. Performance & Health Deep Dive
+**Size**: 27 KB | **Chapter**: Performance & Health
+
+Operational excellence, process efficiency, quality, and technology.
+
+---
+
+#### 10. People & Leadership Deep Dive
+**Size**: 26 KB | **Chapter**: People & Leadership
+
+Culture, engagement, talent management, and leadership effectiveness.
+
+---
+
+#### 11. Resilience & Safeguards Deep Dive
+**Size**: 32 KB | **Chapter**: Resilience & Safeguards
+
+Risk, compliance, business continuity, and cybersecurity.
+
+---
+
+## ⚙️ Configuration
 
 ### Environment Variables (`.env`)
 
@@ -821,62 +531,54 @@ BATCH_POLL_INTERVAL_MS=30000
 BATCH_TIMEOUT_MS=3600000
 
 # =============================================================================
-# OPTIONAL - Logging & Environment
+# OPTIONAL - Logging
 # =============================================================================
 
 # Logging level (default: info)
 # Options: debug, info, warn, error
 LOG_LEVEL=info
-
-# Node environment (default: development)
-NODE_ENV=development
 ```
 
 ### Model Selection Guide
 
 | Model | Quality | Speed | Cost/Run | Best For |
 |-------|---------|-------|----------|----------|
-| **Claude Opus 4** ⭐ | Highest | Slower | $15-30 | Production analysis, deep insights |
-| Claude Sonnet 4 | Good | Faster | $3-6 | Development, quick analysis |
-| Claude Haiku 4 | Basic | Fastest | $0.50-1 | Testing, simple analysis |
+| **Claude Opus 4** ⭐ | Highest | Slower | $15-30 | Production analysis |
+| Claude Sonnet 4 | Good | Faster | $3-6 | Development, testing |
+| Claude Haiku 4 | Basic | Fastest | $0.50-1 | Quick tests |
 
 **Recommendation**: Use **Claude Opus 4** for production runs to ensure highest quality insights.
 
 ### Token Configuration
 
-**Important**: Claude Opus 4 has a **32,000 token output limit**
+⚠️ **Important**: Claude Opus 4 has a **32,000 token output limit**
 
 ```bash
 # ✅ CORRECT Configuration
 DEFAULT_MAX_TOKENS=32000
 DEFAULT_THINKING_TOKENS=16000
-# Total: 48K (32K output + 16K thinking)
 
 # ❌ INCORRECT - Will Fail
-DEFAULT_MAX_TOKENS=64000
-DEFAULT_THINKING_TOKENS=32000
-# Exceeds Opus 4 limits
+DEFAULT_MAX_TOKENS=64000  # Exceeds Opus 4 limits
 ```
 
 ---
 
-## Sample Output
+## 📊 Sample Data
 
-### Real Execution: EWM Global Assessment
+### Example: EWM Global Assessment
 
 **Company**: EWM Global
 **Industry**: Technology Consulting
 **Size**: 50-100 employees
-**Annual Revenue**: $5-10M
+**Revenue**: $5-10M
 
 **Latest Pipeline Run**:
 - **Run ID**: `7cd8adbd-76fb-4b93-8757-3e6a7489bf3f`
-- **Generated**: December 1, 2025 at 04:53:42 UTC
-- **Phase 5 Duration**: 104ms
+- **Generated**: December 1, 2025 at 06:38:09 UTC
+- **Phase 5 Duration**: 63ms
 - **Total Duration**: 9 minutes 48 seconds (full pipeline)
-- **Phases Completed**: 6/6 (100%)
-- **AI Analyses**: 20/20 (100% success)
-- **Reports Generated**: 11/11 (100% success)
+- **Reports**: 11/11 (100% success)
 
 **Business Health Results**:
 ```
@@ -891,204 +593,22 @@ Chapter Scores:
 ```
 
 **Analysis Summary**:
-- **Chapters Analyzed**: 4
-- **Dimensions Evaluated**: 12
-- **Questions Processed**: 93/93 (100%)
-- **Findings Identified**: 30
-  - Strengths: 8
-  - Weaknesses: 12
-  - Opportunities: 7
-  - Threats: 3
-- **Recommendations**: 10
-- **Quick Wins**: 5
-- **Critical Risks**: 2
-
-**Generated Files**:
-```bash
-output/
-├── idm_output.json (61 KB)
-├── phase0_output.json (95 KB)
-├── phase1_output.json (76 KB)
-├── phase2_output.json (57 KB)
-├── phase3_output.json (67 KB)
-├── phase4_output.json (3.2 KB)
-├── phase5_output.json (3.0 KB)
-└── reports/7cd8adbd-76fb-4b93-8757-3e6a7489bf3f/
-    ├── comprehensive.html (215 KB)
-    ├── owner.html (100 KB)
-    ├── executiveBrief.html (19 KB)
-    ├── quickWins.html (25 KB)
-    ├── risk.html (21 KB)
-    ├── roadmap.html (29 KB)
-    ├── financial.html (25 KB)
-    ├── deep-dive-ge.html (35 KB)
-    ├── deep-dive-ph.html (27 KB)
-    ├── deep-dive-pl.html (26 KB)
-    ├── deep-dive-rs.html (32 KB)
-    └── manifest.json (1.9 KB)
-
-Total: 554 KB of reports
-```
+- Chapters Analyzed: 4
+- Dimensions Evaluated: 12
+- Questions Processed: 93/93 (100%)
+- Findings: 30 (8 strengths, 12 weaknesses, 7 opportunities, 3 threats)
+- Recommendations: 10
+- Quick Wins: 5
+- Critical Risks: 2
 
 **View Reports**:
 ```bash
 open output/reports/7cd8adbd-76fb-4b93-8757-3e6a7489bf3f/comprehensive.html
 ```
 
----
+### Test Webhooks
 
-## Reports Generated
-
-### 1. Comprehensive Assessment Report
-**Size**: 199 KB | **Audience**: All stakeholders
-
-**Contents**:
-- Executive summary with health score
-- Complete analysis across all 12 dimensions
-- All 30+ findings categorized and prioritized
-- 10+ strategic recommendations with implementation guidance
-- 5+ quick wins for immediate impact
-- Risk assessment and mitigation strategies
-- 18-month implementation roadmap
-- Full narrative content from AI analyses (26,253 words)
-
-**Best For**: Complete business assessment, board presentations, strategic planning sessions
-
----
-
-### 2. Business Owner Report
-**Size**: 85 KB | **Audience**: Business owners, founders, partners
-
-**Contents**:
-- Owner-focused executive summary
-- Financial impact analysis and projections
-- Strategic imperatives and priorities
-- Resource allocation recommendations
-- Investment requirements and ROI expectations
-- Risk overview and mitigation priorities
-- Action plan with ownership assignments
-
-**Best For**: Strategic decision-making, investment planning, resource allocation
-
----
-
-### 3. Executive Brief
-**Size**: 19 KB | **Audience**: C-suite, board members
-
-**Contents**:
-- One-page executive summary
-- Top 3 strategic priorities
-- Critical issues requiring immediate attention
-- Key metrics dashboard
-- High-level health score and status
-- Quick wins summary
-
-**Best For**: Board meetings, quick reviews, high-level updates
-
----
-
-### 4. Quick Wins Action Plan
-**Size**: 25 KB | **Audience**: Operations teams, managers
-
-**Contents**:
-- 5+ immediate opportunities (30-90 day horizon)
-- High impact, low effort initiatives
-- Detailed implementation steps
-- Resource requirements
-- Expected ROI and success metrics
-- Timeline and milestones
-
-**Best For**: Getting quick wins, building momentum, demonstrating progress
-
----
-
-### 5. Risk Assessment Report
-**Size**: 21 KB | **Audience**: Risk managers, compliance officers, executives
-
-**Contents**:
-- Comprehensive risk inventory
-- Risk categorization by severity and likelihood
-- Mitigation strategies for each risk
-- Monitoring frameworks
-- Early warning indicators
-- Risk heat maps and visualizations
-- Compliance considerations
-
-**Best For**: Risk management, compliance reviews, board risk committees
-
----
-
-### 6. Implementation Roadmap
-**Size**: 29 KB | **Audience**: Project managers, operations leaders
-
-**Contents**:
-- 18-month phased implementation plan
-- 4 phases: Foundation → Stabilization → Growth → Optimization
-- Dependencies and critical path analysis
-- Resource allocation by phase
-- Milestones and deliverables
-- Governance structure
-- Success metrics and KPIs
-
-**Best For**: Strategic planning, project management, resource planning
-
----
-
-### 7. Financial Impact Analysis
-**Size**: 25 KB | **Audience**: CFO, financial planners, investors
-
-**Contents**:
-- Financial projections by initiative
-- ROI calculations and payback periods
-- Investment requirements by phase
-- Break-even analysis
-- Funding recommendations
-- Cash flow impact
-- Risk-adjusted returns
-
-**Best For**: Financial planning, investment decisions, budget allocation
-
----
-
-### 8-11. Deep Dive Reports (4 reports)
-
-**Growth Engine Deep Dive** (35 KB)
-- Revenue and sales analysis
-- Customer acquisition strategies
-- Marketing effectiveness
-- Pricing optimization
-- Sales process assessment
-
-**Performance & Health Deep Dive** (27 KB)
-- Operational excellence analysis
-- Process efficiency metrics
-- Quality control assessment
-- Technology infrastructure
-- Resource utilization
-
-**People & Leadership Deep Dive** (26 KB)
-- Culture and engagement
-- Talent management
-- Leadership effectiveness
-- Organizational structure
-- Succession planning
-
-**Resilience & Safeguards Deep Dive** (32 KB)
-- Risk and compliance
-- Business continuity
-- Regulatory compliance
-- Cybersecurity posture
-- Crisis management
-
-**Best For**: Functional leaders, department heads, detailed planning
-
----
-
-## Testing
-
-### Using Sample Webhooks
-
-The pipeline includes **25 sample webhooks** across different industries:
+25 sample webhooks included across different industries:
 
 ```bash
 # Technology startup
@@ -1097,112 +617,28 @@ npx tsx src/run-pipeline.ts samples/webhook_001_startup_tech.json
 # Restaurant chain
 npx tsx src/run-pipeline.ts samples/webhook_002_restaurant_chain.json
 
-# Manufacturing
-npx tsx src/run-pipeline.ts samples/webhook_003_manufacturing_established.json
+# SaaS company
+npx tsx src/run-pipeline.ts samples/webhook_012_software_saas.json
 
 # Healthcare clinic
 npx tsx src/run-pipeline.ts samples/webhook_004_healthcare_clinic.json
-
-# SaaS company
-npx tsx src/run-pipeline.ts samples/webhook_012_software_saas.json
 ```
 
-### Available Industries
-
-1. Technology Startups
-2. Restaurant Chains
-3. Manufacturing
-4. Healthcare Clinics
-5. Retail Boutiques
-6. Construction Firms
-7. Consulting Agencies
-8. E-commerce Fashion
-9. Accounting Firms
-10. Craft Breweries
-11. Fitness Studios
-12. SaaS Software
-13. Law Firms
-14. Auto Repair
-15. Real Estate Agencies
-16. Logistics Companies
-17. Dental Practices
-18. Marketing Agencies
-19. Agricultural Farms
-20. Insurance Agencies
-21. Graphic Design Studios
-22. Veterinary Clinics
-23. Coffee Shop Chains
-24. Plumbing Companies
-25. Tutoring Centers
-
-### Validation Tests
-
-```bash
-# Test Phase 0 only
-npx tsx src/phase0-index.ts samples/webhook_001_startup_tech.json
-
-# Validate output files exist
-ls -lh output/phase*.json
-
-# Validate IDM structure
-cat output/idm_output.json | python3 -m json.tool > /dev/null && echo "✓ Valid JSON"
-
-# Check report generation
-ls -lh output/reports/*/
-
-# Verify all 11 reports exist
-test $(ls output/reports/*/*.html 2>/dev/null | wc -l) -eq 11 && echo "✓ All reports generated" || echo "✗ Missing reports"
-```
-
-### Performance Testing
-
-```bash
-# Time the complete pipeline
-time npx tsx src/run-pipeline.ts
-
-# Expected results:
-# real    10m15.234s
-# user    0m45.123s
-# sys     0m5.234s
-```
+**Available Industries**: Technology, Restaurant, Manufacturing, Healthcare, Retail, Construction, Consulting, E-commerce, Accounting, Craft Brewery, Fitness, SaaS, Legal, Auto Repair, Real Estate, Logistics, Dental, Marketing, Agriculture, Insurance, Design, Veterinary, Coffee Shop, Plumbing, Tutoring
 
 ---
 
-## Troubleshooting
+## 🔧 Troubleshooting
 
 ### Common Issues
 
 #### 1. "Cannot find package 'dotenv'"
-**Cause**: Dependencies not installed
+**Solution**:
 ```bash
-# Solution
 npm install
 ```
 
-#### 2. "Phase 1 failed: Batch job timeout"
-**Cause**: Batch API taking longer than expected
-
-**Solutions**:
-```bash
-# Increase timeout in .env
-BATCH_TIMEOUT_MS=7200000  # 2 hours
-
-# Or check Anthropic API status
-curl https://status.anthropic.com/
-```
-
-#### 3. "max_tokens: 64000 > 32000"
-**Cause**: Token configuration exceeds Claude Opus 4 limits
-
-**Solution**: Fix `.env`:
-```bash
-DEFAULT_MAX_TOKENS=32000
-DEFAULT_THINKING_TOKENS=16000
-```
-
-#### 4. "No API key found"
-**Cause**: Missing or invalid ANTHROPIC_API_KEY
-
+#### 2. "No API key found"
 **Solution**:
 ```bash
 # Verify .env file exists
@@ -1211,8 +647,24 @@ ls -la .env
 # Check API key is set
 grep ANTHROPIC_API_KEY .env
 
-# Get a new key if needed
-# https://console.anthropic.com/
+# Get a new key: https://console.anthropic.com/
+```
+
+#### 3. "max_tokens: 64000 > 32000"
+**Solution**: Fix `.env`:
+```bash
+DEFAULT_MAX_TOKENS=32000
+DEFAULT_THINKING_TOKENS=16000
+```
+
+#### 4. "Phase 1 failed: Batch job timeout"
+**Solution**:
+```bash
+# Increase timeout in .env
+BATCH_TIMEOUT_MS=7200000  # 2 hours
+
+# Or check Anthropic API status
+curl https://status.anthropic.com/
 ```
 
 #### 5. Pipeline hangs during Phase 1/2/3
@@ -1223,19 +675,7 @@ grep ANTHROPIC_API_KEY .env
 - Phase 2: 2-3 minutes
 - Phase 3: 2-3 minutes
 
-**Check Progress**:
-```bash
-# View logs in real-time
-tail -f output/phase*.json
-
-# Check batch status via API
-curl https://api.anthropic.com/v1/messages/batches/[batch_id] \
-  -H "x-api-key: $ANTHROPIC_API_KEY"
-```
-
 #### 6. "No reports in output/reports/"
-**Cause**: Phase 5 not run or failed
-
 **Solution**:
 ```bash
 # Run Phase 5 explicitly
@@ -1245,24 +685,7 @@ npx tsx src/run-pipeline.ts --phase=5
 cat output/phase5_output.json
 ```
 
-#### 7. TypeScript ES Module Export Errors (FIXED ✅)
-**Severity**: Critical (previously prevented Phase 5 execution)
-
-**Error**: "The requested module does not provide an export named 'BenchmarkCalloutData'"
-
-**Root Cause**: TypeScript interfaces cannot be re-exported as values in ES modules
-
-**Fixed Files**:
-- `src/orchestration/reports/components/benchmark-callout.component.ts` - Added `export` keyword to interface
-- `src/orchestration/reports/components/index.ts` - Separated type exports using `export type` syntax
-
-**Fix Date**: December 1, 2025
-
-**Status**: ✅ Resolved - Phase 5 now runs successfully in ~104ms
-
 ### Debug Mode
-
-Enable detailed logging:
 
 ```bash
 # Set in .env
@@ -1270,9 +693,6 @@ LOG_LEVEL=debug
 
 # Run with debug output
 npx tsx src/run-pipeline.ts 2>&1 | tee debug.log
-
-# Review debug log
-less debug.log
 ```
 
 ### Verify Pipeline Integrity
@@ -1280,23 +700,23 @@ less debug.log
 ```bash
 # Check all phase outputs exist
 for i in {0..5}; do
-  ls output/phase${i}_output.json && echo "✓ Phase $i" || echo "✗ Phase $i missing"
+  test -f output/phase${i}_output.json && echo "✓ Phase $i" || echo "✗ Phase $i missing"
 done
 
 # Check IDM exists
 test -f output/idm_output.json && echo "✓ IDM exists" || echo "✗ IDM missing"
 
 # Validate JSON structure
-find output -name "*.json" -exec sh -c 'cat {} | python3 -m json.tool > /dev/null && echo "✓ {}" || echo "✗ {} invalid"' \;
+cat output/idm_output.json | python3 -m json.tool > /dev/null && echo "✓ Valid JSON"
 
-# Check report count
+# Verify all 11 reports exist
 report_count=$(ls output/reports/*/*.html 2>/dev/null | wc -l)
 echo "Reports generated: $report_count/11"
 ```
 
 ---
 
-## Performance & Costs
+## 📈 Performance & Costs
 
 ### Execution Times
 
@@ -1307,7 +727,7 @@ echo "Reports generated: $report_count/11"
 | Phase 2 | 2-3 min | AI analysis (5 analyses) |
 | Phase 3 | 2-3 min | AI analysis (5 analyses) |
 | Phase 4 | <1 sec | Data compilation |
-| Phase 5 | <1 sec | Report generation |
+| Phase 5 | ~63ms | Report generation |
 | **Total** | **10-15 min** | **Complete pipeline** |
 
 ### Resource Usage
@@ -1320,19 +740,19 @@ echo "Reports generated: $report_count/11"
 ### Cost Estimates
 
 **With Claude Opus 4** (Recommended):
-- **Cost per Run**: $15-30
-- **Cost per Analysis**: ~$0.75-1.50
-- **Monthly (10 runs)**: ~$150-300
+- Cost per Run: $15-30
+- Cost per Analysis: ~$0.75-1.50
+- Monthly (10 runs): ~$150-300
 
 **With Claude Sonnet 4** (Development):
-- **Cost per Run**: $3-6
-- **Cost per Analysis**: ~$0.15-0.30
-- **Monthly (10 runs)**: ~$30-60
+- Cost per Run: $3-6
+- Cost per Analysis: ~$0.15-0.30
+- Monthly (10 runs): ~$30-60
 
 **With Claude Haiku 4** (Testing):
-- **Cost per Run**: $0.50-1
-- **Cost per Analysis**: ~$0.025-0.05
-- **Monthly (10 runs)**: ~$5-10
+- Cost per Run: $0.50-1
+- Cost per Analysis: ~$0.025-0.05
+- Monthly (10 runs): ~$5-10
 
 ### Performance Optimization
 
@@ -1342,118 +762,47 @@ echo "Reports generated: $report_count/11"
 - ✅ Automatic retry handling
 - ✅ Consistent performance
 
-**Pipeline Optimizations**:
-- Cached outputs allow phase resumption
-- Parallel execution in Phases 1-3
-- No redundant API calls
-- Efficient token usage
+---
+
+## 🆕 Recent Updates
+
+**December 1, 2025** - Critical TypeScript Fixes & Performance Improvements
+
+- ✅ **Fixed**: TypeScript ES module export errors preventing Phase 5 execution
+- ✅ **Performance**: Phase 5 now generates all 11 reports in ~63ms (improved from 104ms)
+- ✅ **Verified**: Complete pipeline execution with 100% success rate
+- 📊 **Latest Run**: `7cd8adbd-76fb-4b93-8757-3e6a7489bf3f` (Generated at 06:38:09 UTC)
+- 🔧 **Technical**: Separated type exports using `export type` syntax for TypeScript interfaces
+
+**Fixed Files**:
+- `src/orchestration/reports/components/benchmark-callout.component.ts`
+- `src/orchestration/reports/components/index.ts`
+
+**Pipeline Status**: ✅ All phases operational, 100% success rate
 
 ---
 
-## Documentation
+## 📚 Additional Documentation
 
-### Available Guides
-
-1. **README.md** (This file)
-   - Quick start and overview
-   - Phase documentation
-   - Usage examples
-   - Configuration guide
-
-2. **README_COMPLETE.md** (1,100+ lines)
-   - Comprehensive workflow guide
-   - Architecture deep dive
-   - Advanced usage patterns
-   - Development guide
-
-3. **PIPELINE_EXECUTION_REPORT.md** (1,450+ lines)
-   - Real execution analysis
-   - Performance metrics
-   - Issue documentation
-   - Recommendations
-
-4. **IDM_CONSOLIDATION_BUG_REPORT.md**
-   - Known issues
-   - Bug analysis
-   - Fix implementations
-   - Testing procedures
-
-5. **LOCAL-SETUP-GUIDE.md**
-   - Installation instructions
-   - Environment setup
-   - Troubleshooting
-   - Quick reference
-
-### Quick Reference Commands
-
-```bash
-# ==========================================
-# INSTALLATION
-# ==========================================
-npm install
-cp .env.example .env
-# Edit .env and add ANTHROPIC_API_KEY
-
-# ==========================================
-# EXECUTION
-# ==========================================
-# Complete pipeline
-npx tsx src/run-pipeline.ts
-
-# Specific phase
-npx tsx src/run-pipeline.ts --phase=5
-
-# Custom webhook
-npx tsx src/run-pipeline.ts samples/webhook_001_startup_tech.json
-
-# ==========================================
-# VALIDATION
-# ==========================================
-# Check outputs
-ls -lh output/phase*.json
-ls -lh output/reports/*/
-
-# Validate IDM
-cat output/idm_output.json | python3 -m json.tool
-
-# View reports
-open output/reports/*/comprehensive.html
-
-# ==========================================
-# TROUBLESHOOTING
-# ==========================================
-# Enable debug logging
-LOG_LEVEL=debug npx tsx src/run-pipeline.ts
-
-# Check pipeline status
-cat output/pipeline_summary.json
-
-# Verify all phases completed
-for i in {0..5}; do
-  test -f output/phase${i}_output.json && echo "✓ Phase $i" || echo "✗ Phase $i"
-done
-```
+- **README_COMPLETE.md** - Comprehensive workflow guide (1,100+ lines)
+- **PIPELINE_EXECUTION_REPORT.md** - Detailed execution analysis (1,450+ lines)
+- **IDM_CONSOLIDATION_BUG_REPORT.md** - Known issues and fixes
+- **LOCAL-SETUP-GUIDE.md** - Installation and setup instructions
 
 ---
 
-## Support & Contact
+## 💬 Support
 
 **Repository**: https://github.com/Stackked239/bizHealth-Dennis-11.29.25
 
-**Documentation**:
-- [Complete Guide](./README_COMPLETE.md)
-- [Execution Report](./PIPELINE_EXECUTION_REPORT.md)
-- [Setup Guide](./LOCAL-SETUP-GUIDE.md)
-- [Bug Reports](./IDM_CONSOLIDATION_BUG_REPORT.md)
-
 **For Issues**:
 1. Check [Troubleshooting](#troubleshooting) section
-2. Review relevant documentation
+2. Review additional documentation
 3. Check GitHub issues
 
 ---
 
-## License
+## 📜 License
 
 Copyright © 2025 BizHealth.ai
 
@@ -1461,7 +810,7 @@ All rights reserved. Proprietary and confidential.
 
 ---
 
-## Acknowledgments
+## 🙏 Acknowledgments
 
 **Built with**:
 - [Anthropic Claude API](https://www.anthropic.com/) - AI analysis engine
@@ -1473,29 +822,36 @@ All rights reserved. Proprietary and confidential.
 
 ---
 
-## Quick Start Recap
+## 🎯 Quick Reference
 
 ```bash
-# 1. Clone and install
-git clone https://github.com/Stackked239/bizHealth-Dennis-11.29.25.git
-cd bizHealth-Dennis-11.29.25
+# Installation
 npm install
-
-# 2. Configure
 cp .env.example .env
-# Add your ANTHROPIC_API_KEY to .env
+# Add ANTHROPIC_API_KEY to .env
 
-# 3. Run
+# Run complete pipeline
 npx tsx src/run-pipeline.ts
 
-# 4. View results
-open output/reports/*/comprehensive.html
-```
+# Run specific phase
+npx tsx src/run-pipeline.ts --phase=5
 
-**That's it!** In 10-15 minutes, you'll have 11 professional business analysis reports.
+# Use custom webhook
+npx tsx src/run-pipeline.ts samples/webhook_001_startup_tech.json
+
+# View reports
+open output/reports/*/comprehensive.html
+
+# Check pipeline status
+cat output/pipeline_summary.json
+
+# Validate outputs
+test -f output/idm_output.json && echo "✓ IDM exists"
+ls -lh output/reports/*/
+```
 
 ---
 
 **Happy Analyzing! 🚀**
 
-*Built with Claude Code · Powered by Claude Opus 4*
+*Powered by Claude Opus 4 • Built with Claude Code*
