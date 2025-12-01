@@ -36,6 +36,8 @@ import {
   Trajectory,
   FindingType,
   RecommendationHorizon,
+  Benchmark,
+  OverallBenchmark,
   CHAPTER_NAMES,
   DIMENSION_METADATA,
   SUB_INDICATOR_DEFINITIONS,
@@ -52,6 +54,14 @@ import {
 } from '../types/idm.types.js';
 import { QuestionnaireResponses, CategoryResponses } from '../types/questionnaire.types.js';
 import { CompanyProfile } from '../types/company-profile.types.js';
+import {
+  calculateAllChapterBenchmarks,
+  calculateOverallBenchmark,
+  getBenchmarkDataForCompany,
+  getBandDescription,
+  type CompanyBenchmarkProfile,
+  type PercentileResult,
+} from '../utils/benchmark-calculator.js';
 import type {
   NormalizedQuestionnaireResponses,
   NormalizedChapter,
@@ -59,6 +69,42 @@ import type {
   NormalizedQuestionResponse,
   DimensionCode as NormalizedDimensionCode,
 } from '../types/normalized.types.js';
+
+// ============================================================================
+// BENCHMARK PROFILE EXTRACTION
+// ============================================================================
+
+/**
+ * Extract benchmark profile from company profile for benchmark lookups
+ */
+function extractCompanyBenchmarkProfile(companyProfile: CompanyProfile): CompanyBenchmarkProfile {
+  // Extract industry from company profile
+  const industry = companyProfile.basic_information?.industry?.primary_industry || 'general_smb';
+
+  // Extract employee count - use total workforce or sum components
+  let employeeCount = 50; // Default
+  if (companyProfile.size_metrics?.workforce) {
+    const workforce = companyProfile.size_metrics.workforce;
+    employeeCount = workforce.total_workforce ||
+      (workforce.full_time_employees || 0) +
+      (workforce.part_time_employees || 0) +
+      (workforce.contractors_1099 || 0);
+  }
+
+  // Extract annual revenue
+  let annualRevenue = 1000000; // Default $1M
+  if (companyProfile.size_metrics?.revenue) {
+    annualRevenue = companyProfile.size_metrics.revenue.last_year_total ||
+      companyProfile.size_metrics.revenue.projected_this_year ||
+      1000000;
+  }
+
+  return {
+    industry,
+    employeeCount: Math.max(1, employeeCount),
+    annualRevenue: Math.max(0, annualRevenue),
+  };
+}
 
 // ============================================================================
 // INTERFACES
@@ -435,20 +481,39 @@ function buildDimensions(questions: Question[]): Dimension[] {
 }
 
 /**
- * Build chapters from dimensions
+ * Build chapters from dimensions with optional benchmark data
  */
-function buildChapters(dimensions: Dimension[]): Chapter[] {
+function buildChapters(
+  dimensions: Dimension[],
+  chapterBenchmarks?: Map<ChapterCode, PercentileResult>
+): Chapter[] {
   const chapters: Chapter[] = [];
 
   for (const code of ChapterCodeSchema.options) {
     const chapterDimensions = dimensions.filter(d => d.chapter_code === code);
     const scoreOverall = calculateChapterScore(dimensions, code);
 
+    // Build benchmark data if available
+    let benchmark: Benchmark = undefined;
+    if (chapterBenchmarks) {
+      const benchmarkResult = chapterBenchmarks.get(code);
+      if (benchmarkResult) {
+        benchmark = {
+          peer_percentile: benchmarkResult.percentile,
+          band_description: getBandDescription(benchmarkResult.comparisonBand),
+          industry_average: benchmarkResult.industryAverage,
+          peer_comparison_band: benchmarkResult.comparisonBand,
+          benchmark_narrative: benchmarkResult.narrative,
+        };
+      }
+    }
+
     chapters.push({
       chapter_code: code,
       name: CHAPTER_NAMES[code],
       score_overall: scoreOverall,
-      score_band: getScoreBand(scoreOverall)
+      score_band: getScoreBand(scoreOverall),
+      benchmark,
     });
   }
 
@@ -775,12 +840,19 @@ function buildRoadmap(recommendations: Recommendation[]): Roadmap {
 // ============================================================================
 
 /**
- * Build scores summary
+ * Build scores summary with optional overall benchmark
  */
 function buildScoresSummary(
   chapters: Chapter[],
   dimensions: Dimension[],
-  findings: Finding[]
+  findings: Finding[],
+  overallBenchmarkResult?: {
+    percentileRank: number;
+    industryBenchmark: number;
+    peerGroupDescription: string;
+    peerGroupSize: number;
+    benchmarkNarrative: string;
+  } | null
 ): ScoresSummary {
   const overallScore = calculateOverallHealthScore(chapters);
   const descriptor = getHealthDescriptor(overallScore);
@@ -792,11 +864,24 @@ function buildScoresSummary(
     .slice(0, 3)
     .map(d => `Improve ${d.name} (currently ${d.score_overall}/100)`);
 
+  // Build overall benchmark if available
+  let overall_benchmark: OverallBenchmark = undefined;
+  if (overallBenchmarkResult) {
+    overall_benchmark = {
+      percentile_rank: overallBenchmarkResult.percentileRank,
+      industry_benchmark: overallBenchmarkResult.industryBenchmark,
+      peer_group_description: overallBenchmarkResult.peerGroupDescription,
+      peer_group_size: overallBenchmarkResult.peerGroupSize,
+      benchmark_narrative: overallBenchmarkResult.benchmarkNarrative,
+    };
+  }
+
   return {
     overall_health_score: overallScore,
     descriptor,
     trajectory,
-    key_imperatives: keyImperatives
+    key_imperatives: keyImperatives,
+    overall_benchmark,
   };
 }
 
@@ -837,14 +922,44 @@ export class IDMConsolidator {
       idm_schema_version: '1.0.0'
     };
 
+    // Extract company benchmark profile for benchmark calculations
+    const benchmarkProfile = extractCompanyBenchmarkProfile(companyProfile);
+
     // Extract questions from questionnaire
     const questions = extractQuestions(questionnaireResponses);
 
     // Build dimensions from questions
     const dimensions = buildDimensions(questions);
 
-    // Build chapters from dimensions
-    const chapters = buildChapters(dimensions);
+    // Build preliminary chapters to get scores for benchmark calculation
+    const preliminaryChapters = buildChapters(dimensions);
+
+    // Calculate chapter benchmarks using company profile
+    let chapterBenchmarks: Map<ChapterCode, PercentileResult> | undefined;
+    let overallBenchmarkResult: ReturnType<typeof calculateOverallBenchmark> = null;
+
+    try {
+      // Calculate benchmarks for each chapter
+      chapterBenchmarks = calculateAllChapterBenchmarks(
+        preliminaryChapters.map(c => ({
+          chapter_code: c.chapter_code,
+          name: c.name,
+          score_overall: c.score_overall,
+        })),
+        benchmarkProfile
+      );
+
+      // Calculate overall health benchmark
+      const overallScore = preliminaryChapters.reduce((sum, c) => sum + c.score_overall, 0) / preliminaryChapters.length;
+      overallBenchmarkResult = calculateOverallBenchmark(Math.round(overallScore), benchmarkProfile);
+
+      console.log(`[IDM Consolidator] Benchmark data calculated for ${benchmarkProfile.industry} industry`);
+    } catch (error) {
+      console.warn('[IDM Consolidator] Failed to calculate benchmarks, proceeding without benchmark data:', error);
+    }
+
+    // Build chapters with benchmark data
+    const chapters = buildChapters(dimensions, chapterBenchmarks);
 
     // Extract findings
     const findings = extractFindings(dimensions, phase1Results, phase2Results, phase3Results);
@@ -861,8 +976,8 @@ export class IDMConsolidator {
     // Build roadmap
     const roadmap = buildRoadmap(recommendations);
 
-    // Build scores summary
-    const scoresSummary = buildScoresSummary(chapters, dimensions, findings);
+    // Build scores summary with overall benchmark
+    const scoresSummary = buildScoresSummary(chapters, dimensions, findings, overallBenchmarkResult);
 
     // Construct IDM
     const idmData: IDM = {
@@ -933,5 +1048,6 @@ export const testExports = {
   identifyQuickWins,
   extractRisks,
   buildRoadmap,
-  buildScoresSummary
+  buildScoresSummary,
+  extractCompanyBenchmarkProfile,
 };
