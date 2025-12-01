@@ -1,9 +1,9 @@
 {
   "config": {
-    "webhookPath": "./sample_webhook.json",
+    "webhookPath": "samples/webhook_001_startup_tech.json",
     "outputDir": "./output",
     "startPhase": 0,
-    "endPhase": 5,
+    "endPhase": 0,
     "skipDatabase": true,
     "generateReports": true,
     "reportTypes": [
@@ -17,11 +17,11 @@
     {
       "phase": 0,
       "status": "success",
-      "duration_ms": 85,
+      "duration_ms": 64,
       "output_path": "output/phase0_output.json",
       "details": {
-        "assessment_run_id": "7cd8adbd-76fb-4b93-8757-3e6a7489bf3f",
-        "company_profile_id": "ewm-global-478cbd43",
+        "assessment_run_id": "6004a817-4a49-4e26-8411-37b7163eda89",
+        "company_profile_id": "nexgen-ai-solutions-8f76cf6c",
         "phases_completed": {
           "raw_capture": true,
           "cp_normalization": true,
@@ -30,27 +30,21 @@
           "index_update": true
         },
         "stats": {
-          "totalEntries": 1,
+          "totalEntries": 2,
           "byStatus": {
             "raw_captured": 0,
             "normalized": 0,
-            "ready_for_analysis": 1,
+            "ready_for_analysis": 2,
             "analysis_complete": 0,
             "error": 0
           },
           "byCompany": {
-            "ewm-global-478cbd43": 1
+            "nexgen-ai-solutions-8f76cf6c": 2
           }
         }
       }
-    },
-    {
-      "phase": 1,
-      "status": "failed",
-      "duration_ms": 0,
-      "error": "ANTHROPIC_API_KEY environment variable is required for Phase 1"
     }
   ],
-  "total_duration_ms": 87,
-  "completed_at": "2025-12-01T04:47:56.188Z"
+  "total_duration_ms": 67,
+  "completed_at": "2025-12-01T05:55:51.405Z"
 }
