@@ -270,14 +270,14 @@ For each metric:
 - Are there obvious cause-effect relationships?
 
 **Example Correlation Analysis**:
-```
+\`\`\`
 Strategy Q5 (Documented Goals): 2/5 → LOW
 Sales Q2 (Target Alignment): 3/5 → MODERATE
 Marketing Q3 (Target Customer Clarity): 2/5 → LOW
 
 Pattern: Weak strategic foundation cascades to functional misalignment
 Impact: Sales and marketing working without clear strategic direction
-```
+\`\`\`
 
 **3B. Map Interdependencies**
 
