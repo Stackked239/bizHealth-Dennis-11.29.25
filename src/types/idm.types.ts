@@ -164,13 +164,39 @@ export type Meta = z.infer<typeof MetaSchema>;
 // ============================================================================
 
 /**
- * Benchmark data for comparative analysis
+ * Peer comparison bands for benchmark classification
+ */
+export const PeerComparisonBandSchema = z.enum([
+  'below_average',
+  'average',
+  'above_average',
+  'top_quartile'
+]);
+export type PeerComparisonBand = z.infer<typeof PeerComparisonBandSchema>;
+
+/**
+ * Chapter/Dimension benchmark data for comparative analysis
  */
 export const BenchmarkSchema = z.object({
   peer_percentile: z.number().min(0).max(100),
-  band_description: z.string()
+  band_description: z.string(),
+  industry_average: z.number().min(0).max(100).optional(),
+  peer_comparison_band: PeerComparisonBandSchema.optional(),
+  benchmark_narrative: z.string().optional()
 }).optional();
 export type Benchmark = z.infer<typeof BenchmarkSchema>;
+
+/**
+ * Overall benchmark data for scores summary
+ */
+export const OverallBenchmarkSchema = z.object({
+  percentile_rank: z.number().min(0).max(100),
+  industry_benchmark: z.number().min(0).max(100),
+  peer_group_description: z.string(),
+  peer_group_size: z.number().int().positive(),
+  benchmark_narrative: z.string()
+}).optional();
+export type OverallBenchmark = z.infer<typeof OverallBenchmarkSchema>;
 
 // ============================================================================
 // CHAPTER SCHEMA
@@ -357,13 +383,14 @@ export type Roadmap = z.infer<typeof RoadmapSchema>;
 // ============================================================================
 
 /**
- * Overall scores summary
+ * Overall scores summary with benchmark context
  */
 export const ScoresSummarySchema = z.object({
   overall_health_score: z.number().min(0).max(100),
   descriptor: z.string(),
   trajectory: TrajectorySchema,
-  key_imperatives: z.array(z.string())
+  key_imperatives: z.array(z.string()),
+  overall_benchmark: OverallBenchmarkSchema
 });
 export type ScoresSummary = z.infer<typeof ScoresSummarySchema>;
 
