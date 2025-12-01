@@ -30,8 +30,36 @@ import {
   generateKeyTakeaways,
   generateExecutiveHighlights,
   generateOverallBenchmarkCallout,
+  generateEvidenceCitationsForDimension,
+  generateInsightCardWithEvidence,
+  generateChapterBenchmarkCallout,
+  generateBenchmarkSummaryTable,
 } from './components/index.js';
 import { getChapterIcon } from './constants/index.js';
+
+/**
+ * Build insight cards from findings for the owner report
+ */
+function buildOwnerInsightCards(ctx: ReportContext, maxCards: number = 6): string {
+  // Get top strengths and weaknesses/gaps for balanced view
+  const strengths = ctx.findings.filter(f => f.type === 'strength').slice(0, 3);
+  const gaps = ctx.findings.filter(f => f.type === 'gap' || f.type === 'risk').slice(0, 3);
+
+  const allFindings = [...strengths, ...gaps].slice(0, maxCards);
+
+  if (allFindings.length === 0) return '';
+
+  const cards = allFindings.map(finding => {
+    const dimension = ctx.dimensions.find(d => d.code === finding.dimensionCode);
+    return generateInsightCardWithEvidence(finding, dimension);
+  });
+
+  return `
+    <div class="insight-cards-container">
+      ${cards.join('\n')}
+    </div>
+  `;
+}
 
 /**
  * Build business owner report with integrated narrative content
@@ -62,6 +90,8 @@ export async function buildOwnersReport(
   const keyTakeawaysHtml = generateKeyTakeaways(ctx);
   const executiveHighlightsHtml = generateExecutiveHighlights(ctx);
   const overallBenchmarkHtml = generateOverallBenchmarkCallout(ctx);
+  const insightCardsHtml = buildOwnerInsightCards(ctx);
+  const benchmarkSummaryHtml = generateBenchmarkSummaryTable(ctx);
 
   const html = wrapHtmlDocument(`
     ${generateReportHeader(ctx, reportName, 'Executive Summary for Business Leadership')}
@@ -129,6 +159,55 @@ export async function buildOwnersReport(
           </div>
         `).join('')}
       </div>
+
+      <!-- Benchmark Summary Table -->
+      ${benchmarkSummaryHtml}
+
+      <!-- Chapter Benchmark Callouts for Top Chapters -->
+      ${ctx.chapters.slice(0, 2).map(ch =>
+        generateChapterBenchmarkCallout(ch, ctx.companyProfile.industry)
+      ).join('')}
+    </section>
+
+    <section class="section page-break">
+      <h2>Key Insights</h2>
+
+      <!-- Visual Insight Cards with Evidence Citations -->
+      ${insightCardsHtml}
+
+      <div class="grid grid-2">
+        <div>
+          <h3 style="color: #28a745;">Top Strengths</h3>
+          ${strengths.length > 0 ? `
+            <ul>
+              ${strengths.map(s => `
+                <li>
+                  <strong>${escapeHtml(s.shortLabel)}</strong>
+                  <br><small>${escapeHtml(s.dimensionName)}</small>
+                </li>
+              `).join('')}
+            </ul>
+          ` : '<p>No significant strengths identified.</p>'}
+        </div>
+        <div>
+          <h3 style="color: #dc3545;">Priority Areas</h3>
+          ${priorities.length > 0 ? `
+            <ul>
+              ${priorities.map(p => `
+                <li>
+                  <strong>${escapeHtml(p.shortLabel)}</strong>
+                  <br><small>${escapeHtml(p.dimensionName)} - ${p.type}</small>
+                </li>
+              `).join('')}
+            </ul>
+          ` : '<p>No critical priorities identified.</p>'}
+        </div>
+      </div>
+
+      <!-- Evidence Citations for Key Dimensions -->
+      ${ctx.dimensions.slice(0, 4).map(dim =>
+        generateEvidenceCitationsForDimension(ctx, dim.code, 1)
+      ).join('')}
     </section>
 
     ${narratives?.phase3?.actionMatrix ? `
@@ -138,40 +217,7 @@ export async function buildOwnersReport(
           ${NarrativeExtractionService.markdownToHtml(narratives.phase3.actionMatrix)}
         </div>
       </section>
-    ` : `
-      <section class="section page-break">
-        <h2>Key Insights</h2>
-
-        <div class="grid grid-2">
-          <div>
-            <h3 style="color: #28a745;">Top Strengths</h3>
-            ${strengths.length > 0 ? `
-              <ul>
-                ${strengths.map(s => `
-                  <li>
-                    <strong>${escapeHtml(s.shortLabel)}</strong>
-                    <br><small>${escapeHtml(s.dimensionName)}</small>
-                  </li>
-                `).join('')}
-              </ul>
-            ` : '<p>No significant strengths identified.</p>'}
-          </div>
-          <div>
-            <h3 style="color: #dc3545;">Priority Areas</h3>
-            ${priorities.length > 0 ? `
-              <ul>
-                ${priorities.map(p => `
-                  <li>
-                    <strong>${escapeHtml(p.shortLabel)}</strong>
-                    <br><small>${escapeHtml(p.dimensionName)} - ${p.type}</small>
-                  </li>
-                `).join('')}
-              </ul>
-            ` : '<p>No critical priorities identified.</p>'}
-          </div>
-        </div>
-      </section>
-    `}
+    ` : ''}
 
     ${narratives?.phase2?.strategicRecommendations ? `
       <section class="section">
@@ -546,11 +592,146 @@ function generateOwnerNarrativeStyles(primaryColor: string, accentColor: string)
       margin-top: 0.25rem;
     }
 
+    /* EVIDENCE CITATION BLOCKS */
+    .evidence-citation {
+      background: #f8f9fa;
+      border-left: 4px solid ${accentColor};
+      border-radius: 0 8px 8px 0;
+      padding: 0.75rem 1rem;
+      margin: 0.75rem 0 1.25rem 0;
+      font-size: 0.9rem;
+    }
+
+    .evidence-citation .citation-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      color: ${primaryColor};
+      margin-bottom: 0.5rem;
+    }
+
+    .evidence-citation .citation-icon {
+      color: ${accentColor};
+    }
+
+    .evidence-citation .question-ref {
+      color: #666;
+      font-size: 0.85rem;
+    }
+
+    .evidence-citation .response-text {
+      color: #333;
+      font-style: italic;
+      margin: 0.5rem 0;
+      padding-left: 1rem;
+      border-left: 2px solid #ddd;
+    }
+
+    .evidence-citation .benchmark-comparison {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid #e0e0e0;
+      font-size: 0.85rem;
+    }
+
+    .evidence-citation .benchmark-comparison.above { color: #28a745; }
+    .evidence-citation .benchmark-comparison.below { color: #dc3545; }
+    .evidence-citation .benchmark-comparison.at { color: #6c757d; }
+
+    /* COLOR-CODED INSIGHT CARDS */
+    .insight-card {
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 0.75rem 0;
+      border-left: 4px solid;
+    }
+
+    .insight-card.strength { background: #d4edda; border-left-color: #28a745; }
+    .insight-card.strength .insight-label { color: #155724; }
+
+    .insight-card.weakness { background: #f8d7da; border-left-color: #dc3545; }
+    .insight-card.weakness .insight-label { color: #721c24; }
+
+    .insight-card.opportunity { background: #cce5ff; border-left-color: #0d6efd; }
+    .insight-card.opportunity .insight-label { color: #004085; }
+
+    .insight-card.warning { background: #fff3cd; border-left-color: #ffc107; }
+    .insight-card.warning .insight-label { color: #856404; }
+
+    .insight-card .insight-label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.25rem;
+    }
+
+    .insight-card .insight-title {
+      font-weight: 600;
+      color: ${primaryColor};
+      margin-bottom: 0.5rem;
+    }
+
+    .insight-card .insight-detail {
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    /* INSIGHT CARDS GRID LAYOUT */
+    .insight-cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .insight-cards-container .insight-card {
+      margin: 0;
+    }
+
+    /* BENCHMARK SUMMARY TABLE */
+    .benchmark-summary {
+      margin: 1.5rem 0;
+    }
+
+    .benchmark-summary h4 {
+      color: ${primaryColor};
+      margin-bottom: 1rem;
+    }
+
+    .score-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .score-table th,
+    .score-table td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    .score-table th {
+      background: #f8f9fa;
+      font-weight: 600;
+      color: ${primaryColor};
+    }
+
+    .score-table .score {
+      font-weight: 600;
+      color: ${primaryColor};
+    }
+
     /* RESPONSIVE */
     @media (max-width: 768px) {
       .executive-highlights { grid-template-columns: repeat(2, 1fr); }
       .benchmark-callout { flex-direction: column; text-align: center; }
       .key-takeaways .takeaway-item { flex-direction: column; align-items: flex-start; }
+      .insight-cards-container { grid-template-columns: 1fr; }
     }
 
     /* PRINT OPTIMIZATIONS */
@@ -561,6 +742,12 @@ function generateOwnerNarrativeStyles(primaryColor: string, accentColor: string)
         print-color-adjust: exact;
       }
 
+      .evidence-citation {
+        border-left-color: ${accentColor} !important;
+        background: #f8f9fa !important;
+      }
+
+      .insight-card { page-break-inside: avoid; }
       .benchmark-callout { page-break-inside: avoid; }
       .executive-highlights { grid-template-columns: repeat(4, 1fr); }
     }
