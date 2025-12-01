@@ -17,60 +17,6 @@
       "name": "Business Owner Report",
       "html": "owner.html",
       "meta": "owner.meta.json"
-    },
-    {
-      "type": "executiveBrief",
-      "name": "Executive Brief",
-      "html": "executiveBrief.html",
-      "meta": "executiveBrief.meta.json"
-    },
-    {
-      "type": "quickWins",
-      "name": "Quick Wins Action Plan",
-      "html": "quickWins.html",
-      "meta": "quickWins.meta.json"
-    },
-    {
-      "type": "risk",
-      "name": "Risk Assessment Report",
-      "html": "risk.html",
-      "meta": "risk.meta.json"
-    },
-    {
-      "type": "roadmap",
-      "name": "Implementation Roadmap",
-      "html": "roadmap.html",
-      "meta": "roadmap.meta.json"
-    },
-    {
-      "type": "financial",
-      "name": "Financial Impact Analysis",
-      "html": "financial.html",
-      "meta": "financial.meta.json"
-    },
-    {
-      "type": "deepDive:growthEngine",
-      "name": "Growth Engine Deep Dive",
-      "html": "deep-dive-ge.html",
-      "meta": "deep-dive-ge.meta.json"
-    },
-    {
-      "type": "deepDive:performanceHealth",
-      "name": "Performance & Health Deep Dive",
-      "html": "deep-dive-ph.html",
-      "meta": "deep-dive-ph.meta.json"
-    },
-    {
-      "type": "deepDive:peopleLeadership",
-      "name": "People & Leadership Deep Dive",
-      "html": "deep-dive-pl.html",
-      "meta": "deep-dive-pl.meta.json"
-    },
-    {
-      "type": "deepDive:resilienceSafeguards",
-      "name": "Resilience & Safeguards Deep Dive",
-      "html": "deep-dive-rs.html",
-      "meta": "deep-dive-rs.meta.json"
     }
   ]
 }
