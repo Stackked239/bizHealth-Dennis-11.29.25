@@ -32,3 +32,13 @@ export {
 } from './benchmark-callout.component.js';
 
 export type { BenchmarkCalloutData } from './benchmark-callout.component.js';
+
+export {
+  renderComprehensiveReference,
+  renderInlineReference,
+  renderWhereToGoForDetail,
+  renderComprehensiveRelationshipStatement,
+  QUICK_REFS,
+} from './comprehensive-reference.component.js';
+
+export type { ReferenceOptions } from './comprehensive-reference.component.js';

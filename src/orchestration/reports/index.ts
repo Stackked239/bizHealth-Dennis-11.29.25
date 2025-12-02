@@ -22,3 +22,12 @@ export * from './components/index.js';
 
 // Constants (icons, etc.)
 export * from './constants/index.js';
+
+// Report utilities
+export * from './utils/index.js';
+
+// Configuration (section mappings, constraints)
+export * from './config/index.js';
+
+// Validation utilities
+export * from './validation/index.js';
