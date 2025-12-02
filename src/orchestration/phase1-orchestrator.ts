@@ -169,9 +169,9 @@ export class Phase1Orchestrator {
     });
 
     this.config = {
-      model: config.model || 'claude-opus-4-1-20250805',
-      maxTokens: config.maxTokens || 32000,  // Claude Opus 4.1 max output tokens
-      thinkingBudgetTokens: config.thinkingBudgetTokens || 16000,  // Budget for extended thinking
+      model: config.model || 'claude-opus-4-5-20251101',
+      maxTokens: config.maxTokens || 64000,  // Claude Opus 4.5 max output tokens
+      thinkingBudgetTokens: config.thinkingBudgetTokens || 32000,  // Budget for extended thinking
       temperature: config.temperature || 1.0,  // Must be 1.0 for extended thinking
       pollIntervalMs: config.pollIntervalMs || 30000,
       maxWaitTimeMs: config.maxWaitTimeMs || 3600000,
