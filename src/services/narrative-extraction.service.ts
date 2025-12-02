@@ -5,9 +5,13 @@
  * for integration into executive reports.
  *
  * Field names discovered via Phase 1 audit of actual output files.
+ *
+ * @updated 2025-12-02 - Enhanced markdown processing with marked library
+ *                       to handle Opus 4.5 rich output (tables, ASCII art, etc.)
  */
 
 import { logger } from '../utils/logger.js';
+import { convertMarkdownToHtml } from '../orchestration/reports/utils/markdown-sanitizer.js';
 
 /**
  * Narrative content extracted from phase outputs
@@ -182,46 +186,14 @@ export class NarrativeExtractionService {
 
   /**
    * Convert markdown content to styled HTML
+   * Uses the marked library for proper GFM support (tables, code blocks, ASCII art)
    * Preserves BizHealth branding (navy #212653, green #969423)
+   *
+   * @updated 2025-12-02 - Replaced basic regex parser with marked library
+   *                       to handle Opus 4.5 rich markdown output
    */
   static markdownToHtml(markdown: string): string {
-    if (!markdown || typeof markdown !== 'string') {
-      return '<p class="bh-empty">No content available.</p>';
-    }
-
-    let html = markdown;
-
-    // Escape any existing HTML to prevent injection
-    html = html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-    // Convert headers (must do h4 before h3 before h2 to avoid conflicts)
-    html = html.replace(/^#### (.+)$/gm, '<h5 class="bh-h5">$1</h5>');
-    html = html.replace(/^### (.+)$/gm, '<h4 class="bh-h4">$1</h4>');
-    html = html.replace(/^## (.+)$/gm, '<h3 class="bh-h3">$1</h3>');
-    html = html.replace(/^# (.+)$/gm, '<h2 class="bh-h2">$1</h2>');
-
-    // Convert bold and italic
-    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-    html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
-
-    // Convert bullet lists
-    html = html.replace(/^- (.+)$/gm, '<li class="bh-li">$1</li>');
-    html = html.replace(/(<li class="bh-li">.*<\/li>\n?)+/g, '<ul class="bh-ul">$&</ul>');
-
-    // Convert numbered lists
-    html = html.replace(/^\d+\. (.+)$/gm, '<li class="bh-li-num">$1</li>');
-    html = html.replace(/(<li class="bh-li-num">.*<\/li>\n?)+/g, '<ol class="bh-ol">$&</ol>');
-
-    // Convert paragraphs (double newlines)
-    html = html.replace(/\n\n+/g, '</p><p class="bh-p">');
-    html = '<p class="bh-p">' + html + '</p>';
-
-    // Clean up empty paragraphs
-    html = html.replace(/<p class="bh-p"><\/p>/g, '');
-    html = html.replace(/<p class="bh-p">(\s*<[hou])/g, '$1');
-    html = html.replace(/(<\/[hou]l>)\s*<\/p>/g, '$1');
-
-    return html;
+    return convertMarkdownToHtml(markdown);
   }
 
   /**
