@@ -43,6 +43,7 @@ import {
   generateChapterBenchmarkCallout,
   generateOverallBenchmarkCallout,
   generateBenchmarkSummaryTable,
+  renderComprehensiveRelationshipStatement,
 } from './components/index.js';
 import {
   getChapterIcon,
@@ -71,24 +72,22 @@ export async function buildComprehensiveReport(
     logger.warn('No narrative content available, using structured data only');
   }
 
-  // Define sections for TOC
+  // Define sections for TOC with anchor IDs matching section-mapping.ts
   const sections = [
     { id: 'executive-summary', title: 'Executive Summary' },
     { id: 'scorecard', title: 'Business Health Scorecard' },
-    { id: 'strategy', title: 'Strategy & Revenue Engine' },
-    { id: 'operations', title: 'Operational Excellence' },
-    { id: 'financial', title: 'Financial Health' },
-    { id: 'people', title: 'People & Leadership' },
-    { id: 'compliance', title: 'Compliance & Sustainability' },
+    { id: 'chapter-growth-engine', title: 'Chapter 1: Growth Engine Deep Dive' },
+    { id: 'chapter-performance-health', title: 'Chapter 2: Performance & Health Deep Dive' },
+    { id: 'chapter-people-leadership', title: 'Chapter 3: People & Leadership Deep Dive' },
+    { id: 'chapter-resilience-safeguards', title: 'Chapter 4: Resilience & Safeguards Deep Dive' },
     { id: 'cross-dimensional', title: 'Cross-Dimensional Synthesis' },
     { id: 'strategic-recommendations', title: 'Strategic Recommendations' },
-    { id: 'risks', title: 'Risk Assessment' },
+    { id: 'risk-assessment', title: 'Risk Assessment' },
     { id: 'growth', title: 'Growth Opportunities' },
-    { id: 'roadmap', title: 'Implementation Roadmap' },
+    { id: 'implementation-roadmap', title: 'Implementation Roadmap' },
     { id: 'findings', title: 'Detailed Findings' },
     { id: 'quick-wins', title: 'Quick Wins' },
-    { id: 'financial-impact', title: 'Financial Impact' },
-    ...ctx.chapters.map(ch => ({ id: `chapter-${ch.code}`, title: ch.name })),
+    { id: 'financial-impact', title: 'Financial Impact Analysis' },
   ];
 
   // Generate narrative styles for proper markdown rendering
@@ -97,48 +96,46 @@ export async function buildComprehensiveReport(
   // Build HTML content with integrated narratives
   const contentSections = [
     generateReportHeader(ctx, reportName, 'Complete Business Health Assessment'),
+
+    // Relationship statement explaining how Owner's and Comprehensive reports work together
+    renderComprehensiveRelationshipStatement(),
+
     options.includeTOC ? generateTableOfContents(sections) : '',
 
-    // Executive Summary with narrative
-    `<div id="executive-summary">${generateExecutiveSummaryWithNarrative(ctx, narratives)}</div>`,
+    // Executive Summary with narrative (with anchor ID for cross-references)
+    `<section id="executive-summary" class="section">${generateExecutiveSummaryWithNarrative(ctx, narratives)}</section>`,
 
     // Scorecard with benchmark summary
-    `<div id="scorecard">
+    `<section id="scorecard" class="section page-break">
       ${generateScorecardSection(ctx)}
       ${generateBenchmarkSummaryTable(ctx)}
-    </div>`,
+    </section>`,
 
-    // Tier 1 Analysis Sections with narratives and benchmark callouts
+    // Chapter Deep Dives with proper anchor IDs matching section-mapping.ts
     narratives ? `
-      <div id="strategy">${generateNarrativeSection('Strategy & Revenue Engine', narratives.phase1.tier1.revenueEngine, getChapterScore(ctx, 'GE'), 'GE', ctx)}</div>
-      <div id="operations">${generateNarrativeSection('Operational Excellence', narratives.phase1.tier1.operationalExcellence, getChapterScore(ctx, 'PH'), 'PH', ctx)}</div>
-      <div id="financial">${generateNarrativeSection('Financial Health & Strategic Position', narratives.phase1.tier1.financialStrategic, null)}</div>
-      <div id="people">${generateNarrativeSection('People, Leadership & Culture', narratives.phase1.tier1.peopleLeadership, getChapterScore(ctx, 'PL'), 'PL', ctx)}</div>
-      <div id="compliance">${generateNarrativeSection('Compliance & Sustainability', narratives.phase1.tier1.complianceSustainability, getChapterScore(ctx, 'RS'), 'RS', ctx)}</div>
+      <section id="chapter-growth-engine" class="section page-break">${generateNarrativeSection('Chapter 1: Growth Engine Deep Dive', narratives.phase1.tier1.revenueEngine, getChapterScore(ctx, 'GE'), 'GE', ctx)}</section>
+      <section id="chapter-performance-health" class="section page-break">${generateNarrativeSection('Chapter 2: Performance & Health Deep Dive', narratives.phase1.tier1.operationalExcellence, getChapterScore(ctx, 'PH'), 'PH', ctx)}</section>
+      <section id="chapter-people-leadership" class="section page-break">${generateNarrativeSection('Chapter 3: People & Leadership Deep Dive', narratives.phase1.tier1.peopleLeadership, getChapterScore(ctx, 'PL'), 'PL', ctx)}</section>
+      <section id="chapter-resilience-safeguards" class="section page-break">${generateNarrativeSection('Chapter 4: Resilience & Safeguards Deep Dive', narratives.phase1.tier1.complianceSustainability, getChapterScore(ctx, 'RS'), 'RS', ctx)}</section>
     ` : '',
 
     // Cross-Dimensional Synthesis (Phase 2)
     narratives ? `
-      <div id="cross-dimensional">${generateNarrativeSection('Cross-Dimensional Strategic Synthesis', narratives.phase2.crossDimensional, null)}</div>
-      <div id="strategic-recommendations">${generateNarrativeSection('Strategic Recommendations', narratives.phase2.strategicRecommendations, null)}</div>
-      <div id="risks">${generateNarrativeSection('Risk Assessment', narratives.phase2.consolidatedRisks, null)}</div>
-      <div id="growth">${generateNarrativeSection('Growth Opportunities', narratives.phase2.growthOpportunities, null)}</div>
-      <div id="roadmap">${generateNarrativeSection('Implementation Roadmap', narratives.phase2.implementationRoadmap, null)}</div>
+      <section id="cross-dimensional" class="section page-break">${generateNarrativeSection('Cross-Dimensional Strategic Synthesis', narratives.phase2.crossDimensional, null)}</section>
+      <section id="strategic-recommendations" class="section page-break">${generateNarrativeSection('Strategic Recommendations', narratives.phase2.strategicRecommendations, null)}</section>
+      <section id="risk-assessment" class="section page-break">${generateNarrativeSection('Risk Assessment', narratives.phase2.consolidatedRisks, null)}</section>
+      <section id="growth" class="section page-break">${generateNarrativeSection('Growth Opportunities', narratives.phase2.growthOpportunities, null)}</section>
+      <section id="implementation-roadmap" class="section page-break">${generateNarrativeSection('Implementation Roadmap', narratives.phase2.implementationRoadmap, null)}</section>
     ` : `
-      <div id="risks">${generateRisksSection(ctx)}</div>
-      <div id="roadmap">${generateRoadmapSection(ctx)}</div>
+      <section id="risk-assessment" class="section page-break">${generateRisksSection(ctx)}</section>
+      <section id="implementation-roadmap" class="section page-break">${generateRoadmapSection(ctx)}</section>
     `,
 
     // Detailed sections
-    `<div id="findings">${generateFindingsSection(ctx)}</div>`,
-    `<div id="recommendations">${generateRecommendationsSection(ctx)}</div>`,
-    `<div id="quick-wins">${generateQuickWinsSection(ctx)}</div>`,
-    `<div id="financial-impact">${generateFinancialSection(ctx)}</div>`,
-
-    // Chapter deep dives with benchmark callouts and evidence citations
-    ...ctx.chapters.map(ch =>
-      `<div id="chapter-${ch.code}">${generateChapterSection(ch, ctx.dimensions, ctx)}</div>`
-    ),
+    `<section id="findings" class="section page-break">${generateFindingsSection(ctx)}</section>`,
+    `<section id="recommendations" class="section page-break">${generateRecommendationsSection(ctx)}</section>`,
+    `<section id="quick-wins" class="section page-break">${generateQuickWinsSection(ctx)}</section>`,
+    `<section id="financial-impact" class="section page-break">${generateFinancialSection(ctx)}</section>`,
 
     // Footer with word count
     generateReportFooterWithStats(ctx, narratives),

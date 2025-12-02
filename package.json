@@ -15,7 +15,10 @@
     "test:phase2": "tsx tests/test-phase2.ts",
     "test:phase3": "tsx tests/test-phase3.ts",
     "lint": "eslint src --ext .ts",
-    "format": "prettier --write \"src/**/*.ts\""
+    "format": "prettier --write \"src/**/*.ts\"",
+    "validate:reports": "tsx src/orchestration/reports/validation/validate-reports.ts",
+    "generate:validated": "npm run start && npm run validate:reports",
+    "test:reports": "npm run validate:reports"
   },
   "keywords": [
     "business-analysis",

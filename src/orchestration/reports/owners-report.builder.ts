@@ -1,12 +1,12 @@
 /**
  * Business Owner Report Builder
  *
- * Generates an executive summary report for business owners including:
- * - Executive overview with AI-generated narrative content
- * - Health score and trajectory
- * - Priority actions with AI analysis
- * - Strategic recommendations
- * - Key risks to address
+ * Generates an owner-focused executive summary report including:
+ * - Owner-centric "you/your" narrative voice
+ * - Aggregated investment ranges (not detailed tables)
+ * - Cross-references to Comprehensive Report sections
+ * - "Where to Go for Detail" navigation section
+ * - Abbreviated content with depth constraints
  */
 
 import * as fs from 'fs/promises';
@@ -34,8 +34,19 @@ import {
   generateInsightCardWithEvidence,
   generateChapterBenchmarkCallout,
   generateBenchmarkSummaryTable,
+  renderWhereToGoForDetail,
+  QUICK_REFS,
 } from './components/index.js';
 import { getChapterIcon } from './constants/index.js';
+
+// Import owner report utilities
+import { referenceLogger } from './utils/reference-logger.js';
+import { transformToOwnerVoice, truncateToSentences } from './utils/voice-transformer.js';
+import {
+  OWNER_REPORT_CONSTRAINTS,
+  formatCurrencyRange,
+  formatCurrency as formatCurrencyConstraint,
+} from './config/owner-report-constraints.js';
 
 /**
  * Build insight cards from findings for the owner report
@@ -63,6 +74,7 @@ function buildOwnerInsightCards(ctx: ReportContext, maxCards: number = 6): strin
 
 /**
  * Build business owner report with integrated narrative content
+ * Enhanced with owner-focused voice, cross-references, and depth constraints
  */
 export async function buildOwnersReport(
   ctx: ReportContext,
@@ -71,33 +83,60 @@ export async function buildOwnersReport(
   const reportType = 'owner';
   const reportName = 'Business Owner Report';
 
-  logger.info('Building owners report with narrative integration');
+  // Reset reference logger for fresh run
+  referenceLogger.reset();
+
+  logger.info('Building owners report with narrative integration and cross-references');
 
   // Get narrative content from context
   const narratives = ctx.narrativeContent;
   const hasNarratives = narratives && narratives.metadata?.contentSufficient;
 
-  // Get top 3 strengths and priorities
-  const strengths = ctx.findings.filter(f => f.type === 'strength').slice(0, 3);
-  const priorities = ctx.findings.filter(f => f.type === 'gap' || f.type === 'risk').slice(0, 3);
-  const topRecommendations = ctx.recommendations.slice(0, 5);
-  const quickWins = ctx.quickWins.slice(0, 3);
+  // Apply owner report constraints for abbreviated content
+  const { maxPriorities, maxQuickWins, maxRisks, maxRecommendationsPerSection } = OWNER_REPORT_CONSTRAINTS;
 
-  // Generate narrative CSS styles
+  // Get constrained findings and recommendations
+  const strengths = ctx.findings.filter(f => f.type === 'strength').slice(0, 3);
+  const priorities = ctx.findings.filter(f => f.type === 'gap' || f.type === 'risk').slice(0, maxPriorities);
+  const topRecommendations = ctx.recommendations.slice(0, maxRecommendationsPerSection + 2);
+  const quickWins = ctx.quickWins.slice(0, maxQuickWins);
+  const topRisks = ctx.risks?.slice(0, maxRisks) || [];
+
+  // Generate narrative CSS styles with owner enhancements
   const narrativeStyles = generateOwnerNarrativeStyles(options.brand.primaryColor, options.brand.accentColor);
 
   // Generate visual enhancement components
   const keyTakeawaysHtml = generateKeyTakeaways(ctx);
   const executiveHighlightsHtml = generateExecutiveHighlights(ctx);
   const overallBenchmarkHtml = generateOverallBenchmarkCallout(ctx);
-  const insightCardsHtml = buildOwnerInsightCards(ctx);
+  const insightCardsHtml = buildOwnerInsightCards(ctx, 4);
   const benchmarkSummaryHtml = generateBenchmarkSummaryTable(ctx);
 
-  const html = wrapHtmlDocument(`
-    ${generateReportHeader(ctx, reportName, 'Executive Summary for Business Leadership')}
+  // Generate financial aggregates for overview display
+  const financialProjections = ctx.financialProjections;
+  const investmentLow = financialProjections?.totalInvestmentRequired
+    ? Math.floor(financialProjections.totalInvestmentRequired * 0.8)
+    : 0;
+  const investmentHigh = financialProjections?.totalInvestmentRequired
+    ? Math.ceil(financialProjections.totalInvestmentRequired * 1.2)
+    : 0;
+  const returnLow = financialProjections?.annualValue
+    ? Math.floor(financialProjections.annualValue * 0.8)
+    : 0;
+  const returnHigh = financialProjections?.annualValue
+    ? Math.ceil(financialProjections.annualValue * 1.2)
+    : 0;
+  const roiLow = financialProjections?.roi90Day || 1.5;
+  const roiHigh = roiLow * 1.5;
 
-    <section class="section">
-      <h2>Your Business Health at a Glance</h2>
+  const html = wrapHtmlDocument(`
+    ${generateReportHeader(ctx, reportName, 'Your Executive Decision Guide')}
+
+    <!-- ================================================================
+         SECTION: Your Business Health at a Glance
+         ================================================================ -->
+    <section class="section" id="health-overview">
+      ${renderOwnerSectionHeader('Your Business Health at a Glance', 'How is my business doing?')}
 
       <div class="health-score-display">
         <div class="health-score-circle">
@@ -105,10 +144,10 @@ export async function buildOwnersReport(
           <span class="out-of">/ 100</span>
         </div>
         <div class="health-score-details">
-          <p class="status">${escapeHtml(ctx.overallHealth.status)}</p>
+          <p class="status">${escapeHtml(transformToOwnerVoice(ctx.overallHealth.status))}</p>
           <p class="trajectory">
             ${getTrajectoryIcon(ctx.overallHealth.trajectory)}
-            Trajectory: ${ctx.overallHealth.trajectory}
+            Your Trajectory: ${ctx.overallHealth.trajectory}
           </p>
           <p class="band">
             <span class="band-badge ${ctx.overallHealth.band}">${ctx.overallHealth.band}</span>
@@ -124,60 +163,49 @@ export async function buildOwnersReport(
 
       <!-- Benchmark Callout -->
       ${overallBenchmarkHtml}
-
-      ${narratives?.phase3?.executive ? `
-        <div class="narrative-content">
-          ${NarrativeExtractionService.markdownToHtml(narratives.phase3.executive)}
-        </div>
-      ` : ctx.executiveSummary ? `
-        <div class="callout info">
-          <p>${escapeHtml(ctx.executiveSummary.overview)}</p>
-        </div>
-      ` : ''}
     </section>
 
-    <section class="section">
-      <h2>Chapter Performance Overview</h2>
-      <div class="grid grid-2">
-        ${ctx.chapters.map(ch => `
-          <div class="card">
-            <div class="card-header">
-              <span class="card-title">
-                <span style="margin-right: 0.5rem;">${getChapterIcon(ch.code)}</span>
-                ${escapeHtml(ch.name)}
-              </span>
-              <span class="band-badge ${ch.band}">${ch.score}/100</span>
-            </div>
-            <div class="card-body">
-              ${generateProgressBar(ch.score, 100, options.brand)}
-              ${ch.benchmark ? `
-                <div style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">
-                  ${ch.benchmark.peerPercentile}th percentile vs peers
-                </div>
-              ` : ''}
-            </div>
-          </div>
-        `).join('')}
+    <!-- ================================================================
+         SECTION: What This Means for You as the Owner
+         ================================================================ -->
+    <section class="section" id="what-this-means">
+      ${renderOwnerSectionHeader('What This Means for You as the Owner', 'What should I understand from this?')}
+
+      <div class="owner-implications-grid">
+        <div class="implication-card growth">
+          <div class="card-icon">&#128200;</div>
+          <div class="card-title">For Your Growth</div>
+          <p>${getGrowthImplication(ctx)}</p>
+        </div>
+
+        <div class="implication-card risk">
+          <div class="card-icon">&#9888;&#65039;</div>
+          <div class="card-title">For Your Risk</div>
+          <p>${getRiskImplication(ctx)}</p>
+        </div>
+
+        <div class="implication-card value">
+          <div class="card-icon">&#128142;</div>
+          <div class="card-title">For Your Business Value</div>
+          <p>${getValueImplication(ctx)}</p>
+        </div>
       </div>
 
-      <!-- Benchmark Summary Table -->
-      ${benchmarkSummaryHtml}
-
-      <!-- Chapter Benchmark Callouts for Top Chapters -->
-      ${ctx.chapters.slice(0, 2).map(ch =>
-        generateChapterBenchmarkCallout(ch, ctx.companyProfile.industry)
-      ).join('')}
+      ${QUICK_REFS.executiveSummary('what-this-means')}
     </section>
 
-    <section class="section page-break">
-      <h2>Key Insights</h2>
+    <!-- ================================================================
+         SECTION: Your Critical Priorities
+         ================================================================ -->
+    <section class="section page-break" id="critical-priorities">
+      ${renderOwnerSectionHeader('Your Critical Priorities', 'What must I focus on?')}
 
-      <!-- Visual Insight Cards with Evidence Citations -->
+      <!-- Visual Insight Cards -->
       ${insightCardsHtml}
 
       <div class="grid grid-2">
         <div>
-          <h3 style="color: #28a745;">Top Strengths</h3>
+          <h3 style="color: #28a745;">Your Top Strengths</h3>
           ${strengths.length > 0 ? `
             <ul>
               ${strengths.map(s => `
@@ -187,16 +215,16 @@ export async function buildOwnersReport(
                 </li>
               `).join('')}
             </ul>
-          ` : '<p>No significant strengths identified.</p>'}
+          ` : '<p>Your business shows balanced performance across all areas.</p>'}
         </div>
         <div>
-          <h3 style="color: #dc3545;">Priority Areas</h3>
+          <h3 style="color: #dc3545;">Your Priority Areas</h3>
           ${priorities.length > 0 ? `
             <ul>
-              ${priorities.map(p => `
+              ${priorities.slice(0, maxPriorities).map(p => `
                 <li>
                   <strong>${escapeHtml(p.shortLabel)}</strong>
-                  <br><small>${escapeHtml(p.dimensionName)} - ${p.type}</small>
+                  <br><small>${escapeHtml(p.dimensionName)}</small>
                 </li>
               `).join('')}
             </ul>
@@ -204,82 +232,61 @@ export async function buildOwnersReport(
         </div>
       </div>
 
-      <!-- Evidence Citations for Key Dimensions -->
-      ${ctx.dimensions.slice(0, 4).map(dim =>
-        generateEvidenceCitationsForDimension(ctx, dim.code, 1)
-      ).join('')}
+      ${QUICK_REFS.strategicRecommendations('critical-priorities')}
     </section>
 
+    <!-- ================================================================
+         SECTION: Investment & ROI Overview
+         ================================================================ -->
+    <section class="section" id="investment-roi">
+      ${renderOwnerSectionHeader('Investment & ROI Overview', 'How much will this cost and what will I get back?')}
+
+      <p class="section-intro">
+        Here's the high-level view of what you'll need to invest and what you can expect in return.
+        These are aggregate ranges across all recommended initiatives.
+      </p>
+
+      <div class="financial-summary-grid">
+        <div class="financial-card">
+          <div class="card-label">Your Estimated 12-18 Month Investment</div>
+          <div class="card-value">${investmentLow > 0 ? formatCurrencyRange(investmentLow, investmentHigh) : '-'}</div>
+          <div class="card-sublabel">Across all initiatives</div>
+        </div>
+        <div class="financial-card">
+          <div class="card-label">Your Potential Revenue Impact</div>
+          <div class="card-value">${returnLow > 0 ? formatCurrencyRange(returnLow, returnHigh) : '-'}</div>
+          <div class="card-sublabel">Over 18 months</div>
+        </div>
+        <div class="financial-card highlight">
+          <div class="card-label">Your Expected ROI</div>
+          <div class="card-value">${roiLow.toFixed(1)}x - ${roiHigh.toFixed(1)}x</div>
+          <div class="card-sublabel">Return on investment</div>
+        </div>
+      </div>
+
+      ${QUICK_REFS.financialImpact('investment-roi')}
+    </section>
+
+    <!-- ================================================================
+         SECTION: Execution Overview
+         ================================================================ -->
     ${narratives?.phase3?.actionMatrix ? `
-      <section class="section page-break">
-        <h2>Priority Actions</h2>
+      <section class="section page-break" id="execution-overview">
+        ${renderOwnerSectionHeader('Your Execution Overview', "What's my timeline?")}
         <div class="narrative-content">
-          ${NarrativeExtractionService.markdownToHtml(narratives.phase3.actionMatrix)}
+          ${NarrativeExtractionService.markdownToHtml(truncateToSentences(narratives.phase3.actionMatrix, 15))}
         </div>
+        ${QUICK_REFS.roadmap('execution-overview')}
       </section>
     ` : ''}
 
-    ${narratives?.phase2?.strategicRecommendations ? `
-      <section class="section">
-        <h2>Strategic Recommendations</h2>
-        <div class="narrative-content">
-          ${NarrativeExtractionService.markdownToHtml(narratives.phase2.strategicRecommendations)}
-        </div>
-      </section>
-    ` : ctx.keyImperatives.length > 0 ? `
-      <section class="section">
-        <h2>Strategic Imperatives</h2>
-        <div class="callout warning">
-          <p>These are the critical actions required to improve your business health:</p>
-          <ol>
-            ${ctx.keyImperatives.map(i => `<li>${escapeHtml(i)}</li>`).join('')}
-          </ol>
-        </div>
-      </section>
-    ` : ''}
-
-    ${narratives?.phase2?.consolidatedRisks ? `
-      <section class="section">
-        <h2>Key Risks to Address</h2>
-        <div class="narrative-content">
-          ${NarrativeExtractionService.markdownToHtml(narratives.phase2.consolidatedRisks)}
-        </div>
-      </section>
-    ` : ''}
-
-    <section class="section">
-      <h2>Top Recommendations</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Recommendation</th>
-            <th>Timeline</th>
-            <th>Impact</th>
-            <th>ROI</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${topRecommendations.map((rec, i) => `
-            <tr>
-              <td>${i + 1}</td>
-              <td>
-                ${escapeHtml(rec.theme)}
-                ${rec.isQuickWin ? '<span class="band-badge Excellence" style="margin-left: 0.5rem;">Quick Win</span>' : ''}
-              </td>
-              <td>${escapeHtml(rec.horizonLabel)}</td>
-              <td>${rec.impactScore}/100</td>
-              <td><strong>${calculateROI(rec.impactScore, rec.effortScore)}x</strong></td>
-            </tr>
-          `).join('')}
-        </tbody>
-      </table>
-    </section>
-
+    <!-- ================================================================
+         SECTION: Quick Wins - Start Today
+         ================================================================ -->
     ${quickWins.length > 0 ? `
-      <section class="section">
-        <h2>Quick Wins - Start Today</h2>
-        <p>These high-impact, low-effort improvements can be implemented within 90 days:</p>
+      <section class="section" id="quick-wins">
+        ${renderOwnerSectionHeader('Quick Wins - Start Today', 'What can I do right now?')}
+        <p class="section-intro">These high-impact, low-effort improvements can be implemented within 90 days:</p>
         ${quickWins.map(qw => `
           <div class="quick-win-card">
             <div class="title">${escapeHtml(qw.theme)}</div>
@@ -294,39 +301,36 @@ export async function buildOwnersReport(
       </section>
     ` : ''}
 
-    ${ctx.financialProjections ? `
-      <section class="section">
-        <h2>Financial Snapshot</h2>
-        <div class="grid grid-4">
-          <div class="score-card small">
-            <div class="score-value">${formatCurrency(ctx.financialProjections.day90Value)}</div>
-            <div class="score-label">90-Day Value</div>
-          </div>
-          <div class="score-card small">
-            <div class="score-value">${formatCurrency(ctx.financialProjections.annualValue)}</div>
-            <div class="score-label">Annual Value</div>
-          </div>
-          <div class="score-card small">
-            <div class="score-value">${ctx.financialProjections.roi90Day ? `${ctx.financialProjections.roi90Day}x` : '-'}</div>
-            <div class="score-label">Expected ROI</div>
-          </div>
-          <div class="score-card small">
-            <div class="score-value">${formatCurrency(ctx.financialProjections.totalInvestmentRequired)}</div>
-            <div class="score-label">Investment</div>
-          </div>
+    <!-- ================================================================
+         SECTION: Key Risks to Your Business
+         ================================================================ -->
+    ${narratives?.phase2?.consolidatedRisks ? `
+      <section class="section" id="key-risks">
+        ${renderOwnerSectionHeader('Key Risks to Your Business', 'What could hurt my business?')}
+        <div class="narrative-content">
+          ${NarrativeExtractionService.markdownToHtml(truncateToSentences(narratives.phase2.consolidatedRisks, 12))}
         </div>
+        ${QUICK_REFS.riskAssessment('key-risks')}
       </section>
     ` : ''}
 
-    <section class="section">
-      <h2>Next Steps</h2>
+    <!-- ================================================================
+         SECTION: Where to Go for Detail
+         ================================================================ -->
+    ${renderWhereToGoForDetail()}
+
+    <!-- ================================================================
+         SECTION: Your Next Steps
+         ================================================================ -->
+    <section class="section" id="next-steps">
+      ${renderOwnerSectionHeader('Your Next Steps', 'What do I do now?')}
       <div class="callout success">
-        <div class="title">Recommended Actions</div>
+        <div class="title">Your Recommended Actions</div>
         <ol>
-          <li>Review the Quick Wins section and identify 1-2 initiatives to start this week</li>
-          <li>Schedule a strategic planning session to address the Priority Areas</li>
-          <li>Review the full Comprehensive Report for detailed analysis and recommendations</li>
-          <li>Consider engaging with BizHealth.ai for implementation support</li>
+          <li><strong>This Week:</strong> Review the Quick Wins section above and select 1-2 initiatives to begin immediately</li>
+          <li><strong>This Month:</strong> Schedule a strategic planning session with your leadership team to address your priority areas</li>
+          <li><strong>For Detail:</strong> Use the "Where to Go for Detail" section above to navigate to the Comprehensive Report for full analysis</li>
+          <li><strong>For Support:</strong> Consider engaging with BizHealth.ai for implementation support and ongoing monitoring</li>
         </ol>
       </div>
     </section>
@@ -338,15 +342,20 @@ export async function buildOwnersReport(
     customCSS: narrativeStyles,
   });
 
+  // Print reference usage summary if debug logging is enabled
+  referenceLogger.printSummary();
+
   logger.info({
-    contentWords: narratives?.metadata?.totalWords || 0
-  }, 'Owners report built');
+    contentWords: narratives?.metadata?.totalWords || 0,
+    crossReferences: referenceLogger.getUsages().length,
+    missingRefs: referenceLogger.getMissingRefs().length,
+  }, 'Owners report built with cross-references');
 
   // Write HTML file
   const htmlPath = path.join(options.outputDir, `${reportType}.html`);
   await fs.writeFile(htmlPath, html, 'utf-8');
 
-  // Generate metadata
+  // Generate metadata with new section IDs
   const meta: ReportMeta = {
     reportType: 'owner',
     reportName,
@@ -355,13 +364,17 @@ export async function buildOwnersReport(
     runId: ctx.runId,
     healthScore: ctx.overallHealth.score,
     healthBand: ctx.overallHealth.band,
-    pageSuggestionEstimate: 3,
+    pageSuggestionEstimate: 5,
     sections: [
-      { id: 'overview', title: 'Business Health at a Glance' },
-      { id: 'insights', title: 'Key Insights' },
-      { id: 'recommendations', title: 'Top Recommendations' },
-      { id: 'quick-wins', title: 'Quick Wins' },
-      { id: 'next-steps', title: 'Next Steps' },
+      { id: 'health-overview', title: 'Your Business Health at a Glance' },
+      { id: 'what-this-means', title: 'What This Means for You as the Owner' },
+      { id: 'critical-priorities', title: 'Your Critical Priorities' },
+      { id: 'investment-roi', title: 'Investment & ROI Overview' },
+      { id: 'execution-overview', title: 'Your Execution Overview' },
+      { id: 'quick-wins', title: 'Quick Wins - Start Today' },
+      { id: 'key-risks', title: 'Key Risks to Your Business' },
+      { id: 'where-to-go', title: 'Where to Go for Detail' },
+      { id: 'next-steps', title: 'Your Next Steps' },
     ],
     brand: {
       primaryColor: options.brand.primaryColor,
@@ -393,6 +406,78 @@ function formatCurrency(value?: number): string {
     return `$${(value / 1000).toFixed(0)}K`;
   }
   return `$${value}`;
+}
+
+/**
+ * Render owner-focused section header with question framing
+ */
+function renderOwnerSectionHeader(title: string, ownerQuestion?: string): string {
+  return `
+    <div class="owner-section-header">
+      <h2>${title}</h2>
+      ${ownerQuestion ? `
+        <p class="owner-question">
+          <span class="question-icon">&#128173;</span>
+          <em>"${ownerQuestion}"</em>
+        </p>
+      ` : ''}
+    </div>
+  `;
+}
+
+/**
+ * Generate growth implication text based on context
+ */
+function getGrowthImplication(ctx: ReportContext): string {
+  const geChapter = ctx.chapters.find(ch => ch.code === 'GE');
+  const score = geChapter?.score || ctx.overallHealth.score;
+
+  if (score >= 80) {
+    return 'Your business shows strong growth fundamentals. Focus on scaling what works and expanding into new opportunities.';
+  } else if (score >= 60) {
+    return 'Your business has solid growth potential with room for improvement. Addressing identified gaps could accelerate revenue growth.';
+  } else if (score >= 40) {
+    return 'Your growth engine needs attention. Sales processes and market positioning require strategic focus to unlock revenue potential.';
+  } else {
+    return 'Critical improvements are needed in your growth strategy. Immediate action on sales and marketing fundamentals is recommended.';
+  }
+}
+
+/**
+ * Generate risk implication text based on context
+ */
+function getRiskImplication(ctx: ReportContext): string {
+  const rsChapter = ctx.chapters.find(ch => ch.code === 'RS');
+  const riskCount = ctx.risks?.length || ctx.findings.filter(f => f.type === 'risk').length;
+  const score = rsChapter?.score || ctx.overallHealth.score;
+
+  if (score >= 80 && riskCount <= 2) {
+    return 'Your business has strong risk management practices. Continue monitoring and maintain your compliance standards.';
+  } else if (score >= 60) {
+    return 'Some operational and compliance risks need attention to protect business continuity and avoid potential issues.';
+  } else if (score >= 40) {
+    return 'Key vulnerabilities exist in your operations. Addressing these risks should be a priority to protect your business.';
+  } else {
+    return 'Significant risk exposure requires immediate attention. Prioritize risk mitigation to protect your business from potential harm.';
+  }
+}
+
+/**
+ * Generate business value implication text based on context
+ */
+function getValueImplication(ctx: ReportContext): string {
+  const score = ctx.overallHealth.score;
+  const trajectory = ctx.overallHealth.trajectory;
+
+  if (score >= 80 && trajectory === 'up') {
+    return 'Your business is well-positioned for valuation growth. Strong fundamentals make you attractive to investors or potential buyers.';
+  } else if (score >= 60) {
+    return 'Addressing identified gaps could significantly improve your business valuation. Focus on the priority areas for maximum impact.';
+  } else if (score >= 40) {
+    return 'Your business value is constrained by operational challenges. Systematic improvement will unlock hidden value.';
+  } else {
+    return 'Business value improvement requires foundational work. Implementing recommended changes will build a stronger, more valuable business.';
+  }
 }
 
 /**
@@ -872,6 +957,316 @@ function generateOwnerNarrativeStyles(primaryColor: string, accentColor: string)
       .bh-table th { background: ${primaryColor} !important; color: #fff !important; }
       .table-responsive { overflow: visible; box-shadow: none; }
       .bh-callout { page-break-inside: avoid; }
+    }
+
+    /* ================================================================
+       OWNER REPORT ENHANCEMENT STYLES
+       Added for owner-focused executive guide with cross-references
+       ================================================================ */
+
+    /* OWNER SECTION HEADERS */
+    .owner-section-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .owner-section-header h2 {
+      margin-bottom: 0.5rem;
+      color: ${primaryColor};
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .owner-question {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      color: #666;
+      margin: 0;
+      padding-left: 0.5rem;
+      border-left: 3px solid ${accentColor};
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .owner-question .question-icon {
+      font-size: 1.1rem;
+    }
+
+    .owner-question em {
+      font-style: italic;
+    }
+
+    /* OWNER IMPLICATIONS GRID */
+    .owner-implications-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .implication-card {
+      background: #fff;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 1.25rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .implication-card .card-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .implication-card .card-title {
+      font-weight: 600;
+      color: ${primaryColor};
+      font-family: 'Montserrat', sans-serif;
+      margin-bottom: 0.5rem;
+    }
+
+    .implication-card p {
+      font-size: 0.9rem;
+      color: #555;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .implication-card.growth { border-top: 3px solid #28a745; }
+    .implication-card.risk { border-top: 3px solid #dc3545; }
+    .implication-card.value { border-top: 3px solid ${accentColor}; }
+
+    /* FINANCIAL SUMMARY GRID */
+    .financial-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .financial-card {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .financial-card.highlight {
+      background: linear-gradient(135deg, ${primaryColor} 0%, #2d3a7a 100%);
+      color: #fff;
+      border: none;
+    }
+
+    .financial-card .card-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    .financial-card.highlight .card-label {
+      color: rgba(255,255,255,0.8);
+    }
+
+    .financial-card .card-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: ${primaryColor};
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .financial-card.highlight .card-value {
+      color: #fff;
+    }
+
+    .financial-card .card-sublabel {
+      font-size: 0.8rem;
+      color: #888;
+      margin-top: 0.25rem;
+    }
+
+    .financial-card.highlight .card-sublabel {
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* SECTION INTRO TEXT */
+    .section-intro {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    /* COMPREHENSIVE REPORT REFERENCE CALLOUTS */
+    .comprehensive-reference {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #f8f9fa;
+      border-left: 3px solid ${accentColor};
+      padding: 0.75rem 1rem;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .comprehensive-reference .ref-icon {
+      flex-shrink: 0;
+      font-size: 1rem;
+    }
+
+    .comprehensive-reference .ref-text {
+      color: #555;
+    }
+
+    .comprehensive-reference .ref-text strong {
+      color: ${primaryColor};
+    }
+
+    .comprehensive-reference .ref-text em {
+      color: ${accentColor};
+      font-style: normal;
+      font-weight: 500;
+    }
+
+    .comprehensive-reference.reference-missing {
+      border-left-color: #dc3545;
+      background: #fff5f5;
+    }
+
+    .comprehensive-reference.reference-missing .ref-text {
+      color: #dc3545;
+    }
+
+    /* REPORT RELATIONSHIP NOTICE (for Comprehensive Report) */
+    .report-relationship-notice {
+      display: flex;
+      gap: 1rem;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border: 1px solid #dee2e6;
+      border-left: 4px solid ${primaryColor};
+      border-radius: 0 8px 8px 0;
+      padding: 1.25rem;
+      margin: 1.5rem 0 2rem 0;
+    }
+
+    .report-relationship-notice .notice-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+
+    .report-relationship-notice .notice-content {
+      flex: 1;
+    }
+
+    .report-relationship-notice h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.1rem;
+      color: ${primaryColor};
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .report-relationship-notice p {
+      margin: 0.5rem 0 0 0;
+      font-size: 0.95rem;
+      color: #555;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .report-relationship-notice strong {
+      color: ${primaryColor};
+    }
+
+    /* BUNDLE CONTENTS */
+    .bundle-contents {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+
+    .bundle-contents h3 {
+      margin: 0 0 1rem 0;
+      color: ${primaryColor};
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .bundle-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .bundle-item {
+      display: flex;
+      flex-direction: column;
+      padding: 0.75rem;
+      background: #fff;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+    }
+
+    .bundle-item.primary {
+      border-left: 3px solid ${primaryColor};
+    }
+
+    .bundle-item strong {
+      color: ${primaryColor};
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .bundle-item span {
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    /* REFERENCE TABLE */
+    .reference-table td:first-child {
+      font-weight: 500;
+    }
+
+    .reference-table em {
+      color: ${accentColor};
+      font-style: normal;
+    }
+
+    /* RESPONSIVE ADJUSTMENTS FOR OWNER ENHANCEMENTS */
+    @media (max-width: 768px) {
+      .owner-implications-grid,
+      .financial-summary-grid,
+      .bundle-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      .owner-implications-grid,
+      .financial-summary-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .bundle-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .financial-card.highlight {
+        background: ${primaryColor} !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .comprehensive-reference {
+        background: #f8f9fa !important;
+        border-left-color: ${accentColor} !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .report-relationship-notice {
+        background: #f8f9fa !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
     }
   `;
 }
