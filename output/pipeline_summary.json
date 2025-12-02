@@ -17,10 +17,10 @@
     {
       "phase": 0,
       "status": "success",
-      "duration_ms": 24,
+      "duration_ms": 119,
       "output_path": "output/phase0_output.json",
       "details": {
-        "assessment_run_id": "ac6bb2d8-5b50-42f3-86e5-813046356ed0",
+        "assessment_run_id": "6462cab4-6da2-439c-a8c9-286ffe07ce3e",
         "company_profile_id": "ewm-global-478cbd43",
         "phases_completed": {
           "raw_capture": true,
@@ -30,16 +30,16 @@
           "index_update": true
         },
         "stats": {
-          "totalEntries": 2,
+          "totalEntries": 3,
           "byStatus": {
             "raw_captured": 0,
             "normalized": 0,
-            "ready_for_analysis": 2,
+            "ready_for_analysis": 3,
             "analysis_complete": 0,
             "error": 0
           },
           "byCompany": {
-            "ewm-global-478cbd43": 2
+            "ewm-global-478cbd43": 3
           }
         }
       }
@@ -47,7 +47,7 @@
     {
       "phase": 1,
       "status": "success",
-      "duration_ms": 215174,
+      "duration_ms": 1073972,
       "output_path": "output/phase1_output.json",
       "details": {
         "status": "complete",
@@ -59,7 +59,7 @@
     {
       "phase": 2,
       "status": "success",
-      "duration_ms": 122209,
+      "duration_ms": 590385,
       "output_path": "output/phase2_output.json",
       "details": {
         "status": "complete",
@@ -70,7 +70,7 @@
     {
       "phase": 3,
       "status": "success",
-      "duration_ms": 152878,
+      "duration_ms": 638531,
       "output_path": "output/phase3_output.json",
       "details": {
         "status": "complete",
@@ -81,7 +81,7 @@
     {
       "phase": 4,
       "status": "success",
-      "duration_ms": 238489,
+      "duration_ms": 252315,
       "output_path": "output/phase4_output.json",
       "details": {
         "status": "complete",
@@ -95,23 +95,23 @@
         ],
         "report_tokens": {
           "input": 5518,
-          "output": 20187
+          "output": 21436
         }
       }
     },
     {
       "phase": 5,
       "status": "success",
-      "duration_ms": 96,
+      "duration_ms": 85,
       "output_path": "output/phase5_output.json",
       "details": {
         "status": "complete",
         "reports_generated": 11,
-        "output_dir": "output/reports/ac6bb2d8-5b50-42f3-86e5-813046356ed0",
-        "manifest": "output/reports/ac6bb2d8-5b50-42f3-86e5-813046356ed0/manifest.json"
+        "output_dir": "output/reports/6462cab4-6da2-439c-a8c9-286ffe07ce3e",
+        "manifest": "output/reports/6462cab4-6da2-439c-a8c9-286ffe07ce3e/manifest.json"
       }
     }
   ],
-  "total_duration_ms": 728871,
-  "completed_at": "2025-12-02T14:15:49.906Z"
+  "total_duration_ms": 2555410,
+  "completed_at": "2025-12-02T15:18:55.138Z"
 }

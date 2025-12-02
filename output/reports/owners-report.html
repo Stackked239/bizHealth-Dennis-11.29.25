@@ -3,20 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Executive Summary - EWM Global Business Assessment</title>
+    <title>EWM Global - Executive Business Assessment</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
-            margin: 0;
+            background: #fff;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
             padding: 20px;
-            background-color: #fff;
         }
         
         .header {
             text-align: center;
-            border-bottom: 3px solid #2c3e50;
+            border-bottom: 3px solid #2c5aa0;
             padding-bottom: 20px;
             margin-bottom: 30px;
         }
@@ -24,249 +34,334 @@
         .company-name {
             font-size: 2.5em;
             font-weight: bold;
-            color: #2c3e50;
-            margin: 0;
+            color: #2c5aa0;
+            margin-bottom: 10px;
         }
         
         .report-title {
-            font-size: 1.4em;
-            color: #7f8c8d;
-            margin: 10px 0 0 0;
+            font-size: 1.3em;
+            color: #666;
+            font-weight: 300;
         }
         
-        .health-score-banner {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            color: white;
-            padding: 20px;
+        .executive-overview {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 30px;
             border-radius: 8px;
-            text-align: center;
-            margin: 20px 0;
+            margin-bottom: 30px;
+            border-left: 5px solid #dc3545;
+        }
+        
+        .health-score-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
         }
         
         .health-score {
-            font-size: 3em;
+            font-size: 4em;
             font-weight: bold;
-            margin: 0;
+            color: #dc3545;
         }
         
         .health-status {
-            font-size: 1.2em;
-            margin: 5px 0;
+            text-align: right;
+            flex-grow: 1;
+            margin-left: 30px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            background: #dc3545;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        
+        .trajectory {
+            font-size: 1.1em;
+            color: #666;
+        }
+        
+        .critical-alert {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .alert-title {
+            color: #856404;
+            font-weight: bold;
+            margin-bottom: 10px;
         }
         
         .section {
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            page-break-inside: avoid;
         }
         
         .section-title {
             font-size: 1.5em;
             font-weight: bold;
-            color: #2c3e50;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 5px;
-            margin-bottom: 15px;
+            color: #2c5aa0;
+            border-bottom: 2px solid #2c5aa0;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
         }
         
         .two-column {
             display: flex;
             gap: 30px;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
         
         .column {
             flex: 1;
         }
         
-        .strengths-weaknesses {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
+        .strengths {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 20px;
+            border-radius: 6px;
+        }
+        
+        .priorities {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 20px;
+            border-radius: 6px;
+        }
+        
+        .list-item {
+            margin-bottom: 12px;
+            padding-left: 15px;
+            position: relative;
+        }
+        
+        .list-item::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+        
+        .strengths .list-item::before {
+            color: #28a745;
+        }
+        
+        .priorities .list-item::before {
+            color: #dc3545;
+        }
+        
+        .score-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .score-table th {
+            background: #2c5aa0;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .score-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .score-bar {
+            background: #e9ecef;
+            height: 8px;
+            border-radius: 4px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .score-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+        
+        .score-critical { background: #dc3545; }
+        .score-attention { background: #ffc107; }
+        .score-proficiency { background: #28a745; }
+        
+        .financial-impact {
+            background: #fff3e0;
+            border: 1px solid #ffcc80;
+            border-radius: 8px;
+            padding: 25px;
             margin: 20px 0;
         }
         
-        .strength-box, .priority-box {
-            padding: 20px;
-            border-radius: 8px;
+        .impact-title {
+            color: #e65100;
+            font-weight: bold;
+            font-size: 1.2em;
             margin-bottom: 15px;
         }
         
-        .strength-box {
-            background-color: #d5f4e6;
-            border-left: 5px solid #27ae60;
-        }
-        
-        .priority-box {
-            background-color: #fdeaea;
-            border-left: 5px solid #e74c3c;
-        }
-        
-        .metric-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin: 20px 0;
-        }
-        
-        .metric-card {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            border: 1px solid #e9ecef;
-        }
-        
-        .metric-score {
-            font-size: 1.8em;
-            font-weight: bold;
-            color: #2c3e50;
-        }
-        
-        .metric-label {
-            font-size: 0.9em;
-            color: #7f8c8d;
-            margin-top: 5px;
-        }
-        
-        .critical-alert {
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 15px 0;
-            color: #721c24;
-        }
-        
-        .alert-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        
         .quick-wins {
-            background-color: #d1ecf1;
-            border: 1px solid #bee5eb;
+            background: #e8f5e8;
+            border: 1px solid #a5d6a7;
             border-radius: 8px;
-            padding: 20px;
+            padding: 25px;
             margin: 20px 0;
         }
         
-        .wins-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 15px;
+        .quick-wins-title {
+            color: #2e7d32;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 15px;
         }
         
-        .win-item {
+        .recommendation-item {
             background: white;
+            margin: 10px 0;
             padding: 15px;
             border-radius: 6px;
-            border-left: 4px solid #17a2b8;
+            border-left: 4px solid #2c5aa0;
         }
         
-        .impact-score {
+        .recommendation-title {
             font-weight: bold;
-            color: #17a2b8;
+            color: #2c5aa0;
+        }
+        
+        .recommendation-timeline {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
         }
         
         .page-break {
             page-break-before: always;
         }
         
-        .financial-implications {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        
-        .imperatives-list {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .imperatives-list li {
-            background: #e3f2fd;
-            margin: 10px 0;
-            padding: 15px;
-            border-left: 4px solid #2196f3;
-            border-radius: 4px;
-        }
-        
-        .timeline {
-            font-weight: bold;
-            color: #d32f2f;
+        @media print {
+            .container {
+                max-width: none;
+                margin: 0;
+                padding: 15px;
+            }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <h1 class="company-name">EWM GLOBAL</h1>
-        <p class="report-title">Executive Business Assessment Summary</p>
-    </header>
+    <div class="container">
+        <header class="header">
+            <h1 class="company-name">EWM Global</h1>
+            <p class="report-title">Executive Business Assessment Report</p>
+        </header>
 
-    <main>
-        <section class="health-score-banner">
-            <div class="health-score">53/100</div>
-            <div class="health-status">NEEDS IMPROVEMENT</div>
-            <div style="font-size: 1em; margin-top: 10px;">Trajectory: Flat - Immediate Action Required</div>
-        </section>
-
-        <section class="section">
-            <h2 class="section-title">Executive Overview</h2>
-            <p>EWM Global's business health assessment reveals significant areas requiring immediate attention. With an overall score of 53/100, the organization faces critical challenges in Marketing (31/100) and Financials (39/100) that demand urgent intervention to prevent business risk escalation.</p>
+        <section class="executive-overview">
+            <div class="health-score-container">
+                <div class="health-score">53</div>
+                <div class="health-status">
+                    <div class="status-badge">NEEDS IMPROVEMENT</div>
+                    <div class="trajectory">Trajectory: Flat</div>
+                </div>
+            </div>
             
-            <div class="metric-grid">
-                <div class="metric-card">
-                    <div class="metric-score">49</div>
-                    <div class="metric-label">Growth Engine</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-score">51</div>
-                    <div class="metric-label">Performance & Health</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-score">43</div>
-                    <div class="metric-label">People & Leadership</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-score">70</div>
-                    <div class="metric-label">Resilience & Safeguards</div>
-                </div>
+            <div class="critical-alert">
+                <div class="alert-title">⚠️ IMMEDIATE ACTION REQUIRED</div>
+                <p><strong>Critical Risk Areas:</strong> Marketing (31/100) and Financials (39/100) are at critical levels requiring immediate intervention to prevent business deterioration.</p>
             </div>
         </section>
 
         <section class="section">
-            <div class="strengths-weaknesses">
+            <h2 class="section-title">Business Performance Overview</h2>
+            
+            <table class="score-table">
+                <thead>
+                    <tr>
+                        <th>Business Area</th>
+                        <th>Score</th>
+                        <th>Status</th>
+                        <th>Performance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Growth Engine</td>
+                        <td>49/100</td>
+                        <td>Attention</td>
+                        <td><div class="score-bar"><div class="score-fill score-attention" style="width: 49%"></div></div></td>
+                    </tr>
+                    <tr>
+                        <td>Performance & Health</td>
+                        <td>51/100</td>
+                        <td>Attention</td>
+                        <td><div class="score-bar"><div class="score-fill score-attention" style="width: 51%"></div></div></td>
+                    </tr>
+                    <tr>
+                        <td>People & Leadership</td>
+                        <td>43/100</td>
+                        <td>Attention</td>
+                        <td><div class="score-bar"><div class="score-fill score-attention" style="width: 43%"></div></div></td>
+                    </tr>
+                    <tr>
+                        <td>Resilience & Safeguards</td>
+                        <td>70/100</td>
+                        <td>Proficiency</td>
+                        <td><div class="score-bar"><div class="score-fill score-proficiency" style="width: 70%"></div></div></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Strategic Assessment</h2>
+            
+            <div class="two-column">
                 <div class="column">
-                    <h3 style="color: #27ae60; margin-bottom: 15px;">Top 3 Strengths</h3>
-                    <div class="strength-box">
-                        <strong>Resilience & Safeguards Excellence</strong><br>
-                        Strong foundation with 70/100 score demonstrates robust risk management and operational safeguards
-                    </div>
-                    <div class="strength-box">
-                        <strong>Performance & Health Stability</strong><br>
-                        Maintaining baseline performance at 51/100 provides platform for improvement initiatives
-                    </div>
-                    <div class="strength-box">
-                        <strong>Growth Engine Potential</strong><br>
-                        49/100 score indicates underlying growth capabilities that can be optimized with focused effort
+                    <div class="strengths">
+                        <h3 style="color: #28a745; margin-bottom: 15px;">Top 3 Strengths</h3>
+                        <div class="list-item">
+                            <strong>Resilience & Safeguards (70/100)</strong><br>
+                            Strong foundational systems and risk management capabilities provide stability
+                        </div>
+                        <div class="list-item">
+                            <strong>Performance & Health (51/100)</strong><br>
+                            Core operational metrics show baseline functionality
+                        </div>
+                        <div class="list-item">
+                            <strong>Growth Engine (49/100)</strong><br>
+                            Basic revenue generation mechanisms are in place
+                        </div>
                     </div>
                 </div>
                 
                 <div class="column">
-                    <h3 style="color: #e74c3c; margin-bottom: 15px;">Top 3 Priorities</h3>
-                    <div class="priority-box">
-                        <strong>Marketing Critical Recovery</strong><br>
-                        <span class="timeline">90 Days:</span> Address 31/100 score with immediate marketing improvement initiative (Impact: 69/100)
-                    </div>
-                    <div class="priority-box">
-                        <strong>Financial Performance Stabilization</strong><br>
-                        <span class="timeline">90 Days:</span> Implement financial improvement measures to address 39/100 score (Impact: 61/100)
-                    </div>
-                    <div class="priority-box">
-                        <strong>Leadership & Governance Enhancement</strong><br>
-                        <span class="timeline">12 Months:</span> Strengthen 40/100 leadership capabilities for sustainable growth (Impact: 60/100)
+                    <div class="priorities">
+                        <h3 style="color: #dc3545; margin-bottom: 15px;">Top 3 Priorities</h3>
+                        <div class="list-item">
+                            <strong>Marketing Overhaul (31/100)</strong><br>
+                            Critical underperformance requires immediate strategic intervention
+                        </div>
+                        <div class="list-item">
+                            <strong>Financial Systems (39/100)</strong><br>
+                            Cash flow and financial controls need urgent attention
+                        </div>
+                        <div class="list-item">
+                            <strong>Leadership & Governance (40/100)</strong><br>
+                            Structural leadership gaps hampering decision-making
+                        </div>
                     </div>
                 </div>
             </div>
@@ -275,78 +370,61 @@
         <div class="page-break"></div>
 
         <section class="section">
-            <h2 class="section-title">Critical Alerts</h2>
-            <div class="critical-alert">
-                <div class="alert-title">⚠️ Marketing Critical Underperformance</div>
-                Marketing systems at 31/100 represent immediate business risk. Market Position scoring only 10/100 indicates severe competitive disadvantage requiring emergency intervention.
-            </div>
-            <div class="critical-alert">
-                <div class="alert-title">⚠️ Financial Systems Crisis</div>
-                Financial health at 39/100 threatens business continuity. Immediate financial management and cash flow optimization required.
-            </div>
-            <div class="critical-alert">
-                <div class="alert-title">⚠️ Sales Cycle Breakdown</div>
-                Sales Cycle Efficiency at 3/100 indicates fundamental sales process failure. Revenue generation severely compromised.
-            </div>
-        </section>
-
-        <section class="section">
             <h2 class="section-title">Financial Implications</h2>
-            <div class="financial-implications">
-                <h4>Immediate Financial Impact</h4>
-                <ul>
-                    <li><strong>Revenue Risk:</strong> Marketing and sales inefficiencies directly threaten revenue generation capacity</li>
-                    <li><strong>Cash Flow Vulnerability:</strong> Financial systems scoring 39/100 indicates potential liquidity challenges</li>
-                    <li><strong>Investment Priority:</strong> Marketing improvement initiative offers highest ROI potential (Impact: 69/100)</li>
-                    <li><strong>Cost Optimization:</strong> Leadership enhancement can improve operational efficiency and reduce overhead</li>
-                </ul>
-                <p><strong>Estimated Business Impact:</strong> Without immediate intervention, current trajectory risks 20-30% revenue decline over next 12 months.</p>
+            
+            <div class="financial-impact">
+                <div class="impact-title">💰 Revenue & Growth Impact</div>
+                <div class="list-item"><strong>Marketing Deficiency:</strong> Poor lead generation and brand positioning directly impacting revenue pipeline and customer acquisition costs</div>
+                <div class="list-item"><strong>Financial Controls:</strong> Lack of robust financial management may be causing cash flow issues and limiting investment capacity</div>
+                <div class="list-item"><strong>Sales Efficiency:</strong> Extremely low sales cycle efficiency (3/100) suggests significant revenue leakage and extended conversion times</div>
+                <div class="list-item"><strong>Market Position:</strong> Weak positioning (10/100) limits pricing power and competitive advantage</div>
             </div>
         </section>
 
         <section class="section">
             <h2 class="section-title">Strategic Imperatives</h2>
-            <ul class="imperatives-list">
-                <li><strong>Immediate Crisis Management (Next 90 Days):</strong> Deploy emergency marketing and financial improvement initiatives simultaneously to stabilize business foundation</li>
-                <li><strong>Foundation Rebuilding (3-6 Months):</strong> Implement comprehensive sales process overhaul and leadership development programs</li>
-                <li><strong>Growth Recovery (6-12 Months):</strong> Leverage strengthened resilience capabilities to drive sustainable growth engine optimization</li>
-                <li><strong>Competitive Positioning (12+ Months):</strong> Transform market position from current 10/100 to industry leadership through strategic initiatives</li>
-            </ul>
-        </section>
-
-        <section class="section">
-            <h2 class="section-title">Quick Wins - Immediate Implementation</h2>
-            <div class="quick-wins">
-                <h4>High-Impact, Actionable Items for Next 30 Days:</h4>
-                <div class="wins-grid">
-                    <div class="win-item">
-                        <strong>Marketing Audit & Emergency Plan</strong><br>
-                        <span class="impact-score">Impact: 69/100</span><br>
-                        Conduct immediate marketing effectiveness review and deploy rapid response marketing campaign
-                    </div>
-                    <div class="win-item">
-                        <strong>Cash Flow Analysis</strong><br>
-                        <span class="impact-score">Impact: 61/100</span><br>
-                        Implement daily cash flow monitoring and establish emergency financing arrangements
-                    </div>
-                    <div class="win-item">
-                        <strong>Sales Process Documentation</strong><br>
-                        <span class="impact-score">Impact: 55/100</span><br>
-                        Map current sales cycle and identify immediate efficiency improvements
-                    </div>
-                    <div class="win-item">
-                        <strong>Leadership Communication Plan</strong><br>
-                        <span class="impact-score">Impact: 60/100</span><br>
-                        Establish clear communication protocols and decision-making authority structure
-                    </div>
-                </div>
+            
+            <div class="recommendation-item">
+                <div class="recommendation-title">1. Marketing Transformation (90 Days)</div>
+                <div class="recommendation-timeline">High Impact (69/100) | High Priority</div>
+                <p>Implement comprehensive marketing strategy focusing on digital presence, lead generation, and brand positioning to reverse critical performance decline.</p>
+            </div>
+            
+            <div class="recommendation-item">
+                <div class="recommendation-title">2. Financial System Optimization (90 Days)</div>
+                <div class="recommendation-timeline">High Impact (61/100) | High Priority</div>
+                <p>Establish robust financial controls, improve cash flow management, and implement performance tracking systems.</p>
+            </div>
+            
+            <div class="recommendation-item">
+                <div class="recommendation-title">3. Leadership Development (12 Months)</div>
+                <div class="recommendation-timeline">High Impact (60/100) | Medium Priority</div>
+                <p>Strengthen governance structures, clarify decision-making processes, and develop leadership capabilities to support growth.</p>
             </div>
         </section>
 
-        <footer style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #bdc3c7; text-align: center; color: #7f8c8d;">
-            <p>This assessment identifies critical business risks requiring immediate attention. Success depends on rapid implementation of recommended initiatives within stated timeframes.</p>
-            <p><strong>Next Step:</strong> Schedule emergency leadership meeting within 48 hours to initiate crisis response plan.</p>
-        </footer>
-    </main>
+        <section class="section">
+            <h2 class="section-title">Immediate Quick Wins</h2>
+            
+            <div class="quick-wins">
+                <div class="quick-wins-title">🚀 30-Day Action Items</div>
+                <div class="list-item"><strong>Marketing Foundation:</strong> Establish basic digital marketing presence and lead capture mechanisms</div>
+                <div class="list-item"><strong>Financial Dashboard:</strong> Implement weekly cash flow reporting and expense tracking</div>
+                <div class="list-item"><strong>Sales Process:</strong> Map and optimize current sales cycle to reduce conversion time</div>
+                <div class="list-item"><strong>Strategic Planning:</strong> Conduct leadership alignment session on market positioning</div>
+                <div class="list-item"><strong>Customer Experience:</strong> Audit and improve key customer touchpoints</div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Executive Recommendation</h2>
+            <p style="font-size: 1.1em; line-height: 1.8; color: #444;">
+                <strong>EWM Global requires immediate strategic intervention</strong> in marketing and financial management to prevent further deterioration. While the company maintains strong resilience capabilities, critical gaps in customer acquisition and financial controls present significant business risks. 
+            </p>
+            <p style="font-size: 1.1em; line-height: 1.8; color: #444; margin-top: 15px;">
+                Focus on the 90-day marketing and financial improvement initiatives while building leadership capacity for sustained growth. The solid foundation in resilience systems provides a stable platform for rapid improvement once core issues are addressed.
+            </p>
+        </section>
+    </div>
 </body>
 </html>

@@ -5,746 +5,617 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quick Wins Action Plan - EWM Global</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
             color: #333;
-            background-color: #fff;
-            font-size: 11pt;
         }
         
         .container {
-            max-width: 8.5in;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0.5in;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
         
         header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 40px 0;
             text-align: center;
-            border-bottom: 3px solid #1e3a8a;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .company-name {
-            font-size: 28pt;
-            font-weight: bold;
-            color: #1e3a8a;
-            margin-bottom: 10px;
-        }
-        
-        .report-title {
-            font-size: 18pt;
-            color: #666;
-            margin-bottom: 5px;
-        }
-        
-        .report-date {
-            color: #888;
-            font-size: 10pt;
+            margin: -20px -20px 40px -20px;
         }
         
         h1 {
-            color: #1e3a8a;
-            font-size: 16pt;
-            margin: 25px 0 15px 0;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #e5e7eb;
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
         }
         
-        h2 {
-            color: #374151;
-            font-size: 14pt;
-            margin: 20px 0 10px 0;
-        }
-        
-        h3 {
-            color: #4b5563;
-            font-size: 12pt;
-            margin: 15px 0 8px 0;
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+            margin-top: 10px;
         }
         
         .section {
-            page-break-before: always;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            page-break-inside: avoid;
         }
         
-        .section:first-child {
-            page-break-before: avoid;
+        .major-section {
+            page-break-before: always;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+        }
+        
+        h3 {
+            color: #34495e;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            margin-top: 25px;
         }
         
         .executive-summary {
-            background: #f8fafc;
-            border-left: 5px solid #1e3a8a;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 5px;
+            background: #ecf0f1;
+            padding: 30px;
+            border-radius: 8px;
+            border-left: 5px solid #3498db;
+            margin-bottom: 30px;
+        }
+        
+        .health-score-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
         }
         
         .score-card {
-            background: #fff;
-            border: 1px solid #e5e7eb;
+            background: white;
+            padding: 20px;
             border-radius: 8px;
-            padding: 15px;
-            margin: 15px 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .score-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
         }
         
         .score-value {
-            font-size: 24pt;
+            font-size: 2.5em;
             font-weight: bold;
-            color: #dc2626;
+            margin: 10px 0;
         }
         
-        .score-status {
-            font-size: 10pt;
-            padding: 4px 12px;
-            border-radius: 20px;
-            background: #fef2f2;
-            color: #dc2626;
-            font-weight: bold;
+        .score-needs-improvement { color: #e74c3c; }
+        .score-attention { color: #f39c12; }
+        .score-proficiency { color: #27ae60; }
+        
+        .quick-wins-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            margin: 25px 0;
         }
         
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-            font-size: 10pt;
-        }
-        
-        th, td {
-            padding: 8px 12px;
-            text-align: left;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        
-        th {
-            background: #f9fafb;
-            font-weight: bold;
-            color: #374151;
-        }
-        
-        .priority-high {
-            background: #fee2e2;
-            color: #991b1b;
-            font-weight: bold;
-        }
-        
-        .priority-medium {
-            background: #fef3c7;
-            color: #92400e;
-            font-weight: bold;
-        }
-        
-        .priority-low {
-            background: #ecfdf5;
-            color: #065f46;
-            font-weight: bold;
-        }
-        
-        .quick-win-item {
-            background: #fff;
-            border: 1px solid #e5e7eb;
+        .quick-win-card {
+            background: white;
+            border: 1px solid #ddd;
             border-radius: 8px;
-            padding: 20px;
-            margin: 15px 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            padding: 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         
         .quick-win-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 15px;
+            align-items: center;
+            margin-bottom: 20px;
         }
         
         .quick-win-title {
-            font-size: 14pt;
+            font-size: 1.4em;
+            color: #2c3e50;
             font-weight: bold;
-            color: #1e3a8a;
         }
         
-        .impact-score {
-            background: #1e3a8a;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 10pt;
+        .priority-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
             font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .priority-high { background: #e74c3c; color: white; }
+        .priority-medium { background: #f39c12; color: white; }
+        .priority-low { background: #95a5a6; color: white; }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .metric-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .metric-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .metric-label {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-top: 5px;
         }
         
         .action-steps {
-            background: #f8fafc;
+            background: #f8f9fa;
+            padding: 20px;
             border-radius: 5px;
-            padding: 15px;
-            margin: 10px 0;
+            margin: 20px 0;
         }
         
-        .action-steps ul {
-            margin-left: 20px;
+        .action-steps ol {
+            margin: 0;
+            padding-left: 20px;
         }
         
         .action-steps li {
-            margin: 5px 0;
+            margin: 8px 0;
+            font-weight: 500;
         }
         
         .timeline-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            gap: 20px;
+            margin: 25px 0;
+        }
+        
+        .timeline-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .timeline-header {
+            color: #2c3e50;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .timeline-30 { border-top: 4px solid #e74c3c; }
+        .timeline-60 { border-top: 4px solid #f39c12; }
+        .timeline-90 { border-top: 4px solid #27ae60; }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
             margin: 20px 0;
         }
         
-        .timeline-item {
-            background: #fff;
-            border: 1px solid #e5e7eb;
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background: #34495e;
+            color: white;
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .resource-summary {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
             border-radius: 8px;
-            padding: 15px;
-            text-align: center;
+            padding: 25px;
+            margin: 25px 0;
         }
         
-        .timeline-period {
-            font-size: 12pt;
+        .recommendation {
+            background: #d1ecf1;
+            border-left: 5px solid #bee5eb;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .investment-level {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
             font-weight: bold;
-            color: #1e3a8a;
-            margin-bottom: 10px;
         }
         
-        .metric-box {
-            background: #f0f9ff;
-            border-left: 4px solid #0ea5e9;
-            padding: 10px 15px;
-            margin: 10px 0;
-        }
-        
-        .resource-table td:first-child {
-            font-weight: bold;
-            width: 25%;
-        }
-        
-        .footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #e5e7eb;
-            text-align: center;
-            color: #6b7280;
-            font-size: 9pt;
-        }
+        .investment-low { background: #d4edda; color: #155724; }
+        .investment-medium { background: #fff3cd; color: #856404; }
+        .investment-high { background: #f8d7da; color: #721c24; }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="company-name">EWM Global</div>
-            <div class="report-title">Quick Wins Action Plan</div>
-            <div class="report-date">Generated: December 2024</div>
+            <h1>Quick Wins Action Plan</h1>
+            <div class="subtitle">Strategic Initiative for Immediate Business Impact</div>
+            <div class="subtitle"><strong>EWM Global</strong></div>
         </header>
 
-        <div class="executive-summary">
-            <h2>Executive Summary</h2>
-            <p>EWM Global presents significant opportunities for rapid improvement through targeted quick win initiatives. With an overall health score of 53/100, the organization requires immediate attention in Marketing (31/100), Financials (39/100), and Leadership & Governance (40/100). This action plan identifies five high-impact initiatives that can deliver measurable results within 30-90 days, establishing momentum for longer-term transformation.</p>
-        </div>
-
-        <div class="score-card">
-            <div class="score-header">
-                <div>
-                    <h3>Current Health Score</h3>
-                    <div style="color: #666; font-size: 10pt;">Needs Immediate Improvement</div>
-                </div>
-                <div class="score-value">53/100</div>
-            </div>
-            <div class="score-status">NEEDS IMPROVEMENT</div>
-        </div>
-
         <section class="section">
-            <h1>Quick Wins Methodology</h1>
-            
-            <p>Our quick wins approach focuses on identifying and implementing high-impact, low-effort initiatives that can deliver immediate value while building organizational confidence and momentum. Each initiative is evaluated based on:</p>
-            
-            <table>
-                <thead>
-                    <tr>
-                        <th>Evaluation Criteria</th>
-                        <th>Description</th>
-                        <th>Weight</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Impact Score</td>
-                        <td>Potential positive effect on business performance</td>
-                        <td>60%</td>
-                    </tr>
-                    <tr>
-                        <td>Implementation Effort</td>
-                        <td>Resources, time, and complexity required</td>
-                        <td>25%</td>
-                    </tr>
-                    <tr>
-                        <td>Timeline to Value</td>
-                        <td>Speed to achieve measurable results</td>
-                        <td>15%</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>Success Principles</h3>
-            <ul>
-                <li><strong>Focused Execution:</strong> Concentrate resources on highest-impact opportunities</li>
-                <li><strong>Measurable Outcomes:</strong> Establish clear KPIs and success metrics</li>
-                <li><strong>Quick Feedback Loops:</strong> Regular progress reviews and course corrections</li>
-                <li><strong>Stakeholder Engagement:</strong> Ensure buy-in and communication throughout</li>
-            </ul>
-        </section>
-
-        <section class="section">
-            <h1>Prioritized Quick Wins Portfolio</h1>
-
-            <div class="quick-win-item">
-                <div class="quick-win-header">
-                    <div class="quick-win-title">Marketing Improvement Initiative</div>
-                    <div class="impact-score">Impact: 69/100</div>
-                </div>
-                
-                <table>
-                    <tr>
-                        <td><strong>Current Score:</strong></td>
-                        <td>31/100</td>
-                        <td><strong>Target Score:</strong></td>
-                        <td>51/100</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Timeline:</strong></td>
-                        <td>90 Days</td>
-                        <td><strong>Effort Level:</strong></td>
-                        <td>High (70/100)</td>
-                    </tr>
-                </table>
-
-                <div class="action-steps">
-                    <h4>Implementation Steps</h4>
-                    <ul>
-                        <li>Conduct comprehensive marketing assessment within first 2 weeks</li>
-                        <li>Develop improvement plan with measurable KPIs by week 3</li>
-                        <li>Implement quick wins within first 30 days</li>
-                        <li>Monitor progress weekly and adjust approach as needed</li>
-                        <li>Document and share best practices by day 90</li>
-                    </ul>
-                </div>
-
-                <div class="metric-box">
-                    <strong>Success Metrics:</strong> 65% improvement in marketing effectiveness score, increased lead generation by 40%, improved brand awareness metrics
-                </div>
-            </div>
-
-            <div class="quick-win-item">
-                <div class="quick-win-header">
-                    <div class="quick-win-title">Leadership & Governance Enhancement</div>
-                    <div class="impact-score">Impact: 60/100</div>
-                </div>
-                
-                <table>
-                    <tr>
-                        <td><strong>Current Score:</strong></td>
-                        <td>40/100</td>
-                        <td><strong>Target Score:</strong></td>
-                        <td>60/100</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Timeline:</strong></td>
-                        <td>12 Months</td>
-                        <td><strong>Effort Level:</strong></td>
-                        <td>Medium (50/100)</td>
-                    </tr>
-                </table>
-
-                <div class="action-steps">
-                    <h4>Implementation Steps</h4>
-                    <ul>
-                        <li>Conduct leadership assessment and governance review</li>
-                        <li>Establish clear decision-making frameworks and accountability structures</li>
-                        <li>Implement leadership development program</li>
-                        <li>Create regular governance review processes</li>
-                        <li>Monitor leadership effectiveness metrics quarterly</li>
-                    </ul>
-                </div>
-
-                <div class="metric-box">
-                    <strong>Success Metrics:</strong> 50% improvement in leadership effectiveness, enhanced decision-making speed, improved governance compliance scores
-                </div>
-            </div>
-
-            <div class="quick-win-item">
-                <div class="quick-win-header">
-                    <div class="quick-win-title">Strategic Planning & Execution</div>
-                    <div class="impact-score">Impact: 55/100</div>
-                </div>
-                
-                <table>
-                    <tr>
-                        <td><strong>Current Score:</strong></td>
-                        <td>45/100</td>
-                        <td><strong>Target Score:</strong></td>
-                        <td>65/100</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Timeline:</strong></td>
-                        <td>12 Months</td>
-                        <td><strong>Effort Level:</strong></td>
-                        <td>Medium (50/100)</td>
-                    </tr>
-                </table>
-
-                <div class="action-steps">
-                    <h4>Implementation Steps</h4>
-                    <ul>
-                        <li>Review and refine strategic planning process</li>
-                        <li>Establish clear strategic priorities and resource allocation</li>
-                        <li>Implement strategy execution tracking systems</li>
-                        <li>Create regular strategy review and adjustment cycles</li>
-                        <li>Develop strategic communication and alignment protocols</li>
-                    </ul>
-                </div>
-
-                <div class="metric-box">
-                    <strong>Success Metrics:</strong> 44% improvement in strategic execution, better resource allocation efficiency, enhanced strategic alignment across teams
-                </div>
-            </div>
-
-            <div class="quick-win-item">
-                <div class="quick-win-header">
-                    <div class="quick-win-title">Human Resources Optimization</div>
-                    <div class="impact-score">Impact: 54/100</div>
-                </div>
-                
-                <table>
-                    <tr>
-                        <td><strong>Current Score:</strong></td>
-                        <td>46/100</td>
-                        <td><strong>Target Score:</strong></td>
-                        <td>66/100</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Timeline:</strong></td>
-                        <td>12 Months</td>
-                        <td><strong>Effort Level:</strong></td>
-                        <td>Medium (50/100)</td>
-                    </tr>
-                </table>
-
-                <div class="action-steps">
-                    <h4>Implementation Steps</h4>
-                    <ul>
-                        <li>Assess current HR processes and capabilities</li>
-                        <li>Implement talent management and development programs</li>
-                        <li>Enhance recruitment and retention strategies</li>
-                        <li>Establish performance management systems</li>
-                        <li>Create employee engagement and satisfaction initiatives</li>
-                    </ul>
-                </div>
-
-                <div class="metric-box">
-                    <strong>Success Metrics:</strong> 43% improvement in HR effectiveness, reduced turnover, increased employee satisfaction scores
-                </div>
-            </div>
-
-            <div class="quick-win-item">
-                <div class="quick-win-header">
-                    <div class="quick-win-title">Customer Experience Enhancement</div>
-                    <div class="impact-score">Impact: 50/100</div>
-                </div>
-                
-                <table>
-                    <tr>
-                        <td><strong>Current Score:</strong></td>
-                        <td>50/100</td>
-                        <td><strong>Target Score:</strong></td>
-                        <td>70/100</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Timeline:</strong></td>
-                        <td>12 Months</td>
-                        <td><strong>Effort Level:</strong></td>
-                        <td>Medium (50/100)</td>
-                    </tr>
-                </table>
-
-                <div class="action-steps">
-                    <h4>Implementation Steps</h4>
-                    <ul>
-                        <li>Conduct comprehensive customer experience audit</li>
-                        <li>Map customer journey and identify pain points</li>
-                        <li>Implement customer feedback and monitoring systems</li>
-                        <li>Enhance customer service capabilities and training</li>
-                        <li>Create customer-centric culture and processes</li>
-                    </ul>
-                </div>
-
-                <div class="metric-box">
-                    <strong>Success Metrics:</strong> 40% improvement in customer satisfaction, increased Net Promoter Score, reduced customer complaints
-                </div>
+            <div class="executive-summary">
+                <h2>Executive Summary</h2>
+                <p><strong>Current Business Health Score: 53/100 (Needs Improvement)</strong></p>
+                <p>This Quick Wins Action Plan identifies five high-impact initiatives designed to deliver measurable improvements within 30-90 days. With EWM Global's current health score indicating significant improvement opportunities, particularly in Marketing (31/100), Financials (39/100), and Leadership & Governance (40/100), these targeted interventions will establish momentum for sustained organizational transformation.</p>
+                <p><strong>Primary Focus:</strong> The Marketing Improvement Initiative has been identified as the highest-impact, shortest-timeline opportunity, capable of improving the marketing score from 31 to 51 within 90 days while requiring moderate investment.</p>
             </div>
         </section>
 
         <section class="section">
-            <h1>30-60-90 Day Action Plan</h1>
+            <h2>Current Assessment Overview</h2>
+            
+            <div class="health-score-grid">
+                <div class="score-card">
+                    <div class="score-value score-needs-improvement">53</div>
+                    <h4>Overall Health Score</h4>
+                    <p>Needs Improvement</p>
+                </div>
+                <div class="score-card">
+                    <div class="score-value score-attention">49</div>
+                    <h4>Growth Engine</h4>
+                    <p>Requires Attention</p>
+                </div>
+                <div class="score-card">
+                    <div class="score-value score-attention">51</div>
+                    <h4>Performance & Health</h4>
+                    <p>Requires Attention</p>
+                </div>
+                <div class="score-card">
+                    <div class="score-value score-attention">43</div>
+                    <h4>People & Leadership</h4>
+                    <p>Requires Attention</p>
+                </div>
+                <div class="score-card">
+                    <div class="score-value score-proficiency">70</div>
+                    <h4>Resilience & Safeguards</h4>
+                    <p>Proficiency Level</p>
+                </div>
+            </div>
+        </section>
 
+        <section class="section major-section">
+            <h2>Prioritized Quick Wins Portfolio</h2>
+            
+            <div class="quick-wins-grid">
+                <div class="quick-win-card">
+                    <div class="quick-win-header">
+                        <div class="quick-win-title">Marketing Improvement Initiative</div>
+                        <div class="priority-badge priority-high">Priority 1</div>
+                    </div>
+                    
+                    <div class="metrics-grid">
+                        <div class="metric-item">
+                            <div class="metric-value">69</div>
+                            <div class="metric-label">Impact Score</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-value">70</div>
+                            <div class="metric-label">Effort Score</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-value">90</div>
+                            <div class="metric-label">Days Timeline</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-value">31→51</div>
+                            <div class="metric-label">Score Improvement</div>
+                        </div>
+                    </div>
+
+                    <p><strong>Investment Required:</strong> <span class="investment-level investment-medium">Medium</span></p>
+                    <p><strong>Expected Outcome:</strong> Improve Marketing score from 31 to 51 within 90 days, representing a 65% improvement in marketing effectiveness.</p>
+
+                    <div class="action-steps">
+                        <h4>Implementation Steps:</h4>
+                        <ol>
+                            <li>Conduct detailed marketing assessment and gap analysis</li>
+                            <li>Develop comprehensive improvement plan with measurable KPIs</li>
+                            <li>Implement quick wins within first 30 days (digital presence optimization)</li>
+                            <li>Monitor progress weekly and adjust approach based on results</li>
+                            <li>Document successes and share best practices across organization</li>
+                        </ol>
+                    </div>
+
+                    <p><strong>Success Metrics:</strong> Marketing ROI improvement, lead generation increase by 40%, brand awareness metrics, customer acquisition cost reduction</p>
+                </div>
+
+                <div class="quick-win-card">
+                    <div class="quick-win-header">
+                        <div class="quick-win-title">Leadership & Governance Enhancement</div>
+                        <div class="priority-badge priority-medium">Priority 2</div>
+                    </div>
+                    
+                    <div class="metrics-grid">
+                        <div class="metric-item">
+                            <div class="metric-value">60</div>
+                            <div class="metric-label">Impact Score</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-value">50</div>
+                            <div class="metric-label">Effort Score</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-value">365</div>
+                            <div class="metric-label">Days Timeline</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-value">40→60</div>
+                            <div class="metric-label">Score Improvement</div>
+                        </div>
+                    </div>
+
+                    <p><strong>Investment Required:</strong> <span class="investment-level investment-medium">Medium</span></p>
+                    <p><strong>Expected Outcome:</strong> Strengthen leadership capabilities and governance framework, improving score from 40 to 60.</p>
+
+                    <div class="action-steps">
+                        <h4>Implementation Steps:</h4>
+                        <ol>
+                            <li>Conduct leadership assessment and governance audit</li>
+                            <li>Establish leadership development program with clear objectives</li>
+                            <li>Implement governance improvements and decision-making protocols</li>
+                            <li>Create regular leadership effectiveness monitoring system</li>
+                            <li>Document governance improvements and leadership best practices</li>
+                        </ol>
+                    </div>
+
+                    <p><strong>Success Metrics:</strong> Leadership effectiveness scores, decision-making speed, governance compliance, employee engagement with leadership</p>
+                </div>
+
+                <div class="quick-win-card">
+                    <div class="quick-win-header">
+                        <div class="quick-win-title">Strategic Planning Optimization</div>
+                        <div class="priority-badge priority-medium">Priority 3</div>
+                    </div>
+                    
+                    <div class="metrics-grid">
+                        <div class="metric-item">
+                            <div class="metric-value">55</div>
+                            <div class="metric-label">Impact Score</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-value">50</div>
+                            <div class="metric-label">Effort Score</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-value">365</div>
+                            <div class="metric-label">Days Timeline</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-value">45→65</div>
+                            <div class="metric-label">Score Improvement</div>
+                        </div>
+                    </div>
+
+                    <p><strong>Investment Required:</strong> <span class="investment-level investment-medium">Medium</span></p>
+                    <p><strong>Expected Outcome:</strong> Enhanced strategic planning processes and execution capabilities, improving score from 45 to 65.</p>
+
+                    <div class="action-steps">
+                        <h4>Implementation Steps:</h4>
+                        <ol>
+                            <li>Review and assess current strategic planning methodology</li>
+                            <li>Develop enhanced strategic planning framework with clear KPIs</li>
+                            <li>Implement strategic execution tracking and reporting systems</li>
+                            <li>Establish quarterly strategy review and adjustment protocols</li>
+                            <li>Create strategic planning best practices documentation</li>
+                        </ol>
+                    </div>
+
+                    <p><strong>Success Metrics:</strong> Strategy execution rate, goal achievement percentage, strategic initiative completion time, stakeholder alignment scores</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section major-section">
+            <h2>30-60-90 Day Action Plan</h2>
+            
             <div class="timeline-grid">
-                <div class="timeline-item">
-                    <div class="timeline-period">First 30 Days</div>
-                    <h4>Foundation & Assessment</h4>
-                    <ul style="text-align: left; font-size: 9pt;">
-                        <li>Complete marketing assessment</li>
-                        <li>Establish project governance</li>
-                        <li>Secure stakeholder buy-in</li>
-                        <li>Launch quick marketing wins</li>
-                        <li>Begin leadership assessment</li>
+                <div class="timeline-card timeline-30">
+                    <div class="timeline-header">First 30 Days</div>
+                    <h4>Foundation & Quick Wins</h4>
+                    <ul>
+                        <li><strong>Marketing Assessment:</strong> Complete comprehensive marketing audit and identify immediate optimization opportunities</li>
+                        <li><strong>Digital Presence:</strong> Optimize website, social media profiles, and online listings</li>
+                        <li><strong>Leadership Evaluation:</strong> Conduct leadership team assessment and identify skill gaps</li>
+                        <li><strong>Process Documentation:</strong> Document current marketing and leadership processes</li>
+                        <li><strong>Quick Marketing Fixes:</strong> Implement low-cost, high-impact marketing improvements</li>
+                        <li><strong>Stakeholder Communication:</strong> Establish regular progress reporting cadence</li>
                     </ul>
                 </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-period">Days 31-60</div>
+                <div class="timeline-card timeline-60">
+                    <div class="timeline-header">Days 31-60</div>
                     <h4>Implementation & Momentum</h4>
-                    <ul style="text-align: left; font-size: 9pt;">
-                        <li>Execute marketing improvement plan</li>
-                        <li>Implement leadership frameworks</li>
-                        <li>Begin strategy refinement</li>
-                        <li>Launch HR assessment</li>
-                        <li>Start customer experience audit</li>
+                    <ul>
+                        <li><strong>Marketing Campaign Launch:</strong> Execute targeted marketing campaigns based on assessment findings</li>
+                        <li><strong>Leadership Development:</strong> Begin leadership training and development programs</li>
+                        <li><strong>Performance Tracking:</strong> Implement KPI dashboards for all initiatives</li>
+                        <li><strong>Process Improvements:</strong> Roll out refined marketing and operational processes</li>
+                        <li><strong>Customer Feedback:</strong> Gather and analyze customer feedback on improvements</li>
+                        <li><strong>Mid-Point Review:</strong> Conduct comprehensive progress assessment</li>
                     </ul>
                 </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-period">Days 61-90</div>
-                    <h4>Results & Optimization</h4>
-                    <ul style="text-align: left; font-size: 9pt;">
-                        <li>Measure marketing improvements</li>
-                        <li>Assess leadership changes</li>
-                        <li>Refine all initiatives</li>
-                        <li>Plan long-term programs</li>
-                        <li>Document lessons learned</li>
+                <div class="timeline-card timeline-90">
+                    <div class="timeline-header">Days 61-90</div>
+                    <h4>Optimization & Measurement</h4>
+                    <ul>
+                        <li><strong>Results Analysis:</strong> Comprehensive analysis of marketing improvements and ROI</li>
+                        <li><strong>Leadership Assessment:</strong> Evaluate leadership development progress and impact</li>
+                        <li><strong>Process Refinement:</strong> Optimize processes based on results and feedback</li>
+                        <li><strong>Success Documentation:</strong> Document wins and lessons learned</li>
+                        <li><strong>Next Phase Planning:</strong> Develop plans for continued improvement initiatives</li>
+                        <li><strong>Stakeholder Presentation:</strong> Present results and recommendations for next phase</li>
                     </ul>
                 </div>
             </div>
-
-            <h3>Critical Success Factors</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Period</th>
-                        <th>Key Milestones</th>
-                        <th>Success Metrics</th>
-                        <th>Risk Mitigation</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>30 Days</td>
-                        <td>Assessment completion, team mobilization</td>
-                        <td>All assessments 100% complete</td>
-                        <td>Weekly progress reviews</td>
-                    </tr>
-                    <tr>
-                        <td>60 Days</td>
-                        <td>Initial improvements visible</td>
-                        <td>Marketing score improvement evident</td>
-                        <td>Bi-weekly stakeholder updates</td>
-                    </tr>
-                    <tr>
-                        <td>90 Days</td>
-                        <td>Measurable results achieved</td>
-                        <td>Marketing target of 51/100 reached</td>
-                        <td>Monthly steering committee reviews</td>
-                    </tr>
-                </tbody>
-            </table>
         </section>
 
-        <section class="section">
-            <h1>Resource Requirements Summary</h1>
-
-            <h3>Human Resources</h3>
-            <table class="resource-table">
-                <tr>
-                    <td>Project Management</td>
-                    <td>1 FTE dedicated project manager for 90-day period</td>
-                </tr>
-                <tr>
-                    <td>Marketing Team</td>
-                    <td>2-3 marketing professionals for assessment and implementation</td>
-                </tr>
-                <tr>
-                    <td>Leadership Support</td>
-                    <td>C-level executive sponsor, 20% time commitment</td>
-                </tr>
-                <tr>
-                    <td>External Consultants</td>
-                    <td>Specialist support for assessment and change management</td>
-                </tr>
-                <tr>
-                    <td>Cross-functional Teams</td>
-                    <td>Representatives from each business unit, 10% time allocation</td>
-                </tr>
-            </table>
-
-            <h3>Financial Investment</h3>
-            <table class="resource-table">
-                <tr>
-                    <td>Assessment & Planning</td>
-                    <td>$50,000 - $75,000 for comprehensive evaluations</td>
-                </tr>
-                <tr>
-                    <td>Marketing Improvements</td>
-                    <td>$100,000 - $150,000 for tools, training, and campaigns</td>
-                </tr>
-                <tr>
-                    <td>Technology & Tools</td>
-                    <td>$25,000 - $40,000 for tracking and measurement systems</td>
-                </tr>
-                <tr>
-                    <td>Training & Development</td>
-                    <td>$30,000 - $50,000 for leadership and skills development</td>
-                </tr>
-                <tr>
-                    <td>External Support</td>
-                    <td>$75,000 - $100,000 for consulting and specialized expertise</td>
-                </tr>
-            </table>
-
-            <div class="metric-box">
-                <strong>Total Investment Range:</strong> $280,000 - $415,000
-                <br><strong>Expected ROI:</strong> 3:1 within first year based on performance improvements
+        <section class="section major-section">
+            <h2>Resource Requirements Summary</h2>
+            
+            <div class="resource-summary">
+                <h3>Investment Overview</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Initiative</th>
+                            <th>Investment Level</th>
+                            <th>Primary Resources</th>
+                            <th>Timeline</th>
+                            <th>Expected ROI</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Marketing Improvement</td>
+                            <td><span class="investment-level investment-medium">Medium</span></td>
+                            <td>Marketing specialist, Digital tools, Campaign budget</td>
+                            <td>90 days</td>
+                            <td>3:1 within 6 months</td>
+                        </tr>
+                        <tr>
+                            <td>Leadership & Governance</td>
+                            <td><span class="investment-level investment-medium">Medium</span></td>
+                            <td>Leadership coach, Training programs, Assessment tools</td>
+                            <td>12 months</td>
+                            <td>2:1 within 18 months</td>
+                        </tr>
+                        <tr>
+                            <td>Strategic Planning</td>
+                            <td><span class="investment-level investment-medium">Medium</span></td>
+                            <td>Strategy consultant, Planning software, Team time</td>
+                            <td>12 months</td>
+                            <td>2.5:1 within 12 months</td>
+                        </tr>
+                        <tr>
+                            <td>HR Enhancement</td>
+                            <td><span class="investment-level investment-medium">Medium</span></td>
+                            <td>HR specialist, Systems upgrade, Training materials</td>
+                            <td>12 months</td>
+                            <td>2:1 within 18 months</td>
+                        </tr>
+                        <tr>
+                            <td>Customer Experience</td>
+                            <td><span class="investment-level investment-medium">Medium</span></td>
+                            <td>CX specialist, Feedback systems, Process improvement</td>
+                            <td>12 months</td>
+                            <td>2.5:1 within 12 months</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <h3>Technology & Infrastructure</h3>
-            <ul>
-                <li>CRM system enhancements for customer tracking</li>
-                <li>Marketing automation platform implementation</li>
-                <li>Performance dashboard and reporting tools</li>
-                <li>Project management and collaboration software</li>
-                <li>Data analytics and business intelligence capabilities</li>
-            </ul>
-
-            <h3>Governance Structure</h3>
-            <table class="resource-table">
-                <tr>
-                    <td>Steering Committee</td>
-                    <td>Monthly meetings with C-level executives</td>
-                </tr>
-                <tr>
-                    <td>Project Team</td>
-                    <td>Weekly progress reviews and issue resolution</td>
-                </tr>
-                <tr>
-                    <td>Stakeholder Updates</td>
-                    <td>Bi-weekly communication to all affected parties</td>
-                </tr>
-                <tr>
-                    <td>Quality Assurance</td>
-                    <td>Independent review of deliverables and outcomes</td>
-                </tr>
-            </table>
+            <h3>Key Success Factors</h3>
+            <div class="recommendation">
+                <ul>
+                    <li><strong>Executive Commitment:</strong> Visible leadership support and resource allocation</li>
+                    <li><strong>Change Management:</strong> Clear communication and stakeholder buy-in</li>
+                    <li><strong>Performance Monitoring:</strong> Regular tracking and adjustment of initiatives</li>
+                    <li><strong>Quick Wins Culture:</strong> Celebrate early successes to build momentum</li>
+                    <li><strong>Knowledge Sharing:</strong> Document and share best practices across initiatives</li>
+                </ul>
+            </div>
         </section>
 
-        <section class="section">
-            <h1>Success Measurement & Monitoring</h1>
+        <section class="section major-section">
+            <h2>Implementation Recommendations</h2>
+            
+            <div class="recommendation">
+                <h3>Phase 1: Immediate Action (Next 30 Days)</h3>
+                <p><strong>Primary Focus:</strong> Launch the Marketing Improvement Initiative as the flagship quick win. This initiative offers the highest impact-to-effort ratio and will deliver visible results within 90 days.</p>
+                <p><strong>Success Strategy:</strong> Assign a dedicated marketing improvement team, establish weekly progress reviews, and implement digital marketing optimizations within the first two weeks.</p>
+            </div>
 
-            <h3>Key Performance Indicators</h3>
+            <div class="recommendation">
+                <h3>Phase 2: Expansion (Days 31-60)</h3>
+                <p><strong>Secondary Focus:</strong> Initiate Leadership & Governance enhancements while maintaining marketing momentum. This dual-track approach ensures both immediate results and foundational improvements.</p>
+                <p><strong>Success Strategy:</strong> Begin leadership development programs and governance framework improvements while measuring marketing initiative progress.</p>
+            </div>
+
+            <div class="recommendation">
+                <h3>Phase 3: Integration (Days 61-90)</h3>
+                <p><strong>Comprehensive Focus:</strong> Integrate all quick win initiatives while preparing for long-term strategic improvements. Measure results, document successes, and plan the next improvement cycle.</p>
+                <p><strong>Success Strategy:</strong> Conduct comprehensive assessment of all initiatives, optimize based on results, and develop roadmap for continued improvement.</p>
+            </div>
+
+            <h3>Critical Success Metrics</h3>
             <table>
                 <thead>
                     <tr>
-                        <th>Initiative</th>
-                        <th>Primary KPI</th>
-                        <th>Baseline</th>
+                        <th>Metric Category</th>
+                        <th>30-Day Target</th>
+                        <th>60-Day Target</th>
                         <th>90-Day Target</th>
-                        <th>Measurement Frequency</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="priority-high">
-                        <td>Marketing</td>
-                        <td>Marketing Effectiveness Score</td>
-                        <td>31/100</td>
-                        <td>51/100</td>
-                        <td>Weekly</td>
+                    <tr>
+                        <td>Marketing Score Improvement</td>
+                        <td>31 → 35</td>
+                        <td>35 → 42</td>
+                        <td>42 → 51</td>
                     </tr>
-                    <tr class="priority-medium">
-                        <td>Leadership</td>
-                        <td>Leadership Effectiveness</td>
-                        <td>40/100</td>
-                        <td>50/100</td>
-                        <td>Monthly</td>
+                    <tr>
+                        <td>Overall Health Score</td>
+                        <td>53 → 55</td>
+                        <td>55 → 58</td>
+                        <td>58 → 62</td>
                     </tr>
-                    <tr class="priority-medium">
-                        <td>Strategy</td>
-                        <td>Strategic Execution</td>
-                        <td>45/100</td>
-                        <td>55/100</td>
-                        <td>Monthly</td>
+                    <tr>
+                        <td>Revenue Impact</td>
+                        <td>Baseline established</td>
+                        <td>5% improvement</td>
+                        <td>15% improvement</td>
                     </tr>
-                    <tr class="priority-medium">
-                        <td>HR</td>
-                        <td>HR Effectiveness</td>
-                        <td>46/100</td>
-                        <td>56/100</td>
-                        <td>Monthly</td>
-                    </tr>
-                    <tr class="priority-low">
-                        <td>Customer Experience</td>
+                    <tr>
                         <td>Customer Satisfaction</td>
-                        <td>50/100</td>
-                        <td>60/100</td>
-                        <td>Monthly</td>
+                        <td>Current + 2 points</td>
+                        <td>Current + 5 points</td>
+                        <td>Current + 8 points</td>
                     </tr>
                 </tbody>
             </table>
-
-            <h3>Risk Management</h3>
-            <div class="quick-win-item">
-                <h4>High-Risk Areas</h4>
-                <ul>
-                    <li><strong>Resource Constraints:</strong> Limited availability of key personnel during implementation</li>
-                    <li><strong>Change Resistance:</strong> Organizational reluctance to adopt new processes</li>
-                    <li><strong>Competing Priorities:</strong> Other business initiatives competing for attention</li>
-                    <li><strong>External Factors:</strong> Market conditions affecting implementation timeline</li>
-                </ul>
-
-                <h4>Mitigation Strategies</h4>
-                <ul>
-                    <li>Establish dedicated project resources with clear commitments</li>
-                    <li>Implement comprehensive change management program</li>
-                    <li>Secure executive sponsorship and priority setting</li>
-                    <li>Build flexibility into timeline and approach</li>
-                </ul>
-            </div>
-
-            <h3>Next Steps</h3>
-            <ol>
-                <li><strong>Executive Approval:</strong> Secure leadership commitment and resource allocation</li>
-                <li><strong>Team Assembly:</strong> Mobilize project team and establish governance</li>
-                <li><strong>Quick Start:</strong> Begin marketing assessment within first week</li>
-                <li><strong>Communication:</strong> Launch organization-wide communication about initiatives</li>
-                <li><strong>Baseline Measurement:</strong> Establish current state metrics for all KPIs</li>
-            </ol>
         </section>
 
-        <div class="footer">
-            <p>This Quick Wins Action Plan provides EWM Global with a structured approach to achieving rapid improvements in critical business areas. Success depends on committed execution, regular monitoring, and adaptive management based on results and changing conditions.</p>
-            <p><strong>Document Classification:</strong> Confidential | <strong>Prepared By:</strong> Business Consulting Team | <strong>Version:</strong> 1.0</p>
-        </div>
+        <footer style="text-align: center; margin-top: 40px; padding: 20px; border-top: 1px solid #ddd; color: #7f8c8d;">
+            <p>This Quick Wins Action Plan provides a structured approach to achieving immediate business improvements while building foundation for long-term success.</p>
+            <p><strong>Recommendation:</strong> Begin implementation immediately with the Marketing Improvement Initiative to establish early momentum and demonstrate value.</p>
+        </footer>
     </div>
 </body>
 </html>

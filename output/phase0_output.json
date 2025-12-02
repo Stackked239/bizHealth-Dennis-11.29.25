@@ -1,8 +1,8 @@
 {
   "success": true,
-  "assessment_run_id": "ac6bb2d8-5b50-42f3-86e5-813046356ed0",
+  "assessment_run_id": "6462cab4-6da2-439c-a8c9-286ffe07ce3e",
   "company_profile_id": "ewm-global-478cbd43",
-  "execution_time_ms": 7,
+  "execution_time_ms": 25,
   "phases_completed": {
     "raw_capture": true,
     "cp_normalization": true,
@@ -11,14 +11,14 @@
     "index_update": true
   },
   "output": {
-    "assessment_run_id": "ac6bb2d8-5b50-42f3-86e5-813046356ed0",
+    "assessment_run_id": "6462cab4-6da2-439c-a8c9-286ffe07ce3e",
     "companyProfile": {
       "metadata": {
-        "profile_id": "e75c386e-995d-413a-8b8d-d6718bcdb33c",
-        "snapshot_id": "98cd0a2b-4341-4ab5-a1ef-e199ed89afa8",
-        "assessment_run_id": "ac6bb2d8-5b50-42f3-86e5-813046356ed0",
-        "created_at": "2025-12-02T14:03:41.055Z",
-        "last_updated": "2025-12-02T14:03:41.055Z",
+        "profile_id": "10dddac8-2ff1-44bf-ba31-2da7ad014e15",
+        "snapshot_id": "e5b7f2d8-de44-466e-95aa-cf69d2e7e4c1",
+        "assessment_run_id": "6462cab4-6da2-439c-a8c9-286ffe07ce3e",
+        "created_at": "2025-12-02T14:36:19.835Z",
+        "last_updated": "2025-12-02T14:36:19.835Z",
         "cp_version": "v2025-09-16",
         "cp_transformation_version": "v1.0.0",
         "assessment_version": "1.0"
@@ -145,16 +145,16 @@
     },
     "questionnaireResponses": {
       "meta": {
-        "response_id": "c6a179f3-719c-4b00-9029-8ecb48e3bc66",
-        "assessment_run_id": "ac6bb2d8-5b50-42f3-86e5-813046356ed0",
+        "response_id": "637ded2b-093e-4590-92c6-f3d1dbcccd1c",
+        "assessment_run_id": "6462cab4-6da2-439c-a8c9-286ffe07ce3e",
         "company_profile_id": "ewm-global-478cbd43",
         "questionnaire_version": "v2025-09-16",
         "qr_transformation_version": "v1.0.0",
-        "completion_date": "2025-12-02T14:03:41.055Z",
+        "completion_date": "2025-12-02T14:36:19.836Z",
         "completion_status": "partial",
         "total_questions": 93,
         "questions_answered": 89,
-        "transformed_at": "2025-12-02T14:03:41.055Z"
+        "transformed_at": "2025-12-02T14:36:19.836Z"
       },
       "chapters": [
         {
@@ -1558,7 +1558,7 @@
     },
     "benchmarkData": {
       "metadata": {
-        "benchmark_id": "bench_51_$25M-$50M_1764684221058",
+        "benchmark_id": "bench_51_$25M-$50M_1764686179842",
         "data_source": "RMA Annual Statement Studies 2025",
         "last_updated": "2025-06-01",
         "coverage_period": "2024 fiscal year data",
@@ -2662,26 +2662,26 @@
           }
         }
       },
-      "assessment_run_id": "ac6bb2d8-5b50-42f3-86e5-813046356ed0",
+      "assessment_run_id": "6462cab4-6da2-439c-a8c9-286ffe07ce3e",
       "company_profile_id": "ewm-global-478cbd43",
       "match_level": "exact",
       "match_description": "Exact match: 51, $25M-$50M, 101-250, Growth, CT, United States, B2B",
-      "retrieved_at": "2025-12-02T14:03:41.058Z"
+      "retrieved_at": "2025-12-02T14:36:19.842Z"
     },
     "indexEntry": {
-      "assessment_run_id": "ac6bb2d8-5b50-42f3-86e5-813046356ed0",
+      "assessment_run_id": "6462cab4-6da2-439c-a8c9-286ffe07ce3e",
       "company_profile_id": "ewm-global-478cbd43",
-      "cp_snapshot_id": "98cd0a2b-4341-4ab5-a1ef-e199ed89afa8",
-      "created_at": "2025-12-02T14:03:41.058Z",
+      "cp_snapshot_id": "e5b7f2d8-de44-466e-95aa-cf69d2e7e4c1",
+      "created_at": "2025-12-02T14:36:19.843Z",
       "questionnaire_version": "v2025-09-16",
       "cp_version": "v2025-09-16",
       "cp_transformation_version": "v1.0.0",
       "qr_transformation_version": "v1.0.0",
       "paths": {
-        "raw_assessment": "data/raw/ewm-global-478cbd43/ac6bb2d8-5b50-42f3-86e5-813046356ed0.json",
-        "normalized_company_profile": "data/normalized/e75c386e-995d-413a-8b8d-d6718bcdb33c/cp-98cd0a2b-4341-4ab5-a1ef-e199ed89afa8.json",
-        "normalized_questionnaire_responses": "data/normalized/ewm-global-478cbd43/qr-ac6bb2d8-5b50-42f3-86e5-813046356ed0.json",
-        "benchmark_data": "data/normalized/ewm-global-478cbd43/benchmark-ac6bb2d8-5b50-42f3-86e5-813046356ed0.json"
+        "raw_assessment": "data/raw/ewm-global-478cbd43/6462cab4-6da2-439c-a8c9-286ffe07ce3e.json",
+        "normalized_company_profile": "data/normalized/10dddac8-2ff1-44bf-ba31-2da7ad014e15/cp-e5b7f2d8-de44-466e-95aa-cf69d2e7e4c1.json",
+        "normalized_questionnaire_responses": "data/normalized/ewm-global-478cbd43/qr-6462cab4-6da2-439c-a8c9-286ffe07ce3e.json",
+        "benchmark_data": "data/normalized/ewm-global-478cbd43/benchmark-6462cab4-6da2-439c-a8c9-286ffe07ce3e.json"
       },
       "status": "ready_for_analysis"
     }

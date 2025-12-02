@@ -1,0 +1,40 @@
+{
+  "reportType": "financial",
+  "reportName": "Financial Impact Analysis",
+  "generatedAt": "2025-12-02T15:18:55.134Z",
+  "companyName": "EWM Global",
+  "runId": "6462cab4-6da2-439c-a8c9-286ffe07ce3e",
+  "healthScore": 53,
+  "healthBand": "Attention",
+  "pageSuggestionEstimate": 6,
+  "sections": [
+    {
+      "id": "summary",
+      "title": "Financial Summary"
+    },
+    {
+      "id": "roi",
+      "title": "ROI Analysis"
+    },
+    {
+      "id": "timeline",
+      "title": "Investment Timeline"
+    },
+    {
+      "id": "quick-wins",
+      "title": "Quick Wins Impact"
+    },
+    {
+      "id": "sensitivity",
+      "title": "Sensitivity Analysis"
+    },
+    {
+      "id": "funding",
+      "title": "Funding Considerations"
+    }
+  ],
+  "brand": {
+    "primaryColor": "#212653",
+    "accentColor": "#969423"
+  }
+}
