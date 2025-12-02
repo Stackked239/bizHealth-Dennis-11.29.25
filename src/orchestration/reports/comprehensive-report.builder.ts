@@ -770,6 +770,183 @@ function generateNarrativeStyles(primaryColor: string, accentColor: string): str
 
       .executive-highlights { grid-template-columns: repeat(4, 1fr); }
     }
+
+    /* ================================================================
+       OPUS 4.5 MARKDOWN ELEMENT STYLING
+       Added 2025-12-02 to support rich markdown output (tables, ASCII art, etc.)
+       ================================================================ */
+
+    /* Responsive Table Container */
+    .table-responsive {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 1.5rem 0;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .bh-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+      min-width: 400px;
+      background: #fff;
+    }
+
+    .bh-table th {
+      background: ${primaryColor};
+      color: #fff;
+      font-weight: 600;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+      white-space: nowrap;
+    }
+
+    .bh-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #e0e0e0;
+      vertical-align: top;
+      color: #333;
+    }
+
+    .bh-table tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    .bh-table tr:hover {
+      background: #f0f4f8;
+    }
+
+    .bh-table td:first-child {
+      font-weight: 500;
+      color: ${primaryColor};
+    }
+
+    /* ASCII Visualization Container */
+    .visual-framework {
+      background: ${primaryColor};
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      overflow-x: auto;
+      box-shadow: 0 2px 8px rgba(33, 38, 83, 0.2);
+    }
+
+    .ascii-viz {
+      color: #e8e8e8;
+      font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+      font-size: 0.75rem;
+      line-height: 1.3;
+      white-space: pre;
+      margin: 0;
+      overflow-x: auto;
+    }
+
+    /* Regular Code Block */
+    .bh-code {
+      background: #f8f9fa;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 1rem;
+      overflow-x: auto;
+      font-size: 0.9rem;
+      margin: 1rem 0;
+      font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+    }
+
+    .bh-code code {
+      background: transparent;
+      padding: 0;
+    }
+
+    /* Blockquote/Callout */
+    .bh-callout {
+      background: #f8f9fa;
+      border-left: 4px solid ${accentColor};
+      padding: 1rem 1.5rem;
+      margin: 1.5rem 0;
+      font-style: italic;
+      color: #555;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .bh-callout p {
+      margin: 0;
+    }
+
+    .bh-callout strong {
+      color: ${primaryColor};
+    }
+
+    /* Section Divider */
+    .bh-section-divider {
+      border: none;
+      height: 2px;
+      background: linear-gradient(to right, ${primaryColor}, ${accentColor}, ${primaryColor});
+      margin: 2rem 0;
+    }
+
+    /* Typography - ensure consistency */
+    .bh-h1 {
+      font-size: 2rem;
+      color: ${primaryColor};
+      margin-top: 2em;
+      margin-bottom: 0.75em;
+      font-weight: 700;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+      border-bottom: 3px solid ${accentColor};
+      padding-bottom: 0.5rem;
+    }
+
+    .bh-strong {
+      color: ${primaryColor};
+      font-weight: 600;
+    }
+
+    /* Print styles for markdown elements */
+    @media print {
+      .visual-framework {
+        background: ${primaryColor} !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        page-break-inside: avoid;
+      }
+
+      .ascii-viz {
+        color: #e8e8e8 !important;
+        font-size: 0.65rem;
+      }
+
+      .bh-table th {
+        background: ${primaryColor} !important;
+        color: #fff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .bh-table tr:nth-child(even) {
+        background: #f8f9fa !important;
+      }
+
+      .table-responsive {
+        overflow: visible;
+        box-shadow: none;
+      }
+
+      .bh-section-divider {
+        background: ${primaryColor} !important;
+      }
+
+      .bh-callout {
+        border-left-color: ${accentColor} !important;
+        page-break-inside: avoid;
+      }
+
+      .bh-code {
+        page-break-inside: avoid;
+      }
+    }
   `;
 }
 
