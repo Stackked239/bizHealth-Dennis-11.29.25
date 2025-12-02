@@ -1,0 +1,22 @@
+{
+  "runId": "9fad35a7-ab46-44fc-aff6-fd96530995df",
+  "companyName": "EWM Global",
+  "generatedAt": "2025-12-02T20:51:20.292Z",
+  "healthScore": 53,
+  "healthStatus": "Needs Improvement",
+  "pipelineVersion": "1.0.0",
+  "reports": [
+    {
+      "type": "comprehensive",
+      "name": "Comprehensive Assessment Report",
+      "html": "comprehensive.html",
+      "meta": "comprehensive.meta.json"
+    },
+    {
+      "type": "owner",
+      "name": "Business Owner Report",
+      "html": "owner.html",
+      "meta": "owner.meta.json"
+    }
+  ]
+}
