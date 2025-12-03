@@ -58,13 +58,13 @@ export const SECTION_MAPPINGS: SectionMapping[] = [
   {
     id: 'risk-assessment',
     ownerLabel: 'Risk Overview',
-    comprehensiveSectionTitle: 'Risk Assessment',
+    comprehensiveSectionTitle: 'Comprehensive Risk Assessment',
     comprehensiveAnchor: 'risk-assessment'
   },
   {
     id: 'roadmap',
     ownerLabel: 'Execution Timeline',
-    comprehensiveSectionTitle: 'Implementation Roadmap',
+    comprehensiveSectionTitle: '18-Month Implementation Roadmap',
     comprehensiveAnchor: 'implementation-roadmap'
   },
   {
