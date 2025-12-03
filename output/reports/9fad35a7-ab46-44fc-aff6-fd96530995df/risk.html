@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="BizHealth.ai Report Generator v1.0">
+  <title>Risk Assessment Report - EWM Global</title>
+  <style>
+    
+    /* Base Reset and Typography */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      font-family: 'Open Sans', Arial, sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #333;
+      background: #fff;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+      color: #212653;
+      margin-bottom: 0.5em;
+      line-height: 1.3;
+    }
+
+    h1 { font-size: 2.5rem; font-weight: 700; }
+    h2 { font-size: 2rem; font-weight: 600; page-break-before: always; }
+    h2:first-of-type { page-break-before: auto; }
+    h3 { font-size: 1.5rem; font-weight: 600; }
+    h4 { font-size: 1.25rem; font-weight: 500; }
+    h5 { font-size: 1.1rem; font-weight: 500; }
+
+    p {
+      margin-bottom: 1em;
+    }
+
+    /* Links */
+    a {
+      color: #969423;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Lists */
+    ul, ol {
+      margin-left: 1.5em;
+      margin-bottom: 1em;
+    }
+
+    li {
+      margin-bottom: 0.5em;
+    }
+
+    /* Page Layout */
+    .report-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .page {
+      padding: 2rem 0;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    /* Header */
+    .report-header {
+      text-align: center;
+      padding: 2rem 0;
+      border-bottom: 4px solid #212653;
+      margin-bottom: 2rem;
+    }
+
+    .report-header .logo {
+      max-height: 60px;
+      margin-bottom: 1rem;
+    }
+
+    .report-header h1 {
+      margin-bottom: 0.5rem;
+    }
+
+    .report-header .subtitle {
+      font-size: 1.25rem;
+      color: #666;
+    }
+
+    .report-header .company-name {
+      font-size: 1.5rem;
+      color: #969423;
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+
+    .report-header .date {
+      font-size: 0.9rem;
+      color: #888;
+      margin-top: 0.5rem;
+    }
+
+    /* Footer */
+    .report-footer {
+      text-align: center;
+      padding: 1rem 0;
+      border-top: 2px solid #eee;
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    @media print {
+      .report-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    }
+
+    /* Section Styles */
+    .section {
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #969423;
+    }
+
+    .section-icon {
+      font-size: 1.5rem;
+      margin-right: 0.75rem;
+    }
+
+    /* Score Cards */
+    .score-card {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #212653 0%, #212653dd 100%);
+      color: #fff;
+      min-width: 150px;
+    }
+
+    .score-card .score-value {
+      font-size: 3rem;
+      font-weight: 700;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    .score-card .score-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .score-card.small {
+      padding: 0.75rem;
+      min-width: 100px;
+    }
+
+    .score-card.small .score-value {
+      font-size: 1.75rem;
+    }
+
+    /* Health Score Display */
+    .health-score-display {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+    }
+
+    .health-score-circle {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #212653 0%, #212653cc 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    .health-score-circle .score {
+      font-size: 3.5rem;
+      font-weight: 700;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+      line-height: 1;
+    }
+
+    .health-score-circle .out-of {
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    .health-score-details {
+      text-align: left;
+    }
+
+    .health-score-details .status {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .health-score-details .trajectory {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      color: #666;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    th {
+      background: #212653;
+      color: #fff;
+      font-weight: 600;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    tr:hover {
+      background: #f0f0f0;
+    }
+
+    /* Score Table */
+    .score-table th:first-child {
+      width: 40%;
+    }
+
+    .score-table td.score {
+      font-weight: 600;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    /* Band Badge */
+    .band-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .band-badge.Excellence { background: #d4edda; color: #155724; }
+    .band-badge.Proficiency { background: #fff3cd; color: #856404; }
+    .band-badge.Attention { background: #ffeeba; color: #856404; }
+    .band-badge.Critical { background: #f8d7da; color: #721c24; }
+
+    /* Priority Badge */
+    .priority-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .priority-badge.high { background: #dc3545; color: #fff; }
+    .priority-badge.medium { background: #ffc107; color: #333; }
+    .priority-badge.low { background: #28a745; color: #fff; }
+
+    /* Cards */
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #212653;
+      margin: 0;
+    }
+
+    .card-body {
+      font-size: 0.95rem;
+    }
+
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+    @media (max-width: 768px) {
+      .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Flex Layout */
+    .flex { display: flex; }
+    .flex-wrap { flex-wrap: wrap; }
+    .flex-center { align-items: center; justify-content: center; }
+    .flex-between { justify-content: space-between; }
+    .gap-1 { gap: 0.5rem; }
+    .gap-2 { gap: 1rem; }
+    .gap-3 { gap: 1.5rem; }
+
+    /* Utility Classes */
+    .text-center { text-align: center; }
+    .text-right { text-align: right; }
+    .mt-1 { margin-top: 0.5rem; }
+    .mt-2 { margin-top: 1rem; }
+    .mt-3 { margin-top: 1.5rem; }
+    .mb-1 { margin-bottom: 0.5rem; }
+    .mb-2 { margin-bottom: 1rem; }
+    .mb-3 { margin-bottom: 1.5rem; }
+    .p-1 { padding: 0.5rem; }
+    .p-2 { padding: 1rem; }
+    .p-3 { padding: 1.5rem; }
+
+    /* Quick Win Card */
+    .quick-win-card {
+      background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+      border-left: 4px solid #969423;
+      padding: 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+    }
+
+    .quick-win-card .title {
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .quick-win-card .metrics {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.75rem;
+    }
+
+    .quick-win-card .metrics span {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* Risk Card */
+    .risk-card {
+      border-left: 4px solid #dc3545;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .risk-card.high { border-left-color: #dc3545; }
+    .risk-card.medium { border-left-color: #ffc107; }
+    .risk-card.low { border-left-color: #28a745; }
+
+    .risk-card .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .risk-card .category {
+      font-weight: 600;
+      color: #212653;
+    }
+
+    /* Finding Card */
+    .finding-card {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+    }
+
+    .finding-card.strength { background: #d4edda; border-left: 4px solid #28a745; }
+    .finding-card.gap { background: #f8d7da; border-left: 4px solid #dc3545; }
+    .finding-card.risk { background: #ffeeba; border-left: 4px solid #ffc107; }
+    .finding-card.opportunity { background: #cce5ff; border-left: 4px solid #0d6efd; }
+
+    .finding-card .label {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .finding-card .dimension {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Roadmap Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.5rem;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: #212653;
+      border-radius: 3px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 1.5rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -1.75rem;
+      top: 0.5rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #969423;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 3px #212653;
+    }
+
+    .timeline-item .phase-name {
+      font-weight: 600;
+      color: #212653;
+      font-size: 1.1rem;
+    }
+
+    .timeline-item .time-horizon {
+      font-size: 0.9rem;
+      color: #969423;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Callout Box */
+    .callout {
+      padding: 1.25rem;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+    }
+
+    .callout.info {
+      background: #e7f3ff;
+      border-left: 4px solid #0d6efd;
+    }
+
+    .callout.success {
+      background: #d4edda;
+      border-left: 4px solid #28a745;
+    }
+
+    .callout.warning {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+    }
+
+    .callout.danger {
+      background: #f8d7da;
+      border-left: 4px solid #dc3545;
+    }
+
+    .callout .title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      height: 24px;
+      background: #e9ecef;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .progress-bar .fill {
+      height: 100%;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: width 0.3s ease;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        font-size: 11pt;
+      }
+
+      .report-container {
+        max-width: none;
+        padding: 0;
+      }
+
+      .page-break {
+        page-break-before: always;
+      }
+
+      h2 {
+        page-break-before: always;
+      }
+
+      h2:first-of-type {
+        page-break-before: auto;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+    }
+  
+    
+  </style>
+</head>
+<body>
+  <div class="report-container">
+    
+    <style>
+      /* Chart styles */
+      
+    
+    .svg-chart-container {
+      display: flex;
+      justify-content: center;
+      margin: 1rem 0;
+      page-break-inside: avoid;
+    }
+
+    .svg-chart-container svg {
+      max-width: 100%;
+      height: auto;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+    }
+
+    @media print {
+      .svg-chart-container {
+        page-break-inside: avoid;
+      }
+
+      .svg-chart-container svg {
+        box-shadow: none;
+        border: 1px solid #e0e0e0;
+      }
+    }
+  
+
+    /* Executive Dashboard Styles */
+    .executive-dashboard {
+      margin: 2rem 0;
+    }
+
+    .dashboard-row {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .dashboard-main {
+      flex: 2;
+      min-width: 350px;
+    }
+
+    .dashboard-side {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .dashboard-full {
+      width: 100%;
+    }
+
+    /* Chart grid layout */
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .chart-cell {
+      background: #FFFFFF;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Chart error fallback */
+    .chart-error,
+    .chart-fallback {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: #f8f9fa;
+      border: 2px dashed #dee2e6;
+      border-radius: 8px;
+      color: #6c757d;
+      min-height: 200px;
+      text-align: center;
+    }
+
+    .chart-fallback-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    @media print {
+      .executive-dashboard,
+      .chart-grid,
+      .svg-chart-container {
+        page-break-inside: avoid;
+      }
+
+      .chart-cell {
+        box-shadow: none;
+        border: 1px solid #dee2e6;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-row {
+        flex-direction: column;
+      }
+
+      .dashboard-main,
+      .dashboard-side {
+        min-width: 100%;
+      }
+
+      .chart-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  
+
+      .risk-chart-section {
+        margin: 2rem 0;
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .risk-chart-section .chart-wrapper {
+        flex: 1;
+        min-width: 300px;
+        max-width: 550px;
+      }
+    </style>
+
+    
+    <header class="report-header">
+      <h1>Risk Assessment Report</h1>
+      <p class="subtitle">Comprehensive Risk Analysis</p>
+      <p class="company-name">EWM Global</p>
+      <p class="date">Assessment Date: December 3, 2025</p>
+    </header>
+  
+
+    <section class="section">
+      <h2>Risk Summary Dashboard</h2>
+
+      <div class="grid grid-4">
+        <div class="score-card small" style="background: linear-gradient(135deg, #dc3545, #c82333);">
+          <div class="score-value">0</div>
+          <div class="score-label">Critical</div>
+        </div>
+        <div class="score-card small" style="background: linear-gradient(135deg, #fd7e14, #e55300);">
+          <div class="score-value">0</div>
+          <div class="score-label">High</div>
+        </div>
+        <div class="score-card small" style="background: linear-gradient(135deg, #ffc107, #d39e00);">
+          <div class="score-value">2</div>
+          <div class="score-label">Medium</div>
+        </div>
+        <div class="score-card small" style="background: linear-gradient(135deg, #28a745, #1e7e34);">
+          <div class="score-value">0</div>
+          <div class="score-label">Low</div>
+        </div>
+      </div>
+
+      <div class="callout info mt-3">
+        <div class="title">Overall Risk Assessment</div>
+        <p>
+          2 risk(s) identified, all at manageable severity levels.
+        </p>
+      </div>
+
+      
+        <div class="risk-chart-section">
+          <div class="chart-wrapper">
+    <div class="svg-chart-container" role="figure" aria-label="Business Health Overview">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 430" style="max-width: 100%; height: auto;"><rect width="400" height="430" fill="white" rx="4"/><text x="200" y="22" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Business Health Overview</text><circle cx="200" cy="215" r="30" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="200" cy="215" r="60" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="200" cy="215" r="90" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="200" cy="215" r="120" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="200" cy="215" r="150" fill="none" stroke="#e0e0e0" stroke-width="1"/><line x1="200" y1="215" x2="200" y2="65" stroke="#e0e0e0" stroke-width="1"/><line x1="200" y1="215" x2="350" y2="215" stroke="#e0e0e0" stroke-width="1"/><line x1="200" y1="215" x2="200" y2="365" stroke="#e0e0e0" stroke-width="1"/><line x1="200" y1="215" x2="50" y2="215.00000000000003" stroke="#e0e0e0" stroke-width="1"/><polygon points="200,141.5 276.5,215 200,279.5 95,215" fill="#212653" fill-opacity="0.3" stroke="#212653" stroke-width="2"/><circle cx="200" cy="141.5" r="4" fill="#212653"/><circle cx="276.5" cy="215" r="4" fill="#212653"/><circle cx="200" cy="279.5" r="4" fill="#212653"/><circle cx="95" cy="215" r="4" fill="#212653"/><text x="200" y="40" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Growth Eng... (49)</text><text x="375" y="215" text-anchor="start" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Performanc... (51)</text><text x="200" y="390" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">People &amp; L... (43)</text><text x="25" y="215.00000000000003" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Resilience... (70)</text></svg>
+    </div>
+  </div>
+          <div class="chart-wrapper">
+    <div class="svg-chart-container" role="figure" aria-label="Chapter Performance Overview">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 232" style="max-width: 100%; height: auto;"><rect width="550" height="232" fill="white" rx="4"/><text x="275" y="28" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Chapter Performance Overview</text><text x="132" y="70" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Growth Engine</text><rect x="140" y="50" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="50" width="171.5" height="30" fill="#e67e22" rx="4"/><text x="319.5" y="70" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">49</text><text x="132" y="108" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Performance &amp; He...</text><rect x="140" y="88" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="88" width="178.5" height="30" fill="#e67e22" rx="4"/><text x="326.5" y="108" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">51</text><text x="132" y="146" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">People &amp; Leaders...</text><rect x="140" y="126" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="126" width="150.5" height="30" fill="#e67e22" rx="4"/><text x="298.5" y="146" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">43</text><text x="132" y="184" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Resilience &amp; Saf...</text><rect x="140" y="164" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="164" width="244.99999999999997" height="30" fill="#f39c12" rx="4"/><text x="393" y="184" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">70</text></svg>
+    </div>
+  </div>
+        </div>
+      
+    </section>
+
+    <section class="section page-break">
+      <h2>Risk Matrix</h2>
+
+      <style>
+        .risk-matrix {
+          display: grid;
+          grid-template-columns: auto repeat(5, 1fr);
+          gap: 2px;
+          background: #ddd;
+          padding: 2px;
+          margin-bottom: 1.5rem;
+        }
+        .risk-matrix-cell {
+          background: #fff;
+          padding: 0.5rem;
+          text-align: center;
+          font-size: 0.85rem;
+          min-height: 60px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+        .risk-matrix-header {
+          background: #212653;
+          color: #fff;
+          font-weight: 600;
+        }
+        .risk-matrix-label {
+          background: #f8f9fa;
+          font-weight: 600;
+        }
+        .risk-count {
+          font-size: 1.25rem;
+          font-weight: 700;
+        }
+        .risk-high { background: #f8d7da; }
+        .risk-medium { background: #fff3cd; }
+        .risk-low { background: #d4edda; }
+      </style>
+
+      <div class="risk-matrix">
+        <div class="risk-matrix-cell risk-matrix-header"></div>
+        <div class="risk-matrix-cell risk-matrix-header">Very Low</div>
+        <div class="risk-matrix-cell risk-matrix-header">Low</div>
+        <div class="risk-matrix-cell risk-matrix-header">Medium</div>
+        <div class="risk-matrix-cell risk-matrix-header">High</div>
+        <div class="risk-matrix-cell risk-matrix-header">Very High</div>
+
+        <div class="risk-matrix-cell risk-matrix-label">Critical</div>
+        <div class="risk-matrix-cell ">-</div><div class="risk-matrix-cell ">-</div><div class="risk-matrix-cell ">-</div><div class="risk-matrix-cell ">-</div><div class="risk-matrix-cell ">-</div>
+
+        <div class="risk-matrix-cell risk-matrix-label">High</div>
+        <div class="risk-matrix-cell ">-</div><div class="risk-matrix-cell ">-</div><div class="risk-matrix-cell ">-</div><div class="risk-matrix-cell ">-</div><div class="risk-matrix-cell ">-</div>
+
+        <div class="risk-matrix-cell risk-matrix-label">Medium</div>
+        <div class="risk-matrix-cell ">-</div><div class="risk-matrix-cell ">-</div><div class="risk-matrix-cell risk-medium"><span class="risk-count">2</span></div><div class="risk-matrix-cell ">-</div><div class="risk-matrix-cell ">-</div>
+
+        <div class="risk-matrix-cell risk-matrix-label">Low</div>
+        <div class="risk-matrix-cell ">-</div><div class="risk-matrix-cell ">-</div><div class="risk-matrix-cell ">-</div><div class="risk-matrix-cell ">-</div><div class="risk-matrix-cell ">-</div>
+      </div>
+
+      <p class="text-center"><em>Likelihood (Horizontal) vs Severity (Vertical)</em></p>
+    </section>
+
+    
+
+    <section class="section page-break">
+      <h2>Detailed Risk Analysis by Dimension</h2>
+
+      
+        <div class="card mb-2">
+          <div class="card-header">
+            <span class="card-title">Marketing</span>
+            <span class="band-badge Attention">
+              1 Risk
+            </span>
+          </div>
+          <div class="card-body">
+            
+              <div style="padding: 0.75rem 0; border-bottom: 1px solid #eee;">
+                <div class="flex flex-between mb-1">
+                  <strong>Marketing</strong>
+                  <span class="priority-badge medium">Critical</span>
+                </div>
+                <p style="margin-bottom: 0.5rem;">Marketing is at critical levels with a score of 31/100. Immediate intervention is required to mitigate business risk.</p>
+                <small style="color: #666;">Likelihood: High</small>
+              </div>
+            
+          </div>
+        </div>
+      
+        <div class="card mb-2">
+          <div class="card-header">
+            <span class="card-title">Financials</span>
+            <span class="band-badge Attention">
+              1 Risk
+            </span>
+          </div>
+          <div class="card-body">
+            
+              <div style="padding: 0.75rem 0; border-bottom: 1px solid #eee;">
+                <div class="flex flex-between mb-1">
+                  <strong>Financials</strong>
+                  <span class="priority-badge medium">Critical</span>
+                </div>
+                <p style="margin-bottom: 0.5rem;">Financials is at critical levels with a score of 39/100. Immediate intervention is required to mitigate business risk.</p>
+                <small style="color: #666;">Likelihood: High</small>
+              </div>
+            
+          </div>
+        </div>
+      
+
+      
+    </section>
+
+    
+      <section class="section page-break">
+        <h2>Risk-Related Findings</h2>
+        
+          <div class="finding-card risk">
+            <div class="label">Marketing Critical Underperformance</div>
+            <div class="dimension">Marketing</div>
+            <p>Marketing is at critical levels with a score of 31/100. Immediate intervention is required to mitigate business risk.</p>
+          </div>
+        
+          <div class="finding-card risk">
+            <div class="label">Financials Critical Underperformance</div>
+            <div class="dimension">Financials</div>
+            <p>Financials is at critical levels with a score of 39/100. Immediate intervention is required to mitigate business risk.</p>
+          </div>
+        
+      </section>
+    
+
+    <section class="section">
+      <h2>Risk Monitoring & Early Warning Indicators</h2>
+
+      <div class="callout info">
+        <div class="title">Recommended Monitoring Approach</div>
+        <p>Implement regular risk reviews to track the status of identified risks and detect emerging threats:</p>
+      </div>
+
+      <table class="mt-2">
+        <thead>
+          <tr>
+            <th>Frequency</th>
+            <th>Activity</th>
+            <th>Responsible</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Weekly</td>
+            <td>Review critical risk indicators and status updates</td>
+            <td>Risk Owner / Operations Lead</td>
+          </tr>
+          <tr>
+            <td>Monthly</td>
+            <td>Full risk register review and mitigation progress</td>
+            <td>Leadership Team</td>
+          </tr>
+          <tr>
+            <td>Quarterly</td>
+            <td>Strategic risk assessment and emerging risk scan</td>
+            <td>Executive Team / Board</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="mt-3">Early Warning Indicators</h3>
+      <ul>
+        <li>Decline in key performance metrics beyond threshold</li>
+        <li>Customer complaints or satisfaction scores trending down</li>
+        <li>Staff turnover exceeding industry benchmarks</li>
+        <li>Delayed project deliverables or missed deadlines</li>
+        <li>Cash flow deviations from forecast</li>
+        <li>Regulatory or compliance notifications</li>
+      </ul>
+    </section>
+
+    
+    <footer class="report-footer">
+      <p>&copy; 2025 BizHealth.ai - Confidential Business Assessment Report</p>
+      <p>Assessment ID: 9fad35a7-ab46-44fc-aff6-fd96530995df</p>
+    </footer>
+  
+  
+  </div>
+</body>
+</html>

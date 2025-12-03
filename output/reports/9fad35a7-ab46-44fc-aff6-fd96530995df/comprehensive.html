@@ -1192,6 +1192,200 @@
         page-break-inside: avoid;
       }
     }
+
+    /* ================================================================
+       CHART DASHBOARD STYLES
+       Added for server-side rendered Chart.js visualizations
+       ================================================================ */
+
+    .scorecard-charts {
+      margin: 2rem 0;
+      padding: 1.5rem;
+      background: #fafbfc;
+      border-radius: 12px;
+      border: 1px solid #e9ecef;
+    }
+
+    .chart-dashboard {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .chart-row {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .chart-main {
+      flex: 2;
+      min-width: 350px;
+    }
+
+    .chart-side {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .chart-full {
+      width: 100%;
+    }
+
+    .chapter-dimension-chart {
+      margin: 1.5rem 0;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+    }
+
+    /* Import chart component styles */
+    
+    
+    .svg-chart-container {
+      display: flex;
+      justify-content: center;
+      margin: 1rem 0;
+      page-break-inside: avoid;
+    }
+
+    .svg-chart-container svg {
+      max-width: 100%;
+      height: auto;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+    }
+
+    @media print {
+      .svg-chart-container {
+        page-break-inside: avoid;
+      }
+
+      .svg-chart-container svg {
+        box-shadow: none;
+        border: 1px solid #e0e0e0;
+      }
+    }
+  
+
+    /* Executive Dashboard Styles */
+    .executive-dashboard {
+      margin: 2rem 0;
+    }
+
+    .dashboard-row {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .dashboard-main {
+      flex: 2;
+      min-width: 350px;
+    }
+
+    .dashboard-side {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .dashboard-full {
+      width: 100%;
+    }
+
+    /* Chart grid layout */
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .chart-cell {
+      background: #FFFFFF;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Chart error fallback */
+    .chart-error,
+    .chart-fallback {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: #f8f9fa;
+      border: 2px dashed #dee2e6;
+      border-radius: 8px;
+      color: #6c757d;
+      min-height: 200px;
+      text-align: center;
+    }
+
+    .chart-fallback-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    @media print {
+      .executive-dashboard,
+      .chart-grid,
+      .svg-chart-container {
+        page-break-inside: avoid;
+      }
+
+      .chart-cell {
+        box-shadow: none;
+        border: 1px solid #dee2e6;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-row {
+        flex-direction: column;
+      }
+
+      .dashboard-main,
+      .dashboard-side {
+        min-width: 100%;
+      }
+
+      .chart-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  
+
+    @media (max-width: 768px) {
+      .chart-row {
+        flex-direction: column;
+      }
+
+      .chart-main,
+      .chart-side {
+        min-width: 100%;
+      }
+    }
+
+    @media print {
+      .scorecard-charts {
+        background: #fafbfc !important;
+        page-break-inside: avoid;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .chart-dashboard {
+        page-break-inside: avoid;
+      }
+
+      .chapter-dimension-chart {
+        page-break-inside: avoid;
+      }
+    }
   
   </style>
 </head>
@@ -1202,18 +1396,37 @@
       <h1>Comprehensive Assessment Report</h1>
       <p class="subtitle">Complete Business Health Assessment</p>
       <p class="company-name">EWM Global</p>
-      <p class="date">Assessment Date: December 2, 2025</p>
+      <p class="date">Assessment Date: December 3, 2025</p>
     </header>
+  
+
+    <div class="report-relationship-notice">
+      <div class="notice-icon">&#128203;</div>
+      <div class="notice-content">
+        <h3>How to Use Your Report Bundle</h3>
+        <p>
+          This <strong>Comprehensive Report</strong> is the complete encyclopedia of
+          your business health assessment&mdash;containing full diagnostics, supporting
+          analysis, evidence bases, and detailed implementation guidance.
+        </p>
+        <p>
+          The accompanying <strong>Business Owner Report</strong> presents the
+          abbreviated, owner-focused summary with strategic priorities and
+          investment overview. Use the Owner Report for executive decision-making;
+          refer to this Comprehensive Report for the underlying detail.
+        </p>
+      </div>
+    </div>
   
 
     <nav class="toc mb-3">
       <h3>Table of Contents</h3>
       <ol>
-        <li><a href="#executive-summary">Executive Summary</a></li><li><a href="#scorecard">Business Health Scorecard</a></li><li><a href="#strategy">Strategy &amp; Revenue Engine</a></li><li><a href="#operations">Operational Excellence</a></li><li><a href="#financial">Financial Health</a></li><li><a href="#people">People &amp; Leadership</a></li><li><a href="#compliance">Compliance &amp; Sustainability</a></li><li><a href="#cross-dimensional">Cross-Dimensional Synthesis</a></li><li><a href="#strategic-recommendations">Strategic Recommendations</a></li><li><a href="#risks">Risk Assessment</a></li><li><a href="#growth">Growth Opportunities</a></li><li><a href="#roadmap">Implementation Roadmap</a></li><li><a href="#findings">Detailed Findings</a></li><li><a href="#quick-wins">Quick Wins</a></li><li><a href="#financial-impact">Financial Impact</a></li><li><a href="#chapter-GE">Growth Engine</a></li><li><a href="#chapter-PH">Performance &amp; Health</a></li><li><a href="#chapter-PL">People &amp; Leadership</a></li><li><a href="#chapter-RS">Resilience &amp; Safeguards</a></li>
+        <li><a href="#executive-summary">Executive Summary</a></li><li><a href="#scorecard">Business Health Scorecard</a></li><li><a href="#chapter-growth-engine">Chapter 1: Growth Engine Deep Dive</a></li><li><a href="#chapter-performance-health">Chapter 2: Performance &amp; Health Deep Dive</a></li><li><a href="#chapter-people-leadership">Chapter 3: People &amp; Leadership Deep Dive</a></li><li><a href="#chapter-resilience-safeguards">Chapter 4: Resilience &amp; Safeguards Deep Dive</a></li><li><a href="#cross-dimensional">Cross-Dimensional Synthesis</a></li><li><a href="#strategic-recommendations">Strategic Recommendations</a></li><li><a href="#risk-assessment">Risk Assessment</a></li><li><a href="#growth">Growth Opportunities</a></li><li><a href="#implementation-roadmap">Implementation Roadmap</a></li><li><a href="#findings">Detailed Findings</a></li><li><a href="#quick-wins">Quick Wins</a></li><li><a href="#financial-impact">Financial Impact Analysis</a></li>
       </ol>
     </nav>
   
-<div id="executive-summary">
+<section id="executive-summary" class="section">
     <section class="section">
       <div class="section-header">
         <h2>Executive Summary</h2>
@@ -1545,8 +1758,8 @@
         </div>
       
     </section>
-  </div>
-<div id="scorecard">
+  </section>
+<section id="scorecard" class="section page-break">
       
     <section class="section page-break">
       <div class="section-header">
@@ -1683,6 +1896,52 @@
       </table>
     </section>
   
+
+      <!-- Visual Charts Dashboard -->
+      <div class="scorecard-charts">
+        <h3 style="color: #212653; margin: 2rem 0 1rem 0; font-family: 'Montserrat', sans-serif;">Visual Performance Overview</h3>
+        <div class="chart-dashboard">
+          <div class="chart-row">
+            <div class="chart-main">
+    <div class="svg-chart-container" role="figure" aria-label="Business Health Overview">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350 380" style="max-width: 100%; height: auto;"><rect width="350" height="380" fill="white" rx="4"/><text x="175" y="22" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Business Health Overview</text><circle cx="175" cy="190" r="25" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="175" cy="190" r="50" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="175" cy="190" r="75" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="175" cy="190" r="100" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="175" cy="190" r="125" fill="none" stroke="#e0e0e0" stroke-width="1"/><line x1="175" y1="190" x2="175" y2="65" stroke="#e0e0e0" stroke-width="1"/><line x1="175" y1="190" x2="300" y2="190" stroke="#e0e0e0" stroke-width="1"/><line x1="175" y1="190" x2="175" y2="315" stroke="#e0e0e0" stroke-width="1"/><line x1="175" y1="190" x2="50" y2="190.00000000000003" stroke="#e0e0e0" stroke-width="1"/><polygon points="175,128.75 238.75,190 175,243.75 87.5,190" fill="#212653" fill-opacity="0.3" stroke="#212653" stroke-width="2"/><circle cx="175" cy="128.75" r="4" fill="#212653"/><circle cx="238.75" cy="190" r="4" fill="#212653"/><circle cx="175" cy="243.75" r="4" fill="#212653"/><circle cx="87.5" cy="190" r="4" fill="#212653"/><text x="175" y="40" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Growth Eng... (49)</text><text x="325" y="190" text-anchor="start" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Performanc... (51)</text><text x="175" y="340" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">People &amp; L... (43)</text><text x="25" y="190.00000000000003" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Resilience... (70)</text></svg>
+    </div>
+  </div>
+            <div class="chart-side">
+    <div class="svg-chart-container" role="figure" aria-label="Dimension Score Distribution">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 410" style="max-width: 100%; height: auto;"><rect width="300" height="410" fill="white" rx="4"/><text x="150" y="22" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Dimension Score Distribution</text><path d="M 40 180
+          A 110 110 0 0 1 54.73720558371174 125
+          L 92.84232335022705 147
+          A 66 66 0 0 0 84 180
+          Z" fill="#27ae60"/><path d="M 54.73720558371174 125
+          A 110 110 0 0 1 205 84.73720558371176
+          L 183 122.84232335022705
+          A 66 66 0 0 0 92.84232335022705 147
+          Z" fill="#f39c12"/><path d="M 205 84.73720558371176
+          A 110 110 0 0 1 95.00000000000003 275.2627944162883
+          L 117.00000000000001 237.15767664977295
+          A 66 66 0 0 0 183 122.84232335022705
+          Z" fill="#e67e22"/><path d="M 95.00000000000003 275.2627944162883
+          A 110 110 0 0 1 40 180
+          L 84 180
+          A 66 66 0 0 0 117.00000000000001 237.15767664977295
+          Z" fill="#e74c3c"/><circle cx="150" cy="180" r="61" fill="white"/><text x="150" y="186" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="24" font-weight="700" fill="#212653">12</text><rect x="20" y="340" width="12" height="12" rx="2" fill="#27ae60"/><text x="38" y="350" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Excellence (8%)</text><rect x="170" y="340" width="12" height="12" rx="2" fill="#f39c12"/><text x="188" y="350" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Proficiency (25%)</text><rect x="20" y="365" width="12" height="12" rx="2" fill="#e67e22"/><text x="38" y="375" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Attention (50%)</text><rect x="170" y="365" width="12" height="12" rx="2" fill="#e74c3c"/><text x="188" y="375" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Critical (17%)</text></svg>
+    </div>
+  </div>
+          </div>
+          <div class="chart-full">
+    <div class="svg-chart-container" role="figure" aria-label="Chapter Performance Overview">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 232" style="max-width: 100%; height: auto;"><rect width="600" height="232" fill="white" rx="4"/><text x="300" y="28" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Chapter Performance Overview</text><text x="132" y="70" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Growth Engine</text><rect x="140" y="50" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="50" width="196" height="30" fill="#e67e22" rx="4"/><text x="344" y="70" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">49</text><text x="132" y="108" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Performance &amp; He...</text><rect x="140" y="88" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="88" width="204" height="30" fill="#e67e22" rx="4"/><text x="352" y="108" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">51</text><text x="132" y="146" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">People &amp; Leaders...</text><rect x="140" y="126" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="126" width="172" height="30" fill="#e67e22" rx="4"/><text x="320" y="146" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">43</text><text x="132" y="184" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Resilience &amp; Saf...</text><rect x="140" y="164" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="164" width="280" height="30" fill="#f39c12" rx="4"/><text x="428" y="184" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">70</text></svg>
+    </div>
+  </div>
+          <div class="chart-full">
+    <div class="svg-chart-container" role="figure" aria-label="Your Scores vs Industry Benchmark">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 232" style="max-width: 100%; height: auto;"><rect width="600" height="232" fill="white" rx="4"/><text x="300" y="28" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Your Scores vs Industry Benchmark</text><text x="132" y="70" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Growth Engine</text><rect x="140" y="50" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="50" width="196" height="30" fill="#e67e22" rx="4"/><line x1="388" y1="50" x2="388" y2="80" stroke="#212653" stroke-width="2" stroke-dasharray="4,2"/><text x="344" y="70" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">49</text><text x="132" y="108" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Performance &amp; He...</text><rect x="140" y="88" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="88" width="204" height="30" fill="#e67e22" rx="4"/><line x1="368" y1="88" x2="368" y2="118" stroke="#212653" stroke-width="2" stroke-dasharray="4,2"/><text x="352" y="108" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">51</text><text x="132" y="146" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">People &amp; Leaders...</text><rect x="140" y="126" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="126" width="172" height="30" fill="#e67e22" rx="4"/><line x1="364" y1="126" x2="364" y2="156" stroke="#212653" stroke-width="2" stroke-dasharray="4,2"/><text x="320" y="146" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">43</text><text x="132" y="184" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Resilience &amp; Saf...</text><rect x="140" y="164" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="164" width="280" height="30" fill="#f39c12" rx="4"/><line x1="388" y1="164" x2="388" y2="194" stroke="#212653" stroke-width="2" stroke-dasharray="4,2"/><text x="428" y="184" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">70</text></svg>
+    </div>
+  </div>
+        </div>
+      </div>
+
       
     <div class="benchmark-summary">
       <h4>Benchmark Comparison Summary</h4>
@@ -1700,7 +1959,7 @@
           
               <tr>
                 <td>Growth Engine</td>
-                <td class="score">49/100</td>
+                <td class="score">49.0/100</td>
                 <td>62/100</td>
                 <td>21th</td>
                 <td style="color: #dc3545; font-weight: 600;">
@@ -1710,7 +1969,7 @@
             
               <tr>
                 <td>Performance &amp; Health</td>
-                <td class="score">51/100</td>
+                <td class="score">51.0/100</td>
                 <td>57/100</td>
                 <td>34th</td>
                 <td style="color: #ffc107; font-weight: 600;">
@@ -1720,7 +1979,7 @@
             
               <tr>
                 <td>People &amp; Leadership</td>
-                <td class="score">43/100</td>
+                <td class="score">43.0/100</td>
                 <td>56/100</td>
                 <td>18th</td>
                 <td style="color: #dc3545; font-weight: 600;">
@@ -1730,7 +1989,7 @@
             
               <tr>
                 <td>Resilience &amp; Safeguards</td>
-                <td class="score">70/100</td>
+                <td class="score">70.0/100</td>
                 <td>62/100</td>
                 <td>71th</td>
                 <td style="color: #28a745; font-weight: 600;">
@@ -1742,15 +2001,15 @@
       </table>
     </div>
   
-    </div>
+    </section>
 
-      <div id="strategy">
+      <section id="chapter-growth-engine" class="section page-break">
     <section class="section page-break">
       
     <div class="chapter-header-enhanced">
       <div class="chapter-icon">🚀</div>
       <div class="chapter-title-group">
-        <h2>Strategy & Revenue Engine</h2>
+        <h2>Chapter 1: Growth Engine Deep Dive</h2>
         <div class="chapter-subtitle">General Industry Analysis</div>
       </div>
       <span class="section-score">49/100</span>
@@ -1762,7 +2021,7 @@
       <div class="benchmark-content">
         <div class="benchmark-label">Industry Benchmark Comparison</div>
         <div class="benchmark-value">
-          49/100 vs 61.629999999999995/100
+          49.0/100/100 vs 61.6/100/100
         </div>
         <div class="benchmark-context">
           Your Growth Engine score is
@@ -1774,6 +2033,16 @@
       </div>
     </div>
   
+      
+        <div class="chapter-dimension-chart">
+          <h4 style="font-size: 0.95rem; color: #666; margin: 1.5rem 0 1rem 0;">Dimension Score Breakdown</h4>
+          
+    <div class="svg-chart-container" role="figure" aria-label="Growth Engine - Dimension Scores">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 232" style="max-width: 100%; height: auto;"><rect width="600" height="232" fill="white" rx="4"/><text x="300" y="28" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Growth Engine - Dimension Scores</text><text x="132" y="70" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Strategy</text><rect x="140" y="50" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="50" width="180" height="30" fill="#e67e22" rx="4"/><text x="328" y="70" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">45</text><text x="132" y="108" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Sales</text><rect x="140" y="88" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="88" width="280" height="30" fill="#f39c12" rx="4"/><text x="428" y="108" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">70</text><text x="132" y="146" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Marketing</text><rect x="140" y="126" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="126" width="124" height="30" fill="#e74c3c" rx="4"/><text x="272" y="146" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">31</text><text x="132" y="184" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Customer Experie...</text><rect x="140" y="164" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="164" width="200" height="30" fill="#e67e22" rx="4"/><text x="348" y="184" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">50</text></svg>
+    </div>
+  
+        </div>
+      
       <div class="narrative-content">
         <h1 class="bh-h1">Revenue Engine Analysis: EWM Global</h1><h2 class="bh-h2">Executive Summary</h2><p class="bh-p">EWM Global demonstrates a <strong class="bh-strong">high-value, relationship-driven revenue model</strong> with exceptional customer retention and strong unit economics. However, the company faces significant friction in its customer acquisition process, with an extremely long sales cycle and below-benchmark close rates that constrain growth velocity. The 5-percentage-point gap between historical growth (15%) and target growth (20%) will require strategic intervention in sales efficiency and marketing effectiveness.</p><hr class="bh-section-divider"><h2 class="bh-h2">1. Current State Assessment</h2><h3 class="bh-h3">Revenue Engine Overview</h3>
       <div class="table-responsive">
@@ -1991,14 +2260,14 @@ With 2% Conversion (Doubled):
       <hr class="bh-section-divider"><h2 class="bh-h2">Closing Assessment</h2><p class="bh-p">EWM Global possesses a <strong class="bh-strong">fundamentally strong revenue engine</strong> characterized by exceptional customer retention, high-value transactions, and solid unit economics. The company&#39;s 24-year operating history and $1M customer lifetime value demonstrate sustained value creation capability.</p><p class="bh-p">However, achieving the 20% growth target (versus 15% historical) requires addressing the <strong class="bh-strong">sales conversion bottleneck</strong>. The combination of a 10% close rate and 270-day sales cycle creates friction that constrains revenue velocity despite the high deal values.</p><p class="bh-p"><strong class="bh-strong">The single highest-impact initiative is improving close rates.</strong> A 5-percentage-point improvement from 10% to 15% would generate approximately <strong class="bh-strong">$1.5M - $2.5M in additional annual revenue</strong> without requiring proportionally more leads or marketing spend.</p><p class="bh-p">Secondary priorities around response time, competitive differentiation, and funnel optimization will create compounding improvements across the revenue engine, positioning EWM Global to achieve—and potentially exceed—its 20% growth objective.</p>
       </div>
     </section>
-  </div>
-      <div id="operations">
+  </section>
+      <section id="chapter-performance-health" class="section page-break">
     <section class="section page-break">
       
     <div class="chapter-header-enhanced">
       <div class="chapter-icon">💪</div>
       <div class="chapter-title-group">
-        <h2>Operational Excellence</h2>
+        <h2>Chapter 2: Performance & Health Deep Dive</h2>
         <div class="chapter-subtitle">General Industry Analysis</div>
       </div>
       <span class="section-score">51/100</span>
@@ -2010,7 +2279,7 @@ With 2% Conversion (Doubled):
       <div class="benchmark-content">
         <div class="benchmark-label">Industry Benchmark Comparison</div>
         <div class="benchmark-value">
-          51/100 vs 56.775/100
+          51.0/100/100 vs 56.8/100/100
         </div>
         <div class="benchmark-context">
           Your Performance &amp; Health score is
@@ -2022,6 +2291,16 @@ With 2% Conversion (Doubled):
       </div>
     </div>
   
+      
+        <div class="chapter-dimension-chart">
+          <h4 style="font-size: 0.95rem; color: #666; margin: 1.5rem 0 1rem 0;">Dimension Score Breakdown</h4>
+          
+    <div class="svg-chart-container" role="figure" aria-label="Performance &amp; Health - Dimension Scores">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 156" style="max-width: 100%; height: auto;"><rect width="600" height="156" fill="white" rx="4"/><text x="300" y="28" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Performance &amp; Health - Dimension Scores</text><text x="132" y="70" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Operations</text><rect x="140" y="50" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="50" width="248" height="30" fill="#f39c12" rx="4"/><text x="396" y="70" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">62</text><text x="132" y="108" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Financials</text><rect x="140" y="88" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="88" width="156" height="30" fill="#e74c3c" rx="4"/><text x="304" y="108" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">39</text></svg>
+    </div>
+  
+        </div>
+      
       <div class="narrative-content">
         <h1 class="bh-h1">Operational Excellence Analysis: EWM Global</h1><h2 class="bh-h2">Executive Summary</h2><p class="bh-p">EWM Global demonstrates a bifurcated operational profile: <strong class="bh-strong">exceptional technical infrastructure and reliability</strong> paired with <strong class="bh-strong">moderate process efficiency and underutilized assets</strong>. As a 24-year fintech company serving financial services with plan administration services, the company has built robust foundational systems but has yet to fully optimize operational throughput and resource utilization. The organization operates above median in most areas but shows significant room for improvement in translating strong infrastructure investments into operational velocity.</p><hr class="bh-section-divider"><h2 class="bh-h2">1. Current State Assessment</h2><h3 class="bh-h3">Operational Performance Dashboard</h3>
       <div class="table-responsive">
@@ -2215,131 +2494,14 @@ Q1 2024                     Q2 2024                     Q3 2024
     <hr class="bh-section-divider"><h2 class="bh-h2">Conclusion</h2><p class="bh-p">EWM Global has built a <strong class="bh-strong">reliable operational foundation</strong> appropriate for its fintech regulatory environment, but operates <strong class="bh-strong">below its potential efficiency level</strong> given its technology investments and workforce capabilities. The 50% equipment utilization and automation disconnect represent the most immediate opportunities, potentially worth <strong class="bh-strong">$500,000+ annually</strong> in optimized operations.</p><p class="bh-p"><strong class="bh-strong">Priority Focus Areas:</strong></p><ol class="bh-ol"><li class="bh-li"><strong class="bh-strong">Equipment utilization</strong> — Immediate cost recovery opportunity</li><li class="bh-li"><strong class="bh-strong">Customer response time</strong> — Client satisfaction and retention impact</li><li class="bh-li"><strong class="bh-strong">Automation acceleration</strong> — Leverage existing investments</li><li class="bh-li"><strong class="bh-strong">Lean adoption</strong> — Operational maturity appropriate for company age</li></ol><p class="bh-p">By addressing these gaps, EWM Global can transform from a <strong class="bh-strong">reliable but moderately efficient</strong> operation to one that demonstrates <strong class="bh-strong">operational excellence at scale</strong>—critical for achieving its 20% growth target and potential exit strategy execution.</p>
       </div>
     </section>
-  </div>
-      <div id="financial">
-    <section class="section page-break">
-      
-      <div class="section-header">
-        <h2>Financial Health &amp; Strategic Position</h2>
-        
-      </div>
-    
-      
-      <div class="narrative-content">
-        <h1 class="bh-h1">Financial Strategic Analysis: EWM Global</h1><h2 class="bh-h2">Executive Summary</h2><p class="bh-p">EWM Global presents a paradoxical financial profile: strong customer economics and revenue planning capabilities are undermined by concerning liquidity constraints and below-market profitability. While the company demonstrates excellent customer lifetime value ($1M) and exceptional retention (98%), its 32% gross profit margin and cash ratio of 0.43 reveal significant structural financial vulnerabilities that threaten the company&#39;s 20% growth ambitions and long-term strategic optionality.</p><hr class="bh-section-divider"><h2 class="bh-h2">1. Current State Assessment</h2><h3 class="bh-h3">Revenue Performance &amp; Trajectory</h3>
-      <div class="table-responsive">
-        <table class="bh-table">
-          <thead><tr><th>Metric</th><th>Current Value</th><th>Context</th></tr></thead>
-          <tbody><tr><td>Annual Revenue</td><td>$24M (LY) → $26M (Projected)</td><td>8.3% growth trajectory</td></tr><tr><td>Reported Sales Growth</td><td>15% YoY</td><td>Healthy organic growth</td></tr><tr><td>Target Growth</td><td>20%</td><td>Aggressive but achievable</td></tr><tr><td>Revenue per Employee</td><td>$141,176</td><td>Below industry median</td></tr></tbody>
-        </table>
-      </div>
-    <p class="bh-p">The company demonstrates solid revenue momentum in a specialized fintech niche. The 5-point growth gap between last year&#39;s 15% achievement and this year&#39;s 20% target represents an incremental $1.2M in revenue capture required—achievable given the high repeat customer rate but challenging given the 270-day sales cycle for new business.</p><h3 class="bh-h3">Profitability Analysis</h3>
-      <div class="table-responsive">
-        <table class="bh-table">
-          <thead><tr><th>Metric</th><th>Value</th><th>Benchmark P50</th><th>Position</th></tr></thead>
-          <tbody><tr><td>Gross Profit Margin</td><td>32%</td><td>42%</td><td><strong class="bh-strong">Below P10</strong></td></tr><tr><td>Monthly EBITDA (Est.)</td><td>$640,000</td><td>—</td><td>~32% operating margin</td></tr><tr><td>Annual Implied Profit</td><td>$7.68M</td><td>—</td><td>Strong if accurate</td></tr></tbody>
-        </table>
-      </div>
-    <p class="bh-p"><strong class="bh-strong">Critical Finding</strong>: The 32% gross profit margin is alarmingly low for a fintech/SaaS company, where industry norms typically range from 60-80%. This suggests either:</p><ul class="bh-ul"><li class="bh-li">High cost of service delivery (labor-intensive operations)</li><li class="bh-li">Suboptimal pricing relative to value delivered</li><li class="bh-li">High platform/infrastructure costs not yet amortized across sufficient client base</li><li class="bh-li">Potential categorization of expenses that should be below gross profit line</li></ul><h3 class="bh-h3">Liquidity &amp; Cash Position</h3>
-      <div class="table-responsive">
-        <table class="bh-table">
-          <thead><tr><th>Metric</th><th>Value</th><th>Benchmark P50</th><th>Status</th></tr></thead>
-          <tbody><tr><td>Cash Available</td><td>$1,500,000</td><td>—</td><td>Constrained</td></tr><tr><td>Working Capital</td><td>$1,500,000</td><td>—</td><td>Tight</td></tr><tr><td>Cash Ratio</td><td>0.43</td><td>1.20</td><td><strong class="bh-strong">Critical: Below P10</strong></td></tr><tr><td>Cash Runway</td><td>Not Calculated</td><td>6 months</td><td><strong class="bh-strong">Data Gap</strong></td></tr><tr><td>Financial Resilience (Self-Rated)</td><td>2/5</td><td>—</td><td><strong class="bh-strong">Limited</strong></td></tr></tbody>
-        </table>
-      </div>
-    <p class="bh-p"><strong class="bh-strong">The cash position represents the most significant financial risk.</strong> At $1.5M available cash:</p><ul class="bh-ul"><li class="bh-li">This represents only 5.8% of annual revenue</li><li class="bh-li">Less than 2.5 months of estimated monthly profit ($640K)</li><li class="bh-li">Insufficient buffer for the 270-day sales cycle investment required</li><li class="bh-li">Minimal cushion for growth investments or unexpected challenges</li></ul><h3 class="bh-h3">Capital Structure &amp; Debt</h3>
-      <div class="table-responsive">
-        <table class="bh-table">
-          <thead><tr><th>Metric</th><th>Value</th><th>Benchmark</th><th>Observation</th></tr></thead>
-          <tbody><tr><td>Total Debt/Liabilities</td><td>Not Disclosed</td><td>—</td><td><strong class="bh-strong">Transparency Gap</strong></td></tr><tr><td>Debt-to-Asset Ratio</td><td>0.00</td><td>—</td><td>Potentially underleveraged</td></tr><tr><td>Debt Monitoring</td><td>3/5</td><td>P50: 3</td><td>At benchmark</td></tr></tbody>
-        </table>
-      </div>
-    <p class="bh-p">The absence of debt disclosure raises concerns about financial visibility. If the company truly has zero debt, it may be underleveraged and missing opportunities to optimize capital structure for growth investment.</p><h3 class="bh-h3">Financial Management Capabilities</h3>
-      <div class="table-responsive">
-        <table class="bh-table">
-          <thead><tr><th>Capability</th><th>Rating</th><th>Benchmark P50</th><th>Position</th></tr></thead>
-          <tbody><tr><td>Cash Flow Forecasting</td><td>4/5</td><td>3/5</td><td><strong class="bh-strong">P75 - Strength</strong></td></tr><tr><td>Budgeting Effectiveness</td><td>4/5</td><td>3/5</td><td><strong class="bh-strong">P75 - Strength</strong></td></tr><tr><td>Growth Funding Readiness</td><td>4/5</td><td>3/5</td><td><strong class="bh-strong">P75 - Strength</strong></td></tr><tr><td>Debt Monitoring</td><td>3/5</td><td>3/5</td><td>At Median</td></tr></tbody>
-        </table>
-      </div>
-    <p class="bh-p">Despite the liquidity challenges, EWM Global demonstrates above-average financial planning and management capabilities—suggesting the issues are structural rather than operational.</p><hr class="bh-section-divider"><h2 class="bh-h2">2. Benchmark Comparison</h2><h3 class="bh-h3">Financial Health Scorecard</h3>
-        <div class="visual-framework">
-          <pre class="ascii-viz">Metric                      EWM Global    Benchmark P50    vs. Benchmark
-─────────────────────────────────────────────────────────────────────────
-Gross Profit Margin             32%           42%          ▼ -10 pts (Below P10)
-Cash Ratio                      0.43          1.20         ▼ -0.77 (Below P10)
-Cash Flow Forecasting           4/5           3/5          ▲ At P75
-Budgeting Effectiveness         4/5           3/5          ▲ At P75
-Growth Funding Readiness        4/5           3/5          ▲ At P75
-Debt Monitoring                 3/5           3/5          ● At Median
-Financial Resilience            2/5           3.4/5        ▼ Below P10</pre>
-        </div>
-      <h3 class="bh-h3">Cross-Functional Financial Metrics</h3>
-      <div class="table-responsive">
-        <table class="bh-table">
-          <thead><tr><th>Metric</th><th>EWM Global</th><th>Benchmark P50</th><th>Analysis</th></tr></thead>
-          <tbody><tr><td>Revenue per Employee</td><td>$141,176</td><td>$160,000</td><td>12% below median</td></tr><tr><td>Technology Investment</td><td>$2.5M (10.4% of revenue)</td><td>8%</td><td>High tech reinvestment</td></tr><tr><td>Tech Spend per Employee</td><td>$14,706</td><td>$2,500</td><td>488% above median</td></tr></tbody>
-        </table>
-      </div>
-    <p class="bh-p">The disproportionately high technology spend ($2.5M annually, or 10.4% of revenue) explains part of the margin compression but represents strategic investment in the company&#39;s core product platform.</p><h3 class="bh-h3">Customer Economics Comparison</h3>
-      <div class="table-responsive">
-        <table class="bh-table">
-          <thead><tr><th>Metric</th><th>EWM Global</th><th>Benchmark P50</th><th>Position</th></tr></thead>
-          <tbody><tr><td>Customer Acquisition Cost</td><td>$54,000</td><td>$750-$890</td><td>N/A - Enterprise model</td></tr><tr><td>Customer Lifetime Value</td><td>$1,000,000</td><td>$6,500-$7,200</td><td>138x+ higher</td></tr><tr><td>CAC:LTV Ratio</td><td>18.5:1</td><td>6:1</td><td><strong class="bh-strong">Exceptional</strong></td></tr><tr><td>Repeat Customer Rate</td><td>98%</td><td>40%</td><td><strong class="bh-strong">Outstanding</strong></td></tr><tr><td>Average Deal Size</td><td>$70,000</td><td>$8,000-$9,200</td><td>7.6x higher</td></tr></tbody>
-        </table>
-      </div>
-    <p class="bh-p"><strong class="bh-strong">Key Insight</strong>: The customer economics are exceptional for an enterprise B2B model. The 18.5:1 CAC:LTV ratio indicates highly efficient customer acquisition, and 98% retention demonstrates strong product-market fit and customer stickiness.</p><hr class="bh-section-divider"><h2 class="bh-h2">3. Key Strengths</h2><h3 class="bh-h3">Strength 1: Exceptional Customer Economics &amp; Retention</h3><p class="bh-p"><strong class="bh-strong">Evidence:</strong></p><ul class="bh-ul"><li class="bh-li">LTV of $1,000,000 per customer</li><li class="bh-li">CAC:LTV ratio of 18.5x (benchmark P90 is 12x)</li><li class="bh-li">98% repeat customer rate (benchmark median is 40%)</li><li class="bh-li">69% of revenue from Deferred Cash Plan Administration indicates sticky, recurring relationships</li></ul><p class="bh-p"><strong class="bh-strong">Strategic Implication:</strong> The customer economics provide a strong foundation for predictable revenue growth and justify investments in customer success and expansion.</p><h3 class="bh-h3">Strength 2: Financial Planning &amp; Forecasting Maturity</h3><p class="bh-p"><strong class="bh-strong">Evidence:</strong></p><ul class="bh-ul"><li class="bh-li">Cash flow forecasting rated 4/5 (P75 vs. benchmark)</li><li class="bh-li">Budgeting effectiveness rated 4/5 (P75 vs. benchmark)</li><li class="bh-li">Growth funding readiness rated 4/5 (P75 vs. benchmark)</li><li class="bh-li">Sales targets aligned with business needs rated 5/5</li></ul><p class="bh-p"><strong class="bh-strong">Strategic Implication:</strong> The company has the financial management infrastructure to execute complex growth initiatives—the challenge is access to capital, not capability to deploy it.</p><h3 class="bh-h3">Strength 3: Strategic Clarity on Growth/Exit Path</h3><p class="bh-p"><strong class="bh-strong">Evidence:</strong></p><ul class="bh-ul"><li class="bh-li">Documented growth/exit plan rated 4/5 (benchmark P90 is 4)</li><li class="bh-li">Business goals documentation rated 4/5</li><li class="bh-li">24-year operating history provides track record</li><li class="bh-li">Strategic intent clearly defined as &quot;Strategic Growth&quot;</li></ul><p class="bh-p"><strong class="bh-strong">Strategic Implication:</strong> Strong strategic documentation positions the company well for potential capital raising, strategic partnerships, or future M&amp;A activity.</p><h3 class="bh-h3">Strength 4: Revenue Diversification Potential</h3><p class="bh-p"><strong class="bh-strong">Evidence:</strong></p><ul class="bh-ul"><li class="bh-li">Three distinct service lines with varying growth profiles</li><li class="bh-li">Carry/Coinvestment administration (30% of revenue) growing with private equity market</li><li class="bh-li">Share Plan Administration (1%) represents untapped expansion opportunity</li><li class="bh-li">70% of revenue attributed to innovation pipeline</li></ul><p class="bh-p"><strong class="bh-strong">Strategic Implication:</strong> Multiple revenue streams reduce concentration risk and provide optionality for strategic emphasis shifts.</p><hr class="bh-section-divider"><h2 class="bh-h2">4. Critical Gaps</h2><h3 class="bh-h3">Gap 1: Severely Constrained Liquidity (CRITICAL)</h3><p class="bh-p"><strong class="bh-strong">Evidence:</strong></p><ul class="bh-ul"><li class="bh-li">Cash ratio of 0.43 vs. benchmark P50 of 1.20</li><li class="bh-li">Self-rated financial resilience of 2/5 (&quot;Limited&quot;)</li><li class="bh-li">$1.5M cash represents only 5.8% of revenue</li><li class="bh-li">Working capital identical to cash position suggests limited cushion</li></ul><p class="bh-p"><strong class="bh-strong">Risk Quantification:</strong></p><ul class="bh-ul"><li class="bh-li">270-day sales cycle requires ~$54,000 CAC investment per new customer</li><li class="bh-li">To achieve 20% growth (~$5.2M new revenue), need approximately 74 new customers at $70K average</li><li class="bh-li">Total CAC investment required: ~$4M over sales cycle</li><li class="bh-li">Current cash position: $1.5M (37.5% of required investment)</li></ul><p class="bh-p"><strong class="bh-strong">Impact:</strong> Cash constraints will likely:</p><ol class="bh-ol"><li class="bh-li">Force slower new customer acquisition than growth targets require</li><li class="bh-li">Limit ability to invest in sales and marketing expansion</li><li class="bh-li">Create vulnerability to unexpected expenses or revenue timing variations</li><li class="bh-li">Reduce negotiating leverage in any capital discussions</li></ol><h3 class="bh-h3">Gap 2: Below-Market Gross Profit Margin</h3><p class="bh-p"><strong class="bh-strong">Evidence:</strong></p><ul class="bh-ul"><li class="bh-li">32% GPM vs. 42% benchmark median (24% relative underperformance)</li><li class="bh-li">Below P10 of industry (28%)</li><li class="bh-li">SaaS/fintech norms are 60-80%</li></ul><p class="bh-p"><strong class="bh-strong">Root Cause Analysis:</strong></p>
-      <div class="table-responsive">
-        <table class="bh-table">
-          <thead><tr><th>Possible Cause</th><th>Likelihood</th><th>Evidence</th></tr></thead>
-          <tbody><tr><td>High service delivery costs</td><td>High</td><td>81 support/admin vs. 4 executives</td></tr><tr><td>Underpricing relative to value</td><td>Medium</td><td>$70K average deal but $1M LTV suggests room</td></tr><tr><td>Technology amortization pressure</td><td>Medium</td><td>$2.5M annual tech investment</td></tr><tr><td>Competitive pricing pressure</td><td>Medium</td><td>10% market share, growing competitor position</td></tr></tbody>
-        </table>
-      </div>
-    <p class="bh-p"><strong class="bh-strong">Impact:</strong> Every 1% GPM improvement translates to ~$240,000 additional gross profit annually, providing significant leverage for both reinvestment and liquidity improvement.</p><h3 class="bh-h3">Gap 3: Financial Data Quality &amp; Transparency</h3><p class="bh-p"><strong class="bh-strong">Evidence:</strong></p><ul class="bh-ul"><li class="bh-li">Total debt/liabilities: Not disclosed</li><li class="bh-li">Monthly expenses: $3.5M stated (impossible given $24M annual revenue)</li><li class="bh-li">Monthly burn rate: $4 stated (clearly erroneous)</li><li class="bh-li">Cash runway: Not calculated</li></ul><p class="bh-p"><strong class="bh-strong">Impact:</strong> Data quality issues suggest:</p><ol class="bh-ol"><li class="bh-li">Potential gaps in financial reporting infrastructure</li><li class="bh-li">Difficulty in precise financial planning and scenario modeling</li><li class="bh-li">Challenges if seeking external capital (due diligence concerns)</li><li class="bh-li">Risk of misaligned decision-making based on incomplete data</li></ol><h3 class="bh-h3">Gap 4: Working Capital Mismatch with Sales Cycle</h3><p class="bh-p"><strong class="bh-strong">Evidence:</strong></p><ul class="bh-ul"><li class="bh-li">270-day sales cycle (above P90 of 75 days)</li><li class="bh-li">10% close rate (below P10 of 12%)</li><li class="bh-li">Working capital of $1.5M must support 9-month sales investments</li></ul><p class="bh-p"><strong class="bh-strong">Cash Conversion Cycle Analysis:</strong></p><ul class="bh-ul"><li class="bh-li">Customer acquisition investments made at Day 0</li><li class="bh-li">Revenue recognition begins at Day 270+</li><li class="bh-li">Cash collection potentially Day 300-330</li><li class="bh-li">Negative working capital requirement of ~$200K per new customer during cycle</li></ul><p class="bh-p"><strong class="bh-strong">Impact:</strong> The combination of long sales cycles, low close rates, and limited working capital creates a cash flow timing trap that will constrain growth without external financing.</p><h3 class="bh-h3">Gap 5: Revenue Per Employee Below Benchmark</h3><p class="bh-p"><strong class="bh-strong">Evidence:</strong></p><ul class="bh-ul"><li class="bh-li">$141,176 revenue per employee vs. $160,000 benchmark median</li><li class="bh-li">12% productivity gap</li><li class="bh-li">170 total workforce for $24M revenue</li></ul><p class="bh-p"><strong class="bh-strong">Impact:</strong> Lower revenue per employee indicates:</p><ol class="bh-ol"><li class="bh-li">Potential for operational efficiency improvements</li><li class="bh-li">May reflect labor-intensive service delivery model</li><li class="bh-li">Contributes to margin compression</li><li class="bh-li">Limits ability to fund competitive compensation</li></ol><hr class="bh-section-divider"><h2 class="bh-h2">5. Strategic Recommendations</h2><h3 class="bh-h3">Immediate Priorities (0-6 Months)</h3><h4 class="bh-h4">Recommendation 1: Secure Credit Facility</h4><p class="bh-p"><strong class="bh-strong">Action:</strong> Establish a $3-5M revolving credit facility or line of credit secured against receivables or contracted revenue.</p><p class="bh-p"><strong class="bh-strong">Rationale:</strong></p><ul class="bh-ul"><li class="bh-li">Current 0.43 cash ratio is unsustainable for growth ambitions</li><li class="bh-li">Strong customer retention (98%) and contracted revenue provide collateral value</li><li class="bh-li">Credit facility provides flexibility without equity dilution</li></ul><p class="bh-p"><strong class="bh-strong">Financial Impact:</strong></p><ul class="bh-ul"><li class="bh-li">Cost: Prime + 2-3% (~$150-225K annual interest at full utilization)</li><li class="bh-li">Benefit: Enables full execution of growth plan worth $5.2M incremental revenue</li></ul><p class="bh-p"><strong class="bh-strong">Implementation:</strong></p><ol class="bh-ol"><li class="bh-li">Prepare 3-year financial projections with sensitivity analysis</li><li class="bh-li">Document contracted revenue and customer concentration</li><li class="bh-li">Approach 3-5 lenders including fintech-focused banks</li><li class="bh-li">Target close within 90 days</li></ol><h4 class="bh-h4">Recommendation 2: Conduct Gross Margin Deep Dive</h4><p class="bh-p"><strong class="bh-strong">Action:</strong> Engage finance and operations in detailed analysis of cost structure to identify margin improvement opportunities.</p><p class="bh-p"><strong class="bh-strong">Analysis Framework:</strong></p>
-      <div class="table-responsive">
-        <table class="bh-table">
-          <thead><tr><th>Category</th><th>Investigation Focus</th></tr></thead>
-          <tbody><tr><td>Service Delivery</td><td>Labor costs, automation potential, process efficiency</td></tr><tr><td>Technology</td><td>Cloud costs, licensing, build vs. buy decisions</td></tr><tr><td>Pricing</td><td>Value-based pricing analysis, competitive benchmarking</td></tr><tr><td>Customer Mix</td><td>Margin by customer segment and service line</td></tr></tbody>
-        </table>
-      </div>
-    <p class="bh-p"><strong class="bh-strong">Target:</strong> Identify path to 40% GPM within 18 months (8-point improvement = $1.9M additional gross profit)</p><h4 class="bh-h4">Recommendation 3: Clean Up Financial Data &amp; Reporting</h4><p class="bh-p"><strong class="bh-strong">Action:</strong> Implement standardized financial reporting with accurate monthly metrics.</p><p class="bh-p"><strong class="bh-strong">Specific Fixes Required:</strong></p><ul class="bh-ul"><li class="bh-li">Reconcile monthly expense data (current $3.5M figure is incorrect)</li><li class="bh-li">Document total debt and liability position</li><li class="bh-li">Calculate accurate cash runway</li><li class="bh-li">Implement monthly cash flow tracking</li></ul><p class="bh-p"><strong class="bh-strong">Investment:</strong> CFO time + potential fractional controller support (~$50-75K annually)</p><h3 class="bh-h3">Medium-Term Priorities (6-18 Months)</h3><h4 class="bh-h4">Recommendation 4: Optimize Pricing Strategy</h4><p class="bh-p"><strong class="bh-strong">Action:</strong> Implement value-based pricing review across all service lines.</p><p class="bh-p"><strong class="bh-strong">Opportunity Analysis:</strong></p>
-      <div class="table-responsive">
-        <table class="bh-table">
-          <thead><tr><th>Service Line</th><th>Revenue %</th><th>Margin Assessment</th><th>Pricing Opportunity</th></tr></thead>
-          <tbody><tr><td>Deferred Cash Plan Admin</td><td>69%</td><td>Likely highest</td><td>5-10% increase feasible</td></tr><tr><td>Carry/Coinvestment</td><td>30%</td><td>Growing demand</td><td>Premium pricing potential</td></tr><tr><td>Share Plan</td><td>1%</td><td>Low volume</td><td>Needs strategic review</td></tr></tbody>
-        </table>
-      </div>
-    <p class="bh-p"><strong class="bh-strong">Target:</strong> 3-5% average price increase = $720K-$1.2M additional revenue at near-100% margin flow-through</p><h4 class="bh-h4">Recommendation 5: Establish Customer Payment Terms Optimization</h4><p class="bh-p"><strong class="bh-strong">Action:</strong> Review and optimize customer payment terms to improve cash conversion.</p><p class="bh-p"><strong class="bh-strong">Strategies:</strong></p><ul class="bh-ul"><li class="bh-li">Implement annual prepay discounts (5% discount for annual upfront payment)</li><li class="bh-li">Introduce quarterly billing for applicable services</li><li class="bh-li">Evaluate milestone-based billing for implementation phases</li></ul><p class="bh-p"><strong class="bh-strong">Impact:</strong> Even 30-day improvement in collections on existing revenue = ~$2M working capital improvement</p><h4 class="bh-h4">Recommendation 6: Develop Financial Contingency Planning</h4><p class="bh-p"><strong class="bh-strong">Action:</strong> Given self-rated financial resilience of 2/5, create formal contingency plans.</p><p class="bh-p"><strong class="bh-strong">Components:</strong></p><ol class="bh-ol"><li class="bh-li">Identify $1-2M in discretionary spending that could be deferred if needed</li><li class="bh-li">Establish trigger points for cost containment measures</li><li class="bh-li">Create scenario models for revenue shortfall scenarios (10%, 20%, 30% miss)</li><li class="bh-li">Document potential asset monetization options</li></ol><h3 class="bh-h3">Long-Term Strategic Priorities (18+ Months)</h3><h4 class="bh-h4">Recommendation 7: Evaluate Strategic Capital Options</h4><p class="bh-p"><strong class="bh-strong">Action:</strong> Given strong customer economics and strategic growth intent, evaluate growth capital options.</p><p class="bh-p"><strong class="bh-strong">Options Analysis:</strong></p>
-      <div class="table-responsive">
-        <table class="bh-table">
-          <thead><tr><th>Option</th><th>Pros</th><th>Cons</th><th>Fit for EWM</th></tr></thead>
-          <tbody><tr><td>Growth Equity</td><td>Non-dilutive to founders, board expertise</td><td>Higher cost of capital, covenants</td><td>Strong</td></tr><tr><td>Strategic Investment</td><td>Customer access, market validation</td><td>Potential competition conflicts</td><td>Moderate</td></tr><tr><td>Bank Term Loan</td><td>Lower cost, no dilution</td><td>Requires collateral, conservative sizing</td><td>Moderate</td></tr><tr><td>Revenue-Based Financing</td><td>Flexible repayment, fast close</td><td>Higher effective rate, revenue dependence</td><td>Moderate</td></tr></tbody>
-        </table>
-      </div>
-    <p class="bh-p"><strong class="bh-strong">Recommendation:</strong> Given documented exit/growth plan (4/5), growth equity or strategic investment likely best aligned with long-term objectives.</p><h4 class="bh-h4">Recommendation 8: Build Toward 40%+ Gross Margins</h4><p class="bh-p"><strong class="bh-strong">Long-Term Margin Improvement Roadmap:</strong></p>
-      <div class="table-responsive">
-        <table class="bh-table">
-          <thead><tr><th>Timeframe</th><th>Target GPM</th><th>Key Levers</th></tr></thead>
-          <tbody><tr><td>Current</td><td>32%</td><td>Baseline</td></tr><tr><td>Year 1</td><td>36%</td><td>Pricing optimization, operational efficiency</td></tr><tr><td>Year 2</td><td>40%</td><td>Automation, customer mix optimization</td></tr><tr><td>Year 3</td><td>45%</td><td>Scale benefits, technology leverage</td></tr></tbody>
-        </table>
-      </div>
-    <p class="bh-p"><strong class="bh-strong">Investment Required:</strong></p><ul class="bh-ul"><li class="bh-li">Process automation initiatives: $500K-1M</li><li class="bh-li">Platform scalability improvements: Included in current $2.5M tech budget</li><li class="bh-li">Pricing infrastructure: $100-200K</li></ul><p class="bh-p"><strong class="bh-strong">Return Potential:</strong> 13-point margin improvement on $30M+ revenue = $3.9M+ additional gross profit</p><hr class="bh-section-divider"><h2 class="bh-h2">Financial Risk Heat Map</h2>
-      <div class="table-responsive">
-        <table class="bh-table">
-          <thead><tr><th>Risk Category</th><th>Current State</th><th>Trend</th><th>Mitigation Priority</th></tr></thead>
-          <tbody><tr><td>Liquidity</td><td>🔴 Critical</td><td>Stable</td><td><strong class="bh-strong">Immediate</strong></td></tr><tr><td>Profitability (GPM)</td><td>🟠 Concerning</td><td>Unknown</td><td>High</td></tr><tr><td>Revenue Visibility</td><td>🟢 Strong</td><td>Positive</td><td>Maintain</td></tr><tr><td>Financial Data Quality</td><td>🟠 Concerning</td><td>Unknown</td><td>High</td></tr><tr><td>Growth Financing Capacity</td><td>🔴 Critical</td><td>Constrained</td><td><strong class="bh-strong">Immediate</strong></td></tr><tr><td>Customer Economics</td><td>🟢 Strong</td><td>Positive</td><td>Maintain</td></tr><tr><td>Debt Management</td><td>🟡 Neutral</td><td>Stable</td><td>Monitor</td></tr></tbody>
-        </table>
-      </div>
-    <hr class="bh-section-divider"><h2 class="bh-h2">Conclusion</h2><p class="bh-p">EWM Global&#39;s financial position reveals a company with exceptional unit economics and customer relationships constrained by structural profitability challenges and liquidity limitations. The 98% retention rate and $1M LTV validate the business model, but 32% gross margins and a 0.43 cash ratio create real constraints on executing the 20% growth target.</p><p class="bh-p"><strong class="bh-strong">The central financial paradox:</strong> The company rates its growth funding readiness at 4/5, yet self-rates financial resilience at 2/5. This disconnect suggests leadership recognizes the strategic soundness of the business model while acknowledging the tactical cash constraints.</p><p class="bh-p"><strong class="bh-strong">Priority Actions:</strong></p><ol class="bh-ol"><li class="bh-li"><strong class="bh-strong">Immediate:</strong> Secure $3-5M credit facility to provide growth capital and liquidity cushion</li><li class="bh-li"><strong class="bh-strong">Near-term:</strong> Conduct gross margin deep-dive to identify path to 40%+ GPM</li><li class="bh-li"><strong class="bh-strong">Medium-term:</strong> Optimize pricing and payment terms to improve both margins and cash conversion</li><li class="bh-li"><strong class="bh-strong">Long-term:</strong> Position for strategic capital raise aligned with documented exit/growth objectives</li></ol><p class="bh-p">The strong customer economics and recurring revenue characteristics make EWM Global an attractive candidate for growth capital—the key is addressing the liquidity constraints before they force suboptimal strategic decisions.</p>
-      </div>
-    </section>
-  </div>
-      <div id="people">
+  </section>
+      <section id="chapter-people-leadership" class="section page-break">
     <section class="section page-break">
       
     <div class="chapter-header-enhanced">
       <div class="chapter-icon">👥</div>
       <div class="chapter-title-group">
-        <h2>People, Leadership & Culture</h2>
+        <h2>Chapter 3: People & Leadership Deep Dive</h2>
         <div class="chapter-subtitle">General Industry Analysis</div>
       </div>
       <span class="section-score">43/100</span>
@@ -2351,7 +2513,7 @@ Financial Resilience            2/5           3.4/5        ▼ Below P10</pre>
       <div class="benchmark-content">
         <div class="benchmark-label">Industry Benchmark Comparison</div>
         <div class="benchmark-value">
-          43/100 vs 55.629999999999995/100
+          43.0/100/100 vs 55.6/100/100
         </div>
         <div class="benchmark-context">
           Your People &amp; Leadership score is
@@ -2363,6 +2525,16 @@ Financial Resilience            2/5           3.4/5        ▼ Below P10</pre>
       </div>
     </div>
   
+      
+        <div class="chapter-dimension-chart">
+          <h4 style="font-size: 0.95rem; color: #666; margin: 1.5rem 0 1rem 0;">Dimension Score Breakdown</h4>
+          
+    <div class="svg-chart-container" role="figure" aria-label="People &amp; Leadership - Dimension Scores">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 156" style="max-width: 100%; height: auto;"><rect width="600" height="156" fill="white" rx="4"/><text x="300" y="28" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">People &amp; Leadership - Dimension Scores</text><text x="132" y="70" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Human Resources</text><rect x="140" y="50" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="50" width="184" height="30" fill="#e67e22" rx="4"/><text x="332" y="70" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">46</text><text x="132" y="108" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Leadership &amp; Gov...</text><rect x="140" y="88" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="88" width="160" height="30" fill="#e67e22" rx="4"/><text x="308" y="108" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">40</text></svg>
+    </div>
+  
+        </div>
+      
       <div class="narrative-content">
         <h1 class="bh-h1">People Leadership Analysis: EWM Global</h1><h2 class="bh-h2">Executive Summary</h2><p class="bh-p">EWM Global&#39;s People &amp; Leadership function represents the organization&#39;s most significant vulnerability, with a chapter score of <strong class="bh-strong">2.75</strong>—the lowest across all four assessment dimensions. For a 24-year-old fintech company with $24M in revenue and aspirations for 20% growth, the combination of weak organizational culture (2/5), ineffective decision-making (2/5), and absent governance structures creates substantial risk to sustainable scaling. While operational metrics like turnover (19.9%) perform better than industry medians, foundational leadership and cultural deficits will constrain the company&#39;s ability to execute its strategic growth plans.</p><hr class="bh-section-divider"><h2 class="bh-h2">1. Current State Assessment</h2><h3 class="bh-h3">Organizational Structure &amp; Scale</h3>
       <div class="table-responsive">
@@ -2575,14 +2747,14 @@ Process Optimization                                █████████�
     <p class="bh-p"><strong class="bh-strong">Investment as % of Revenue:</strong></p><ul class="bh-ul"><li class="bh-li">Year 1: 1.4-2.8% of $24M revenue</li><li class="bh-li">Ongoing: 0.9-1.7% of projected revenue</li></ul><p class="bh-p"><strong class="bh-strong">ROI Considerations:</strong></p><ul class="bh-ul"><li class="bh-li">Reduced turnover (1% improvement = ~$100K+ savings)</li><li class="bh-li">Faster decision-making accelerates growth capture</li><li class="bh-li">Culture improvement supports 20% growth target execution</li><li class="bh-li">Governance strengthens enterprise value for exit</li></ul><hr class="bh-section-divider"><h2 class="bh-h2">Conclusion</h2><p class="bh-p">EWM Global possesses strong operational fundamentals—evident in industry-leading productivity metrics, below-average turnover, and excellent technical infrastructure. However, the People &amp; Leadership dimension represents a structural constraint on the organization&#39;s strategic aspirations.</p><p class="bh-p">The combination of weak culture, ineffective decision-making, and absent governance creates compounding risk:</p><ul class="bh-ul"><li class="bh-li">Culture shapes engagement shapes retention shapes productivity</li><li class="bh-li">Decision-making speed determines competitive positioning in fintech</li><li class="bh-li">Governance gaps limit strategic optionality and client confidence</li></ul><p class="bh-p">The 20% growth target and documented exit strategy are at risk without foundational improvements. The recommended investment of ~1.5-2.5% of revenue in Year 1 is modest relative to the strategic stakes and positions EWM Global to translate its operational excellence into sustainable organizational capability.</p><p class="bh-p"><strong class="bh-strong">The core message:</strong> EWM Global has built a strong engine (operations, technology, customer relationships) but lacks the driver infrastructure (culture, leadership, governance) to navigate the next phase of growth. Addressing this imbalance is not optional—it is prerequisite to strategic execution.</p>
       </div>
     </section>
-  </div>
-      <div id="compliance">
+  </section>
+      <section id="chapter-resilience-safeguards" class="section page-break">
     <section class="section page-break">
       
     <div class="chapter-header-enhanced">
       <div class="chapter-icon">🛡️</div>
       <div class="chapter-title-group">
-        <h2>Compliance & Sustainability</h2>
+        <h2>Chapter 4: Resilience & Safeguards Deep Dive</h2>
         <div class="chapter-subtitle">General Industry Analysis</div>
       </div>
       <span class="section-score">70/100</span>
@@ -2594,7 +2766,7 @@ Process Optimization                                █████████�
       <div class="benchmark-content">
         <div class="benchmark-label">Industry Benchmark Comparison</div>
         <div class="benchmark-value">
-          70/100 vs 62.14/100
+          70.0/100/100 vs 62.1/100/100
         </div>
         <div class="benchmark-context">
           Your Resilience &amp; Safeguards score is
@@ -2606,6 +2778,16 @@ Process Optimization                                █████████�
       </div>
     </div>
   
+      
+        <div class="chapter-dimension-chart">
+          <h4 style="font-size: 0.95rem; color: #666; margin: 1.5rem 0 1rem 0;">Dimension Score Breakdown</h4>
+          
+    <div class="svg-chart-container" role="figure" aria-label="Resilience &amp; Safeguards - Dimension Scores">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 232" style="max-width: 100%; height: auto;"><rect width="600" height="232" fill="white" rx="4"/><text x="300" y="28" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Resilience &amp; Safeguards - Dimension Scores</text><text x="132" y="70" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Technology &amp; Inn...</text><rect x="140" y="50" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="50" width="220.00000000000003" height="30" fill="#e67e22" rx="4"/><text x="368" y="70" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">55</text><text x="132" y="108" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">IT, Data &amp; Systems</text><rect x="140" y="88" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="88" width="352" height="30" fill="#27ae60" rx="4"/><text x="500" y="108" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">88</text><text x="132" y="146" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Risk Management ...</text><rect x="140" y="126" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="126" width="236" height="30" fill="#e67e22" rx="4"/><text x="384" y="146" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">59</text><text x="132" y="184" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Compliance</text><rect x="140" y="164" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="164" width="308" height="30" fill="#f39c12" rx="4"/><text x="456" y="184" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">77</text></svg>
+    </div>
+  
+        </div>
+      
       <div class="narrative-content">
         <h1 class="bh-h1">Compliance &amp; Sustainability Analysis Report</h1><h2 class="bh-h2">EWM Global</h2><hr class="bh-section-divider"><h2 class="bh-h2">Executive Summary</h2><p class="bh-p">EWM Global demonstrates a <strong class="bh-strong">robust compliance foundation</strong> with strong regulatory awareness and documentation practices, scoring above industry benchmarks in most compliance metrics. However, the company faces <strong class="bh-strong">critical financial resilience concerns</strong> and <strong class="bh-strong">governance gaps</strong> that could undermine long-term compliance sustainability. As a fintech company serving the financial services industry, the regulatory environment is particularly demanding, making the identified gaps more consequential.</p>
       <div class="table-responsive">
@@ -3049,10 +3231,10 @@ Additional Annual Gross Profit: $1.4-2.2M for compliance reinvestment</pre>
       <hr class="bh-section-divider"><h2 class="bh-h2">Conclusion</h2><p class="bh-p">EWM Global has established a <strong class="bh-strong">solid compliance foundation</strong> that positions it well for its role as a fintech provider to financial services companies. The company&#39;s excellent regulatory awareness, strong incident reporting, and outstanding technology infrastructure provide significant competitive advantages.</p><p class="bh-p">However, <strong class="bh-strong">critical gaps in financial resilience and governance</strong> create sustainability risks that could undermine the compliance program over time. The company&#39;s below-average gross margins and limited cash position constrain its ability to invest in compliance improvements and respond to regulatory changes.</p><p class="bh-p"><strong class="bh-strong">Priority Focus Areas:</strong></p><ol class="bh-ol"><li class="bh-li"><strong class="bh-strong">Financial resilience improvement</strong> – Address the 64% cash ratio gap as an urgent priority</li><li class="bh-li"><strong class="bh-strong">Governance enhancement</strong> – Establish advisory board and strengthen oversight</li><li class="bh-li"><strong class="bh-strong">Compliance monitoring upgrade</strong> – Close the gap between awareness and active monitoring</li><li class="bh-li"><strong class="bh-strong">Margin improvement</strong> – Create sustainable funding for ongoing compliance investment</li></ol><p class="bh-p">With targeted investments of $850K-$1.3M over 18 months and disciplined execution of the recommended roadmap, EWM Global can achieve a compliance sustainability score improvement of approximately 17%, positioning the company for sustainable growth while maintaining regulatory excellence.</p><hr class="bh-section-divider"><p class="bh-p"><em class="bh-em">Report Generated: December 2025</em><br><em class="bh-em">Assessment Version: 1.0</em><br><em class="bh-em">Next Review Recommended: Q2 2026</em></p>
       </div>
     </section>
-  </div>
+  </section>
     
 
-      <div id="cross-dimensional">
+      <section id="cross-dimensional" class="section page-break">
     <section class="section page-break">
       
       <div class="section-header">
@@ -3060,6 +3242,7 @@ Additional Annual Gross Profit: $1.4-2.2M for compliance reinvestment</pre>
         
       </div>
     
+      
       
       <div class="narrative-content">
         <h1 class="bh-h1">Cross-Dimensional Strategic Synthesis</h1><h2 class="bh-h2">EWM Global — Integrated Business Health Assessment</h2><hr class="bh-section-divider"><h1 class="bh-h1">Executive Summary</h1><p class="bh-p">This cross-dimensional analysis synthesizes findings from all 10 Phase 1 assessments to reveal a coherent picture of EWM Global&#39;s strategic position: <strong class="bh-strong">a company with exceptional foundational assets trapped behind governance deficits and capital constraints</strong>.</p>
@@ -4337,8 +4520,8 @@ Growth Rate          15%             16%             18%             20%
       <hr class="bh-section-divider"><p class="bh-p"><em class="bh-em">Cross-Dimensional Analysis Completed</em><br><em class="bh-em">Synthesis of 10 Phase 1 Assessments</em><br><em class="bh-em">Recommended Executive Review: Immediate</em><br><em class="bh-em">Recommended Action Timeline: 90 days for foundation initiatives</em></p>
       </div>
     </section>
-  </div>
-      <div id="strategic-recommendations">
+  </section>
+      <section id="strategic-recommendations" class="section page-break">
     <section class="section page-break">
       
       <div class="section-header">
@@ -4346,6 +4529,7 @@ Growth Rate          15%             16%             18%             20%
         
       </div>
     
+      
       
       <div class="narrative-content">
         <h1 class="bh-h1">Strategic Recommendations Report</h1><h2 class="bh-h2">EWM Global - Prioritized Action Plan</h2><hr class="bh-section-divider"><h2 class="bh-h2">Executive Summary</h2><p class="bh-p">Based on the comprehensive analysis of EWM Global across all ten Phase 1 dimensions, this report presents <strong class="bh-strong">15 prioritized strategic recommendations</strong> designed to address critical gaps, leverage existing strengths, and enable the company to achieve its 20% growth target.</p><p class="bh-p">The analysis reveals a company with exceptional foundational assets—98% customer retention, $1M customer LTV, and industry-leading IT infrastructure—constrained by three interconnected barriers: <strong class="bh-strong">financial liquidity</strong> (cash ratio 0.43), <strong class="bh-strong">organizational dysfunction</strong> (culture and decision-making both at 2/5), and <strong class="bh-strong">sales conversion inefficiency</strong> (10% close rate).</p>
@@ -5106,8 +5290,8 @@ PHASE 3: SUSTAINABILITY (Months 19-24)
     <hr class="bh-section-divider"><h2 class="bh-h2">Conclusion</h2><p class="bh-p">EWM Global possesses the foundational strengths—exceptional customer retention, strong technology infrastructure, and deep domain expertise—to achieve and sustain its 20% growth ambitions. However, the company is currently constrained by a interconnected set of barriers in financial liquidity, organizational capability, and sales efficiency that must be addressed systematically.</p><p class="bh-p">The 15 recommendations presented in this report provide a comprehensive roadmap for transformation, prioritized to address the most critical constraints first while building toward sustainable long-term capability. The total investment of $2.8-4.5M over 24 months represents 5-8% of revenue—a significant but appropriate commitment given the $5.3-8.5M in annual value creation potential and the strategic importance of achieving growth targets.</p><p class="bh-p"><strong class="bh-strong">The key insight:</strong> EWM Global&#39;s challenges are not market-related or product-related—they are execution-related. The company has built a fortress of customer value but lacks the operational and organizational mechanisms to scale it. By implementing these recommendations in priority order, EWM Global can unlock its substantial trapped potential and position itself for sustained growth and strategic optionality.</p><p class="bh-p"><strong class="bh-strong">Recommended immediate actions:</strong></p><ol class="bh-ol"><li class="bh-li">Initiate credit facility discussions this week</li><li class="bh-li">Begin advisory board candidate identification</li><li class="bh-li">Launch decision audit and RACI development</li><li class="bh-li">Commission sales win/loss analysis</li></ol><p class="bh-p">The window for action is now. Financial constraints will only tighten without intervention, and organizational challenges compound with growth. A disciplined, phased approach starting with the critical priorities will create momentum and demonstrate results that build confidence for the longer-term initiatives.</p><hr class="bh-section-divider"><p class="bh-p"><em class="bh-em">Strategic Recommendations Report</em><br><em class="bh-em">EWM Global</em><br><em class="bh-em">December 2025</em></p>
       </div>
     </section>
-  </div>
-      <div id="risks">
+  </section>
+      <section id="risk-assessment" class="section page-break">
     <section class="section page-break">
       
       <div class="section-header">
@@ -5115,6 +5299,7 @@ PHASE 3: SUSTAINABILITY (Months 19-24)
         
       </div>
     
+      
       
       <div class="narrative-content">
         <h1 class="bh-h1">Comprehensive Risk Assessment</h1><h2 class="bh-h2">EWM Global</h2><hr class="bh-section-divider"><h1 class="bh-h1">Executive Summary</h1><p class="bh-p">This comprehensive risk assessment consolidates findings from all 10 Phase 1 analyses to identify, prioritize, and provide mitigation strategies for significant risks facing EWM Global. The analysis reveals <strong class="bh-strong">27 distinct risk factors</strong> across 7 categories, with <strong class="bh-strong">5 critical risks</strong> requiring immediate intervention and <strong class="bh-strong">8 high-priority risks</strong> demanding near-term attention.</p>
@@ -5930,8 +6115,8 @@ Compliance Monitoring               3.0/5           →              4.0/5
     <hr class="bh-section-divider"><p class="bh-p"><strong class="bh-strong">Final Assessment:</strong> EWM Global possesses the fundamental building blocks for success—exceptional customers, strong technology, and reliable operations—but faces structural risks that require immediate, coordinated intervention. The recommended $2.25-3.2M first-year investment in risk mitigation represents approximately 10% of revenue but protects $23.5M in existing revenue while enabling $3-5M in growth upside. The return on risk mitigation investment is estimated at 133-273%, making this a compelling strategic imperative.</p><hr class="bh-section-divider"><p class="bh-p"><em class="bh-em">Risk Assessment Completed: December 2025</em><br><em class="bh-em">Assessment Framework: Comprehensive Multi-Dimensional Risk Analysis</em><br><em class="bh-em">Recommended Review Cycle: Monthly executive review, Quarterly full assessment</em></p>
       </div>
     </section>
-  </div>
-      <div id="growth">
+  </section>
+      <section id="growth" class="section page-break">
     <section class="section page-break">
       
       <div class="section-header">
@@ -5939,6 +6124,7 @@ Compliance Monitoring               3.0/5           →              4.0/5
         
       </div>
     
+      
       
       <div class="narrative-content">
         <h1 class="bh-h1">Strategic Growth Opportunities Analysis</h1><h2 class="bh-h2">EWM Global</h2><hr class="bh-section-divider"><h1 class="bh-h1">Executive Summary</h1><p class="bh-p">Based on comprehensive analysis across all 10 Phase 1 assessments, EWM Global presents a compelling but constrained growth profile. The company possesses exceptional foundational assets—98% customer retention, $1M lifetime value, and industry-leading technology infrastructure—yet realizes only 10% market share after 24 years of operation.</p><p class="bh-p">This synthesis identifies <strong class="bh-strong">10 high-potential growth opportunities</strong> that collectively could generate <strong class="bh-strong">$8-15M in incremental annual revenue</strong> while strengthening the company&#39;s competitive position for long-term value creation.</p>
@@ -6651,8 +6837,8 @@ Priority 10: Partnership &amp; Channels               ░░░░░░░░�
     <hr class="bh-section-divider"><h2 class="bh-h2">Closing Recommendation</h2><p class="bh-p">EWM Global stands at an inflection point. The company possesses extraordinary foundational assets—exceptional customer retention, sophisticated technology infrastructure, and deep domain expertise—that provide a springboard for accelerated growth. However, these assets remain constrained by financial limitations, organizational dysfunction, and sales inefficiency.</p><p class="bh-p"><strong class="bh-strong">The recommended portfolio of 10 growth opportunities addresses both the immediate constraints and the long-term scaling requirements:</strong></p><ol class="bh-ol"><li class="bh-li"><strong class="bh-strong">Immediate priorities</strong> (Opportunities 1-4) remove the foundational barriers of capital access, decision-making velocity, and sales conversion that currently throttle growth</li><li class="bh-li"><strong class="bh-strong">Short-term initiatives</strong> (Opportunities 5-6, 8) capture market tailwinds and operational efficiency to accelerate revenue and margin expansion</li><li class="bh-li"><strong class="bh-strong">Medium-term investments</strong> (Opportunities 7, 9-10) build the organizational and market infrastructure for sustainable multi-year scaling</li></ol><p class="bh-p"><strong class="bh-strong">The key insight:</strong> EWM Global&#39;s path to 20%+ growth is not primarily about finding new markets or products—it&#39;s about removing internal friction to unlock the potential of existing assets. The company has built a fortress; it now needs the operational and financial resources to expand it.</p><p class="bh-p">With disciplined execution of this growth portfolio, EWM Global can realistically achieve:</p><ul class="bh-ul"><li class="bh-li"><strong class="bh-strong">Year 1</strong>: 18-22% revenue growth ($28-29M)</li><li class="bh-li"><strong class="bh-strong">Year 2</strong>: 20-25% revenue growth ($34-37M)  </li><li class="bh-li"><strong class="bh-strong">Year 3</strong>: 18-22% revenue growth ($40-45M)</li><li class="bh-li"><strong class="bh-strong">Cumulative Value Creation</strong>: $40-60M in enterprise value growth</li></ul><p class="bh-p"><strong class="bh-strong">The window for action is now.</strong> Market conditions favor the company&#39;s specialized services, customer relationships remain strong, and technology infrastructure is ready for scale. Delayed action risks competitive encroachment, margin erosion, and organizational drift that would be far more costly to reverse.</p><hr class="bh-section-divider"><p class="bh-p"><em class="bh-em">Analysis Prepared: December 2024</em><br><em class="bh-em">Framework: Strategic Growth Opportunity Assessment</em><br><em class="bh-em">Recommended Review: Quarterly progress assessment</em></p>
       </div>
     </section>
-  </div>
-      <div id="roadmap">
+  </section>
+      <section id="implementation-roadmap" class="section page-break">
     <section class="section page-break">
       
       <div class="section-header">
@@ -6660,6 +6846,7 @@ Priority 10: Partnership &amp; Channels               ░░░░░░░░�
         
       </div>
     
+      
       
       <div class="narrative-content">
         <h1 class="bh-h1">EWM Global: Strategic Implementation Roadmap</h1><h2 class="bh-h2">Comprehensive Execution Plan Based on Phase 1 Analyses</h2><hr class="bh-section-divider"><h1 class="bh-h1">Executive Overview</h1><h2 class="bh-h2">Transformation Context</h2><p class="bh-p">Based on the synthesis of all 10 Phase 1 analyses, EWM Global faces a critical inflection point. The company possesses exceptional foundational assets—98% customer retention, $1M customer lifetime value, and industry-leading IT infrastructure—yet operates with severe constraints that threaten its 20% growth ambition and long-term sustainability.</p>
@@ -8218,9 +8405,9 @@ GUIDING PRINCIPLES:
       <hr class="bh-section-divider"><p class="bh-p"><em class="bh-em">Implementation Roadmap Prepared: December 2025</em><br><em class="bh-em">Based on: All 10 Phase 1 Analysis Reports</em><br><em class="bh-em">Recommended Review: Monthly progress reviews with quarterly strategic assessments</em><br><em class="bh-em">Document Owner: CEO with Steering Committee oversight</em></p>
       </div>
     </section>
-  </div>
+  </section>
     
-<div id="findings">
+<section id="findings" class="section page-break">
     <section class="section page-break">
       <div class="section-header">
         <h2>Key Findings</h2>
@@ -8447,8 +8634,8 @@ GUIDING PRINCIPLES:
         
       </div>
     </section>
-  </div>
-<div id="recommendations">
+  </section>
+<section id="recommendations" class="section page-break">
     <section class="section page-break">
       <div class="section-header">
         <h2>Strategic Recommendations</h2>
@@ -8726,8 +8913,8 @@ GUIDING PRINCIPLES:
     </div>
   
     </section>
-  </div>
-<div id="quick-wins">
+  </section>
+<section id="quick-wins" class="section page-break">
     <section class="section page-break">
       <div class="section-header">
         <h2>Quick Wins</h2>
@@ -8795,8 +8982,8 @@ GUIDING PRINCIPLES:
         </div>
       
     </section>
-  </div>
-<div id="financial-impact">
+  </section>
+<section id="financial-impact" class="section page-break">
     <section class="section page-break">
       <div class="section-header">
         <h2>Financial Impact Analysis</h2>
@@ -8906,1078 +9093,7 @@ GUIDING PRINCIPLES:
         </tbody>
       </table>
     </section>
-  </div>
-<div id="chapter-GE">
-    <section class="section page-break">
-      <div class="section-header">
-        <h2>Growth Engine</h2>
-      </div>
-
-      <div class="flex gap-3 mb-3">
-        <div class="score-card small">
-          <div class="score-value">49</div>
-          <div class="score-label">Score</div>
-        </div>
-        <div>
-          <p><span class="band-badge Attention">Attention</span></p>
-          <p class="mt-1">21th percentile vs peers</p>
-        </div>
-      </div>
-
-      <!-- Benchmark Callout -->
-      
-    <div class="benchmark-callout">
-      <div class="benchmark-icon">📊</div>
-      <div class="benchmark-content">
-        <div class="benchmark-label">Industry Benchmark Comparison</div>
-        <div class="benchmark-value">
-          49/100 vs 61.629999999999995/100
-        </div>
-        <div class="benchmark-context">
-          Your Growth Engine score is
-          <strong style="color: #dc3545">
-            20% below
-          </strong>
-          the General industry median (21th percentile).
-        </div>
-      </div>
-    </div>
-  
-
-      
-        <h4>Key Findings</h4>
-        <ul>
-          <li>Strong Sales Target Alignment</li><li>Strong Customer Retention</li>
-        </ul>
-      
-
-      <h3 class="mt-3">Dimension Analysis</h3>
-      
-    <div class="card mb-2">
-      <div class="card-header">
-        <div class="card-title">Strategy</div>
-        <span class="band-badge Attention">45/100</span>
-      </div>
-      <div class="card-body">
-        <p class="mb-2">Strategic planning, market positioning, and growth strategy</p>
-
-        <!-- Dimension Benchmark Callout -->
-        
-
-        <!-- Evidence Citation -->
-        
-    <div class="evidence-citation">
-      <div class="citation-header">
-        <span class="citation-icon">📊</span>
-        <span>Evidence Source</span>
-      </div>
-      <div class="question-ref">
-        strategy_q2: "Market Position Gap"
-      </div>
-      <div class="response-text">
-        Your response: 2.3/5 — "Disagree / Rarely"
-      </div>
-      
-    </div>
-  
-
-        
-          <h5>Sub-Indicators</h5>
-          <table class="score-table">
-            <thead>
-              <tr>
-                <th>Indicator</th>
-                <th>Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>Competitive Differentiation</td>
-                  <td class="score">50/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Market Position</td>
-                  <td class="score">10/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Growth Planning</td>
-                  <td class="score">42/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Strategic Review Process</td>
-                  <td class="score">50/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Exit/Growth Strategy</td>
-                  <td class="score">75/100</td>
-                </tr>
-              
-            </tbody>
-          </table>
-        
-
-        
-      </div>
-    </div>
-  
-    <div class="card mb-2">
-      <div class="card-header">
-        <div class="card-title">Sales</div>
-        <span class="band-badge Proficiency">70/100</span>
-      </div>
-      <div class="card-body">
-        <p class="mb-2">Sales effectiveness, pipeline management, and revenue generation</p>
-
-        <!-- Dimension Benchmark Callout -->
-        
-
-        <!-- Evidence Citation -->
-        
-    <div class="evidence-citation">
-      <div class="citation-header">
-        <span class="citation-icon">📊</span>
-        <span>Evidence Source</span>
-      </div>
-      <div class="question-ref">
-        sales_q1: "Strong Sales Target Alignment"
-      </div>
-      <div class="response-text">
-        Your response: 3.5/5 — "Agree / Often"
-      </div>
-      
-    </div>
-  
-
-        
-          <h5>Sub-Indicators</h5>
-          <table class="score-table">
-            <thead>
-              <tr>
-                <th>Indicator</th>
-                <th>Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>Sales Target Alignment</td>
-                  <td class="score">100/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Pipeline Management</td>
-                  <td class="score">75/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Sales Cycle Efficiency</td>
-                  <td class="score">3/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Customer Retention</td>
-                  <td class="score">98/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Upselling Effectiveness</td>
-                  <td class="score">75/100</td>
-                </tr>
-              
-            </tbody>
-          </table>
-        
-
-        
-          <h5 class="mt-2">Key Findings</h5>
-          <ul>
-            <li>Strong Sales Target Alignment</li><li>Strong Customer Retention</li>
-          </ul>
-        
-      </div>
-    </div>
-  
-    <div class="card mb-2">
-      <div class="card-header">
-        <div class="card-title">Marketing</div>
-        <span class="band-badge Critical">31/100</span>
-      </div>
-      <div class="card-body">
-        <p class="mb-2">Brand awareness, customer acquisition, and marketing ROI</p>
-
-        <!-- Dimension Benchmark Callout -->
-        
-
-        <!-- Evidence Citation -->
-        
-    <div class="evidence-citation">
-      <div class="citation-header">
-        <span class="citation-icon">📊</span>
-        <span>Evidence Source</span>
-      </div>
-      <div class="question-ref">
-        marketing_q6: "Marketing Economics (CAC/LTV) Gap"
-      </div>
-      <div class="response-text">
-        Your response: 1.6/5 — "Disagree / Rarely"
-      </div>
-      
-    </div>
-  
-
-        
-          <h5>Sub-Indicators</h5>
-          <table class="score-table">
-            <thead>
-              <tr>
-                <th>Indicator</th>
-                <th>Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>Brand Awareness</td>
-                  <td class="score">75/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Customer Targeting</td>
-                  <td class="score">75/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Marketing Economics (CAC/LTV)</td>
-                  <td class="score">0/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Marketing ROI</td>
-                  <td class="score">7/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Channel Strategy</td>
-                  <td class="score">0/100</td>
-                </tr>
-              
-            </tbody>
-          </table>
-        
-
-        
-      </div>
-    </div>
-  
-    <div class="card mb-2">
-      <div class="card-header">
-        <div class="card-title">Customer Experience</div>
-        <span class="band-badge Attention">50/100</span>
-      </div>
-      <div class="card-body">
-        <p class="mb-2">Customer satisfaction, retention, and experience quality</p>
-
-        <!-- Dimension Benchmark Callout -->
-        
-
-        <!-- Evidence Citation -->
-        
-    <div class="evidence-citation">
-      <div class="citation-header">
-        <span class="citation-icon">📊</span>
-        <span>Evidence Source</span>
-      </div>
-      <div class="question-ref">
-        customer_experience_q7: "Response Time Gap"
-      </div>
-      <div class="response-text">
-        Your response: 2.5/5 — "Neutral / Sometimes"
-      </div>
-      
-    </div>
-  
-
-        
-          <h5>Sub-Indicators</h5>
-          <table class="score-table">
-            <thead>
-              <tr>
-                <th>Indicator</th>
-                <th>Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>Customer Feedback Systems</td>
-                  <td class="score">50/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Customer Satisfaction</td>
-                  <td class="score">75/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Net Promoter Score</td>
-                  <td class="score">75/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Issue Resolution</td>
-                  <td class="score">50/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Response Time</td>
-                  <td class="score">0/100</td>
-                </tr>
-              
-            </tbody>
-          </table>
-        
-
-        
-      </div>
-    </div>
-  
-    </section>
-  </div>
-<div id="chapter-PH">
-    <section class="section page-break">
-      <div class="section-header">
-        <h2>Performance &amp; Health</h2>
-      </div>
-
-      <div class="flex gap-3 mb-3">
-        <div class="score-card small">
-          <div class="score-value">51</div>
-          <div class="score-label">Score</div>
-        </div>
-        <div>
-          <p><span class="band-badge Attention">Attention</span></p>
-          <p class="mt-1">34th percentile vs peers</p>
-        </div>
-      </div>
-
-      <!-- Benchmark Callout -->
-      
-    <div class="benchmark-callout">
-      <div class="benchmark-icon">📊</div>
-      <div class="benchmark-content">
-        <div class="benchmark-label">Industry Benchmark Comparison</div>
-        <div class="benchmark-value">
-          51/100 vs 56.775/100
-        </div>
-        <div class="benchmark-context">
-          Your Performance &amp; Health score is
-          <strong style="color: #dc3545">
-            10% below
-          </strong>
-          the General industry median (34th percentile).
-        </div>
-      </div>
-    </div>
-  
-
-      
-        <h4>Key Findings</h4>
-        <ul>
-          <li>Strong Operational Reliability</li>
-        </ul>
-      
-
-      <h3 class="mt-3">Dimension Analysis</h3>
-      
-    <div class="card mb-2">
-      <div class="card-header">
-        <div class="card-title">Operations</div>
-        <span class="band-badge Proficiency">62/100</span>
-      </div>
-      <div class="card-body">
-        <p class="mb-2">Operational efficiency, process optimization, and workflow management</p>
-
-        <!-- Dimension Benchmark Callout -->
-        
-
-        <!-- Evidence Citation -->
-        
-    <div class="evidence-citation">
-      <div class="citation-header">
-        <span class="citation-icon">📊</span>
-        <span>Evidence Source</span>
-      </div>
-      <div class="question-ref">
-        operations_q4: "Strong Operational Reliability"
-      </div>
-      <div class="response-text">
-        Your response: 3.1/5 — "Neutral / Sometimes"
-      </div>
-      
-    </div>
-  
-
-        
-          <h5>Sub-Indicators</h5>
-          <table class="score-table">
-            <thead>
-              <tr>
-                <th>Indicator</th>
-                <th>Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>Operational Efficiency</td>
-                  <td class="score">50/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Process Documentation</td>
-                  <td class="score">75/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Operational Reliability</td>
-                  <td class="score">100/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Lean Practices</td>
-                  <td class="score">50/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Resource Utilization</td>
-                  <td class="score">34/100</td>
-                </tr>
-              
-            </tbody>
-          </table>
-        
-
-        
-          <h5 class="mt-2">Key Findings</h5>
-          <ul>
-            <li>Strong Operational Reliability</li>
-          </ul>
-        
-      </div>
-    </div>
-  
-    <div class="card mb-2">
-      <div class="card-header">
-        <div class="card-title">Financials</div>
-        <span class="band-badge Critical">39/100</span>
-      </div>
-      <div class="card-body">
-        <p class="mb-2">Financial health, profitability, and fiscal management</p>
-
-        <!-- Dimension Benchmark Callout -->
-        
-
-        <!-- Evidence Citation -->
-        
-    <div class="evidence-citation">
-      <div class="citation-header">
-        <span class="citation-icon">📊</span>
-        <span>Evidence Source</span>
-      </div>
-      <div class="question-ref">
-        financials_q1: "Financial Controls Gap"
-      </div>
-      <div class="response-text">
-        Your response: 2.0/5 — "Disagree / Rarely"
-      </div>
-      
-    </div>
-  
-
-        
-          <h5>Sub-Indicators</h5>
-          <table class="score-table">
-            <thead>
-              <tr>
-                <th>Indicator</th>
-                <th>Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>Financial Controls</td>
-                  <td class="score">25/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Cash Management</td>
-                  <td class="score">0/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Profitability</td>
-                  <td class="score">19/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Financial Planning</td>
-                  <td class="score">75/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Growth Readiness</td>
-                  <td class="score">75/100</td>
-                </tr>
-              
-            </tbody>
-          </table>
-        
-
-        
-      </div>
-    </div>
-  
-    </section>
-  </div>
-<div id="chapter-PL">
-    <section class="section page-break">
-      <div class="section-header">
-        <h2>People &amp; Leadership</h2>
-      </div>
-
-      <div class="flex gap-3 mb-3">
-        <div class="score-card small">
-          <div class="score-value">43</div>
-          <div class="score-label">Score</div>
-        </div>
-        <div>
-          <p><span class="band-badge Attention">Attention</span></p>
-          <p class="mt-1">18th percentile vs peers</p>
-        </div>
-      </div>
-
-      <!-- Benchmark Callout -->
-      
-    <div class="benchmark-callout">
-      <div class="benchmark-icon">📊</div>
-      <div class="benchmark-content">
-        <div class="benchmark-label">Industry Benchmark Comparison</div>
-        <div class="benchmark-value">
-          43/100 vs 55.629999999999995/100
-        </div>
-        <div class="benchmark-context">
-          Your People &amp; Leadership score is
-          <strong style="color: #dc3545">
-            23% below
-          </strong>
-          the General industry median (18th percentile).
-        </div>
-      </div>
-    </div>
-  
-
-      
-
-      <h3 class="mt-3">Dimension Analysis</h3>
-      
-    <div class="card mb-2">
-      <div class="card-header">
-        <div class="card-title">Human Resources</div>
-        <span class="band-badge Attention">46/100</span>
-      </div>
-      <div class="card-body">
-        <p class="mb-2">Talent management, culture, and employee engagement</p>
-
-        <!-- Dimension Benchmark Callout -->
-        
-
-        <!-- Evidence Citation -->
-        
-    <div class="evidence-citation">
-      <div class="citation-header">
-        <span class="citation-icon">📊</span>
-        <span>Evidence Source</span>
-      </div>
-      <div class="question-ref">
-        human_resources_q2: "Company Culture Gap"
-      </div>
-      <div class="response-text">
-        Your response: 2.3/5 — "Disagree / Rarely"
-      </div>
-      
-    </div>
-  
-
-        
-          <h5>Sub-Indicators</h5>
-          <table class="score-table">
-            <thead>
-              <tr>
-                <th>Indicator</th>
-                <th>Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>HR Infrastructure</td>
-                  <td class="score">50/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Company Culture</td>
-                  <td class="score">32/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Talent Acquisition</td>
-                  <td class="score">50/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Employee Development</td>
-                  <td class="score">50/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Performance Management</td>
-                  <td class="score">50/100</td>
-                </tr>
-              
-            </tbody>
-          </table>
-        
-
-        
-      </div>
-    </div>
-  
-    <div class="card mb-2">
-      <div class="card-header">
-        <div class="card-title">Leadership &amp; Governance</div>
-        <span class="band-badge Attention">40/100</span>
-      </div>
-      <div class="card-body">
-        <p class="mb-2">Leadership effectiveness, decision-making, and organizational governance</p>
-
-        <!-- Dimension Benchmark Callout -->
-        
-
-        <!-- Evidence Citation -->
-        
-    <div class="evidence-citation">
-      <div class="citation-header">
-        <span class="citation-icon">📊</span>
-        <span>Evidence Source</span>
-      </div>
-      <div class="question-ref">
-        leadership_q2: "Decision-Making Structure Gap"
-      </div>
-      <div class="response-text">
-        Your response: 2.0/5 — "Disagree / Rarely"
-      </div>
-      
-    </div>
-  
-
-        
-          <h5>Sub-Indicators</h5>
-          <table class="score-table">
-            <thead>
-              <tr>
-                <th>Indicator</th>
-                <th>Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>Leadership Effectiveness</td>
-                  <td class="score">50/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Decision-Making Structure</td>
-                  <td class="score">35/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Board Oversight</td>
-                  <td class="score">17/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Leadership Culture</td>
-                  <td class="score">50/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Development &amp; Mentorship</td>
-                  <td class="score">50/100</td>
-                </tr>
-              
-            </tbody>
-          </table>
-        
-
-        
-      </div>
-    </div>
-  
-    </section>
-  </div>
-<div id="chapter-RS">
-    <section class="section page-break">
-      <div class="section-header">
-        <h2>Resilience &amp; Safeguards</h2>
-      </div>
-
-      <div class="flex gap-3 mb-3">
-        <div class="score-card small">
-          <div class="score-value">70</div>
-          <div class="score-label">Score</div>
-        </div>
-        <div>
-          <p><span class="band-badge Proficiency">Proficiency</span></p>
-          <p class="mt-1">71th percentile vs peers</p>
-        </div>
-      </div>
-
-      <!-- Benchmark Callout -->
-      
-    <div class="benchmark-callout">
-      <div class="benchmark-icon">📊</div>
-      <div class="benchmark-content">
-        <div class="benchmark-label">Industry Benchmark Comparison</div>
-        <div class="benchmark-value">
-          70/100 vs 62.14/100
-        </div>
-        <div class="benchmark-context">
-          Your Resilience &amp; Safeguards score is
-          <strong style="color: #28a745">
-            13% above
-          </strong>
-          the General industry median (71th percentile).
-        </div>
-      </div>
-    </div>
-  
-
-      
-        <h4>Key Findings</h4>
-        <ul>
-          <li>IT, Data &amp; Systems Excellence</li><li>Strong IT Infrastructure</li><li>Strong Network Effectiveness</li>
-        </ul>
-      
-
-      <h3 class="mt-3">Dimension Analysis</h3>
-      
-    <div class="card mb-2">
-      <div class="card-header">
-        <div class="card-title">Technology &amp; Innovation</div>
-        <span class="band-badge Attention">55/100</span>
-      </div>
-      <div class="card-body">
-        <p class="mb-2">Technology adoption, innovation culture, and digital transformation</p>
-
-        <!-- Dimension Benchmark Callout -->
-        
-
-        <!-- Evidence Citation -->
-        
-    <div class="evidence-citation">
-      <div class="citation-header">
-        <span class="citation-icon">📊</span>
-        <span>Evidence Source</span>
-      </div>
-      <div class="question-ref">
-        technology_q1: "Technology Investment Gap"
-      </div>
-      <div class="response-text">
-        Your response: 2.8/5 — "Neutral / Sometimes"
-      </div>
-      
-    </div>
-  
-
-        
-          <h5>Sub-Indicators</h5>
-          <table class="score-table">
-            <thead>
-              <tr>
-                <th>Indicator</th>
-                <th>Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>Technology Investment</td>
-                  <td class="score">0/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Innovation Culture</td>
-                  <td class="score">75/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Technology Adoption</td>
-                  <td class="score">75/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Automation Utilization</td>
-                  <td class="score">50/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Innovation Impact</td>
-                  <td class="score">73/100</td>
-                </tr>
-              
-            </tbody>
-          </table>
-        
-
-        
-      </div>
-    </div>
-  
-    <div class="card mb-2">
-      <div class="card-header">
-        <div class="card-title">IT, Data &amp; Systems</div>
-        <span class="band-badge Excellence">88/100</span>
-      </div>
-      <div class="card-body">
-        <p class="mb-2">IT infrastructure, data management, and cybersecurity</p>
-
-        <!-- Dimension Benchmark Callout -->
-        
-
-        <!-- Evidence Citation -->
-        
-    <div class="evidence-citation">
-      <div class="citation-header">
-        <span class="citation-icon">📊</span>
-        <span>Evidence Source</span>
-      </div>
-      <div class="question-ref">
-        it_infrastructure_q1: "Strong IT Infrastructure"
-      </div>
-      <div class="response-text">
-        Your response: 4.4/5 — "Agree / Often"
-      </div>
-      
-    </div>
-  
-
-        
-          <h5>Sub-Indicators</h5>
-          <table class="score-table">
-            <thead>
-              <tr>
-                <th>Indicator</th>
-                <th>Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>IT Infrastructure</td>
-                  <td class="score">90/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Network Effectiveness</td>
-                  <td class="score">100/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Cybersecurity</td>
-                  <td class="score">75/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Data Management</td>
-                  <td class="score">100/100</td>
-                </tr>
-              
-                <tr>
-                  <td>IT Scalability</td>
-                  <td class="score">75/100</td>
-                </tr>
-              
-            </tbody>
-          </table>
-        
-
-        
-          <h5 class="mt-2">Key Findings</h5>
-          <ul>
-            <li>IT, Data &amp; Systems Excellence</li><li>Strong IT Infrastructure</li><li>Strong Network Effectiveness</li>
-          </ul>
-        
-      </div>
-    </div>
-  
-    <div class="card mb-2">
-      <div class="card-header">
-        <div class="card-title">Risk Management &amp; Sustainability</div>
-        <span class="band-badge Attention">59/100</span>
-      </div>
-      <div class="card-body">
-        <p class="mb-2">Risk identification, mitigation, and business continuity</p>
-
-        <!-- Dimension Benchmark Callout -->
-        
-
-        <!-- Evidence Citation -->
-        
-    <div class="evidence-citation">
-      <div class="citation-header">
-        <span class="citation-icon">📊</span>
-        <span>Evidence Source</span>
-      </div>
-      <div class="question-ref">
-        RMS-AVG: "Overall Risk Management &amp; Sustainability Assessment"
-      </div>
-      <div class="response-text">
-        Your response: 3.0/5 — "Neutral / Sometimes"
-      </div>
-      
-    </div>
-  
-
-        
-          <h5>Sub-Indicators</h5>
-          <table class="score-table">
-            <thead>
-              <tr>
-                <th>Indicator</th>
-                <th>Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>Risk Outlook</td>
-                  <td class="score">50/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Risk Identification</td>
-                  <td class="score">75/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Risk Mitigation</td>
-                  <td class="score">50/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Business Continuity</td>
-                  <td class="score">69/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Strategic Adaptability</td>
-                  <td class="score">50/100</td>
-                </tr>
-              
-            </tbody>
-          </table>
-        
-
-        
-      </div>
-    </div>
-  
-    <div class="card mb-2">
-      <div class="card-header">
-        <div class="card-title">Compliance</div>
-        <span class="band-badge Proficiency">77/100</span>
-      </div>
-      <div class="card-body">
-        <p class="mb-2">Regulatory compliance, policy adherence, and legal requirements</p>
-
-        <!-- Dimension Benchmark Callout -->
-        
-
-        <!-- Evidence Citation -->
-        
-    <div class="evidence-citation">
-      <div class="citation-header">
-        <span class="citation-icon">📊</span>
-        <span>Evidence Source</span>
-      </div>
-      <div class="question-ref">
-        compliance_q7: "Strong Incident Reporting"
-      </div>
-      <div class="response-text">
-        Your response: 3.9/5 — "Agree / Often"
-      </div>
-      
-    </div>
-  
-
-        
-          <h5>Sub-Indicators</h5>
-          <table class="score-table">
-            <thead>
-              <tr>
-                <th>Indicator</th>
-                <th>Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>Compliance Awareness</td>
-                  <td class="score">75/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Policy Adherence</td>
-                  <td class="score">75/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Compliance Monitoring</td>
-                  <td class="score">60/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Documentation</td>
-                  <td class="score">75/100</td>
-                </tr>
-              
-                <tr>
-                  <td>Incident Reporting</td>
-                  <td class="score">100/100</td>
-                </tr>
-              
-            </tbody>
-          </table>
-        
-
-        
-          <h5 class="mt-2">Key Findings</h5>
-          <ul>
-            <li>Strong Incident Reporting</li>
-          </ul>
-        
-      </div>
-    </div>
-  
-    </section>
-  </div>
+  </section>
 
     <footer class="report-footer">
       <p>&copy; 2025 BizHealth.ai - Confidential Business Assessment Report</p>

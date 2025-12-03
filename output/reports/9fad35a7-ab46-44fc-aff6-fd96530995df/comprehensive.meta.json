@@ -1,12 +1,12 @@
 {
   "reportType": "comprehensive",
   "reportName": "Comprehensive Assessment Report",
-  "generatedAt": "2025-12-02T20:51:20.264Z",
+  "generatedAt": "2025-12-03T07:12:07.425Z",
   "companyName": "EWM Global",
   "runId": "9fad35a7-ab46-44fc-aff6-fd96530995df",
   "healthScore": 53,
   "healthBand": "Attention",
-  "pageSuggestionEstimate": 294,
+  "pageSuggestionEstimate": 282,
   "sections": [
     {
       "id": "executive-summary",
@@ -17,24 +17,20 @@
       "title": "Business Health Scorecard"
     },
     {
-      "id": "strategy",
-      "title": "Strategy & Revenue Engine"
+      "id": "chapter-growth-engine",
+      "title": "Chapter 1: Growth Engine Deep Dive"
     },
     {
-      "id": "operations",
-      "title": "Operational Excellence"
+      "id": "chapter-performance-health",
+      "title": "Chapter 2: Performance & Health Deep Dive"
     },
     {
-      "id": "financial",
-      "title": "Financial Health"
+      "id": "chapter-people-leadership",
+      "title": "Chapter 3: People & Leadership Deep Dive"
     },
     {
-      "id": "people",
-      "title": "People & Leadership"
-    },
-    {
-      "id": "compliance",
-      "title": "Compliance & Sustainability"
+      "id": "chapter-resilience-safeguards",
+      "title": "Chapter 4: Resilience & Safeguards Deep Dive"
     },
     {
       "id": "cross-dimensional",
@@ -45,7 +41,7 @@
       "title": "Strategic Recommendations"
     },
     {
-      "id": "risks",
+      "id": "risk-assessment",
       "title": "Risk Assessment"
     },
     {
@@ -53,7 +49,7 @@
       "title": "Growth Opportunities"
     },
     {
-      "id": "roadmap",
+      "id": "implementation-roadmap",
       "title": "Implementation Roadmap"
     },
     {
@@ -66,23 +62,7 @@
     },
     {
       "id": "financial-impact",
-      "title": "Financial Impact"
-    },
-    {
-      "id": "chapter-GE",
-      "title": "Growth Engine"
-    },
-    {
-      "id": "chapter-PH",
-      "title": "Performance & Health"
-    },
-    {
-      "id": "chapter-PL",
-      "title": "People & Leadership"
-    },
-    {
-      "id": "chapter-RS",
-      "title": "Resilience & Safeguards"
+      "title": "Financial Impact Analysis"
     }
   ],
   "brand": {

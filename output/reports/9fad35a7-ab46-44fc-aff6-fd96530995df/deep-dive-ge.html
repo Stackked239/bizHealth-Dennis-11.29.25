@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="BizHealth.ai Report Generator v1.0">
+  <title>Growth Engine Deep Dive - EWM Global</title>
+  <style>
+    
+    /* Base Reset and Typography */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      font-family: 'Open Sans', Arial, sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #333;
+      background: #fff;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+      color: #212653;
+      margin-bottom: 0.5em;
+      line-height: 1.3;
+    }
+
+    h1 { font-size: 2.5rem; font-weight: 700; }
+    h2 { font-size: 2rem; font-weight: 600; page-break-before: always; }
+    h2:first-of-type { page-break-before: auto; }
+    h3 { font-size: 1.5rem; font-weight: 600; }
+    h4 { font-size: 1.25rem; font-weight: 500; }
+    h5 { font-size: 1.1rem; font-weight: 500; }
+
+    p {
+      margin-bottom: 1em;
+    }
+
+    /* Links */
+    a {
+      color: #969423;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Lists */
+    ul, ol {
+      margin-left: 1.5em;
+      margin-bottom: 1em;
+    }
+
+    li {
+      margin-bottom: 0.5em;
+    }
+
+    /* Page Layout */
+    .report-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .page {
+      padding: 2rem 0;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    /* Header */
+    .report-header {
+      text-align: center;
+      padding: 2rem 0;
+      border-bottom: 4px solid #212653;
+      margin-bottom: 2rem;
+    }
+
+    .report-header .logo {
+      max-height: 60px;
+      margin-bottom: 1rem;
+    }
+
+    .report-header h1 {
+      margin-bottom: 0.5rem;
+    }
+
+    .report-header .subtitle {
+      font-size: 1.25rem;
+      color: #666;
+    }
+
+    .report-header .company-name {
+      font-size: 1.5rem;
+      color: #969423;
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+
+    .report-header .date {
+      font-size: 0.9rem;
+      color: #888;
+      margin-top: 0.5rem;
+    }
+
+    /* Footer */
+    .report-footer {
+      text-align: center;
+      padding: 1rem 0;
+      border-top: 2px solid #eee;
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    @media print {
+      .report-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    }
+
+    /* Section Styles */
+    .section {
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #969423;
+    }
+
+    .section-icon {
+      font-size: 1.5rem;
+      margin-right: 0.75rem;
+    }
+
+    /* Score Cards */
+    .score-card {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #212653 0%, #212653dd 100%);
+      color: #fff;
+      min-width: 150px;
+    }
+
+    .score-card .score-value {
+      font-size: 3rem;
+      font-weight: 700;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    .score-card .score-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .score-card.small {
+      padding: 0.75rem;
+      min-width: 100px;
+    }
+
+    .score-card.small .score-value {
+      font-size: 1.75rem;
+    }
+
+    /* Health Score Display */
+    .health-score-display {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+    }
+
+    .health-score-circle {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #212653 0%, #212653cc 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    .health-score-circle .score {
+      font-size: 3.5rem;
+      font-weight: 700;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+      line-height: 1;
+    }
+
+    .health-score-circle .out-of {
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    .health-score-details {
+      text-align: left;
+    }
+
+    .health-score-details .status {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .health-score-details .trajectory {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      color: #666;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    th {
+      background: #212653;
+      color: #fff;
+      font-weight: 600;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    tr:hover {
+      background: #f0f0f0;
+    }
+
+    /* Score Table */
+    .score-table th:first-child {
+      width: 40%;
+    }
+
+    .score-table td.score {
+      font-weight: 600;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    /* Band Badge */
+    .band-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .band-badge.Excellence { background: #d4edda; color: #155724; }
+    .band-badge.Proficiency { background: #fff3cd; color: #856404; }
+    .band-badge.Attention { background: #ffeeba; color: #856404; }
+    .band-badge.Critical { background: #f8d7da; color: #721c24; }
+
+    /* Priority Badge */
+    .priority-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .priority-badge.high { background: #dc3545; color: #fff; }
+    .priority-badge.medium { background: #ffc107; color: #333; }
+    .priority-badge.low { background: #28a745; color: #fff; }
+
+    /* Cards */
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #212653;
+      margin: 0;
+    }
+
+    .card-body {
+      font-size: 0.95rem;
+    }
+
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+    @media (max-width: 768px) {
+      .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Flex Layout */
+    .flex { display: flex; }
+    .flex-wrap { flex-wrap: wrap; }
+    .flex-center { align-items: center; justify-content: center; }
+    .flex-between { justify-content: space-between; }
+    .gap-1 { gap: 0.5rem; }
+    .gap-2 { gap: 1rem; }
+    .gap-3 { gap: 1.5rem; }
+
+    /* Utility Classes */
+    .text-center { text-align: center; }
+    .text-right { text-align: right; }
+    .mt-1 { margin-top: 0.5rem; }
+    .mt-2 { margin-top: 1rem; }
+    .mt-3 { margin-top: 1.5rem; }
+    .mb-1 { margin-bottom: 0.5rem; }
+    .mb-2 { margin-bottom: 1rem; }
+    .mb-3 { margin-bottom: 1.5rem; }
+    .p-1 { padding: 0.5rem; }
+    .p-2 { padding: 1rem; }
+    .p-3 { padding: 1.5rem; }
+
+    /* Quick Win Card */
+    .quick-win-card {
+      background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+      border-left: 4px solid #969423;
+      padding: 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+    }
+
+    .quick-win-card .title {
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .quick-win-card .metrics {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.75rem;
+    }
+
+    .quick-win-card .metrics span {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* Risk Card */
+    .risk-card {
+      border-left: 4px solid #dc3545;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .risk-card.high { border-left-color: #dc3545; }
+    .risk-card.medium { border-left-color: #ffc107; }
+    .risk-card.low { border-left-color: #28a745; }
+
+    .risk-card .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .risk-card .category {
+      font-weight: 600;
+      color: #212653;
+    }
+
+    /* Finding Card */
+    .finding-card {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+    }
+
+    .finding-card.strength { background: #d4edda; border-left: 4px solid #28a745; }
+    .finding-card.gap { background: #f8d7da; border-left: 4px solid #dc3545; }
+    .finding-card.risk { background: #ffeeba; border-left: 4px solid #ffc107; }
+    .finding-card.opportunity { background: #cce5ff; border-left: 4px solid #0d6efd; }
+
+    .finding-card .label {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .finding-card .dimension {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Roadmap Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.5rem;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: #212653;
+      border-radius: 3px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 1.5rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -1.75rem;
+      top: 0.5rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #969423;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 3px #212653;
+    }
+
+    .timeline-item .phase-name {
+      font-weight: 600;
+      color: #212653;
+      font-size: 1.1rem;
+    }
+
+    .timeline-item .time-horizon {
+      font-size: 0.9rem;
+      color: #969423;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Callout Box */
+    .callout {
+      padding: 1.25rem;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+    }
+
+    .callout.info {
+      background: #e7f3ff;
+      border-left: 4px solid #0d6efd;
+    }
+
+    .callout.success {
+      background: #d4edda;
+      border-left: 4px solid #28a745;
+    }
+
+    .callout.warning {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+    }
+
+    .callout.danger {
+      background: #f8d7da;
+      border-left: 4px solid #dc3545;
+    }
+
+    .callout .title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      height: 24px;
+      background: #e9ecef;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .progress-bar .fill {
+      height: 100%;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: width 0.3s ease;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        font-size: 11pt;
+      }
+
+      .report-container {
+        max-width: none;
+        padding: 0;
+      }
+
+      .page-break {
+        page-break-before: always;
+      }
+
+      h2 {
+        page-break-before: always;
+      }
+
+      h2:first-of-type {
+        page-break-before: auto;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+    }
+  
+    
+  </style>
+</head>
+<body>
+  <div class="report-container">
+    
+    <style>
+      /* Chart styles */
+      
+    
+    .svg-chart-container {
+      display: flex;
+      justify-content: center;
+      margin: 1rem 0;
+      page-break-inside: avoid;
+    }
+
+    .svg-chart-container svg {
+      max-width: 100%;
+      height: auto;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+    }
+
+    @media print {
+      .svg-chart-container {
+        page-break-inside: avoid;
+      }
+
+      .svg-chart-container svg {
+        box-shadow: none;
+        border: 1px solid #e0e0e0;
+      }
+    }
+  
+
+    /* Executive Dashboard Styles */
+    .executive-dashboard {
+      margin: 2rem 0;
+    }
+
+    .dashboard-row {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .dashboard-main {
+      flex: 2;
+      min-width: 350px;
+    }
+
+    .dashboard-side {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .dashboard-full {
+      width: 100%;
+    }
+
+    /* Chart grid layout */
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .chart-cell {
+      background: #FFFFFF;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Chart error fallback */
+    .chart-error,
+    .chart-fallback {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: #f8f9fa;
+      border: 2px dashed #dee2e6;
+      border-radius: 8px;
+      color: #6c757d;
+      min-height: 200px;
+      text-align: center;
+    }
+
+    .chart-fallback-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    @media print {
+      .executive-dashboard,
+      .chart-grid,
+      .svg-chart-container {
+        page-break-inside: avoid;
+      }
+
+      .chart-cell {
+        box-shadow: none;
+        border: 1px solid #dee2e6;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-row {
+        flex-direction: column;
+      }
+
+      .dashboard-main,
+      .dashboard-side {
+        min-width: 100%;
+      }
+
+      .chart-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  
+
+      .deepdive-chart-section {
+        margin: 2rem 0;
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .deepdive-chart-section .chart-wrapper {
+        flex: 1;
+        min-width: 300px;
+        max-width: 550px;
+      }
+    </style>
+
+    
+    <header class="report-header">
+      <h1>Growth Engine Deep Dive</h1>
+      <p class="subtitle">Strategy, Sales, Marketing &amp; Customer Experience</p>
+      <p class="company-name">EWM Global</p>
+      <p class="date">Assessment Date: December 3, 2025</p>
+    </header>
+  
+
+    <section class="section">
+      <h2>Chapter Overview</h2>
+
+      <div class="health-score-display" style="background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);">
+        <div class="health-score-circle" style="width: 140px; height: 140px;">
+          <span class="score" style="font-size: 2.5rem;">49</span>
+          <span class="out-of" style="font-size: 0.9rem;">/ 100</span>
+        </div>
+        <div class="health-score-details">
+          <p class="status" style="font-size: 1.25rem;">Growth Engine</p>
+          <p><span class="band-badge Attention">Attention</span></p>
+          
+            <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
+              21th percentile vs industry peers
+            </p>
+          
+        </div>
+      </div>
+
+      <p class="mt-3">This chapter analyzes your organization's ability to drive revenue growth through strategic positioning, sales effectiveness, marketing performance, and customer experience excellence.</p>
+
+      <div class="callout danger mt-3">
+        <div class="title">Chapter Assessment</div>
+        <p>
+          This chapter requires immediate attention. Multiple dimensions show critical gaps that impact overall business health.
+        </p>
+      </div>
+
+      
+        <div class="deepdive-chart-section">
+          <div class="chart-wrapper">
+    <div class="svg-chart-container" role="figure" aria-label="Growth Engine Dimensions">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 410" style="max-width: 100%; height: auto;"><rect width="380" height="410" fill="white" rx="4"/><text x="190" y="22" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Growth Engine Dimensions</text><circle cx="190" cy="205" r="28" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="190" cy="205" r="56" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="190" cy="205" r="84" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="190" cy="205" r="112" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="190" cy="205" r="140" fill="none" stroke="#e0e0e0" stroke-width="1"/><line x1="190" y1="205" x2="190" y2="65" stroke="#e0e0e0" stroke-width="1"/><line x1="190" y1="205" x2="330" y2="205" stroke="#e0e0e0" stroke-width="1"/><line x1="190" y1="205" x2="190" y2="345" stroke="#e0e0e0" stroke-width="1"/><line x1="190" y1="205" x2="50" y2="205.00000000000003" stroke="#e0e0e0" stroke-width="1"/><polygon points="190,142 288,205 190,248.4 120,205" fill="#212653" fill-opacity="0.3" stroke="#212653" stroke-width="2"/><circle cx="190" cy="142" r="4" fill="#212653"/><circle cx="288" cy="205" r="4" fill="#212653"/><circle cx="190" cy="248.4" r="4" fill="#212653"/><circle cx="120" cy="205" r="4" fill="#212653"/><text x="190" y="40" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Strategy (45)</text><text x="355" y="205" text-anchor="start" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Sales (70)</text><text x="190" y="370" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Marketing (31)</text><text x="25" y="205.00000000000003" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Customer E... (50)</text></svg>
+    </div>
+  </div>
+          <div class="chart-wrapper">
+    <div class="svg-chart-container" role="figure" aria-label="Growth Engine - Dimension Scores">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 232" style="max-width: 100%; height: auto;"><rect width="550" height="232" fill="white" rx="4"/><text x="275" y="28" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Growth Engine - Dimension Scores</text><text x="132" y="70" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Strategy</text><rect x="140" y="50" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="50" width="157.5" height="30" fill="#e67e22" rx="4"/><text x="305.5" y="70" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">45</text><text x="132" y="108" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Sales</text><rect x="140" y="88" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="88" width="244.99999999999997" height="30" fill="#f39c12" rx="4"/><text x="393" y="108" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">70</text><text x="132" y="146" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Marketing</text><rect x="140" y="126" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="126" width="108.5" height="30" fill="#e74c3c" rx="4"/><text x="256.5" y="146" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">31</text><text x="132" y="184" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Customer Experie...</text><rect x="140" y="164" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="164" width="175" height="30" fill="#e67e22" rx="4"/><text x="323" y="184" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">50</text></svg>
+    </div>
+  </div>
+        </div>
+      
+    </section>
+
+    <section class="section page-break">
+      <h2>Dimension Scorecard</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>Score</th>
+            <th>Band</th>
+            <th>Progress</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+            <tr>
+              <td><strong>Strategy</strong></td>
+              <td class="score">45/100</td>
+              <td><span class="band-badge Attention">Attention</span></td>
+              <td style="width: 200px;">
+    <div class="progress-bar">
+      <div class="fill" style="width: 45%; background: #ffc107;">
+        45%
+      </div>
+    </div>
+  </td>
+            </tr>
+          
+            <tr>
+              <td><strong>Sales</strong></td>
+              <td class="score">70/100</td>
+              <td><span class="band-badge Proficiency">Proficiency</span></td>
+              <td style="width: 200px;">
+    <div class="progress-bar">
+      <div class="fill" style="width: 70%; background: #969423;">
+        70%
+      </div>
+    </div>
+  </td>
+            </tr>
+          
+            <tr>
+              <td><strong>Marketing</strong></td>
+              <td class="score">31/100</td>
+              <td><span class="band-badge Critical">Critical</span></td>
+              <td style="width: 200px;">
+    <div class="progress-bar">
+      <div class="fill" style="width: 31%; background: #dc3545;">
+        31%
+      </div>
+    </div>
+  </td>
+            </tr>
+          
+            <tr>
+              <td><strong>Customer Experience</strong></td>
+              <td class="score">50/100</td>
+              <td><span class="band-badge Attention">Attention</span></td>
+              <td style="width: 200px;">
+    <div class="progress-bar">
+      <div class="fill" style="width: 50%; background: #ffc107;">
+        50%
+      </div>
+    </div>
+  </td>
+            </tr>
+          
+        </tbody>
+      </table>
+    </section>
+
+    
+      <section class="section page-break">
+        <h2>Strategy Analysis</h2>
+
+        <div class="flex gap-3 mb-3">
+          <div class="score-card small">
+            <div class="score-value">45</div>
+            <div class="score-label">Score</div>
+          </div>
+          <div>
+            <p><span class="band-badge Attention">Attention</span></p>
+            
+          </div>
+        </div>
+
+        <p class="mb-3">Strategic planning, market positioning, and growth strategy</p>
+
+        
+          <h3>Sub-Indicators</h3>
+          <table class="mb-3">
+            <thead>
+              <tr>
+                <th>Sub-Indicator</th>
+                <th>Score</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>Competitive Differentiation</td>
+                  <td class="score">50/100</td>
+                  <td><span class="band-badge Attention">Attention</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Market Position</td>
+                  <td class="score">10/100</td>
+                  <td><span class="band-badge Critical">Critical</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Growth Planning</td>
+                  <td class="score">42/100</td>
+                  <td><span class="band-badge Attention">Attention</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Strategic Review Process</td>
+                  <td class="score">50/100</td>
+                  <td><span class="band-badge Attention">Attention</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Exit/Growth Strategy</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+
+        
+
+        
+      </section>
+    
+      <section class="section page-break">
+        <h2>Sales Analysis</h2>
+
+        <div class="flex gap-3 mb-3">
+          <div class="score-card small">
+            <div class="score-value">70</div>
+            <div class="score-label">Score</div>
+          </div>
+          <div>
+            <p><span class="band-badge Proficiency">Proficiency</span></p>
+            
+          </div>
+        </div>
+
+        <p class="mb-3">Sales effectiveness, pipeline management, and revenue generation</p>
+
+        
+          <h3>Sub-Indicators</h3>
+          <table class="mb-3">
+            <thead>
+              <tr>
+                <th>Sub-Indicator</th>
+                <th>Score</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>Sales Target Alignment</td>
+                  <td class="score">100/100</td>
+                  <td><span class="band-badge Excellence">Excellence</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Pipeline Management</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Sales Cycle Efficiency</td>
+                  <td class="score">3/100</td>
+                  <td><span class="band-badge Critical">Critical</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Customer Retention</td>
+                  <td class="score">98/100</td>
+                  <td><span class="band-badge Excellence">Excellence</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Upselling Effectiveness</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+          <h3>Key Strengths</h3>
+          <ul class="mb-3">
+            <li>Strong Sales Target Alignment</li><li>Strong Customer Retention</li>
+          </ul>
+        
+
+        
+
+        
+      </section>
+    
+      <section class="section page-break">
+        <h2>Marketing Analysis</h2>
+
+        <div class="flex gap-3 mb-3">
+          <div class="score-card small">
+            <div class="score-value">31</div>
+            <div class="score-label">Score</div>
+          </div>
+          <div>
+            <p><span class="band-badge Critical">Critical</span></p>
+            
+          </div>
+        </div>
+
+        <p class="mb-3">Brand awareness, customer acquisition, and marketing ROI</p>
+
+        
+          <h3>Sub-Indicators</h3>
+          <table class="mb-3">
+            <thead>
+              <tr>
+                <th>Sub-Indicator</th>
+                <th>Score</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>Brand Awareness</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Customer Targeting</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Marketing Economics (CAC/LTV)</td>
+                  <td class="score">0/100</td>
+                  <td><span class="band-badge Critical">Critical</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Marketing ROI</td>
+                  <td class="score">7/100</td>
+                  <td><span class="band-badge Critical">Critical</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Channel Strategy</td>
+                  <td class="score">0/100</td>
+                  <td><span class="band-badge Critical">Critical</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+
+        
+          <h3>Key Risks</h3>
+          <ul class="mb-3">
+            <li>Marketing Critical Underperformance</li>
+          </ul>
+        
+
+        
+      </section>
+    
+      <section class="section page-break">
+        <h2>Customer Experience Analysis</h2>
+
+        <div class="flex gap-3 mb-3">
+          <div class="score-card small">
+            <div class="score-value">50</div>
+            <div class="score-label">Score</div>
+          </div>
+          <div>
+            <p><span class="band-badge Attention">Attention</span></p>
+            
+          </div>
+        </div>
+
+        <p class="mb-3">Customer satisfaction, retention, and experience quality</p>
+
+        
+          <h3>Sub-Indicators</h3>
+          <table class="mb-3">
+            <thead>
+              <tr>
+                <th>Sub-Indicator</th>
+                <th>Score</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>Customer Feedback Systems</td>
+                  <td class="score">50/100</td>
+                  <td><span class="band-badge Attention">Attention</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Customer Satisfaction</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Net Promoter Score</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Issue Resolution</td>
+                  <td class="score">50/100</td>
+                  <td><span class="band-badge Attention">Attention</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Response Time</td>
+                  <td class="score">0/100</td>
+                  <td><span class="band-badge Critical">Critical</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+
+        
+
+        
+      </section>
+    
+
+    <section class="section page-break">
+      <h2>Chapter Findings Summary</h2>
+
+      <div class="grid grid-4 mb-3">
+        <div class="score-card small" style="background: linear-gradient(135deg, #28a745, #1e7e34);">
+          <div class="score-value">2</div>
+          <div class="score-label">Strengths</div>
+        </div>
+        <div class="score-card small" style="background: linear-gradient(135deg, #dc3545, #c82333);">
+          <div class="score-value">8</div>
+          <div class="score-label">Gaps</div>
+        </div>
+        <div class="score-card small" style="background: linear-gradient(135deg, #ffc107, #d39e00);">
+          <div class="score-value">1</div>
+          <div class="score-label">Risks</div>
+        </div>
+        <div class="score-card small" style="background: linear-gradient(135deg, #0d6efd, #0b5ed7);">
+          <div class="score-value">0</div>
+          <div class="score-label">Opportunities</div>
+        </div>
+      </div>
+
+      
+        <h3>Strengths</h3>
+        
+          <div class="finding-card strength">
+            <div class="label">Strong Sales Target Alignment</div>
+            <div class="dimension">Sales</div>
+            <p>Sales Target Alignment within Sales shows exceptional performance at 100/100.</p>
+          </div>
+        
+          <div class="finding-card strength">
+            <div class="label">Strong Customer Retention</div>
+            <div class="dimension">Sales</div>
+            <p>Customer Retention within Sales shows exceptional performance at 98/100.</p>
+          </div>
+        
+      
+
+      
+        <h3 class="mt-3">Gaps</h3>
+        
+          <div class="finding-card gap">
+            <div class="label">Strategy Performance Gap</div>
+            <div class="dimension">Strategy</div>
+            <p>Strategy shows moderate performance at 45/100. This gap presents improvement opportunities that should be addressed within 6-12 months.</p>
+          </div>
+        
+          <div class="finding-card gap">
+            <div class="label">Market Position Gap</div>
+            <div class="dimension">Strategy</div>
+            <p>Market Position within Strategy requires attention with a score of 10/100.</p>
+          </div>
+        
+          <div class="finding-card gap">
+            <div class="label">Sales Cycle Efficiency Gap</div>
+            <div class="dimension">Sales</div>
+            <p>Sales Cycle Efficiency within Sales requires attention with a score of 3/100.</p>
+          </div>
+        
+          <div class="finding-card gap">
+            <div class="label">Marketing Economics (CAC/LTV) Gap</div>
+            <div class="dimension">Marketing</div>
+            <p>Marketing Economics (CAC/LTV) within Marketing requires attention with a score of 0/100.</p>
+          </div>
+        
+          <div class="finding-card gap">
+            <div class="label">Marketing ROI Gap</div>
+            <div class="dimension">Marketing</div>
+            <p>Marketing ROI within Marketing requires attention with a score of 7/100.</p>
+          </div>
+        
+          <div class="finding-card gap">
+            <div class="label">Channel Strategy Gap</div>
+            <div class="dimension">Marketing</div>
+            <p>Channel Strategy within Marketing requires attention with a score of 0/100.</p>
+          </div>
+        
+          <div class="finding-card gap">
+            <div class="label">Customer Experience Performance Gap</div>
+            <div class="dimension">Customer Experience</div>
+            <p>Customer Experience shows moderate performance at 50/100. This gap presents improvement opportunities that should be addressed within 6-12 months.</p>
+          </div>
+        
+          <div class="finding-card gap">
+            <div class="label">Response Time Gap</div>
+            <div class="dimension">Customer Experience</div>
+            <p>Response Time within Customer Experience requires attention with a score of 0/100.</p>
+          </div>
+        
+      
+
+      
+        <h3 class="mt-3">Risks</h3>
+        
+          <div class="finding-card risk">
+            <div class="label">Marketing Critical Underperformance</div>
+            <div class="dimension">Marketing</div>
+            <p>Marketing is at critical levels with a score of 31/100. Immediate intervention is required to mitigate business risk.</p>
+          </div>
+        
+      
+
+      
+    </section>
+
+    
+      <section class="section page-break">
+        <h2>Chapter Recommendations</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Priority</th>
+              <th>Recommendation</th>
+              <th>Dimension</th>
+              <th>Timeline</th>
+              <th>ROI</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td><strong>#1</strong></td>
+                <td>
+                  Marketing Improvement Initiative
+                  <span class="band-badge Excellence" style="margin-left: 0.5rem; font-size: 0.7rem;">QW</span>
+                </td>
+                <td>Marketing</td>
+                <td>0-90 Days</td>
+                <td><strong>0.99x</strong></td>
+              </tr>
+            
+              <tr>
+                <td><strong>#4</strong></td>
+                <td>
+                  Strategy Improvement Initiative
+                  <span class="band-badge Excellence" style="margin-left: 0.5rem; font-size: 0.7rem;">QW</span>
+                </td>
+                <td>Strategy</td>
+                <td>3-12 Months</td>
+                <td><strong>1.1x</strong></td>
+              </tr>
+            
+              <tr>
+                <td><strong>#6</strong></td>
+                <td>
+                  Customer Experience Improvement Initiative
+                  <span class="band-badge Excellence" style="margin-left: 0.5rem; font-size: 0.7rem;">QW</span>
+                </td>
+                <td>Customer Experience</td>
+                <td>3-12 Months</td>
+                <td><strong>1x</strong></td>
+              </tr>
+            
+              <tr>
+                <td><strong>#10</strong></td>
+                <td>
+                  Sales Improvement Initiative
+                  
+                </td>
+                <td>Sales</td>
+                <td>12-24+ Months</td>
+                <td><strong>0.6x</strong></td>
+              </tr>
+            
+          </tbody>
+        </table>
+
+        <h3 class="mt-3">Top Recommendation Details</h3>
+        
+          <div class="card mb-2">
+            <div class="card-header">
+              <span class="card-title">Marketing Improvement Initiative</span>
+              <span class="band-badge Excellence">
+                0-90 Days
+              </span>
+            </div>
+            <div class="card-body">
+              <div class="flex gap-3 mb-2">
+                <span><strong>Impact:</strong> 69/100</span>
+                <span><strong>Effort:</strong> 70/100</span>
+                <span><strong>ROI:</strong> 0.99x</span>
+              </div>
+
+              <h5>Action Steps:</h5>
+              <ol>
+                <li>Conduct detailed marketing assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
+              </ol>
+
+              <p class="mt-2"><strong>Expected Outcomes:</strong> Improve Marketing score from 31 to 51 within the target horizon.</p>
+            </div>
+          </div>
+        
+          <div class="card mb-2">
+            <div class="card-header">
+              <span class="card-title">Strategy Improvement Initiative</span>
+              <span class="band-badge Proficiency">
+                3-12 Months
+              </span>
+            </div>
+            <div class="card-body">
+              <div class="flex gap-3 mb-2">
+                <span><strong>Impact:</strong> 55/100</span>
+                <span><strong>Effort:</strong> 50/100</span>
+                <span><strong>ROI:</strong> 1.1x</span>
+              </div>
+
+              <h5>Action Steps:</h5>
+              <ol>
+                <li>Conduct detailed strategy assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
+              </ol>
+
+              <p class="mt-2"><strong>Expected Outcomes:</strong> Improve Strategy score from 45 to 65 within the target horizon.</p>
+            </div>
+          </div>
+        
+          <div class="card mb-2">
+            <div class="card-header">
+              <span class="card-title">Customer Experience Improvement Initiative</span>
+              <span class="band-badge Proficiency">
+                3-12 Months
+              </span>
+            </div>
+            <div class="card-body">
+              <div class="flex gap-3 mb-2">
+                <span><strong>Impact:</strong> 50/100</span>
+                <span><strong>Effort:</strong> 50/100</span>
+                <span><strong>ROI:</strong> 1x</span>
+              </div>
+
+              <h5>Action Steps:</h5>
+              <ol>
+                <li>Conduct detailed customer experience assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
+              </ol>
+
+              <p class="mt-2"><strong>Expected Outcomes:</strong> Improve Customer Experience score from 50 to 70 within the target horizon.</p>
+            </div>
+          </div>
+        
+      </section>
+    
+
+    
+      <section class="section">
+        <h2>Chapter Risk Assessment</h2>
+
+        
+          <div class="risk-card low">
+            <div class="header">
+              <span class="category">Marketing</span>
+              <span class="priority-badge medium">
+                Severity: Critical
+              </span>
+            </div>
+            <p>Marketing is at critical levels with a score of 31/100. Immediate intervention is required to mitigate business risk.</p>
+          </div>
+        
+      </section>
+    
+
+    <section class="section">
+      <h2>Next Steps</h2>
+
+      <div class="callout success">
+        <div class="title">Recommended Actions for Growth Engine</div>
+        <ol style="margin-bottom: 0;">
+          <li>Review the dimension analysis to understand specific strengths and gaps</li>
+          <li>Prioritize quick wins for immediate impact</li>
+          <li>Address critical risks within the next 30-90 days</li>
+          <li>Develop detailed implementation plans for top recommendations</li>
+          <li>Establish KPIs and tracking mechanisms for ongoing improvement</li>
+        </ol>
+      </div>
+    </section>
+
+    
+    <footer class="report-footer">
+      <p>&copy; 2025 BizHealth.ai - Confidential Business Assessment Report</p>
+      <p>Assessment ID: 9fad35a7-ab46-44fc-aff6-fd96530995df</p>
+    </footer>
+  
+  
+  </div>
+</body>
+</html>

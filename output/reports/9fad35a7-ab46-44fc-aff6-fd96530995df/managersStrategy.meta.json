@@ -1,0 +1,56 @@
+{
+  "reportType": "managersStrategy",
+  "reportName": "Strategy & Planning Manager Report",
+  "generatedAt": "2025-12-03T07:12:07.472Z",
+  "companyName": "EWM Global",
+  "runId": "9fad35a7-ab46-44fc-aff6-fd96530995df",
+  "healthScore": 53,
+  "healthBand": "Attention",
+  "pageSuggestionEstimate": 15,
+  "sections": [
+    {
+      "id": "department_overview",
+      "title": "Strategic Overview"
+    },
+    {
+      "id": "strategy_deep_dive",
+      "title": "Strategy Assessment"
+    },
+    {
+      "id": "leadership_alignment",
+      "title": "Leadership & Governance Assessment"
+    },
+    {
+      "id": "risk_management",
+      "title": "Risk Management Assessment"
+    },
+    {
+      "id": "compliance",
+      "title": "Compliance Assessment"
+    },
+    {
+      "id": "cross_dimensional_findings",
+      "title": "Cross-Dimensional Findings"
+    },
+    {
+      "id": "enterprise_risks",
+      "title": "Enterprise Risk Register"
+    },
+    {
+      "id": "recommendations",
+      "title": "Strategic Recommendations"
+    },
+    {
+      "id": "roadmap_detail",
+      "title": "Implementation Roadmap"
+    },
+    {
+      "id": "kpis",
+      "title": "Strategic KPIs"
+    }
+  ],
+  "brand": {
+    "primaryColor": "#212653",
+    "accentColor": "#969423"
+  }
+}
