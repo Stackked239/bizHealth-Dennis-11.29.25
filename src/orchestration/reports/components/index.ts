@@ -49,6 +49,20 @@ export {
 export type { ReferenceOptions } from './comprehensive-reference.component.js';
 
 // ============================================================================
+// SCORE BAR COMPONENT
+// ============================================================================
+
+export {
+  renderScoreBar,
+  renderScoreBarList,
+  renderDimensionScoreBars,
+  renderChapterScoreBars,
+  generateScoreBarStyles,
+} from './score-bar.component.js';
+
+export type { ScoreBarConfig, ScoreBarListConfig } from './score-bar.component.js';
+
+// ============================================================================
 // NEW VISUAL COMPONENTS (16 Components)
 // Tier 1: Core (gauge, score-tile, heatmap, bar-chart, metric-card, table)
 // Tier 2: Action (radar-chart, timeline, roadmap-timeline, kpi-dashboard, risk-matrix)

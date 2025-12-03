@@ -7,6 +7,7 @@
 
 import type { ReportContext, ReportChapter, ReportDimension } from '../../../types/report.types.js';
 import { escapeHtml } from '../html-template.js';
+import { formatScore, formatScoreInt, formatScoreWithMax, safeRound } from '../utils/number-formatter.js';
 
 /**
  * Benchmark callout data structure
@@ -30,8 +31,10 @@ export function generateBenchmarkCallout(
   industryName: string,
   percentile?: number
 ): string {
-  const percentDiff = ((score - benchmarkMedian) / benchmarkMedian * 100);
-  const isAbove = score > benchmarkMedian;
+  const safeScore = safeRound(score, 1);
+  const safeBenchmark = safeRound(benchmarkMedian, 1);
+  const percentDiff = ((safeScore - safeBenchmark) / safeBenchmark * 100);
+  const isAbove = safeScore > safeBenchmark;
   const diffAbs = Math.abs(Math.round(percentDiff));
 
   // Determine color based on comparison
@@ -44,7 +47,7 @@ export function generateBenchmarkCallout(
       <div class="benchmark-content">
         <div class="benchmark-label">Industry Benchmark Comparison</div>
         <div class="benchmark-value">
-          ${score}/100 vs ${benchmarkMedian}/100
+          ${formatScoreWithMax(safeScore)}/100 vs ${formatScoreWithMax(safeBenchmark)}/100
         </div>
         <div class="benchmark-context">
           Your ${escapeHtml(entityName)} score is
@@ -163,19 +166,20 @@ export function generateBenchmarkSummaryTable(ctx: ReportContext): string {
         </thead>
         <tbody>
           ${chaptersWithBenchmark.map(ch => {
-            const median = estimateMedianFromPercentile(ch.score, ch.benchmark!.peerPercentile);
-            const isAbove = ch.score > median;
-            const statusColor = isAbove ? '#28a745' : ch.score < median - 10 ? '#dc3545' : '#ffc107';
-            const statusIcon = isAbove ? '↑' : ch.score < median - 10 ? '↓' : '→';
+            const median = safeRound(estimateMedianFromPercentile(ch.score, ch.benchmark!.peerPercentile), 1);
+            const safeChScore = safeRound(ch.score, 1);
+            const isAbove = safeChScore > median;
+            const statusColor = isAbove ? '#28a745' : safeChScore < median - 10 ? '#dc3545' : '#ffc107';
+            const statusIcon = isAbove ? '↑' : safeChScore < median - 10 ? '↓' : '→';
 
             return `
               <tr>
                 <td>${escapeHtml(ch.name)}</td>
-                <td class="score">${ch.score}/100</td>
-                <td>${Math.round(median)}/100</td>
+                <td class="score">${formatScore(safeChScore)}/100</td>
+                <td>${formatScoreInt(median)}/100</td>
                 <td>${ch.benchmark!.peerPercentile}th</td>
                 <td style="color: ${statusColor}; font-weight: 600;">
-                  ${statusIcon} ${isAbove ? 'Above' : ch.score < median - 10 ? 'Below' : 'At'} Median
+                  ${statusIcon} ${isAbove ? 'Above' : safeChScore < median - 10 ? 'Below' : 'At'} Median
                 </td>
               </tr>
             `;
@@ -195,15 +199,17 @@ export function generateScoreBarWithBenchmark(
   band: string
 ): string {
   const bandClass = band.toLowerCase();
+  const safeScore = safeRound(score, 1);
+  const safeBenchmark = safeRound(benchmarkMedian, 1);
 
   return `
     <div class="score-bar-container" style="position: relative;">
-      <div class="score-bar-fill ${bandClass}" style="width: ${score}%;">
-        ${score}
+      <div class="score-bar-fill ${bandClass}" style="width: ${safeScore}%;">
+        ${formatScoreInt(safeScore)}
       </div>
       <div style="
         position: absolute;
-        left: ${benchmarkMedian}%;
+        left: ${safeBenchmark}%;
         top: -5px;
         bottom: -5px;
         width: 3px;
@@ -219,7 +225,7 @@ export function generateScoreBarWithBenchmark(
           color: #212653;
           white-space: nowrap;
         ">
-          Median: ${Math.round(benchmarkMedian)}
+          Median: ${formatScoreInt(safeBenchmark)}
         </div>
       </div>
     </div>

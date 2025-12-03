@@ -54,3 +54,38 @@ export {
   getTableAriaLabel,
   createScreenReaderOnlyText,
 } from './accessibility-utils.js';
+
+// Number formatting utilities (fixes floating point display bug)
+export {
+  formatScore,
+  formatScoreInt,
+  formatPercentage,
+  formatBenchmarkComparison,
+  formatScoreWithMax,
+  formatDelta,
+  formatCurrency,
+  formatCompactNumber,
+  formatROI,
+  safeRound,
+  clampScore,
+} from './number-formatter.js';
+
+// Conditional rendering utilities
+export {
+  renderConditional,
+  renderConditionalWithResult,
+  createConditionalRenderer,
+  renderIfHasItems,
+  renderIfValidNumber,
+  renderIfNonEmptyString,
+  renderIfValidScore,
+  renderIfMinItems,
+  getValueByPath,
+  isValidValue,
+  hasMinLength,
+  generateConditionalStyles,
+  generateDataNotAvailableBox,
+  generateComingSoonBox,
+} from './conditional-renderer.js';
+
+export type { ConditionalConfig, ConditionalRenderResult } from './conditional-renderer.js';
