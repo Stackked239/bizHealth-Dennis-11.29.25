@@ -603,6 +603,137 @@
 <body>
   <div class="report-container">
     
+    <style>
+      /* Chart styles */
+      
+    
+    .svg-chart-container {
+      display: flex;
+      justify-content: center;
+      margin: 1rem 0;
+      page-break-inside: avoid;
+    }
+
+    .svg-chart-container svg {
+      max-width: 100%;
+      height: auto;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+    }
+
+    @media print {
+      .svg-chart-container {
+        page-break-inside: avoid;
+      }
+
+      .svg-chart-container svg {
+        box-shadow: none;
+        border: 1px solid #e0e0e0;
+      }
+    }
+  
+
+    /* Executive Dashboard Styles */
+    .executive-dashboard {
+      margin: 2rem 0;
+    }
+
+    .dashboard-row {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .dashboard-main {
+      flex: 2;
+      min-width: 350px;
+    }
+
+    .dashboard-side {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .dashboard-full {
+      width: 100%;
+    }
+
+    /* Chart grid layout */
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .chart-cell {
+      background: #FFFFFF;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Chart error fallback */
+    .chart-error,
+    .chart-fallback {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: #f8f9fa;
+      border: 2px dashed #dee2e6;
+      border-radius: 8px;
+      color: #6c757d;
+      min-height: 200px;
+      text-align: center;
+    }
+
+    .chart-fallback-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    @media print {
+      .executive-dashboard,
+      .chart-grid,
+      .svg-chart-container {
+        page-break-inside: avoid;
+      }
+
+      .chart-cell {
+        box-shadow: none;
+        border: 1px solid #dee2e6;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-row {
+        flex-direction: column;
+      }
+
+      .dashboard-main,
+      .dashboard-side {
+        min-width: 100%;
+      }
+
+      .chart-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  
+
+      .financial-chart-section {
+        margin: 2rem 0;
+        text-align: center;
+      }
+
+      .financial-chart-section .chart-wrapper {
+        display: inline-block;
+        max-width: 100%;
+      }
+    </style>
+
     
     <header class="report-header">
       <h1>Financial Impact Analysis</h1>
@@ -643,6 +774,19 @@
             with an estimated ROI of <strong>8.3x</strong>
             within the first 90 days.
           </p>
+        </div>
+      
+
+      
+        <div class="financial-chart-section">
+          <h3>Current Business Health by Chapter</h3>
+          <div class="chart-wrapper">
+            
+    <div class="svg-chart-container" role="figure" aria-label="Chapter Performance Overview">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 232" style="max-width: 100%; height: auto;"><rect width="650" height="232" fill="white" rx="4"/><text x="325" y="28" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Chapter Performance Overview</text><text x="132" y="70" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Growth Engine</text><rect x="140" y="50" width="450" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="50" width="220.5" height="30" fill="#e67e22" rx="4"/><text x="368.5" y="70" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">49</text><text x="132" y="108" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Performance &amp; He...</text><rect x="140" y="88" width="450" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="88" width="229.5" height="30" fill="#e67e22" rx="4"/><text x="377.5" y="108" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">51</text><text x="132" y="146" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">People &amp; Leaders...</text><rect x="140" y="126" width="450" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="126" width="193.5" height="30" fill="#e67e22" rx="4"/><text x="341.5" y="146" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">43</text><text x="132" y="184" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Resilience &amp; Saf...</text><rect x="140" y="164" width="450" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="164" width="315" height="30" fill="#f39c12" rx="4"/><text x="463" y="184" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">70</text></svg>
+    </div>
+  
+          </div>
         </div>
       
     </section>

@@ -1,0 +1,52 @@
+{
+  "reportType": "managersOperations",
+  "reportName": "Operations Manager Report",
+  "generatedAt": "2025-12-03T07:29:21.965Z",
+  "companyName": "EWM Global",
+  "runId": "2250d590-bc70-4630-a6e6-f7e6ce0028d5",
+  "healthScore": 53,
+  "healthBand": "Attention",
+  "pageSuggestionEstimate": 12,
+  "sections": [
+    {
+      "id": "department_overview",
+      "title": "Operations Overview"
+    },
+    {
+      "id": "operations_deep_dive",
+      "title": "Operational Efficiency Assessment"
+    },
+    {
+      "id": "sub_indicator_breakdown",
+      "title": "Sub-Indicator Analysis"
+    },
+    {
+      "id": "findings",
+      "title": "Operational Findings"
+    },
+    {
+      "id": "technology_alignment",
+      "title": "Technology & Systems Alignment"
+    },
+    {
+      "id": "recommendations",
+      "title": "Operations Recommendations"
+    },
+    {
+      "id": "quick_wins",
+      "title": "Quick Wins for Operations"
+    },
+    {
+      "id": "risks",
+      "title": "Operational Risks"
+    },
+    {
+      "id": "kpis",
+      "title": "Operations KPIs"
+    }
+  ],
+  "brand": {
+    "primaryColor": "#212653",
+    "accentColor": "#969423"
+  }
+}

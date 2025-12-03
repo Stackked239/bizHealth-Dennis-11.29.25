@@ -603,6 +603,141 @@
 <body>
   <div class="report-container">
     
+    <style>
+      /* Chart styles */
+      
+    
+    .svg-chart-container {
+      display: flex;
+      justify-content: center;
+      margin: 1rem 0;
+      page-break-inside: avoid;
+    }
+
+    .svg-chart-container svg {
+      max-width: 100%;
+      height: auto;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+    }
+
+    @media print {
+      .svg-chart-container {
+        page-break-inside: avoid;
+      }
+
+      .svg-chart-container svg {
+        box-shadow: none;
+        border: 1px solid #e0e0e0;
+      }
+    }
+  
+
+    /* Executive Dashboard Styles */
+    .executive-dashboard {
+      margin: 2rem 0;
+    }
+
+    .dashboard-row {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .dashboard-main {
+      flex: 2;
+      min-width: 350px;
+    }
+
+    .dashboard-side {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .dashboard-full {
+      width: 100%;
+    }
+
+    /* Chart grid layout */
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .chart-cell {
+      background: #FFFFFF;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Chart error fallback */
+    .chart-error,
+    .chart-fallback {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: #f8f9fa;
+      border: 2px dashed #dee2e6;
+      border-radius: 8px;
+      color: #6c757d;
+      min-height: 200px;
+      text-align: center;
+    }
+
+    .chart-fallback-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    @media print {
+      .executive-dashboard,
+      .chart-grid,
+      .svg-chart-container {
+        page-break-inside: avoid;
+      }
+
+      .chart-cell {
+        box-shadow: none;
+        border: 1px solid #dee2e6;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-row {
+        flex-direction: column;
+      }
+
+      .dashboard-main,
+      .dashboard-side {
+        min-width: 100%;
+      }
+
+      .chart-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  
+
+      .deepdive-chart-section {
+        margin: 2rem 0;
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .deepdive-chart-section .chart-wrapper {
+        flex: 1;
+        min-width: 300px;
+        max-width: 550px;
+      }
+    </style>
+
     
     <header class="report-header">
       <h1>Resilience &amp; Safeguards Deep Dive</h1>
@@ -639,6 +774,21 @@
           This chapter shows strong performance. Focus on maintaining excellence and optimizing for continued growth.
         </p>
       </div>
+
+      
+        <div class="deepdive-chart-section">
+          <div class="chart-wrapper">
+    <div class="svg-chart-container" role="figure" aria-label="Resilience &amp; Safeguards Dimensions">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 410" style="max-width: 100%; height: auto;"><rect width="380" height="410" fill="white" rx="4"/><text x="190" y="22" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Resilience &amp; Safeguards Dimensions</text><circle cx="190" cy="205" r="28" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="190" cy="205" r="56" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="190" cy="205" r="84" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="190" cy="205" r="112" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="190" cy="205" r="140" fill="none" stroke="#e0e0e0" stroke-width="1"/><line x1="190" y1="205" x2="190" y2="65" stroke="#e0e0e0" stroke-width="1"/><line x1="190" y1="205" x2="330" y2="205" stroke="#e0e0e0" stroke-width="1"/><line x1="190" y1="205" x2="190" y2="345" stroke="#e0e0e0" stroke-width="1"/><line x1="190" y1="205" x2="50" y2="205.00000000000003" stroke="#e0e0e0" stroke-width="1"/><polygon points="190,128 313.2,205 190,287.6 82.2,205" fill="#212653" fill-opacity="0.3" stroke="#212653" stroke-width="2"/><circle cx="190" cy="128" r="4" fill="#212653"/><circle cx="313.2" cy="205" r="4" fill="#212653"/><circle cx="190" cy="287.6" r="4" fill="#212653"/><circle cx="82.2" cy="205" r="4" fill="#212653"/><text x="190" y="40" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Technology... (55)</text><text x="355" y="205" text-anchor="start" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">IT, Data &amp;... (88)</text><text x="190" y="370" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Risk Manag... (59)</text><text x="25" y="205.00000000000003" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Compliance (77)</text></svg>
+    </div>
+  </div>
+          <div class="chart-wrapper">
+    <div class="svg-chart-container" role="figure" aria-label="Resilience &amp; Safeguards - Dimension Scores">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 232" style="max-width: 100%; height: auto;"><rect width="550" height="232" fill="white" rx="4"/><text x="275" y="28" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Resilience &amp; Safeguards - Dimension Scores</text><text x="132" y="70" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Technology &amp; Inn...</text><rect x="140" y="50" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="50" width="192.50000000000003" height="30" fill="#e67e22" rx="4"/><text x="340.5" y="70" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">55</text><text x="132" y="108" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">IT, Data &amp; Systems</text><rect x="140" y="88" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="88" width="308" height="30" fill="#27ae60" rx="4"/><text x="456" y="108" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">88</text><text x="132" y="146" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Risk Management ...</text><rect x="140" y="126" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="126" width="206.5" height="30" fill="#e67e22" rx="4"/><text x="354.5" y="146" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">59</text><text x="132" y="184" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Compliance</text><rect x="140" y="164" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="164" width="269.5" height="30" fill="#f39c12" rx="4"/><text x="417.5" y="184" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">77</text></svg>
+    </div>
+  </div>
+        </div>
+      
     </section>
 
     <section class="section page-break">

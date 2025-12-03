@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="BizHealth.ai Report Generator v1.0">
+  <title>Resilience &amp; Safeguards Deep Dive - EWM Global</title>
+  <style>
+    
+    /* Base Reset and Typography */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      font-family: 'Open Sans', Arial, sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #333;
+      background: #fff;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+      color: #212653;
+      margin-bottom: 0.5em;
+      line-height: 1.3;
+    }
+
+    h1 { font-size: 2.5rem; font-weight: 700; }
+    h2 { font-size: 2rem; font-weight: 600; page-break-before: always; }
+    h2:first-of-type { page-break-before: auto; }
+    h3 { font-size: 1.5rem; font-weight: 600; }
+    h4 { font-size: 1.25rem; font-weight: 500; }
+    h5 { font-size: 1.1rem; font-weight: 500; }
+
+    p {
+      margin-bottom: 1em;
+    }
+
+    /* Links */
+    a {
+      color: #969423;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Lists */
+    ul, ol {
+      margin-left: 1.5em;
+      margin-bottom: 1em;
+    }
+
+    li {
+      margin-bottom: 0.5em;
+    }
+
+    /* Page Layout */
+    .report-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .page {
+      padding: 2rem 0;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    /* Header */
+    .report-header {
+      text-align: center;
+      padding: 2rem 0;
+      border-bottom: 4px solid #212653;
+      margin-bottom: 2rem;
+    }
+
+    .report-header .logo {
+      max-height: 60px;
+      margin-bottom: 1rem;
+    }
+
+    .report-header h1 {
+      margin-bottom: 0.5rem;
+    }
+
+    .report-header .subtitle {
+      font-size: 1.25rem;
+      color: #666;
+    }
+
+    .report-header .company-name {
+      font-size: 1.5rem;
+      color: #969423;
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+
+    .report-header .date {
+      font-size: 0.9rem;
+      color: #888;
+      margin-top: 0.5rem;
+    }
+
+    /* Footer */
+    .report-footer {
+      text-align: center;
+      padding: 1rem 0;
+      border-top: 2px solid #eee;
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    @media print {
+      .report-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    }
+
+    /* Section Styles */
+    .section {
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #969423;
+    }
+
+    .section-icon {
+      font-size: 1.5rem;
+      margin-right: 0.75rem;
+    }
+
+    /* Score Cards */
+    .score-card {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #212653 0%, #212653dd 100%);
+      color: #fff;
+      min-width: 150px;
+    }
+
+    .score-card .score-value {
+      font-size: 3rem;
+      font-weight: 700;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    .score-card .score-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .score-card.small {
+      padding: 0.75rem;
+      min-width: 100px;
+    }
+
+    .score-card.small .score-value {
+      font-size: 1.75rem;
+    }
+
+    /* Health Score Display */
+    .health-score-display {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+    }
+
+    .health-score-circle {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #212653 0%, #212653cc 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    .health-score-circle .score {
+      font-size: 3.5rem;
+      font-weight: 700;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+      line-height: 1;
+    }
+
+    .health-score-circle .out-of {
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    .health-score-details {
+      text-align: left;
+    }
+
+    .health-score-details .status {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .health-score-details .trajectory {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      color: #666;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    th {
+      background: #212653;
+      color: #fff;
+      font-weight: 600;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    tr:hover {
+      background: #f0f0f0;
+    }
+
+    /* Score Table */
+    .score-table th:first-child {
+      width: 40%;
+    }
+
+    .score-table td.score {
+      font-weight: 600;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    /* Band Badge */
+    .band-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .band-badge.Excellence { background: #d4edda; color: #155724; }
+    .band-badge.Proficiency { background: #fff3cd; color: #856404; }
+    .band-badge.Attention { background: #ffeeba; color: #856404; }
+    .band-badge.Critical { background: #f8d7da; color: #721c24; }
+
+    /* Priority Badge */
+    .priority-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .priority-badge.high { background: #dc3545; color: #fff; }
+    .priority-badge.medium { background: #ffc107; color: #333; }
+    .priority-badge.low { background: #28a745; color: #fff; }
+
+    /* Cards */
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #212653;
+      margin: 0;
+    }
+
+    .card-body {
+      font-size: 0.95rem;
+    }
+
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+    @media (max-width: 768px) {
+      .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Flex Layout */
+    .flex { display: flex; }
+    .flex-wrap { flex-wrap: wrap; }
+    .flex-center { align-items: center; justify-content: center; }
+    .flex-between { justify-content: space-between; }
+    .gap-1 { gap: 0.5rem; }
+    .gap-2 { gap: 1rem; }
+    .gap-3 { gap: 1.5rem; }
+
+    /* Utility Classes */
+    .text-center { text-align: center; }
+    .text-right { text-align: right; }
+    .mt-1 { margin-top: 0.5rem; }
+    .mt-2 { margin-top: 1rem; }
+    .mt-3 { margin-top: 1.5rem; }
+    .mb-1 { margin-bottom: 0.5rem; }
+    .mb-2 { margin-bottom: 1rem; }
+    .mb-3 { margin-bottom: 1.5rem; }
+    .p-1 { padding: 0.5rem; }
+    .p-2 { padding: 1rem; }
+    .p-3 { padding: 1.5rem; }
+
+    /* Quick Win Card */
+    .quick-win-card {
+      background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+      border-left: 4px solid #969423;
+      padding: 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+    }
+
+    .quick-win-card .title {
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .quick-win-card .metrics {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.75rem;
+    }
+
+    .quick-win-card .metrics span {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* Risk Card */
+    .risk-card {
+      border-left: 4px solid #dc3545;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .risk-card.high { border-left-color: #dc3545; }
+    .risk-card.medium { border-left-color: #ffc107; }
+    .risk-card.low { border-left-color: #28a745; }
+
+    .risk-card .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .risk-card .category {
+      font-weight: 600;
+      color: #212653;
+    }
+
+    /* Finding Card */
+    .finding-card {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+    }
+
+    .finding-card.strength { background: #d4edda; border-left: 4px solid #28a745; }
+    .finding-card.gap { background: #f8d7da; border-left: 4px solid #dc3545; }
+    .finding-card.risk { background: #ffeeba; border-left: 4px solid #ffc107; }
+    .finding-card.opportunity { background: #cce5ff; border-left: 4px solid #0d6efd; }
+
+    .finding-card .label {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .finding-card .dimension {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Roadmap Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.5rem;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: #212653;
+      border-radius: 3px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 1.5rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -1.75rem;
+      top: 0.5rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #969423;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 3px #212653;
+    }
+
+    .timeline-item .phase-name {
+      font-weight: 600;
+      color: #212653;
+      font-size: 1.1rem;
+    }
+
+    .timeline-item .time-horizon {
+      font-size: 0.9rem;
+      color: #969423;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Callout Box */
+    .callout {
+      padding: 1.25rem;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+    }
+
+    .callout.info {
+      background: #e7f3ff;
+      border-left: 4px solid #0d6efd;
+    }
+
+    .callout.success {
+      background: #d4edda;
+      border-left: 4px solid #28a745;
+    }
+
+    .callout.warning {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+    }
+
+    .callout.danger {
+      background: #f8d7da;
+      border-left: 4px solid #dc3545;
+    }
+
+    .callout .title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      height: 24px;
+      background: #e9ecef;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .progress-bar .fill {
+      height: 100%;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: width 0.3s ease;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        font-size: 11pt;
+      }
+
+      .report-container {
+        max-width: none;
+        padding: 0;
+      }
+
+      .page-break {
+        page-break-before: always;
+      }
+
+      h2 {
+        page-break-before: always;
+      }
+
+      h2:first-of-type {
+        page-break-before: auto;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+    }
+  
+    
+  </style>
+</head>
+<body>
+  <div class="report-container">
+    
+    <style>
+      /* Chart styles */
+      
+    
+    .svg-chart-container {
+      display: flex;
+      justify-content: center;
+      margin: 1rem 0;
+      page-break-inside: avoid;
+    }
+
+    .svg-chart-container svg {
+      max-width: 100%;
+      height: auto;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+    }
+
+    @media print {
+      .svg-chart-container {
+        page-break-inside: avoid;
+      }
+
+      .svg-chart-container svg {
+        box-shadow: none;
+        border: 1px solid #e0e0e0;
+      }
+    }
+  
+
+    /* Executive Dashboard Styles */
+    .executive-dashboard {
+      margin: 2rem 0;
+    }
+
+    .dashboard-row {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .dashboard-main {
+      flex: 2;
+      min-width: 350px;
+    }
+
+    .dashboard-side {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .dashboard-full {
+      width: 100%;
+    }
+
+    /* Chart grid layout */
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .chart-cell {
+      background: #FFFFFF;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Chart error fallback */
+    .chart-error,
+    .chart-fallback {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: #f8f9fa;
+      border: 2px dashed #dee2e6;
+      border-radius: 8px;
+      color: #6c757d;
+      min-height: 200px;
+      text-align: center;
+    }
+
+    .chart-fallback-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    @media print {
+      .executive-dashboard,
+      .chart-grid,
+      .svg-chart-container {
+        page-break-inside: avoid;
+      }
+
+      .chart-cell {
+        box-shadow: none;
+        border: 1px solid #dee2e6;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-row {
+        flex-direction: column;
+      }
+
+      .dashboard-main,
+      .dashboard-side {
+        min-width: 100%;
+      }
+
+      .chart-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  
+
+      .deepdive-chart-section {
+        margin: 2rem 0;
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .deepdive-chart-section .chart-wrapper {
+        flex: 1;
+        min-width: 300px;
+        max-width: 550px;
+      }
+    </style>
+
+    
+    <header class="report-header">
+      <h1>Resilience &amp; Safeguards Deep Dive</h1>
+      <p class="subtitle">Technology, IT, Risk &amp; Compliance</p>
+      <p class="company-name">EWM Global</p>
+      <p class="date">Assessment Date: December 3, 2025</p>
+    </header>
+  
+
+    <section class="section">
+      <h2>Chapter Overview</h2>
+
+      <div class="health-score-display" style="background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);">
+        <div class="health-score-circle" style="width: 140px; height: 140px;">
+          <span class="score" style="font-size: 2.5rem;">70</span>
+          <span class="out-of" style="font-size: 0.9rem;">/ 100</span>
+        </div>
+        <div class="health-score-details">
+          <p class="status" style="font-size: 1.25rem;">Resilience &amp; Safeguards</p>
+          <p><span class="band-badge Proficiency">Proficiency</span></p>
+          
+            <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
+              71th percentile vs industry peers
+            </p>
+          
+        </div>
+      </div>
+
+      <p class="mt-3">This chapter examines your organization's technological capabilities, IT infrastructure, risk management practices, and regulatory compliance status.</p>
+
+      <div class="callout success mt-3">
+        <div class="title">Chapter Assessment</div>
+        <p>
+          This chapter shows strong performance. Focus on maintaining excellence and optimizing for continued growth.
+        </p>
+      </div>
+
+      
+        <div class="deepdive-chart-section">
+          <div class="chart-wrapper">
+    <div class="svg-chart-container" role="figure" aria-label="Resilience &amp; Safeguards Dimensions">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 410" style="max-width: 100%; height: auto;"><rect width="380" height="410" fill="white" rx="4"/><text x="190" y="22" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Resilience &amp; Safeguards Dimensions</text><circle cx="190" cy="205" r="28" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="190" cy="205" r="56" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="190" cy="205" r="84" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="190" cy="205" r="112" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="190" cy="205" r="140" fill="none" stroke="#e0e0e0" stroke-width="1"/><line x1="190" y1="205" x2="190" y2="65" stroke="#e0e0e0" stroke-width="1"/><line x1="190" y1="205" x2="330" y2="205" stroke="#e0e0e0" stroke-width="1"/><line x1="190" y1="205" x2="190" y2="345" stroke="#e0e0e0" stroke-width="1"/><line x1="190" y1="205" x2="50" y2="205.00000000000003" stroke="#e0e0e0" stroke-width="1"/><polygon points="190,128 313.2,205 190,287.6 82.2,205" fill="#212653" fill-opacity="0.3" stroke="#212653" stroke-width="2"/><circle cx="190" cy="128" r="4" fill="#212653"/><circle cx="313.2" cy="205" r="4" fill="#212653"/><circle cx="190" cy="287.6" r="4" fill="#212653"/><circle cx="82.2" cy="205" r="4" fill="#212653"/><text x="190" y="40" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Technology... (55)</text><text x="355" y="205" text-anchor="start" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">IT, Data &amp;... (88)</text><text x="190" y="370" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Risk Manag... (59)</text><text x="25" y="205.00000000000003" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Compliance (77)</text></svg>
+    </div>
+  </div>
+          <div class="chart-wrapper">
+    <div class="svg-chart-container" role="figure" aria-label="Resilience &amp; Safeguards - Dimension Scores">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 232" style="max-width: 100%; height: auto;"><rect width="550" height="232" fill="white" rx="4"/><text x="275" y="28" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Resilience &amp; Safeguards - Dimension Scores</text><text x="132" y="70" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Technology &amp; Inn...</text><rect x="140" y="50" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="50" width="192.50000000000003" height="30" fill="#e67e22" rx="4"/><text x="340.5" y="70" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">55</text><text x="132" y="108" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">IT, Data &amp; Systems</text><rect x="140" y="88" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="88" width="308" height="30" fill="#27ae60" rx="4"/><text x="456" y="108" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">88</text><text x="132" y="146" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Risk Management ...</text><rect x="140" y="126" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="126" width="206.5" height="30" fill="#e67e22" rx="4"/><text x="354.5" y="146" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">59</text><text x="132" y="184" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Compliance</text><rect x="140" y="164" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="164" width="269.5" height="30" fill="#f39c12" rx="4"/><text x="417.5" y="184" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">77</text></svg>
+    </div>
+  </div>
+        </div>
+      
+    </section>
+
+    <section class="section page-break">
+      <h2>Dimension Scorecard</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>Score</th>
+            <th>Band</th>
+            <th>Progress</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+            <tr>
+              <td><strong>Technology &amp; Innovation</strong></td>
+              <td class="score">55/100</td>
+              <td><span class="band-badge Attention">Attention</span></td>
+              <td style="width: 200px;">
+    <div class="progress-bar">
+      <div class="fill" style="width: 55.00000000000001%; background: #ffc107;">
+        55%
+      </div>
+    </div>
+  </td>
+            </tr>
+          
+            <tr>
+              <td><strong>IT, Data &amp; Systems</strong></td>
+              <td class="score">88/100</td>
+              <td><span class="band-badge Excellence">Excellence</span></td>
+              <td style="width: 200px;">
+    <div class="progress-bar">
+      <div class="fill" style="width: 88%; background: #28a745;">
+        88%
+      </div>
+    </div>
+  </td>
+            </tr>
+          
+            <tr>
+              <td><strong>Risk Management &amp; Sustainability</strong></td>
+              <td class="score">59/100</td>
+              <td><span class="band-badge Attention">Attention</span></td>
+              <td style="width: 200px;">
+    <div class="progress-bar">
+      <div class="fill" style="width: 59%; background: #ffc107;">
+        59%
+      </div>
+    </div>
+  </td>
+            </tr>
+          
+            <tr>
+              <td><strong>Compliance</strong></td>
+              <td class="score">77/100</td>
+              <td><span class="band-badge Proficiency">Proficiency</span></td>
+              <td style="width: 200px;">
+    <div class="progress-bar">
+      <div class="fill" style="width: 77%; background: #969423;">
+        77%
+      </div>
+    </div>
+  </td>
+            </tr>
+          
+        </tbody>
+      </table>
+    </section>
+
+    
+      <section class="section page-break">
+        <h2>Technology &amp; Innovation Analysis</h2>
+
+        <div class="flex gap-3 mb-3">
+          <div class="score-card small">
+            <div class="score-value">55</div>
+            <div class="score-label">Score</div>
+          </div>
+          <div>
+            <p><span class="band-badge Attention">Attention</span></p>
+            
+          </div>
+        </div>
+
+        <p class="mb-3">Technology adoption, innovation culture, and digital transformation</p>
+
+        
+          <h3>Sub-Indicators</h3>
+          <table class="mb-3">
+            <thead>
+              <tr>
+                <th>Sub-Indicator</th>
+                <th>Score</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>Technology Investment</td>
+                  <td class="score">0/100</td>
+                  <td><span class="band-badge Critical">Critical</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Innovation Culture</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Technology Adoption</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Automation Utilization</td>
+                  <td class="score">50/100</td>
+                  <td><span class="band-badge Attention">Attention</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Innovation Impact</td>
+                  <td class="score">73/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+
+        
+
+        
+      </section>
+    
+      <section class="section page-break">
+        <h2>IT, Data &amp; Systems Analysis</h2>
+
+        <div class="flex gap-3 mb-3">
+          <div class="score-card small">
+            <div class="score-value">88</div>
+            <div class="score-label">Score</div>
+          </div>
+          <div>
+            <p><span class="band-badge Excellence">Excellence</span></p>
+            
+          </div>
+        </div>
+
+        <p class="mb-3">IT infrastructure, data management, and cybersecurity</p>
+
+        
+          <h3>Sub-Indicators</h3>
+          <table class="mb-3">
+            <thead>
+              <tr>
+                <th>Sub-Indicator</th>
+                <th>Score</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>IT Infrastructure</td>
+                  <td class="score">90/100</td>
+                  <td><span class="band-badge Excellence">Excellence</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Network Effectiveness</td>
+                  <td class="score">100/100</td>
+                  <td><span class="band-badge Excellence">Excellence</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Cybersecurity</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Data Management</td>
+                  <td class="score">100/100</td>
+                  <td><span class="band-badge Excellence">Excellence</span></td>
+                </tr>
+              
+                <tr>
+                  <td>IT Scalability</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+          <h3>Key Strengths</h3>
+          <ul class="mb-3">
+            <li>IT, Data &amp; Systems Excellence</li><li>Strong IT Infrastructure</li><li>Strong Network Effectiveness</li>
+          </ul>
+        
+
+        
+
+        
+      </section>
+    
+      <section class="section page-break">
+        <h2>Risk Management &amp; Sustainability Analysis</h2>
+
+        <div class="flex gap-3 mb-3">
+          <div class="score-card small">
+            <div class="score-value">59</div>
+            <div class="score-label">Score</div>
+          </div>
+          <div>
+            <p><span class="band-badge Attention">Attention</span></p>
+            
+          </div>
+        </div>
+
+        <p class="mb-3">Risk identification, mitigation, and business continuity</p>
+
+        
+          <h3>Sub-Indicators</h3>
+          <table class="mb-3">
+            <thead>
+              <tr>
+                <th>Sub-Indicator</th>
+                <th>Score</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>Risk Outlook</td>
+                  <td class="score">50/100</td>
+                  <td><span class="band-badge Attention">Attention</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Risk Identification</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Risk Mitigation</td>
+                  <td class="score">50/100</td>
+                  <td><span class="band-badge Attention">Attention</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Business Continuity</td>
+                  <td class="score">69/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Strategic Adaptability</td>
+                  <td class="score">50/100</td>
+                  <td><span class="band-badge Attention">Attention</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+
+        
+
+        
+      </section>
+    
+      <section class="section page-break">
+        <h2>Compliance Analysis</h2>
+
+        <div class="flex gap-3 mb-3">
+          <div class="score-card small">
+            <div class="score-value">77</div>
+            <div class="score-label">Score</div>
+          </div>
+          <div>
+            <p><span class="band-badge Proficiency">Proficiency</span></p>
+            
+          </div>
+        </div>
+
+        <p class="mb-3">Regulatory compliance, policy adherence, and legal requirements</p>
+
+        
+          <h3>Sub-Indicators</h3>
+          <table class="mb-3">
+            <thead>
+              <tr>
+                <th>Sub-Indicator</th>
+                <th>Score</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>Compliance Awareness</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Policy Adherence</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Compliance Monitoring</td>
+                  <td class="score">60/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Documentation</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Incident Reporting</td>
+                  <td class="score">100/100</td>
+                  <td><span class="band-badge Excellence">Excellence</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+          <h3>Key Strengths</h3>
+          <ul class="mb-3">
+            <li>Strong Incident Reporting</li>
+          </ul>
+        
+
+        
+
+        
+      </section>
+    
+
+    <section class="section page-break">
+      <h2>Chapter Findings Summary</h2>
+
+      <div class="grid grid-4 mb-3">
+        <div class="score-card small" style="background: linear-gradient(135deg, #28a745, #1e7e34);">
+          <div class="score-value">5</div>
+          <div class="score-label">Strengths</div>
+        </div>
+        <div class="score-card small" style="background: linear-gradient(135deg, #dc3545, #c82333);">
+          <div class="score-value">3</div>
+          <div class="score-label">Gaps</div>
+        </div>
+        <div class="score-card small" style="background: linear-gradient(135deg, #ffc107, #d39e00);">
+          <div class="score-value">0</div>
+          <div class="score-label">Risks</div>
+        </div>
+        <div class="score-card small" style="background: linear-gradient(135deg, #0d6efd, #0b5ed7);">
+          <div class="score-value">0</div>
+          <div class="score-label">Opportunities</div>
+        </div>
+      </div>
+
+      
+        <h3>Strengths</h3>
+        
+          <div class="finding-card strength">
+            <div class="label">IT, Data &amp; Systems Excellence</div>
+            <div class="dimension">IT, Data &amp; Systems</div>
+            <p>IT, Data &amp; Systems demonstrates strong performance at 88/100, placing it in the Excellence tier. This represents a competitive advantage.</p>
+          </div>
+        
+          <div class="finding-card strength">
+            <div class="label">Strong IT Infrastructure</div>
+            <div class="dimension">IT, Data &amp; Systems</div>
+            <p>IT Infrastructure within IT, Data &amp; Systems shows exceptional performance at 90/100.</p>
+          </div>
+        
+          <div class="finding-card strength">
+            <div class="label">Strong Network Effectiveness</div>
+            <div class="dimension">IT, Data &amp; Systems</div>
+            <p>Network Effectiveness within IT, Data &amp; Systems shows exceptional performance at 100/100.</p>
+          </div>
+        
+          <div class="finding-card strength">
+            <div class="label">Strong Data Management</div>
+            <div class="dimension">IT, Data &amp; Systems</div>
+            <p>Data Management within IT, Data &amp; Systems shows exceptional performance at 100/100.</p>
+          </div>
+        
+          <div class="finding-card strength">
+            <div class="label">Strong Incident Reporting</div>
+            <div class="dimension">Compliance</div>
+            <p>Incident Reporting within Compliance shows exceptional performance at 100/100.</p>
+          </div>
+        
+      
+
+      
+        <h3 class="mt-3">Gaps</h3>
+        
+          <div class="finding-card gap">
+            <div class="label">Technology &amp; Innovation Performance Gap</div>
+            <div class="dimension">Technology &amp; Innovation</div>
+            <p>Technology &amp; Innovation shows moderate performance at 55/100. This gap presents improvement opportunities that should be addressed within 6-12 months.</p>
+          </div>
+        
+          <div class="finding-card gap">
+            <div class="label">Technology Investment Gap</div>
+            <div class="dimension">Technology &amp; Innovation</div>
+            <p>Technology Investment within Technology &amp; Innovation requires attention with a score of 0/100.</p>
+          </div>
+        
+          <div class="finding-card gap">
+            <div class="label">Risk Management &amp; Sustainability Performance Gap</div>
+            <div class="dimension">Risk Management &amp; Sustainability</div>
+            <p>Risk Management &amp; Sustainability shows moderate performance at 59/100. This gap presents improvement opportunities that should be addressed within 6-12 months.</p>
+          </div>
+        
+      
+
+      
+
+      
+    </section>
+
+    
+      <section class="section page-break">
+        <h2>Chapter Recommendations</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Priority</th>
+              <th>Recommendation</th>
+              <th>Dimension</th>
+              <th>Timeline</th>
+              <th>ROI</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td><strong>#7</strong></td>
+                <td>
+                  Technology &amp; Innovation Improvement Initiative
+                  
+                </td>
+                <td>Technology &amp; Innovation</td>
+                <td>3-12 Months</td>
+                <td><strong>0.9x</strong></td>
+              </tr>
+            
+              <tr>
+                <td><strong>#8</strong></td>
+                <td>
+                  Risk Management &amp; Sustainability Improvement Initiative
+                  
+                </td>
+                <td>Risk Management &amp; Sustainability</td>
+                <td>3-12 Months</td>
+                <td><strong>0.82x</strong></td>
+              </tr>
+            
+          </tbody>
+        </table>
+
+        <h3 class="mt-3">Top Recommendation Details</h3>
+        
+          <div class="card mb-2">
+            <div class="card-header">
+              <span class="card-title">Technology &amp; Innovation Improvement Initiative</span>
+              <span class="band-badge Proficiency">
+                3-12 Months
+              </span>
+            </div>
+            <div class="card-body">
+              <div class="flex gap-3 mb-2">
+                <span><strong>Impact:</strong> 45/100</span>
+                <span><strong>Effort:</strong> 50/100</span>
+                <span><strong>ROI:</strong> 0.9x</span>
+              </div>
+
+              <h5>Action Steps:</h5>
+              <ol>
+                <li>Conduct detailed technology &amp; innovation assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
+              </ol>
+
+              <p class="mt-2"><strong>Expected Outcomes:</strong> Improve Technology &amp; Innovation score from 55 to 75 within the target horizon.</p>
+            </div>
+          </div>
+        
+          <div class="card mb-2">
+            <div class="card-header">
+              <span class="card-title">Risk Management &amp; Sustainability Improvement Initiative</span>
+              <span class="band-badge Proficiency">
+                3-12 Months
+              </span>
+            </div>
+            <div class="card-body">
+              <div class="flex gap-3 mb-2">
+                <span><strong>Impact:</strong> 41/100</span>
+                <span><strong>Effort:</strong> 50/100</span>
+                <span><strong>ROI:</strong> 0.82x</span>
+              </div>
+
+              <h5>Action Steps:</h5>
+              <ol>
+                <li>Conduct detailed risk management &amp; sustainability assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
+              </ol>
+
+              <p class="mt-2"><strong>Expected Outcomes:</strong> Improve Risk Management &amp; Sustainability score from 59 to 79 within the target horizon.</p>
+            </div>
+          </div>
+        
+      </section>
+    
+
+    
+
+    <section class="section">
+      <h2>Next Steps</h2>
+
+      <div class="callout success">
+        <div class="title">Recommended Actions for Resilience &amp; Safeguards</div>
+        <ol style="margin-bottom: 0;">
+          <li>Review the dimension analysis to understand specific strengths and gaps</li>
+          <li>Prioritize quick wins for immediate impact</li>
+          <li>Address critical risks within the next 30-90 days</li>
+          <li>Develop detailed implementation plans for top recommendations</li>
+          <li>Establish KPIs and tracking mechanisms for ongoing improvement</li>
+        </ol>
+      </div>
+    </section>
+
+    
+    <footer class="report-footer">
+      <p>&copy; 2025 BizHealth.ai - Confidential Business Assessment Report</p>
+      <p>Assessment ID: d90e6912-fa14-4d9a-8d82-e28c409f795c</p>
+    </footer>
+  
+  
+  </div>
+</body>
+</html>

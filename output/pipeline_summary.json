@@ -2,7 +2,7 @@
   "config": {
     "webhookPath": "./sample_webhook.json",
     "outputDir": "./output",
-    "startPhase": 5,
+    "startPhase": 0,
     "endPhase": 5,
     "skipDatabase": true,
     "generateReports": true,
@@ -15,18 +15,103 @@
   },
   "results": [
     {
-      "phase": 5,
+      "phase": 0,
       "status": "success",
-      "duration_ms": 397,
-      "output_path": "output/phase5_output.json",
+      "duration_ms": 24,
+      "output_path": "output/phase0_output.json",
+      "details": {
+        "assessment_run_id": "d90e6912-fa14-4d9a-8d82-e28c409f795c",
+        "company_profile_id": "ewm-global-478cbd43",
+        "phases_completed": {
+          "raw_capture": true,
+          "cp_normalization": true,
+          "qr_normalization": true,
+          "benchmark_retrieval": true,
+          "index_update": true
+        },
+        "stats": {
+          "totalEntries": 6,
+          "byStatus": {
+            "raw_captured": 0,
+            "normalized": 0,
+            "ready_for_analysis": 6,
+            "analysis_complete": 0,
+            "error": 0
+          },
+          "byCompany": {
+            "ewm-global-478cbd43": 6
+          }
+        }
+      }
+    },
+    {
+      "phase": 1,
+      "status": "success",
+      "duration_ms": 2097626,
+      "output_path": "output/phase1_output.json",
       "details": {
         "status": "complete",
-        "reports_generated": 11,
-        "output_dir": "output/reports/2250d590-bc70-4630-a6e6-f7e6ce0028d5",
-        "manifest": "output/reports/2250d590-bc70-4630-a6e6-f7e6ce0028d5/manifest.json"
+        "successful_analyses": 10,
+        "failed_analyses": 0,
+        "total_analyses": 10
+      }
+    },
+    {
+      "phase": 2,
+      "status": "success",
+      "duration_ms": 730401,
+      "output_path": "output/phase2_output.json",
+      "details": {
+        "status": "complete",
+        "successful_analyses": 5,
+        "failed_analyses": 0
+      }
+    },
+    {
+      "phase": 3,
+      "status": "success",
+      "duration_ms": 885871,
+      "output_path": "output/phase3_output.json",
+      "details": {
+        "status": "complete",
+        "overall_health_score": 72,
+        "health_status": "Stable - Requires Strategic Attention"
+      }
+    },
+    {
+      "phase": 4,
+      "status": "success",
+      "duration_ms": 300524,
+      "output_path": "output/phase4_output.json",
+      "details": {
+        "status": "complete",
+        "health_score": 72,
+        "health_descriptor": "Stable - Requires Strategic Attention",
+        "reports_generated": 3,
+        "report_types": [
+          "comprehensive_report",
+          "owners_report",
+          "quick_wins_report"
+        ],
+        "report_tokens": {
+          "input": 5518,
+          "output": 25958
+        }
+      }
+    },
+    {
+      "phase": 5,
+      "status": "success",
+      "duration_ms": 148,
+      "output_path": "output/phase5_output.json",
+      "details": {
+        "status": "partial",
+        "reports_generated": 16,
+        "output_dir": "output/reports/d90e6912-fa14-4d9a-8d82-e28c409f795c",
+        "manifest": "output/reports/d90e6912-fa14-4d9a-8d82-e28c409f795c/manifest.json"
       }
     }
   ],
-  "total_duration_ms": 398,
-  "completed_at": "2025-12-03T05:22:26.095Z"
+  "total_duration_ms": 4014598,
+  "completed_at": "2025-12-03T09:49:46.077Z"
 }

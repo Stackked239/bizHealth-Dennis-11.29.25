@@ -18,988 +18,1425 @@
             background-color: #fff;
         }
 
-        .header {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            color: white;
-            padding: 40px 0;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            font-weight: 300;
-        }
-
-        .header .subtitle {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-
-        .container {
-            max-width: 1200px;
+        .report-container {
+            max-width: 210mm;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 20mm;
+            background: white;
         }
 
-        .section {
-            margin: 40px 0;
+        .page-break {
             page-break-before: always;
         }
 
-        .section:first-of-type {
-            page-break-before: auto;
+        /* Header Styles */
+        .report-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid #2c5aa0;
         }
 
-        .section-header {
-            background: #f8f9fa;
-            padding: 20px;
-            border-left: 5px solid #3498db;
-            margin-bottom: 30px;
-        }
-
-        .section-header h2 {
-            color: #2c3e50;
-            font-size: 1.8em;
-            margin-bottom: 10px;
-        }
-
-        .section-header p {
-            color: #666;
-            font-size: 1.1em;
-        }
-
-        .scorecard {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .score-card {
-            background: white;
-            border: 1px solid #e1e8ed;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .score-card h3 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 1.1em;
-        }
-
-        .score-display {
+        .company-name {
             font-size: 2.5em;
             font-weight: bold;
+            color: #2c5aa0;
             margin-bottom: 10px;
         }
 
-        .score-critical { color: #e74c3c; }
-        .score-attention { color: #f39c12; }
-        .score-proficiency { color: #27ae60; }
-        .score-excellence { color: #2ecc71; }
-
-        .status-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .status-critical {
-            background-color: #fee2e2;
-            color: #dc2626;
-        }
-
-        .status-attention {
-            background-color: #fef3c7;
-            color: #d97706;
-        }
-
-        .status-proficiency {
-            background-color: #d1fae5;
-            color: #059669;
-        }
-
-        .status-excellence {
-            background-color: #dbeafe;
-            color: #2563eb;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #e1e8ed;
-        }
-
-        th {
-            background-color: #f8f9fa;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-
-        tr:hover {
-            background-color: #f8f9fa;
-        }
-
-        .findings-section {
-            margin: 30px 0;
-        }
-
-        .finding-item {
-            background: white;
-            border: 1px solid #e1e8ed;
-            border-radius: 6px;
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .finding-title {
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 8px;
-        }
-
-        .finding-description {
+        .report-title {
+            font-size: 1.8em;
             color: #666;
-            line-height: 1.5;
-        }
-
-        .recommendation-card {
-            background: white;
-            border: 1px solid #e1e8ed;
-            border-radius: 8px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .recommendation-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            font-weight: 300;
             margin-bottom: 15px;
         }
 
-        .recommendation-title {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #2c3e50;
+        .report-date {
+            font-size: 1em;
+            color: #888;
         }
 
-        .quick-win-badge {
-            background-color: #10b981;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8em;
-            font-weight: bold;
-        }
-
-        .recommendation-meta {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 15px;
-            margin-bottom: 15px;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 6px;
-        }
-
-        .meta-item {
-            text-align: center;
-        }
-
-        .meta-label {
-            font-size: 0.9em;
-            color: #666;
-            margin-bottom: 5px;
-        }
-
-        .meta-value {
-            font-weight: bold;
-            color: #2c3e50;
-        }
-
-        .action-steps {
-            margin-top: 15px;
-        }
-
-        .action-steps ol {
-            padding-left: 20px;
-        }
-
-        .action-steps li {
-            margin-bottom: 8px;
-            color: #555;
-        }
-
-        .risk-matrix {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .risk-item {
-            padding: 15px;
-            border-radius: 6px;
-            border-left: 4px solid;
-        }
-
-        .risk-high {
-            background-color: #fee2e2;
-            border-left-color: #dc2626;
-        }
-
-        .risk-medium {
-            background-color: #fef3c7;
-            border-left-color: #d97706;
-        }
-
-        .risk-low {
-            background-color: #d1fae5;
-            border-left-color: #059669;
-        }
-
-        .timeline {
-            margin: 30px 0;
-        }
-
-        .timeline-item {
-            display: flex;
-            margin-bottom: 20px;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .timeline-marker {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: white;
-            margin-right: 20px;
-            flex-shrink: 0;
-        }
-
-        .timeline-phase1 { background-color: #e74c3c; }
-        .timeline-phase2 { background-color: #f39c12; }
-        .timeline-phase3 { background-color: #27ae60; }
-
-        .timeline-content h4 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-
+        /* Executive Summary Styles */
         .executive-summary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px;
-            border-radius: 12px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 30px;
             margin: 30px 0;
+            border-radius: 8px;
+            border-left: 5px solid #dc3545;
+        }
+
+        .health-score-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .health-score {
             text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 10px;
+            flex: 1;
+            min-width: 200px;
         }
 
-        .executive-summary h2 {
-            margin-bottom: 20px;
-            font-size: 2em;
-        }
-
-        .summary-metrics {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
-        }
-
-        .summary-metric {
-            text-align: center;
-        }
-
-        .summary-metric .value {
+        .score-number {
             font-size: 3em;
             font-weight: bold;
-            margin-bottom: 10px;
+            color: #dc3545;
+            display: block;
         }
 
-        .summary-metric .label {
-            font-size: 1.1em;
-            opacity: 0.9;
+        .score-label {
+            font-size: 1.2em;
+            color: #666;
+            margin-top: 5px;
         }
 
-        .chapter-overview {
+        .status-needs-improvement {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        /* Key Imperatives */
+        .key-imperatives {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+
+        .key-imperatives h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .imperative-item {
+            background: white;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border-left: 3px solid #dc3545;
+        }
+
+        /* Chapter Scores */
+        .chapter-scores {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
             margin: 30px 0;
         }
 
         .chapter-card {
             background: white;
+            border: 1px solid #dee2e6;
             border-radius: 8px;
-            padding: 25px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border-left: 5px solid;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .chapter-growth { border-left-color: #3498db; }
-        .chapter-performance { border-left-color: #e67e22; }
-        .chapter-people { border-left-color: #9b59b6; }
-        .chapter-resilience { border-left-color: #27ae60; }
-
-        .dimension-breakdown {
-            margin: 20px 0;
-        }
-
-        .dimension-item {
+        .chapter-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px;
-            border-bottom: 1px solid #eee;
+            margin-bottom: 15px;
         }
 
-        .dimension-name {
-            font-weight: 600;
-            color: #2c3e50;
+        .chapter-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2c5aa0;
+        }
+
+        .chapter-score {
+            font-size: 1.5em;
+            font-weight: bold;
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: white;
+        }
+
+        .score-attention {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .score-proficiency {
+            background-color: #28a745;
+        }
+
+        .score-critical {
+            background-color: #dc3545;
+        }
+
+        .score-excellence {
+            background-color: #17a2b8;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #dee2e6;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: bold;
+            color: #495057;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        /* Section Headers */
+        h1 {
+            font-size: 2.2em;
+            color: #2c5aa0;
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #2c5aa0;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: #495057;
+            margin: 25px 0 15px 0;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            color: #6c757d;
+            margin: 20px 0 10px 0;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        /* Dimension Scorecards */
+        .dimension-scorecard {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .dimension-header {
+            background: linear-gradient(135deg, #2c5aa0 0%, #1e3a72 100%);
+            color: white;
+            padding: 15px 20px;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        .dimension-content {
+            padding: 20px;
+        }
+
+        .dimension-overview {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
         }
 
         .sub-indicators {
-            margin-left: 20px;
-            margin-top: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
         }
 
         .sub-indicator {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
-            font-size: 0.9em;
-            color: #666;
+            align-items: center;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border-left: 4px solid #2c5aa0;
         }
 
+        /* Findings Section */
+        .findings-section {
+            margin: 30px 0;
+        }
+
+        .finding-item {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 5px solid #28a745;
+        }
+
+        .finding-item.gap {
+            border-left-color: #ffc107;
+        }
+
+        .finding-item.risk {
+            border-left-color: #dc3545;
+        }
+
+        .finding-title {
+            font-weight: bold;
+            color: #2c5aa0;
+            margin-bottom: 10px;
+        }
+
+        /* Recommendations */
+        .recommendation-card {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid #17a2b8;
+        }
+
+        .recommendation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .recommendation-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2c5aa0;
+            flex: 1;
+        }
+
+        .recommendation-badges {
+            display: flex;
+            gap: 10px;
+            margin-left: 10px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .badge-quick-win {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-horizon {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .recommendation-metrics {
+            display: flex;
+            gap: 20px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .metric {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2c5aa0;
+        }
+
+        .metric-label {
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+
+        /* Risk Matrix */
+        .risk-matrix {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .risk-item {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border-left: 5px solid #dc3545;
+            background: #f8d7da;
+        }
+
+        /* Implementation Roadmap */
+        .roadmap-phase {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid #17a2b8;
+        }
+
+        .phase-header {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2c5aa0;
+            margin-bottom: 15px;
+        }
+
+        .phase-description {
+            color: #6c757d;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        /* Financial Impact */
+        .financial-impact {
+            background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 5px solid #28a745;
+            margin: 30px 0;
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .impact-metric {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .impact-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .impact-label {
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .text-bold { font-weight: bold; }
+        .mb-20 { margin-bottom: 20px; }
+        .mt-30 { margin-top: 30px; }
+
         @media print {
-            .section {
+            .page-break {
                 page-break-before: always;
             }
             
-            .scorecard {
-                break-inside: avoid;
+            body {
+                font-size: 12px;
             }
             
-            .recommendation-card {
-                break-inside: avoid;
+            .report-container {
+                max-width: none;
+                margin: 0;
+                padding: 15mm;
             }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="container">
-            <h1>EWM Global</h1>
-            <p class="subtitle">Comprehensive Business Assessment Report</p>
-            <p style="margin-top: 20px; opacity: 0.8;">Assessment Date: December 2024</p>
+    <div class="report-container">
+        <!-- Title Page -->
+        <div class="report-header">
+            <div class="company-name">EWM Global</div>
+            <div class="report-title">Comprehensive Business Assessment Report</div>
+            <div class="report-date">Assessment Date: December 2024</div>
         </div>
-    </div>
 
-    <div class="container">
+        <!-- Executive Summary -->
         <section class="executive-summary">
-            <h2>Executive Summary</h2>
-            <p style="font-size: 1.2em; margin-bottom: 20px;">EWM Global demonstrates mixed performance across business dimensions, with critical gaps requiring immediate attention alongside areas of excellence that provide a strong foundation for improvement.</p>
+            <h1>Executive Summary</h1>
             
-            <div class="summary-metrics">
-                <div class="summary-metric">
-                    <div class="value score-attention">53</div>
-                    <div class="label">Overall Health Score</div>
-                    <div class="status-badge status-attention">Needs Improvement</div>
+            <div class="health-score-container">
+                <div class="health-score">
+                    <span class="score-number">53</span>
+                    <div class="score-label">Overall Health Score</div>
+                    <div class="status-needs-improvement">Needs Improvement</div>
                 </div>
-                <div class="summary-metric">
-                    <div class="value">3</div>
-                    <div class="label">Critical Imperatives</div>
-                    <div style="font-size: 0.9em; margin-top: 10px;">Marketing, Financials, Leadership</div>
-                </div>
-                <div class="summary-metric">
-                    <div class="value">8</div>
-                    <div class="label">Key Strengths</div>
-                    <div style="font-size: 0.9em; margin-top: 10px;">Strong IT & Data Systems</div>
-                </div>
-                <div class="summary-metric">
-                    <div class="value">→</div>
-                    <div class="label">Trajectory</div>
-                    <div style="font-size: 0.9em; margin-top: 10px;">Flat Performance</div>
+                
+                <div class="health-score">
+                    <span class="score-number" style="color: #6c757d;">—</span>
+                    <div class="score-label">Trajectory</div>
+                    <div style="color: #6c757d;">Flat</div>
                 </div>
             </div>
+
+            <div class="key-imperatives">
+                <h3>Critical Improvement Areas</h3>
+                <div class="imperative-item">
+                    <strong>Marketing (31/100)</strong> - Critical underperformance requiring immediate intervention
+                </div>
+                <div class="imperative-item">
+                    <strong>Financials (39/100)</strong> - Critical gaps in financial controls and cash management
+                </div>
+                <div class="imperative-item">
+                    <strong>Leadership & Governance (40/100)</strong> - Significant weaknesses in decision-making and oversight
+                </div>
+            </div>
+
+            <p><strong>Key Assessment Findings:</strong></p>
+            <ul>
+                <li>EWM Global demonstrates <strong>IT excellence</strong> with outstanding infrastructure and data management capabilities</li>
+                <li><strong>Critical risks</strong> exist in Marketing and Financial operations that require immediate attention</li>
+                <li>Strong operational reliability and customer retention provide a solid foundation for improvement</li>
+                <li>Leadership structure needs strengthening to support strategic growth initiatives</li>
+                <li>Multiple <strong>quick-win opportunities</strong> identified across 6 key dimensions</li>
+            </ul>
         </section>
 
-        <section class="section">
-            <div class="section-header">
-                <h2>Chapter Performance Overview</h2>
-                <p>Analysis of core business performance across four critical dimensions</p>
-            </div>
-
-            <div class="chapter-overview">
-                <div class="chapter-card chapter-growth">
-                    <h3>Growth Engine</h3>
-                    <div class="score-display score-attention">49/100</div>
-                    <div class="status-badge status-attention">Attention</div>
-                    <p style="margin-top: 15px; color: #666;">Marketing and strategy challenges are limiting growth potential despite strong sales retention.</p>
-                </div>
-
-                <div class="chapter-card chapter-performance">
-                    <h3>Performance & Health</h3>
-                    <div class="score-display score-attention">51/100</div>
-                    <div class="status-badge status-attention">Attention</div>
-                    <p style="margin-top: 15px; color: #666;">Operational reliability is strong, but financial controls and customer responsiveness need improvement.</p>
-                </div>
-
-                <div class="chapter-card chapter-people">
-                    <h3>People & Leadership</h3>
-                    <div class="score-display score-attention">43/100</div>
-                    <div class="status-badge status-attention">Attention</div>
-                    <p style="margin-top: 15px; color: #666;">Leadership structure and company culture require strengthening to support organizational growth.</p>
-                </div>
-
-                <div class="chapter-card chapter-resilience">
-                    <h3>Resilience & Safeguards</h3>
-                    <div class="score-display score-proficiency">70/100</div>
-                    <div class="status-badge status-proficiency">Proficiency</div>
-                    <p style="margin-top: 15px; color: #666;">Strong IT infrastructure and compliance capabilities provide a solid foundation for business operations.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="section-header">
-                <h2>Dimension Scorecards</h2>
-                <p>Detailed breakdown of performance across all business dimensions</p>
-            </div>
-
-            <div class="dimension-breakdown">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Dimension</th>
-                            <th>Score</th>
-                            <th>Status</th>
-                            <th>Chapter</th>
-                            <th>Key Insight</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>IT, Data & Systems</strong></td>
-                            <td><span class="score-excellence">88/100</span></td>
-                            <td><span class="status-badge status-excellence">Excellence</span></td>
-                            <td>Resilience & Safeguards</td>
-                            <td>Strong competitive advantage in technology capabilities</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Compliance</strong></td>
-                            <td><span class="score-proficiency">77/100</span></td>
-                            <td><span class="status-badge status-proficiency">Proficiency</span></td>
-                            <td>Resilience & Safeguards</td>
-                            <td>Robust compliance framework and incident reporting</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Sales</strong></td>
-                            <td><span class="score-proficiency">70/100</span></td>
-                            <td><span class="status-badge status-proficiency">Proficiency</span></td>
-                            <td>Growth Engine</td>
-                            <td>Excellent customer retention, but sales cycle needs optimization</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Operations</strong></td>
-                            <td><span class="score-proficiency">62/100</span></td>
-                            <td><span class="status-badge status-proficiency">Proficiency</span></td>
-                            <td>Performance & Health</td>
-                            <td>High reliability, resource utilization needs improvement</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Risk Management</strong></td>
-                            <td><span class="score-attention">59/100</span></td>
-                            <td><span class="status-badge status-attention">Attention</span></td>
-                            <td>Resilience & Safeguards</td>
-                            <td>Good risk identification, mitigation strategies need strengthening</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Technology & Innovation</strong></td>
-                            <td><span class="score-attention">55/100</span></td>
-                            <td><span class="status-badge status-attention">Attention</span></td>
-                            <td>People & Leadership</td>
-                            <td>Strong innovation culture, technology investment lacking</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Customer Experience</strong></td>
-                            <td><span class="score-attention">50/100</span></td>
-                            <td><span class="status-badge status-attention">Attention</span></td>
-                            <td>Performance & Health</td>
-                            <td>Good satisfaction scores, response times are critical</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Human Resources</strong></td>
-                            <td><span class="score-attention">46/100</span></td>
-                            <td><span class="status-badge status-attention">Attention</span></td>
-                            <td>People & Leadership</td>
-                            <td>Company culture and engagement need significant improvement</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Strategy</strong></td>
-                            <td><span class="score-attention">45/100</span></td>
-                            <td><span class="status-badge status-attention">Attention</span></td>
-                            <td>Growth Engine</td>
-                            <td>Market positioning is weak, exit strategy planning is strong</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Leadership & Governance</strong></td>
-                            <td><span class="score-attention">40/100</span></td>
-                            <td><span class="status-badge status-attention">Attention</span></td>
-                            <td>People & Leadership</td>
-                            <td>Board oversight and decision-making structure need strengthening</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Financials</strong></td>
-                            <td><span class="score-critical">39/100</span></td>
-                            <td><span class="status-badge status-critical">Critical</span></td>
-                            <td>Performance & Health</td>
-                            <td>Cash management and profitability require immediate attention</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Marketing</strong></td>
-                            <td><span class="score-critical">31/100</span></td>
-                            <td><span class="status-badge status-critical">Critical</span></td>
-                            <td>Growth Engine</td>
-                            <td>Marketing economics and channel strategy are critical gaps</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="section-header">
-                <h2>Key Findings Analysis</h2>
-                <p>Strategic insights across strengths, gaps, and critical risks</p>
-            </div>
-
-            <div class="findings-section">
-                <h3 style="color: #27ae60; margin-bottom: 20px;">🎯 Strategic Strengths (8)</h3>
-                
-                <div class="finding-item">
-                    <div class="finding-title">IT, Data & Systems Excellence</div>
-                    <div class="finding-description">Demonstrates exceptional performance at 88/100, representing a significant competitive advantage with strong IT infrastructure (90/100), perfect network effectiveness (100/100), and excellent data management (100/100).</div>
-                </div>
-
-                <div class="finding-item">
-                    <div class="finding-title">Superior Customer Retention</div>
-                    <div class="finding-description">Sales demonstrates exceptional customer loyalty with 98/100 customer retention score, indicating strong product-market fit and customer satisfaction despite other sales challenges.</div>
-                </div>
-
-                <div class="finding-item">
-                    <div class="finding-title">Operational Reliability Foundation</div>
-                    <div class="finding-description">Perfect operational reliability (100/100) provides a stable platform for growth, with strong sales target alignment (100/100) and excellent incident reporting (100/100).</div>
-                </div>
-            </div>
-
-            <div class="findings-section">
-                <h3 style="color: #f39c12; margin-bottom: 20px;">⚠️ Critical Performance Gaps (20)</h3>
-                
-                <div class="finding-item">
-                    <div class="finding-title">Marketing Function Crisis</div>
-                    <div class="finding-description">Critical performance at 31/100 with complete gaps in marketing economics (CAC/LTV: 0/100), channel strategy (0/100), and poor marketing ROI (7/100). This fundamentally limits growth potential and customer acquisition.</div>
-                </div>
-
-                <div class="finding-item">
-                    <div class="finding-title">Financial Management Deficiencies</div>
-                    <div class="finding-description">Critical financial performance (39/100) with severe gaps in cash management (0/100), weak profitability (19/100), and inadequate financial controls (25/100). Immediate intervention required to ensure business sustainability.</div>
-                </div>
-
-                <div class="finding-item">
-                    <div class="finding-title">Leadership and Governance Weaknesses</div>
-                    <div class="finding-description">Poor governance structure with minimal board oversight (17/100) and weak decision-making processes (35/100) limiting organizational effectiveness and strategic execution capability.</div>
-                </div>
-
-                <div class="finding-item">
-                    <div class="finding-title">Customer Responsiveness Failure</div>
-                    <div class="finding-description">Despite good customer satisfaction, response time performance is completely inadequate (0/100), potentially undermining long-term customer relationships and competitive positioning.</div>
-                </div>
-            </div>
-
-            <div class="findings-section">
-                <h3 style="color: #e74c3c; margin-bottom: 20px;">🔥 Immediate Risk Factors (2)</h3>
-                
-                <div class="risk-matrix">
-                    <div class="risk-item risk-high">
-                        <h4>Marketing Critical Underperformance</h4>
-                        <p><strong>Risk Level:</strong> Critical</p>
-                        <p><strong>Impact:</strong> Severe limitation on growth and customer acquisition capabilities</p>
-                        <p><strong>Timeframe:</strong> Immediate intervention required</p>
+        <!-- Chapter Analysis -->
+        <div class="page-break">
+            <h1>Chapter-by-Chapter Analysis</h1>
+            
+            <div class="chapter-scores">
+                <div class="chapter-card">
+                    <div class="chapter-header">
+                        <div class="chapter-name">Growth Engine</div>
+                        <div class="chapter-score score-attention">49/100</div>
                     </div>
+                    <p><strong>Status:</strong> Attention Required</p>
+                    <p>The Growth Engine shows moderate performance with significant gaps in marketing effectiveness and strategic positioning. Strong sales performance is offset by critical marketing deficiencies.</p>
+                </div>
 
-                    <div class="risk-item risk-high">
-                        <h4>Financial Management Crisis</h4>
-                        <p><strong>Risk Level:</strong> Critical</p>
-                        <p><strong>Impact:</strong> Threatens business sustainability and operational continuity</p>
-                        <p><strong>Timeframe:</strong> Immediate intervention required</p>
+                <div class="chapter-card">
+                    <div class="chapter-header">
+                        <div class="chapter-name">Performance & Health</div>
+                        <div class="chapter-score score-attention">51/100</div>
+                    </div>
+                    <p><strong>Status:</strong> Attention Required</p>
+                    <p>Operational reliability is excellent, but financial controls and customer response capabilities need immediate improvement to ensure sustainable performance.</p>
+                </div>
+
+                <div class="chapter-card">
+                    <div class="chapter-header">
+                        <div class="chapter-name">People & Leadership</div>
+                        <div class="chapter-score score-attention">43/100</div>
+                    </div>
+                    <p><strong>Status:</strong> Attention Required</p>
+                    <p>Leadership effectiveness and organizational culture require strengthening. HR infrastructure is adequate but lacks strategic alignment with business objectives.</p>
+                </div>
+
+                <div class="chapter-card">
+                    <div class="chapter-header">
+                        <div class="chapter-name">Resilience & Safeguards</div>
+                        <div class="chapter-score score-proficiency">70/100</div>
+                    </div>
+                    <p><strong>Status:</strong> Proficiency Level</p>
+                    <p>Strong IT infrastructure and compliance systems provide excellent foundational resilience. Risk management practices are adequate with room for enhancement.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dimension Scorecards -->
+        <div class="page-break">
+            <h1>Dimension Scorecards</h1>
+
+            <div class="dimension-scorecard">
+                <div class="dimension-header">Strategy (STR) - 45/100 - Attention Required</div>
+                <div class="dimension-content">
+                    <div class="sub-indicators">
+                        <div class="sub-indicator">
+                            <span>Competitive Differentiation</span>
+                            <span><strong>50/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Market Position</span>
+                            <span><strong>10/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Growth Planning</span>
+                            <span><strong>42/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Strategic Review Process</span>
+                            <span><strong>50/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Exit/Growth Strategy</span>
+                            <span><strong>75/100</strong></span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <section class="section">
-            <div class="section-header">
-                <h2>Strategic Recommendations</h2>
-                <p>Prioritized action plan for performance improvement and risk mitigation</p>
+            <div class="dimension-scorecard">
+                <div class="dimension-header">Sales (SAL) - 70/100 - Proficiency Level</div>
+                <div class="dimension-content">
+                    <div class="sub-indicators">
+                        <div class="sub-indicator">
+                            <span>Sales Target Alignment</span>
+                            <span><strong>100/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Pipeline Management</span>
+                            <span><strong>75/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Sales Cycle Efficiency</span>
+                            <span><strong>3/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Customer Retention</span>
+                            <span><strong>98/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Upselling Effectiveness</span>
+                            <span><strong>75/100</strong></span>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <div class="dimension-scorecard">
+                <div class="dimension-header" style="background: linear-gradient(135deg, #dc3545 0%, #a71e2a 100%);">Marketing (MKT) - 31/100 - Critical</div>
+                <div class="dimension-content">
+                    <div class="sub-indicators">
+                        <div class="sub-indicator">
+                            <span>Brand Awareness</span>
+                            <span><strong>75/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Customer Targeting</span>
+                            <span><strong>75/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Marketing Economics (CAC/LTV)</span>
+                            <span><strong>0/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Marketing ROI</span>
+                            <span><strong>7/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Channel Strategy</span>
+                            <span><strong>0/100</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dimension-scorecard">
+                <div class="dimension-header">Customer Experience (CXP) - 50/100 - Attention Required</div>
+                <div class="dimension-content">
+                    <div class="sub-indicators">
+                        <div class="sub-indicator">
+                            <span>Customer Feedback Systems</span>
+                            <span><strong>50/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Customer Satisfaction</span>
+                            <span><strong>75/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Net Promoter Score</span>
+                            <span><strong>75/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Issue Resolution</span>
+                            <span><strong>50/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Response Time</span>
+                            <span><strong>0/100</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dimension-scorecard">
+                <div class="dimension-header">Operations (OPS) - 62/100 - Proficiency Level</div>
+                <div class="dimension-content">
+                    <div class="sub-indicators">
+                        <div class="sub-indicator">
+                            <span>Operational Efficiency</span>
+                            <span><strong>50/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Process Documentation</span>
+                            <span><strong>75/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Operational Reliability</span>
+                            <span><strong>100/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Lean Practices</span>
+                            <span><strong>50/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Resource Utilization</span>
+                            <span><strong>34/100</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dimension-scorecard">
+                <div class="dimension-header" style="background: linear-gradient(135deg, #dc3545 0%, #a71e2a 100%);">Financials (FIN) - 39/100 - Critical</div>
+                <div class="dimension-content">
+                    <div class="sub-indicators">
+                        <div class="sub-indicator">
+                            <span>Financial Controls</span>
+                            <span><strong>25/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Cash Management</span>
+                            <span><strong>0/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Profitability</span>
+                            <span><strong>19/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Financial Planning</span>
+                            <span><strong>75/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Growth Readiness</span>
+                            <span><strong>75/100</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Dimensions -->
+        <div class="page-break">
+            <div class="dimension-scorecard">
+                <div class="dimension-header">Human Resources (HRS) - 46/100 - Attention Required</div>
+                <div class="dimension-content">
+                    <div class="sub-indicators">
+                        <div class="sub-indicator">
+                            <span>HR Infrastructure</span>
+                            <span><strong>50/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Company Culture</span>
+                            <span><strong>32/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Talent Acquisition</span>
+                            <span><strong>50/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Employee Development</span>
+                            <span><strong>50/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Performance Management</span>
+                            <span><strong>50/100</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dimension-scorecard">
+                <div class="dimension-header">Leadership & Governance (LDG) - 40/100 - Attention Required</div>
+                <div class="dimension-content">
+                    <div class="sub-indicators">
+                        <div class="sub-indicator">
+                            <span>Leadership Effectiveness</span>
+                            <span><strong>50/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Decision-Making Structure</span>
+                            <span><strong>35/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Board Oversight</span>
+                            <span><strong>17/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Leadership Culture</span>
+                            <span><strong>50/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Development & Mentorship</span>
+                            <span><strong>50/100</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dimension-scorecard">
+                <div class="dimension-header">Technology & Innovation (TIN) - 55/100 - Attention Required</div>
+                <div class="dimension-content">
+                    <div class="sub-indicators">
+                        <div class="sub-indicator">
+                            <span>Technology Investment</span>
+                            <span><strong>0/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Innovation Culture</span>
+                            <span><strong>75/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Technology Adoption</span>
+                            <span><strong>75/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Automation Utilization</span>
+                            <span><strong>50/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Innovation Impact</span>
+                            <span><strong>73/100</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dimension-scorecard">
+                <div class="dimension-header" style="background: linear-gradient(135deg, #17a2b8 0%, #117a8b 100%);">IT, Data & Systems (IDS) - 88/100 - Excellence</div>
+                <div class="dimension-content">
+                    <div class="sub-indicators">
+                        <div class="sub-indicator">
+                            <span>IT Infrastructure</span>
+                            <span><strong>90/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Network Effectiveness</span>
+                            <span><strong>100/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Cybersecurity</span>
+                            <span><strong>75/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Data Management</span>
+                            <span><strong>100/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>IT Scalability</span>
+                            <span><strong>75/100</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dimension-scorecard">
+                <div class="dimension-header">Risk Management & Sustainability (RMS) - 59/100 - Attention Required</div>
+                <div class="dimension-content">
+                    <div class="sub-indicators">
+                        <div class="sub-indicator">
+                            <span>Risk Outlook</span>
+                            <span><strong>50/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Risk Identification</span>
+                            <span><strong>75/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Risk Mitigation</span>
+                            <span><strong>50/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Business Continuity</span>
+                            <span><strong>69/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Strategic Adaptability</span>
+                            <span><strong>50/100</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dimension-scorecard">
+                <div class="dimension-header">Compliance (CMP) - 77/100 - Proficiency Level</div>
+                <div class="dimension-content">
+                    <div class="sub-indicators">
+                        <div class="sub-indicator">
+                            <span>Compliance Awareness</span>
+                            <span><strong>75/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Policy Adherence</span>
+                            <span><strong>75/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Compliance Monitoring</span>
+                            <span><strong>60/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Documentation</span>
+                            <span><strong>75/100</strong></span>
+                        </div>
+                        <div class="sub-indicator">
+                            <span>Incident Reporting</span>
+                            <span><strong>100/100</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Findings -->
+        <div class="page-break">
+            <h1>Detailed Findings</h1>
+
+            <div class="findings-section">
+                <h2>Key Strengths (8 Items)</h2>
+                
+                <div class="finding-item">
+                    <div class="finding-title">Strong Sales Target Alignment [SAL]</div>
+                    <p>Sales Target Alignment within Sales shows exceptional performance at 100/100, demonstrating excellent alignment between sales objectives and execution capabilities.</p>
+                </div>
+
+                <div class="finding-item">
+                    <div class="finding-title">Strong Customer Retention [SAL]</div>
+                    <p>Customer Retention within Sales shows exceptional performance at 98/100, indicating strong customer loyalty and effective relationship management.</p>
+                </div>
+
+                <div class="finding-item">
+                    <div class="finding-title">IT, Data & Systems Excellence [IDS]</div>
+                    <p>IT, Data & Systems demonstrates strong performance at 88/100, placing it in the Excellence tier. This represents a competitive advantage with outstanding infrastructure, network effectiveness, and data management capabilities.</p>
+                </div>
+
+                <div class="finding-item">
+                    <div class="finding-title">Strong Operational Reliability [OPS]</div>
+                    <p>Operational Reliability within Operations shows exceptional performance at 100/100, ensuring consistent service delivery and operational stability.</p>
+                </div>
+
+                <h2>Critical Gaps (20 Items)</h2>
+
+                <div class="finding-item gap">
+                    <div class="finding-title">Marketing Critical Underperformance [MKT]</div>
+                    <p>Marketing is at critical levels with a score of 31/100. Key deficiencies include zero performance in Marketing Economics (CAC/LTV) and Channel Strategy, with very poor Marketing ROI (7/100). This represents a significant business risk requiring immediate intervention.</p>
+                </div>
+
+                <div class="finding-item gap">
+                    <div class="finding-title">Financials Critical Underperformance [FIN]</div>
+                    <p>Financials is at critical levels with a score of 39/100. Major concerns include zero cash management capabilities, poor financial controls (25/100), and very low profitability metrics (19/100). This poses significant operational and strategic risks.</p>
+                </div>
+
+                <div class="finding-item gap">
+                    <div class="finding-title">Leadership & Governance Performance Gap [LDG]</div>
+                    <p>Leadership & Governance shows moderate performance at 40/100. Critical weaknesses in Board Oversight (17/100) and Decision-Making Structure (35/100) limit organizational effectiveness and strategic execution capability.</p>
+                </div>
+
+                <div class="finding-item gap">
+                    <div class="finding-title">Sales Cycle Efficiency Gap [SAL]</div>
+                    <p>Despite strong overall sales performance, Sales Cycle Efficiency is critically low at 3/100, indicating significant inefficiencies in the sales process that impact revenue generation speed.</p>
+                </div>
+
+                <div class="finding-item gap">
+                    <div class="finding-title">Customer Response Time Gap [CXP]</div>
+                    <p>Customer Response Time within Customer Experience requires attention with a score of 0/100, potentially impacting customer satisfaction and retention despite strong NPS and satisfaction scores.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prioritized Recommendations -->
+        <div class="page-break">
+            <h1>Prioritized Recommendations</h1>
 
             <div class="recommendation-card">
                 <div class="recommendation-header">
                     <div class="recommendation-title">1. Marketing Improvement Initiative</div>
-                    <div class="quick-win-badge">QUICK WIN</div>
+                    <div class="recommendation-badges">
+                        <span class="badge badge-quick-win">Quick Win</span>
+                        <span class="badge badge-horizon">90 Days</span>
+                    </div>
                 </div>
                 
-                <div class="recommendation-meta">
-                    <div class="meta-item">
-                        <div class="meta-label">Timeline</div>
-                        <div class="meta-value">90 Days</div>
+                <div class="recommendation-metrics">
+                    <div class="metric">
+                        <div class="metric-value">69/100</div>
+                        <div class="metric-label">Impact Score</div>
                     </div>
-                    <div class="meta-item">
-                        <div class="meta-label">Impact Score</div>
-                        <div class="meta-value">69/100</div>
+                    <div class="metric">
+                        <div class="metric-value">70/100</div>
+                        <div class="metric-label">Effort Score</div>
                     </div>
-                    <div class="meta-item">
-                        <div class="meta-label">Effort Required</div>
-                        <div class="meta-value">70/100</div>
-                    </div>
-                    <div class="meta-item">
-                        <div class="meta-label">Expected Outcome</div>
-                        <div class="meta-value">31 → 51</div>
+                    <div class="metric">
+                        <div class="metric-value">31→51</div>
+                        <div class="metric-label">Score Improvement</div>
                     </div>
                 </div>
 
-                <div class="action-steps">
-                    <strong>Action Steps:</strong>
-                    <ol>
-                        <li>Conduct comprehensive marketing assessment and audit</li>
-                        <li>Develop improvement plan with measurable KPIs and metrics</li>
-                        <li>Implement quick wins within first 30 days</li>
-                        <li>Monitor progress and adjust approach based on results</li>
-                        <li>Document and share best practices across organization</li>
-                    </ol>
-                </div>
+                <h4>Action Steps:</h4>
+                <ul>
+                    <li>Conduct comprehensive marketing assessment focusing on CAC/LTV metrics and channel effectiveness</li>
+                    <li>Develop data-driven marketing improvement plan with measurable KPIs</li>
+                    <li>Implement quick wins including marketing ROI tracking and basic channel strategy</li>
+                    <li>Establish monthly monitoring and reporting processes</li>
+                    <li>Document best practices and scale successful initiatives</li>
+                </ul>
             </div>
 
             <div class="recommendation-card">
                 <div class="recommendation-header">
-                    <div class="recommendation-title">2. Financial Management Initiative</div>
+                    <div class="recommendation-title">2. Financials Improvement Initiative</div>
+                    <div class="recommendation-badges">
+                        <span class="badge badge-horizon">90 Days</span>
+                    </div>
                 </div>
                 
-                <div class="recommendation-meta">
-                    <div class="meta-item">
-                        <div class="meta-label">Timeline</div>
-                        <div class="meta-value">90 Days</div>
+                <div class="recommendation-metrics">
+                    <div class="metric">
+                        <div class="metric-value">61/100</div>
+                        <div class="metric-label">Impact Score</div>
                     </div>
-                    <div class="meta-item">
-                        <div class="meta-label">Impact Score</div>
-                        <div class="meta-value">61/100</div>
+                    <div class="metric">
+                        <div class="metric-value">70/100</div>
+                        <div class="metric-label">Effort Score</div>
                     </div>
-                    <div class="meta-item">
-                        <div class="meta-label">Effort Required</div>
-                        <div class="meta-value">70/100</div>
-                    </div>
-                    <div class="meta-item">
-                        <div class="meta-label">Expected Outcome</div>
-                        <div class="meta-value">39 → 59</div>
+                    <div class="metric">
+                        <div class="metric-value">39→59</div>
+                        <div class="metric-label">Score Improvement</div>
                     </div>
                 </div>
 
-                <div class="action-steps">
-                    <strong>Action Steps:</strong>
-                    <ol>
-                        <li>Implement robust cash management and monitoring systems</li>
-                        <li>Establish comprehensive financial controls and oversight</li>
-                        <li>Develop profitability improvement and cost optimization plans</li>
-                        <li>Create financial planning and forecasting capabilities</li>
-                        <li>Establish regular financial review and reporting processes</li>
-                    </ol>
-                </div>
+                <h4>Action Steps:</h4>
+                <ul>
+                    <li>Implement cash flow management system and daily cash monitoring</li>
+                    <li>Strengthen financial controls with segregation of duties and approval processes</li>
+                    <li>Develop comprehensive profitability analysis and improvement plan</li>
+                    <li>Establish weekly financial reporting and variance analysis</li>
+                    <li>Create financial dashboard for real-time performance monitoring</li>
+                </ul>
             </div>
 
             <div class="recommendation-card">
                 <div class="recommendation-header">
-                    <div class="recommendation-title">3. Leadership & Governance Enhancement</div>
-                    <div class="quick-win-badge">QUICK WIN</div>
+                    <div class="recommendation-title">3. Leadership & Governance Improvement Initiative</div>
+                    <div class="recommendation-badges">
+                        <span class="badge badge-quick-win">Quick Win</span>
+                        <span class="badge badge-horizon">12 Months</span>
+                    </div>
                 </div>
                 
-                <div class="recommendation-meta">
-                    <div class="meta-item">
-                        <div class="meta-label">Timeline</div>
-                        <div class="meta-value">12 Months</div>
+                <div class="recommendation-metrics">
+                    <div class="metric">
+                        <div class="metric-value">60/100</div>
+                        <div class="metric-label">Impact Score</div>
                     </div>
-                    <div class="meta-item">
-                        <div class="meta-label">Impact Score</div>
-                        <div class="meta-value">60/100</div>
+                    <div class="metric">
+                        <div class="metric-value">50/100</div>
+                        <div class="metric-label">Effort Score</div>
                     </div>
-                    <div class="meta-item">
-                        <div class="meta-label">Effort Required</div>
-                        <div class="meta-value">50/100</div>
-                    </div>
-                    <div class="meta-item">
-                        <div class="meta-label">Expected Outcome</div>
-                        <div class="meta-value">40 → 60</div>
+                    <div class="metric">
+                        <div class="metric-value">40→60</div>
+                        <div class="metric-label">Score Improvement</div>
                     </div>
                 </div>
 
-                <div class="action-steps">
-                    <strong>Action Steps:</strong>
-                    <ol>
-                        <li>Strengthen board oversight and governance structure</li>
-                        <li>Implement clear decision-making frameworks and processes</li>
-                        <li>Develop leadership development and mentorship programs</li>
-                        <li>Create accountability and performance management systems</li>
-                        <li>Establish strategic planning and review processes</li>
-                    </ol>
-                </div>
+                <h4>Action Steps:</h4>
+                <ul>
+                    <li>Establish formal board governance structure and regular meeting cadence</li>
+                    <li>Implement structured decision-making framework with clear authority levels</li>
+                    <li>Develop leadership development program and succession planning</li>
+                    <li>Create transparent communication channels and feedback mechanisms</li>
+                    <li>Implement leadership effectiveness measurement and improvement processes</li>
+                </ul>
             </div>
 
             <div class="recommendation-card">
                 <div class="recommendation-header">
-                    <div class="recommendation-title">4. Customer Experience Enhancement</div>
-                    <div class="quick-win-badge">QUICK WIN</div>
+                    <div class="recommendation-title">4. Strategy Improvement Initiative</div>
+                    <div class="recommendation-badges">
+                        <span class="badge badge-quick-win">Quick Win</span>
+                        <span class="badge badge-horizon">12 Months</span>
+                    </div>
                 </div>
                 
-                <div class="recommendation-meta">
-                    <div class="meta-item">
-                        <div class="meta-label">Timeline</div>
-                        <div class="meta-value">12 Months</div>
+                <div class="recommendation-metrics">
+                    <div class="metric">
+                        <div class="metric-value">55/100</div>
+                        <div class="metric-label">Impact Score</div>
                     </div>
-                    <div class="meta-item">
-                        <div class="meta-label">Impact Score</div>
-                        <div class="meta-value">50/100</div>
+                    <div class="metric">
+                        <div class="metric-value">50/100</div>
+                        <div class="metric-label">Effort Score</div>
                     </div>
-                    <div class="meta-item">
-                        <div class="meta-label">Effort Required</div>
-                        <div class="meta-value">50/100</div>
-                    </div>
-                    <div class="meta-item">
-                        <div class="meta-label">Expected Outcome</div>
-                        <div class="meta-value">50 → 70</div>
+                    <div class="metric">
+                        <div class="metric-value">45→65</div>
+                        <div class="metric-label">Score Improvement</div>
                     </div>
                 </div>
 
-                <div class="action-steps">
-                    <strong>Action Steps:</strong>
-                    <ol>
-                        <li>Implement rapid response time systems and protocols</li>
-                        <li>Enhance customer feedback collection and analysis</li>
-                        <li>Improve issue resolution processes and tracking</li>
-                        <li>Develop customer success and relationship management</li>
-                        <li>Create customer experience measurement and improvement framework</li>
-                    </ol>
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="section-header">
-                <h2>Implementation Roadmap</h2>
-                <p>Phased approach to transformation with clear milestones and deliverables</p>
+                <h4>Action Steps:</h4>
+                <ul>
+                    <li>Conduct comprehensive market position analysis and competitive assessment</li>
+                    <li>Develop clear value proposition and competitive differentiation strategy</li>
+                    <li>Implement quarterly strategic review process with board oversight</li>
+                    <li>Create strategic planning framework linking to operational execution</li>
+                    <li>Establish strategic KPIs and monitoring dashboard</li>
+                </ul>
             </div>
 
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-marker timeline-phase1">90d</div>
-                    <div class="timeline-content">
-                        <h4>Foundation & Crisis Management (0-90 Days)</h4>
-                        <p><strong>Focus:</strong> Address critical risks and establish foundational capabilities</p>
-                        <p><strong>Key Initiatives:</strong></p>
-                        <ul>
-                            <li>Marketing Function Overhaul - Immediate assessment and quick wins implementation</li>
-                            <li>Financial Management Stabilization - Cash flow management and control implementation</li>
-                        </ul>
-                        <p><strong>Success Metrics:</strong> Marketing score 31→51, Financials score 39→59</p>
+            <div class="recommendation-card">
+                <div class="recommendation-header">
+                    <div class="recommendation-title">5. Customer Experience Improvement Initiative</div>
+                    <div class="recommendation-badges">
+                        <span class="badge badge-quick-win">Quick Win</span>
+                        <span class="badge badge-horizon">12 Months</span>
                     </div>
                 </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-marker timeline-phase2">12m</div>
-                    <div class="timeline-content">
-                        <h4>Core Capability Building (3-12 Months)</h4>
-                        <p><strong>Focus:</strong> Build sustainable capabilities and address systemic issues</p>
-                        <p><strong>Key Initiatives:</strong></p>
-                        <ul>
-                            <li>Leadership & Governance Enhancement</li>
-                            <li>Strategy Development and Market Positioning</li>
-                            <li>Human Resources and Culture Transformation</li>
-                            <li>Customer Experience Excellence Program</li>
-                        </ul>
-                        <p><strong>Success Metrics:</strong> All attention-level dimensions move to proficiency tier</p>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-marker timeline-phase3">24m+</div>
-                    <div class="timeline-content">
-                        <h4>Strategic Optimization (12-24+ Months)</h4>
-                        <p><strong>Focus:</strong> Achieve competitive advantage and sustainable growth</p>
-                        <p><strong>Key Initiatives:</strong></p>
-                        <ul>
-                            <li>Technology & Innovation Investment Program</li>
-                            <li>Operations Excellence and Automation</li>
-                            <li>Sales Process Optimization and Expansion</li>
-                            <li>Advanced Risk Management and Sustainability</li>
-                        </ul>
-                        <p><strong>Success Metrics:</strong> Overall health score >75, multiple dimensions in excellence tier</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="section-header">
-                <h2>Financial Impact Projections</h2>
-                <p>Expected returns on improvement investments and risk mitigation</p>
-            </div>
-
-            <div class="scorecard">
-                <div class="score-card">
-                    <h3>Investment Required</h3>
-                    <div class="score-display">$2.5M</div>
-                    <p>Total 24-month investment across all initiatives</p>
-                    <ul style="margin-top: 15px; font-size: 0.9em;">
-                        <li>Marketing: $800K</li>
-                        <li>Financial Systems: $600K</li>
-                        <li>Leadership Development: $400K</li>
-                        <li>Technology: $500K</li>
-                        <li>Operations: $200K</li>
-                    </ul>
-                </div>
-
-                <div class="score-card">
-                    <h3>Revenue Impact</h3>
-                    <div class="score-display score-proficiency">+35%</div>
-                    <p>Projected revenue increase over 24 months</p>
-                    <ul style="margin-top: 15px; font-size: 0.9em;">
-                        <li>Improved marketing effectiveness</li>
-                        <li>Enhanced customer retention</li>
-                        <li>Better sales cycle efficiency</li>
-                        <li>Market positioning gains</li>
-                    </ul>
-                </div>
-
-                <div class="score-card">
-                    <h3>Cost Optimization</h3>
-                    <div class="score-display score-proficiency">-18%</div>
-                    <p>Operational cost reduction through efficiency gains</p>
-                    <ul style="margin-top: 15px; font-size: 0.9em;">
-                        <li>Financial controls and cash management</li>
-                        <li>Operational efficiency improvements</li>
-                        <li>Technology automation benefits</li>
-                        <li>Resource utilization optimization</li>
-                    </ul>
-                </div>
-
-                <div class="score-card">
-                    <h3>ROI Timeline</h3>
-                    <div class="score-display score-excellence">18mo</div>
-                    <p>Break-even point for total investment</p>
-                    <ul style="margin-top: 15px; font-size: 0.9em;">
-                        <li>6-month: Initial cost savings</li>
-                        <li>12-month: Revenue improvements</li>
-                        <li>18-month: Full ROI achievement</li>
-                        <li>24-month: Sustained competitive advantage</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div style="background: #f8f9fa; padding: 20px; border-radius: 6px; margin-top: 30px;">
-                <h4 style="color: #2c3e50; margin-bottom: 15px;">Risk-Adjusted Financial Benefits</h4>
-                <p><strong>Conservative Scenario (70% success rate):</strong> $8.2M net benefit over 24 months</p>
-                <p><strong>Expected Scenario (85% success rate):</strong> $12.1M net benefit over 24 months</p>
-                <p><strong>Optimistic Scenario (95% success rate):</strong> $16.8M net benefit over 24 months</p>
                 
-                <p style="margin-top: 20px;"><strong>Key Risk Mitigation:</strong> The strong IT, Data & Systems foundation (88/100) and operational reliability (100/100) significantly reduce implementation risks and support higher success probability.</p>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="section-header">
-                <h2>Conclusion & Next Steps</h2>
-                <p>Strategic priorities and immediate actions for organizational transformation</p>
-            </div>
-
-            <div style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                <h3 style="color: #2c3e50; margin-bottom: 20px;">Executive Recommendations</h3>
-                
-                <p style="margin-bottom: 20px; font-size: 1.1em; line-height: 1.6;">
-                    EWM Global stands at a critical juncture with significant opportunities for improvement. While the overall health score of 53/100 indicates substantial challenges, the company possesses strong foundational assets—particularly in IT infrastructure and operational reliability—that provide an excellent platform for transformation.
-                </p>
-
-                <h4 style="color: #e74c3c; margin-bottom: 15px;">Immediate Priorities (Next 90 Days)</h4>
-                <ol style="margin-bottom: 25px; line-height: 1.6;">
-                    <li><strong>Marketing Crisis Resolution:</strong> Launch comprehensive marketing assessment and implement emergency measures to address the critical 31/100 score</li>
-                    <li><strong>Financial Stabilization:</strong> Establish immediate cash management controls and financial oversight to address the 39/100 score</li>
-                    <li><strong>Leadership Alignment:</strong> Convene leadership team to establish clear accountability and decision-making processes</li>
-                </ol>
-
-                <h4 style="color: #f39c12; margin-bottom: 15px;">Medium-Term Focus (3-12 Months)</h4>
-                <ol style="margin-bottom: 25px; line-height: 1.6;">
-                    <li><strong>Strategic Positioning:</strong> Leverage strong operational capabilities to improve market positioning and competitive differentiation</li>
-                    <li><strong>Customer Experience Excellence:</strong> Address response time issues while building on strong customer satisfaction scores</li>
-                    <li><strong>Organizational Development:</strong> Invest in company culture and human resources capabilities to support growth</li>
-                </ol>
-
-                <h4 style="color: #27ae60; margin-bottom: 15px;">Long-Term Vision (12-24+ Months)</h4>
-                <ol style="margin-bottom: 25px; line-height: 1.6;">
-                    <li><strong>Technology Investment:</strong> Build on IT excellence to drive innovation and operational automation</li>
-                    <li><strong>Market Expansion:</strong> Leverage improved marketing and sales capabilities for growth</li>
-                    <li><strong>Sustainable Excellence:</strong> Establish systems and processes for continuous improvement and competitive advantage</li>
-                </ol>
-
-                <div style="background: #e8f5e8; padding: 20px; border-radius: 6px; margin-top: 30px;">
-                    <h4 style="color: #27ae60; margin-bottom: 15px;">Success Factors</h4>
-                    <p style="margin-bottom: 10px;"><strong>Build on Strengths:</strong> Leverage the 88/100 IT systems score and 98/100 customer retention as competitive advantages</p>
-                    <p style="margin-bottom: 10px;"><strong>Address Critical Gaps:</strong> Focus resources on marketing and financial management improvements for immediate impact</p>
-                    <p><strong>Maintain Momentum:</strong> Use the strong operational reliability foundation to implement changes without disrupting core business operations</p>
+                <div class="recommendation-metrics">
+                    <div class="metric">
+                        <div class="metric-value">50/100</div>
+                        <div class="metric-label">Impact Score</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">50/100</div>
+                        <div class="metric-label">Effort Score</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">50→70</div>
+                        <div class="metric-label">Score Improvement</div>
+                    </div>
                 </div>
 
-                <div style="text-align: center; margin-top: 40px; padding: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 8px;">
-                    <h3 style="margin-bottom: 15px;">Projected Outcome</h3>
-                    <p style="font-size: 1.2em; margin-bottom: 10px;">With disciplined execution of these recommendations, EWM Global can achieve:</p>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px;">
-                        <div>
-                            <div style="font-size: 2em; font-weight: bold;">75+</div>
-                            <div>Overall Health Score</div>
-                        </div>
-                        <div>
-                            <div style="font-size: 2em; font-weight: bold;">$12M+</div>
-                            <div>Net Financial Benefit</div>
-                        </div>
-                        <div>
-                            <div style="font-size: 2em; font-weight: bold;">18mo</div>
-                            <div>ROI Achievement</div>
-                        </div>
+                <h4>Action Steps:</h4>
+                <ul>
+                    <li>Implement customer response time SLAs and monitoring system</li>
+                    <li>Enhance customer feedback collection and analysis processes</li>
+                    <li>Develop customer journey mapping and experience optimization plan</li>
+                    <li>Create customer service training program for all customer-facing staff</li>
+                    <li>Establish customer experience metrics dashboard and regular reporting</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Risk Assessment Matrix -->
+        <div class="page-break">
+            <h1>Risk Assessment Matrix</h1>
+
+            <div class="risk-matrix">
+                <h2>Critical Business Risks</h2>
+                
+                <div class="risk-item">
+                    <div class="finding-title">Marketing Critical Underperformance</div>
+                    <p><strong>Severity:</strong> Critical | <strong>Likelihood:</strong> High</p>
+                    <p>Marketing performance at 31/100 poses immediate threats to customer acquisition, revenue growth, and competitive positioning. Zero performance in CAC/LTV tracking and channel strategy creates blind spots in growth investments.</p>
+                    <p><strong>Impact:</strong> Potential revenue decline, increased customer acquisition costs, loss of market share</p>
+                    <p><strong>Mitigation:</strong> Immediate marketing assessment and 90-day improvement program</p>
+                </div>
+
+                <div class="risk-item">
+                    <div class="finding-title">Financials Critical Underperformance</div>
+                    <p><strong>Severity:</strong> Critical | <strong>Likelihood:</strong> High</p>
+                    <p>Financial performance at 39/100 with zero cash management capabilities and poor controls creates operational and strategic risks. Low profitability (19/100) threatens business sustainability.</p>
+                    <p><strong>Impact:</strong> Cash flow crises, regulatory compliance issues, limited growth financing options</p>
+                    <p><strong>Mitigation:</strong> Immediate financial controls implementation and cash management system</p>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Risk Category</th>
+                        <th>Current Score</th>
+                        <th>Severity</th>
+                        <th>Likelihood</th>
+                        <th>Risk Level</th>
+                        <th>Mitigation Priority</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Marketing Effectiveness</td>
+                        <td>31/100</td>
+                        <td>Critical</td>
+                        <td>High</td>
+                        <td>Extreme</td>
+                        <td>Immediate</td>
+                    </tr>
+                    <tr>
+                        <td>Financial Controls</td>
+                        <td>39/100</td>
+                        <td>Critical</td>
+                        <td>High</td>
+                        <td>Extreme</td>
+                        <td>Immediate</td>
+                    </tr>
+                    <tr>
+                        <td>Leadership Governance</td>
+                        <td>40/100</td>
+                        <td>High</td>
+                        <td>Medium</td>
+                        <td>High</td>
+                        <td>Short-term</td>
+                    </tr>
+                    <tr>
+                        <td>Strategic Positioning</td>
+                        <td>45/100</td>
+                        <td>Medium</td>
+                        <td>Medium</td>
+                        <td>Medium</td>
+                        <td>Medium-term</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Implementation Roadmap -->
+        <div class="page-break">
+            <h1>Implementation Roadmap</h1>
+
+            <div class="roadmap-phase">
+                <div class="phase-header">Phase 1: Foundation & Quick Wins (0-90 days)</div>
+                <div class="phase-description">Focus on immediate value creation through quick wins and critical risk mitigation. Build momentum with visible early successes.</div>
+                
+                <h4>Priority Initiatives (2 items):</h4>
+                <ul>
+                    <li><strong>Marketing Improvement Initiative</strong> - Address critical marketing gaps with immediate impact on customer acquisition and ROI measurement</li>
+                    <li><strong>Financials Improvement Initiative</strong> - Implement essential financial controls and cash management to mitigate operational risks</li>
+                </ul>
+
+                <h4>Expected Outcomes:</h4>
+                <ul>
+                    <li>Marketing score improvement: 31 → 51 (+20 points)</li>
+                    <li>Financial score improvement: 39 → 59 (+20 points)</li>
+                    <li>Overall health score improvement: 53 → 58 (+5 points)</li>
+                    <li>Risk mitigation in two critical areas</li>
+                </ul>
+            </div>
+
+            <div class="roadmap-phase">
+                <div class="phase-header">Phase 2: Core Capability Building (3-12 months)</div>
+                <div class="phase-description">Implement foundational improvements across key dimensions. Establish new processes and capabilities for sustained performance.</div>
+                
+                <h4>Priority Initiatives (6 items):</h4>
+                <ul>
+                    <li><strong>Leadership & Governance Improvement</strong> - Strengthen decision-making and oversight capabilities</li>
+                    <li><strong>Strategy Improvement</strong> - Enhance competitive positioning and market strategy</li>
+                    <li><strong>Human Resources Improvement</strong> - Build organizational culture and talent capabilities</li>
+                    <li><strong>Customer Experience Improvement</strong> - Optimize customer journey and service delivery</li>
+                    <li><strong>Technology & Innovation Improvement</strong> - Increase technology investment and innovation impact</li>
+                    <li><strong>Risk Management Enhancement</strong> - Strengthen risk identification and mitigation processes</li>
+                </ul>
+
+                <h4>Expected Outcomes:</h4>
+                <ul>
+                    <li>6 additional dimension improvements totaling +120 points</li>
+                    <li>Overall health score improvement: 58 → 68 (+10 points)</li>
+                    <li>Established sustainable improvement processes</li>
+                    <li>Enhanced organizational capabilities</li>
+                </ul>
+            </div>
+
+            <div class="roadmap-phase">
+                <div class="phase-header">Phase 3: Strategic Transformation (12-24+ months)</div>
+                <div class="phase-description">Execute long-term strategic initiatives. Transform organizational capabilities for sustained competitive advantage.</div>
+                
+                <h4>Priority Initiatives (2 items):</h4>
+                <ul>
+                    <li><strong>Operations Excellence</strong> - Achieve operational efficiency and resource optimization</li>
+                    <li><strong>Sales Process Optimization</strong> - Transform sales cycle efficiency while maintaining strengths</li>
+                </ul>
+
+                <h4>Expected Outcomes:</h4>
+                <ul>
+                    <li>Operations score improvement: 62 → 82 (+20 points)</li>
+                    <li>Sales score improvement: 70 → 90 (+20 points)</li>
+                    <li>Overall health score target: 75+ (Excellence threshold)</li>
+                    <li>Sustainable competitive advantages established</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Financial Impact Projections -->
+        <div class="page-break">
+            <h1>Financial Impact Projections</h1>
+
+            <div class="financial-impact">
+                <h2>Projected Business Impact</h2>
+                <p>Based on industry benchmarks and the scope of improvements outlined in this assessment, EWM Global can expect significant financial benefits from implementing the recommended initiatives.</p>
+
+                <div class="impact-grid">
+                    <div class="impact-metric">
+                        <div class="impact-value">15-25%</div>
+                        <div class="impact-label">Revenue Growth Potential</div>
+                    </div>
+                    <div class="impact-metric">
+                        <div class="impact-value">20-30%</div>
+                        <div class="impact-label">Cost Reduction Opportunity</div>
+                    </div>
+                    <div class="impact-metric">
+                        <div class="impact-value">10-15%</div>
+                        <div class="impact-label">Profit Margin Improvement</div>
+                    </div>
+                    <div class="impact-metric">
+                        <div class="impact-value">3-6 months</div>
+                        <div class="impact-label">ROI Timeline</div>
                     </div>
                 </div>
             </div>
-        </section>
+
+            <h2>Investment vs. Return Analysis</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Investment Area</th>
+                        <th>Phase</th>
+                        <th>Estimated Investment</th>
+                        <th>Expected Annual Return</th>
+                        <th>ROI Timeline</th>
+                        <th>Risk Level</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Marketing Improvement</td>
+                        <td>1</td>
+                        <td>$50K - $100K</td>
+                        <td>$200K - $400K</td>
+                        <td>3-6 months</td>
+                        <td>Low</td>
+                    </tr>
+                    <tr>
+                        <td>Financial Controls</td>
+                        <td>1</td>
+                        <td>$25K - $50K</td>
+                        <td>$150K - $300K</td>
+                        <td>2-4 months</td>
+                        <td>Low</td>
+                    </tr>
+                    <tr>
+                        <td>Leadership Development</td>
+                        <td>2</td>
+                        <td>$75K - $125K</td>
+                        <td>$300K - $500K</td>
+                        <td>6-12 months</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td>Strategy Enhancement</td>
+                        <td>2</td>
+                        <td>$40K - $80K</td>
+                        <td>$250K - $450K</td>
+                        <td>6-9 months</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td>Operations Excellence</td>
+                        <td>3</td>
+                        <td>$100K - $200K</td>
+                        <td>$400K - $700K</td>
+                        <td>12-18 months</td>
+                        <td>Medium</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="financial-impact">
+                <h3>Key Financial Benefits</h3>
+                <ul>
+                    <li><strong>Improved Cash Flow:</strong> Enhanced financial controls and cash management will improve working capital efficiency by 15-20%</li>
+                    <li><strong>Marketing ROI:</strong> Implementing proper marketing metrics and channel strategy can improve marketing ROI by 200-400%</li>
+                    <li><strong>Operational Efficiency:</strong> Process improvements and resource optimization can reduce operational costs by 10-15%</li>
+                    <li><strong>Customer Lifetime Value:</strong> Enhanced customer experience and retention can increase CLV by 20-30%</li>
+                    <li><strong>Strategic Positioning:</strong> Improved market position can command premium pricing, increasing margins by 5-10%</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Conclusion and Next Steps -->
+        <div class="page-break">
+            <h1>Conclusion and Next Steps</h1>
+
+            <div class="executive-summary">
+                <h2>Executive Summary of Recommendations</h2>
+                <p>EWM Global stands at a critical juncture with significant opportunities for improvement. While the overall health score of 53/100 indicates areas requiring attention, the company's strong IT infrastructure, operational reliability, and customer retention provide a solid foundation for growth.</p>
+
+                <h3>Immediate Priorities (Next 90 Days)</h3>
+                <ul>
+                    <li><strong>Marketing Turnaround:</strong> Address critical marketing gaps that pose immediate business risks</li>
+                    <li><strong>Financial Controls:</strong> Implement essential financial management systems to ensure operational stability</li>
+                    <li><strong>Leadership Alignment:</strong> Begin governance improvements to support strategic decision-making</li>
+                </ul>
+
+                <h3>Medium-Term Focus (3-12 Months)</h3>
+                <ul>
+                    <li><strong>Strategic Repositioning:</strong> Enhance competitive positioning and market strategy</li>
+                    <li><strong>Organizational Development:</strong> Build leadership capabilities and improve company culture</li>
+                    <li><strong>Customer Experience:</strong> Optimize service delivery and response capabilities</li>
+                </ul>
+
+                <h3>Long-Term Vision (12-24 Months)</h3>
+                <ul>
+                    <li><strong>Operational Excellence:</strong> Achieve industry-leading efficiency and resource utilization</li>
+                    <li><strong>Sales Optimization:</strong> Transform sales processes while maintaining retention strengths</li>
+                    <li><strong>Sustainable Growth:</strong> Establish capabilities for long-term competitive advantage</li>
+                </ul>
+            </div>
+
+            <div class="key-imperatives">
+                <h3>Success Factors</h3>
+                <ul>
+                    <li><strong>Executive Commitment:</strong> Leadership must champion and actively support all improvement initiatives</li>
+                    <li><strong>Resource Allocation:</strong> Adequate investment in people, processes, and technology improvements</li>
+                    <li><strong>Change Management:</strong> Systematic approach to organizational change with clear communication</li>
+                    <li><strong>Performance Monitoring:</strong> Regular assessment of progress against established KPIs and targets</li>
+                    <li><strong>Stakeholder Engagement:</strong> Active involvement of all key stakeholders in transformation efforts</li>
+                </ul>
+            </div>
+
+            <div class="financial-impact">
+                <h3>Expected Transformation Timeline</h3>
+                <p>With committed execution of the recommended initiatives, EWM Global can expect to:</p>
+                <ul>
+                    <li><strong>Quarter 1:</strong> Achieve 58/100 health score through critical area improvements</li>
+                    <li><strong>Year 1:</strong> Reach 68/100 health score with comprehensive capability building</li>
+                    <li><strong>Year 2:</strong> Target 75+ health score representing Excellence-level performance</li>
+                    <li><strong>Ongoing:</strong> Maintain competitive advantages through continuous improvement culture</li>
+                </ul>
+            </div>
+
+            <p style="margin-top: 30px; padding: 20px; background: #e9ecef; border-left: 4px solid #2c5aa0; font-style: italic;">
+                <strong>This assessment provides a comprehensive roadmap for EWM Global's transformation. Success depends on immediate action on critical areas while maintaining focus on long-term strategic objectives. The company's strong technological foundation and operational reliability provide excellent platforms for the recommended improvements.</strong>
+            </p>
+        </div>
     </div>
 </body>
 </html>

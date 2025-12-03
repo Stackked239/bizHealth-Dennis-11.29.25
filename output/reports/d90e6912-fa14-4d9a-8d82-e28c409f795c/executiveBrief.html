@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="BizHealth.ai Report Generator v1.0">
+  <title>Executive Brief - EWM Global</title>
+  <style>
+    
+    /* Base Reset and Typography */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      font-family: 'Open Sans', Arial, sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #333;
+      background: #fff;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+      color: #212653;
+      margin-bottom: 0.5em;
+      line-height: 1.3;
+    }
+
+    h1 { font-size: 2.5rem; font-weight: 700; }
+    h2 { font-size: 2rem; font-weight: 600; page-break-before: always; }
+    h2:first-of-type { page-break-before: auto; }
+    h3 { font-size: 1.5rem; font-weight: 600; }
+    h4 { font-size: 1.25rem; font-weight: 500; }
+    h5 { font-size: 1.1rem; font-weight: 500; }
+
+    p {
+      margin-bottom: 1em;
+    }
+
+    /* Links */
+    a {
+      color: #969423;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Lists */
+    ul, ol {
+      margin-left: 1.5em;
+      margin-bottom: 1em;
+    }
+
+    li {
+      margin-bottom: 0.5em;
+    }
+
+    /* Page Layout */
+    .report-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .page {
+      padding: 2rem 0;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    /* Header */
+    .report-header {
+      text-align: center;
+      padding: 2rem 0;
+      border-bottom: 4px solid #212653;
+      margin-bottom: 2rem;
+    }
+
+    .report-header .logo {
+      max-height: 60px;
+      margin-bottom: 1rem;
+    }
+
+    .report-header h1 {
+      margin-bottom: 0.5rem;
+    }
+
+    .report-header .subtitle {
+      font-size: 1.25rem;
+      color: #666;
+    }
+
+    .report-header .company-name {
+      font-size: 1.5rem;
+      color: #969423;
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+
+    .report-header .date {
+      font-size: 0.9rem;
+      color: #888;
+      margin-top: 0.5rem;
+    }
+
+    /* Footer */
+    .report-footer {
+      text-align: center;
+      padding: 1rem 0;
+      border-top: 2px solid #eee;
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    @media print {
+      .report-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    }
+
+    /* Section Styles */
+    .section {
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #969423;
+    }
+
+    .section-icon {
+      font-size: 1.5rem;
+      margin-right: 0.75rem;
+    }
+
+    /* Score Cards */
+    .score-card {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #212653 0%, #212653dd 100%);
+      color: #fff;
+      min-width: 150px;
+    }
+
+    .score-card .score-value {
+      font-size: 3rem;
+      font-weight: 700;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    .score-card .score-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .score-card.small {
+      padding: 0.75rem;
+      min-width: 100px;
+    }
+
+    .score-card.small .score-value {
+      font-size: 1.75rem;
+    }
+
+    /* Health Score Display */
+    .health-score-display {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+    }
+
+    .health-score-circle {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #212653 0%, #212653cc 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    .health-score-circle .score {
+      font-size: 3.5rem;
+      font-weight: 700;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+      line-height: 1;
+    }
+
+    .health-score-circle .out-of {
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    .health-score-details {
+      text-align: left;
+    }
+
+    .health-score-details .status {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .health-score-details .trajectory {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      color: #666;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    th {
+      background: #212653;
+      color: #fff;
+      font-weight: 600;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    tr:hover {
+      background: #f0f0f0;
+    }
+
+    /* Score Table */
+    .score-table th:first-child {
+      width: 40%;
+    }
+
+    .score-table td.score {
+      font-weight: 600;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    /* Band Badge */
+    .band-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .band-badge.Excellence { background: #d4edda; color: #155724; }
+    .band-badge.Proficiency { background: #fff3cd; color: #856404; }
+    .band-badge.Attention { background: #ffeeba; color: #856404; }
+    .band-badge.Critical { background: #f8d7da; color: #721c24; }
+
+    /* Priority Badge */
+    .priority-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .priority-badge.high { background: #dc3545; color: #fff; }
+    .priority-badge.medium { background: #ffc107; color: #333; }
+    .priority-badge.low { background: #28a745; color: #fff; }
+
+    /* Cards */
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #212653;
+      margin: 0;
+    }
+
+    .card-body {
+      font-size: 0.95rem;
+    }
+
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+    @media (max-width: 768px) {
+      .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Flex Layout */
+    .flex { display: flex; }
+    .flex-wrap { flex-wrap: wrap; }
+    .flex-center { align-items: center; justify-content: center; }
+    .flex-between { justify-content: space-between; }
+    .gap-1 { gap: 0.5rem; }
+    .gap-2 { gap: 1rem; }
+    .gap-3 { gap: 1.5rem; }
+
+    /* Utility Classes */
+    .text-center { text-align: center; }
+    .text-right { text-align: right; }
+    .mt-1 { margin-top: 0.5rem; }
+    .mt-2 { margin-top: 1rem; }
+    .mt-3 { margin-top: 1.5rem; }
+    .mb-1 { margin-bottom: 0.5rem; }
+    .mb-2 { margin-bottom: 1rem; }
+    .mb-3 { margin-bottom: 1.5rem; }
+    .p-1 { padding: 0.5rem; }
+    .p-2 { padding: 1rem; }
+    .p-3 { padding: 1.5rem; }
+
+    /* Quick Win Card */
+    .quick-win-card {
+      background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+      border-left: 4px solid #969423;
+      padding: 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+    }
+
+    .quick-win-card .title {
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .quick-win-card .metrics {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.75rem;
+    }
+
+    .quick-win-card .metrics span {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* Risk Card */
+    .risk-card {
+      border-left: 4px solid #dc3545;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .risk-card.high { border-left-color: #dc3545; }
+    .risk-card.medium { border-left-color: #ffc107; }
+    .risk-card.low { border-left-color: #28a745; }
+
+    .risk-card .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .risk-card .category {
+      font-weight: 600;
+      color: #212653;
+    }
+
+    /* Finding Card */
+    .finding-card {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+    }
+
+    .finding-card.strength { background: #d4edda; border-left: 4px solid #28a745; }
+    .finding-card.gap { background: #f8d7da; border-left: 4px solid #dc3545; }
+    .finding-card.risk { background: #ffeeba; border-left: 4px solid #ffc107; }
+    .finding-card.opportunity { background: #cce5ff; border-left: 4px solid #0d6efd; }
+
+    .finding-card .label {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .finding-card .dimension {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Roadmap Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.5rem;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: #212653;
+      border-radius: 3px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 1.5rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -1.75rem;
+      top: 0.5rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #969423;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 3px #212653;
+    }
+
+    .timeline-item .phase-name {
+      font-weight: 600;
+      color: #212653;
+      font-size: 1.1rem;
+    }
+
+    .timeline-item .time-horizon {
+      font-size: 0.9rem;
+      color: #969423;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Callout Box */
+    .callout {
+      padding: 1.25rem;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+    }
+
+    .callout.info {
+      background: #e7f3ff;
+      border-left: 4px solid #0d6efd;
+    }
+
+    .callout.success {
+      background: #d4edda;
+      border-left: 4px solid #28a745;
+    }
+
+    .callout.warning {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+    }
+
+    .callout.danger {
+      background: #f8d7da;
+      border-left: 4px solid #dc3545;
+    }
+
+    .callout .title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      height: 24px;
+      background: #e9ecef;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .progress-bar .fill {
+      height: 100%;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: width 0.3s ease;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        font-size: 11pt;
+      }
+
+      .report-container {
+        max-width: none;
+        padding: 0;
+      }
+
+      .page-break {
+        page-break-before: always;
+      }
+
+      h2 {
+        page-break-before: always;
+      }
+
+      h2:first-of-type {
+        page-break-before: auto;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+    }
+  
+    
+  </style>
+</head>
+<body>
+  <div class="report-container">
+    
+    <style>
+      .executive-brief {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .brief-header {
+        text-align: center;
+        padding: 1.5rem 0;
+        border-bottom: 3px solid #212653;
+        margin-bottom: 1.5rem;
+      }
+
+      .brief-header h1 {
+        font-size: 1.75rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .brief-header .company {
+        font-size: 1.25rem;
+        color: #969423;
+      }
+
+      .brief-header .date {
+        font-size: 0.85rem;
+        color: #888;
+      }
+
+      .score-hero {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        padding: 1.5rem;
+        background: linear-gradient(135deg, #212653 0%, #212653dd 100%);
+        border-radius: 12px;
+        color: #fff;
+        margin-bottom: 1.5rem;
+      }
+
+      .score-hero .score-circle {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.15);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 4px solid rgba(255,255,255,0.5);
+      }
+
+      .score-hero .score-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        line-height: 1;
+      }
+
+      .score-hero .score-label {
+        font-size: 0.8rem;
+        opacity: 0.9;
+      }
+
+      .score-hero .score-details {
+        text-align: left;
+      }
+
+      .score-hero .status {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+      }
+
+      .score-hero .trajectory {
+        font-size: 0.95rem;
+        opacity: 0.9;
+      }
+
+      .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .metric-box {
+        text-align: center;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border-left: 3px solid #969423;
+      }
+
+      .metric-box .value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #212653;
+      }
+
+      .metric-box .label {
+        font-size: 0.75rem;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .two-column {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .brief-section h3 {
+        font-size: 1rem;
+        color: #212653;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #969423;
+      }
+
+      .brief-section ul {
+        margin: 0;
+        padding-left: 1.25rem;
+      }
+
+      .brief-section li {
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .actions-section {
+        background: #fff3cd;
+        padding: 1rem;
+        border-radius: 8px;
+        border-left: 4px solid #ffc107;
+        margin-bottom: 1.5rem;
+      }
+
+      .actions-section h3 {
+        color: #856404;
+        margin-bottom: 0.75rem;
+        font-size: 1rem;
+      }
+
+      .actions-section ol {
+        margin: 0;
+        padding-left: 1.25rem;
+      }
+
+      .actions-section li {
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .cta-section {
+        text-align: center;
+        padding: 1rem;
+        background: #212653;
+        color: #fff;
+        border-radius: 8px;
+      }
+
+      .cta-section p {
+        margin: 0;
+        font-size: 0.9rem;
+      }
+
+      @media print {
+        .executive-brief {
+          max-width: none;
+        }
+      }
+
+      /* Chart styles */
+      
+    
+    .svg-chart-container {
+      display: flex;
+      justify-content: center;
+      margin: 1rem 0;
+      page-break-inside: avoid;
+    }
+
+    .svg-chart-container svg {
+      max-width: 100%;
+      height: auto;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+    }
+
+    @media print {
+      .svg-chart-container {
+        page-break-inside: avoid;
+      }
+
+      .svg-chart-container svg {
+        box-shadow: none;
+        border: 1px solid #e0e0e0;
+      }
+    }
+  
+
+    /* Executive Dashboard Styles */
+    .executive-dashboard {
+      margin: 2rem 0;
+    }
+
+    .dashboard-row {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .dashboard-main {
+      flex: 2;
+      min-width: 350px;
+    }
+
+    .dashboard-side {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .dashboard-full {
+      width: 100%;
+    }
+
+    /* Chart grid layout */
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .chart-cell {
+      background: #FFFFFF;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Chart error fallback */
+    .chart-error,
+    .chart-fallback {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: #f8f9fa;
+      border: 2px dashed #dee2e6;
+      border-radius: 8px;
+      color: #6c757d;
+      min-height: 200px;
+      text-align: center;
+    }
+
+    .chart-fallback-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    @media print {
+      .executive-dashboard,
+      .chart-grid,
+      .svg-chart-container {
+        page-break-inside: avoid;
+      }
+
+      .chart-cell {
+        box-shadow: none;
+        border: 1px solid #dee2e6;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-row {
+        flex-direction: column;
+      }
+
+      .dashboard-main,
+      .dashboard-side {
+        min-width: 100%;
+      }
+
+      .chart-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  
+
+      .executive-charts {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+        flex-wrap: wrap;
+      }
+
+      .executive-charts .chart-wrapper {
+        flex: 1;
+        min-width: 300px;
+        max-width: 600px;
+      }
+    </style>
+
+    <div class="executive-brief">
+      <header class="brief-header">
+        <h1>Business Health Executive Brief</h1>
+        <p class="company">EWM Global</p>
+        <p class="date">December 3, 2025</p>
+      </header>
+
+      <div class="score-hero">
+        <div class="score-circle">
+          <span class="score-value">53</span>
+          <span class="score-label">/ 100</span>
+        </div>
+        <div class="score-details">
+          <p class="status">Needs Improvement</p>
+          <p class="trajectory">
+            <span style="color: #6c757d;">&#x25AC;</span> Trajectory: Flat
+          </p>
+          <p><span class="band-badge Attention">Attention</span></p>
+        </div>
+      </div>
+
+      <div class="metrics-grid">
+        
+          <div class="metric-box">
+            <div class="value">49</div>
+            <div class="label">Growth Engine</div>
+          </div>
+        
+          <div class="metric-box">
+            <div class="value">51</div>
+            <div class="label">Performance &amp; Health</div>
+          </div>
+        
+          <div class="metric-box">
+            <div class="value">43</div>
+            <div class="label">People &amp; Leadership</div>
+          </div>
+        
+          <div class="metric-box">
+            <div class="value">70</div>
+            <div class="label">Resilience &amp; Safeguards</div>
+          </div>
+        
+      </div>
+
+      
+        <div class="executive-charts">
+          <div class="chart-wrapper">
+            
+    <div class="svg-chart-container" role="figure" aria-label="Chapter Performance Overview">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 232" style="max-width: 100%; height: auto;"><rect width="600" height="232" fill="white" rx="4"/><text x="300" y="28" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Chapter Performance Overview</text><text x="132" y="70" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Growth Engine</text><rect x="140" y="50" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="50" width="196" height="30" fill="#e67e22" rx="4"/><text x="344" y="70" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">49</text><text x="132" y="108" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Performance &amp; He...</text><rect x="140" y="88" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="88" width="204" height="30" fill="#e67e22" rx="4"/><text x="352" y="108" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">51</text><text x="132" y="146" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">People &amp; Leaders...</text><rect x="140" y="126" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="126" width="172" height="30" fill="#e67e22" rx="4"/><text x="320" y="146" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">43</text><text x="132" y="184" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Resilience &amp; Saf...</text><rect x="140" y="164" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="164" width="280" height="30" fill="#f39c12" rx="4"/><text x="428" y="184" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">70</text></svg>
+    </div>
+  
+          </div>
+        </div>
+      
+
+      <div class="two-column">
+        <div class="brief-section">
+          <h3>Key Strengths</h3>
+          <ul>
+            <li>Strong Sales Target Alignment</li><li>Strong Customer Retention</li>
+            
+          </ul>
+        </div>
+        <div class="brief-section">
+          <h3>Priority Areas</h3>
+          <ul>
+            <li>Strategy Performance Gap</li><li>Market Position Gap</li>
+            
+          </ul>
+        </div>
+      </div>
+
+      <div class="actions-section">
+        <h3>Critical Actions Required</h3>
+        <ol>
+          <li><strong>Marketing Improvement Initiative</strong> (0-90 Days)</li><li><strong>Financials Improvement Initiative</strong> (0-90 Days)</li><li><strong>Leadership &amp; Governance Improvement Initiative</strong> (3-12 Months)</li>
+        </ol>
+      </div>
+
+      
+        <div class="brief-section" style="margin-bottom: 1.5rem;">
+          <h3>Strategic Imperatives</h3>
+          <ul>
+            <li>Improve Marketing (currently 31/100)</li><li>Improve Financials (currently 39/100)</li><li>Improve Leadership &amp; Governance (currently 40/100)</li>
+          </ul>
+        </div>
+      
+
+      <div class="cta-section">
+        <p><strong>Next Step:</strong> Review the full Comprehensive Assessment Report for detailed analysis and implementation guidance.</p>
+      </div>
+
+      
+    <footer class="report-footer">
+      <p>&copy; 2025 BizHealth.ai - Confidential Business Assessment Report</p>
+      <p>Assessment ID: d90e6912-fa14-4d9a-8d82-e28c409f795c</p>
+    </footer>
+  
+    </div>
+  
+  </div>
+</body>
+</html>
