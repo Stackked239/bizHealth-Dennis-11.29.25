@@ -60,6 +60,23 @@ export {
 // All generators
 export * from './generators/index.js';
 
+// Report integration utilities
+export {
+  generateChapterOverviewRadar,
+  generateChapterDimensionBars,
+  generateAllChapterScoreBars,
+  generateScoreBandDistribution,
+  generateBenchmarkComparison,
+  generateGapAnalysis,
+  generateStrengthsWeaknessesChart,
+  generateHealthScoreGauge,
+  generateChapterDimensionRadar,
+  generateChapterRadarGrid,
+  generateExecutiveDashboard,
+  getReportChartStyles,
+  CHART_SIZES,
+} from './report-chart-integration.js';
+
 // Types
 export type {
   ChartOutputFormat,

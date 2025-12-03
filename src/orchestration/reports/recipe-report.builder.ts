@@ -20,6 +20,17 @@ import {
   generateProgressBar,
 } from './html-template.js';
 
+// Import chart integration for visual charts
+import {
+  renderChart,
+  generateDimensionScoreChart,
+  generateChapterRadarChart,
+  getReportChartStyles,
+  type DimensionChartData,
+  type ChapterChartData,
+} from './charts/index.js';
+import { logger } from '../../utils/logger.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -703,6 +714,60 @@ function generateRecipeStyles(options: ReportRenderOptions): string {
       font-size: 2rem;
       font-weight: 700;
       color: ${options.brand.primaryColor};
+    }
+
+    /* Enhanced radar placeholder */
+    .radar-placeholder {
+      padding: 1.5rem;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .radar-placeholder .radar-title {
+      font-weight: 600;
+      color: ${options.brand.primaryColor};
+      margin-bottom: 1rem;
+    }
+
+    .radar-scores {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+    }
+
+    .radar-score-item {
+      background: #fff;
+      padding: 0.75rem;
+      border-radius: 8px;
+      border-left: 3px solid ${options.brand.accentColor};
+    }
+
+    .radar-score-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: ${options.brand.primaryColor};
+    }
+
+    .radar-score-label {
+      font-size: 0.75rem;
+      color: #666;
+    }
+
+    /* Import chart component styles for any embedded charts */
+    ${getReportChartStyles()}
+
+    @media print {
+      .bar-chart-container,
+      .radar-placeholder {
+        page-break-inside: avoid;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .radar-scores {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
   `;
 }

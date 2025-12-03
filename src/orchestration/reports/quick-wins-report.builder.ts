@@ -19,6 +19,12 @@ import {
 } from './html-template.js';
 import { calculateROI } from '../../types/report.types.js';
 
+// Import chart integration for visual charts
+import {
+  generateAllChapterScoreBars,
+  getReportChartStyles,
+} from './charts/index.js';
+
 /**
  * Build quick wins report
  */
@@ -28,6 +34,11 @@ export async function buildQuickWinsReport(
 ): Promise<GeneratedReport> {
   const reportType = 'quickWins';
   const reportName = 'Quick Wins Action Plan';
+
+  // Generate visual charts asynchronously
+  const [chapterBars] = await Promise.all([
+    generateAllChapterScoreBars(ctx, { width: 600, height: 180 }).catch(() => ''),
+  ]);
 
   // Get quick wins and sort by ROI
   const quickWins = [...ctx.quickWins].sort((a, b) => {
@@ -42,6 +53,21 @@ export async function buildQuickWinsReport(
   const midTerm = quickWins.filter(qw => qw.effortScore > 60);
 
   const html = wrapHtmlDocument(`
+    <style>
+      /* Chart styles */
+      ${getReportChartStyles()}
+
+      .quickwins-chart-section {
+        margin: 2rem 0;
+        text-align: center;
+      }
+
+      .quickwins-chart-section .chart-wrapper {
+        display: inline-block;
+        max-width: 100%;
+      }
+    </style>
+
     ${generateReportHeader(ctx, reportName, 'High-Impact, Low-Effort Improvements')}
 
     <section class="section">
@@ -71,6 +97,15 @@ export async function buildQuickWinsReport(
           <div class="score-label">Avg ROI</div>
         </div>
       </div>
+
+      ${chapterBars ? `
+        <div class="quickwins-chart-section">
+          <h3>Current Business Health by Chapter</h3>
+          <div class="chart-wrapper">
+            ${chapterBars}
+          </div>
+        </div>
+      ` : ''}
     </section>
 
     <section class="section page-break">

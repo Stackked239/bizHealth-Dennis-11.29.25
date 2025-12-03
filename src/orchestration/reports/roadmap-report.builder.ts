@@ -19,6 +19,13 @@ import {
   escapeHtml,
 } from './html-template.js';
 
+// Import chart integration for visual charts
+import {
+  generateChapterOverviewRadar,
+  generateAllChapterScoreBars,
+  getReportChartStyles,
+} from './charts/index.js';
+
 /**
  * Build implementation roadmap report
  */
@@ -31,12 +38,37 @@ export async function buildRoadmapReport(
 
   const { roadmap, recommendations } = ctx;
 
+  // Generate visual charts asynchronously
+  const [chapterRadar, chapterBars] = await Promise.all([
+    generateChapterOverviewRadar(ctx, { width: 380, height: 280 }).catch(() => ''),
+    generateAllChapterScoreBars(ctx, { width: 520, height: 180 }).catch(() => ''),
+  ]);
+
   // Get recommendations by phase
   const getRecommendationsForPhase = (phase: typeof roadmap.phases[0]) => {
     return recommendations.filter(r => phase.linkedRecommendationIds.includes(r.id));
   };
 
   const html = wrapHtmlDocument(`
+    <style>
+      /* Chart styles */
+      ${getReportChartStyles()}
+
+      .roadmap-chart-section {
+        margin: 2rem 0;
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .roadmap-chart-section .chart-wrapper {
+        flex: 1;
+        min-width: 280px;
+        max-width: 520px;
+      }
+    </style>
+
     ${generateReportHeader(ctx, reportName, 'Strategic Implementation Plan')}
 
     <section class="section">
@@ -67,6 +99,13 @@ export async function buildRoadmapReport(
           </div>
         `).join('')}
       </div>
+
+      ${(chapterRadar || chapterBars) ? `
+        <div class="roadmap-chart-section">
+          ${chapterRadar ? `<div class="chart-wrapper">${chapterRadar}</div>` : ''}
+          ${chapterBars ? `<div class="chart-wrapper">${chapterBars}</div>` : ''}
+        </div>
+      ` : ''}
     </section>
 
     <section class="section page-break">

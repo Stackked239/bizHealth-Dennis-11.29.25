@@ -48,6 +48,14 @@ import {
   formatCurrency as formatCurrencyConstraint,
 } from './config/owner-report-constraints.js';
 
+// Import chart integration for visual charts
+import {
+  generateChapterOverviewRadar,
+  generateAllChapterScoreBars,
+  generateHealthScoreGauge,
+  getReportChartStyles,
+} from './charts/index.js';
+
 /**
  * Build insight cards from findings for the owner report
  */
@@ -112,6 +120,13 @@ export async function buildOwnersReport(
   const insightCardsHtml = buildOwnerInsightCards(ctx, 4);
   const benchmarkSummaryHtml = generateBenchmarkSummaryTable(ctx);
 
+  // Generate visual charts asynchronously
+  logger.info('Generating visual charts for owner report');
+  const [chapterRadar, chapterBars] = await Promise.all([
+    generateChapterOverviewRadar(ctx, { width: 450, height: 350 }).catch(() => ''),
+    generateAllChapterScoreBars(ctx, { width: 550, height: 220 }).catch(() => ''),
+  ]);
+
   // Generate financial aggregates for overview display
   const financialProjections = ctx.financialProjections;
   const investmentLow = financialProjections?.totalInvestmentRequired
@@ -157,6 +172,17 @@ export async function buildOwnersReport(
 
       <!-- Executive Highlights Summary -->
       ${executiveHighlightsHtml}
+
+      <!-- Visual Performance Charts -->
+      ${chapterRadar || chapterBars ? `
+        <div class="owner-charts-section">
+          <h3 style="color: ${options.brand.primaryColor}; font-family: 'Montserrat', sans-serif; margin: 1.5rem 0 1rem 0; font-size: 1.1rem;">Your Performance at a Glance</h3>
+          <div class="owner-charts-grid">
+            ${chapterRadar ? `<div class="chart-item">${chapterRadar}</div>` : ''}
+            ${chapterBars ? `<div class="chart-item">${chapterBars}</div>` : ''}
+          </div>
+        </div>
+      ` : ''}
 
       <!-- Key Takeaways Box -->
       ${keyTakeawaysHtml}
@@ -1264,6 +1290,55 @@ function generateOwnerNarrativeStyles(primaryColor: string, accentColor: string)
 
       .report-relationship-notice {
         background: #f8f9fa !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+
+    /* ================================================================
+       OWNER REPORT CHART STYLES
+       Added for visual performance charts
+       ================================================================ */
+
+    .owner-charts-section {
+      margin: 1.5rem 0;
+      padding: 1.25rem;
+      background: #fafbfc;
+      border-radius: 12px;
+      border: 1px solid #e9ecef;
+    }
+
+    .owner-charts-grid {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .owner-charts-grid .chart-item {
+      flex: 1;
+      min-width: 300px;
+      max-width: 550px;
+    }
+
+    /* Import chart component styles */
+    ${getReportChartStyles()}
+
+    @media (max-width: 768px) {
+      .owner-charts-grid {
+        flex-direction: column;
+      }
+
+      .owner-charts-grid .chart-item {
+        min-width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    @media print {
+      .owner-charts-section {
+        background: #fafbfc !important;
+        page-break-inside: avoid;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }

@@ -18,6 +18,13 @@ import {
   getTrajectoryIcon,
 } from './html-template.js';
 
+// Import chart integration for visual charts
+import {
+  generateHealthScoreGauge,
+  generateAllChapterScoreBars,
+  getReportChartStyles,
+} from './charts/index.js';
+
 /**
  * Build executive brief
  */
@@ -32,6 +39,12 @@ export async function buildExecutiveBrief(
   const topStrengths = ctx.findings.filter(f => f.type === 'strength').slice(0, 2);
   const topPriorities = ctx.findings.filter(f => f.type === 'gap' || f.type === 'risk').slice(0, 2);
   const criticalActions = ctx.recommendations.slice(0, 3);
+
+  // Generate visual charts asynchronously
+  const [healthGauge, chapterBars] = await Promise.all([
+    generateHealthScoreGauge(ctx, { width: 200, height: 120 }).catch(() => ''),
+    generateAllChapterScoreBars(ctx, { width: 600, height: 180 }).catch(() => ''),
+  ]);
 
   const html = wrapHtmlDocument(`
     <style>
@@ -207,6 +220,23 @@ export async function buildExecutiveBrief(
           max-width: none;
         }
       }
+
+      /* Chart styles */
+      ${getReportChartStyles()}
+
+      .executive-charts {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+        flex-wrap: wrap;
+      }
+
+      .executive-charts .chart-wrapper {
+        flex: 1;
+        min-width: 300px;
+        max-width: 600px;
+      }
     </style>
 
     <div class="executive-brief">
@@ -238,6 +268,14 @@ export async function buildExecutiveBrief(
           </div>
         `).join('')}
       </div>
+
+      ${chapterBars ? `
+        <div class="executive-charts">
+          <div class="chart-wrapper">
+            ${chapterBars}
+          </div>
+        </div>
+      ` : ''}
 
       <div class="two-column">
         <div class="brief-section">

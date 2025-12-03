@@ -22,6 +22,13 @@ import {
 } from './html-template.js';
 import { calculateROI } from '../../types/report.types.js';
 
+// Import chart integration for visual charts
+import {
+  generateChapterDimensionBars,
+  generateChapterDimensionRadar,
+  getReportChartStyles,
+} from './charts/index.js';
+
 /**
  * Chapter metadata
  */
@@ -72,6 +79,12 @@ export async function buildDeepDiveReport(
     throw new Error(`Chapter ${chapterCode} not found in report context`);
   }
 
+  // Generate visual charts asynchronously
+  const [dimensionBars, dimensionRadar] = await Promise.all([
+    generateChapterDimensionBars(ctx, chapterCode, { width: 550, height: 220 }).catch(() => ''),
+    generateChapterDimensionRadar(ctx, chapterCode, { width: 380, height: 280 }).catch(() => ''),
+  ]);
+
   // Get chapter-specific data
   const chapterDimensions = ctx.dimensions.filter(d => d.chapterCode === chapterCode);
   const chapterFindings = ctx.findings.filter(f =>
@@ -91,6 +104,25 @@ export async function buildDeepDiveReport(
   const opportunities = chapterFindings.filter(f => f.type === 'opportunity');
 
   const html = wrapHtmlDocument(`
+    <style>
+      /* Chart styles */
+      ${getReportChartStyles()}
+
+      .deepdive-chart-section {
+        margin: 2rem 0;
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .deepdive-chart-section .chart-wrapper {
+        flex: 1;
+        min-width: 300px;
+        max-width: 550px;
+      }
+    </style>
+
     ${generateReportHeader(ctx, chapterMeta.reportName, chapterMeta.subtitle)}
 
     <section class="section">
@@ -125,6 +157,13 @@ export async function buildDeepDiveReport(
           }
         </p>
       </div>
+
+      ${(dimensionRadar || dimensionBars) ? `
+        <div class="deepdive-chart-section">
+          ${dimensionRadar ? `<div class="chart-wrapper">${dimensionRadar}</div>` : ''}
+          ${dimensionBars ? `<div class="chart-wrapper">${dimensionBars}</div>` : ''}
+        </div>
+      ` : ''}
     </section>
 
     <section class="section page-break">
