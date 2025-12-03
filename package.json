@@ -18,7 +18,11 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "validate:reports": "tsx src/orchestration/reports/validation/validate-reports.ts",
     "generate:validated": "npm run start && npm run validate:reports",
-    "test:reports": "npm run validate:reports"
+    "test:reports": "npm run validate:reports",
+    "audit": "tsx scripts/audit-implementation.ts",
+    "audit:quick": "tsx scripts/audit-implementation.ts --skip-pipeline",
+    "audit:verbose": "tsx scripts/audit-implementation.ts --verbose",
+    "validate:all": "npm run test -- --run && npm run validate:reports"
   },
   "keywords": [
     "business-analysis",
