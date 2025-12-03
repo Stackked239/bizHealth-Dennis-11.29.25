@@ -2,23 +2,20 @@
  * BizHealth.ai Report Chart Integration
  *
  * High-level functions for integrating charts into report builders.
- * Provides ready-to-use chart generation from ReportContext data.
+ * Uses SVG-based rendering for cross-platform compatibility (no native canvas dependencies).
  */
 
 import type { ReportContext, ReportChapter, ReportDimension } from '../../../types/report.types.js';
-import type { ChartRenderOptions, ChartAccessibilityConfig, DimensionChartData, ChapterChartData } from './types/chart.types.js';
-import { renderChart, generateChartStyles } from './chart-renderer.js';
 import {
-  generateChapterRadarChart,
-  generateDimensionRadarChart,
-  generateDimensionScoreChart,
-  generateChapterScoreChart,
-  generateScoreBandDonut,
-  generateBenchmarkComparisonChart,
-  generateGapAnalysisChart,
-  generateStrengthWeaknessChart,
-  generateSemiDonut,
-} from './generators/index.js';
+  generateHorizontalBarChart,
+  generateRadarChart,
+  generateGaugeChart,
+  generateDonutChart,
+  getSvgChartStyles,
+  type BarChartData,
+  type RadarChartData,
+  type DonutChartData,
+} from './svg-chart-renderer.js';
 import { logger } from '../../../utils/logger.js';
 
 // Default chart dimensions for different contexts
@@ -30,30 +27,9 @@ export const CHART_SIZES = {
   square: { width: 400, height: 400 },
 } as const;
 
-/**
- * Convert ReportChapter to ChapterChartData
- */
-function toChapterChartData(chapter: ReportChapter): ChapterChartData {
-  return {
-    code: chapter.code,
-    name: chapter.name,
-    score: chapter.score,
-    band: chapter.band,
-    benchmark: chapter.benchmark?.peerPercentile,
-  };
-}
-
-/**
- * Convert ReportDimension to DimensionChartData
- */
-function toDimensionChartData(dimension: ReportDimension): DimensionChartData {
-  return {
-    code: dimension.code,
-    name: dimension.name,
-    score: dimension.score,
-    band: dimension.band,
-    benchmark: dimension.benchmark?.peerPercentile,
-  };
+export interface ChartRenderOptions {
+  width?: number;
+  height?: number;
 }
 
 /**
@@ -65,33 +41,18 @@ export async function generateChapterOverviewRadar(
   options: Partial<ChartRenderOptions> = {}
 ): Promise<string> {
   try {
-    const chapters = ctx.chapters.map(toChapterChartData);
+    const data: RadarChartData[] = ctx.chapters.map(ch => ({
+      label: ch.name,
+      value: ch.score,
+      maxValue: 100,
+    }));
 
-    // Build benchmark data if available
-    const benchmarks: Record<string, number> = {};
-    ctx.chapters.forEach(ch => {
-      if (ch.benchmark?.peerPercentile) {
-        // Estimate benchmark score from percentile (rough approximation)
-        benchmarks[ch.code] = estimateBenchmarkScore(ch.score, ch.benchmark.peerPercentile);
-      }
-    });
-
-    const hasBenchmarks = Object.keys(benchmarks).length > 0;
-
-    const config = generateChapterRadarChart(chapters, hasBenchmarks ? benchmarks : undefined, {
+    return generateRadarChart(data, {
       title: 'Business Health Overview',
-      showBenchmark: hasBenchmarks,
-      fill: true,
+      size: options.width || 350,
+      showLabels: true,
+      showValues: true,
     });
-
-    const rendered = await renderChart(config, {
-      ...CHART_SIZES.medium,
-      ...options,
-    }, {
-      generateDataTable: true,
-    });
-
-    return rendered.html;
   } catch (error) {
     logger.error({ error }, 'Failed to generate chapter overview radar');
     return generateChartFallback('Chapter Overview', 'radar');
@@ -118,23 +79,18 @@ export async function generateChapterDimensionBars(
       return generateChartFallback(`${chapter.name} Dimensions`, 'bar');
     }
 
-    const dimensions = chapterDimensions.map(toDimensionChartData);
+    const data: BarChartData[] = chapterDimensions.map(d => ({
+      label: d.name,
+      value: d.score,
+      maxValue: 100,
+    }));
 
-    const config = generateDimensionScoreChart(dimensions, undefined, {
+    return generateHorizontalBarChart(data, {
       title: `${chapter.name} - Dimension Scores`,
-      sortBy: 'score',
-      sortDirection: 'desc',
-      showBenchmark: false,
+      width: options.width || 600,
+      showValues: true,
+      colorByScore: true,
     });
-
-    const rendered = await renderChart(config, {
-      ...CHART_SIZES.wide,
-      ...options,
-    }, {
-      generateDataTable: true,
-    });
-
-    return rendered.html;
   } catch (error) {
     logger.error({ error, chapterCode }, 'Failed to generate chapter dimension bars');
     return generateChartFallback('Dimension Scores', 'bar');
@@ -149,22 +105,18 @@ export async function generateAllChapterScoreBars(
   options: Partial<ChartRenderOptions> = {}
 ): Promise<string> {
   try {
-    const chapters = ctx.chapters.map(toChapterChartData);
+    const data: BarChartData[] = ctx.chapters.map(ch => ({
+      label: ch.name,
+      value: ch.score,
+      maxValue: 100,
+    }));
 
-    const config = generateChapterScoreChart(chapters, undefined, {
+    return generateHorizontalBarChart(data, {
       title: 'Chapter Performance Overview',
-      sortBy: 'score',
-      sortDirection: 'desc',
+      width: options.width || 600,
+      showValues: true,
+      colorByScore: true,
     });
-
-    const rendered = await renderChart(config, {
-      ...CHART_SIZES.wide,
-      ...options,
-    }, {
-      generateDataTable: true,
-    });
-
-    return rendered.html;
   } catch (error) {
     logger.error({ error }, 'Failed to generate chapter score bars');
     return generateChartFallback('Chapter Scores', 'bar');
@@ -181,41 +133,44 @@ export async function generateScoreBandDistribution(
   try {
     // Count dimensions by score band
     const bandCounts: Record<string, number> = {
-      excellence: 0,
-      proficiency: 0,
-      attention: 0,
-      critical: 0,
+      Excellence: 0,
+      Proficiency: 0,
+      Attention: 0,
+      Critical: 0,
     };
 
     ctx.dimensions.forEach(d => {
-      const band = d.band.toLowerCase();
+      const band = d.band;
       if (band in bandCounts) {
         bandCounts[band]++;
       }
     });
 
-    const bands = Object.entries(bandCounts)
-      .filter(([_, count]) => count > 0)
-      .map(([band, count]) => ({ band, count }));
+    const bandColors: Record<string, string> = {
+      Excellence: '#27ae60',
+      Proficiency: '#f39c12',
+      Attention: '#e67e22',
+      Critical: '#e74c3c',
+    };
 
-    if (bands.length === 0) {
+    const data: DonutChartData[] = Object.entries(bandCounts)
+      .filter(([_, count]) => count > 0)
+      .map(([band, count]) => ({
+        label: band,
+        value: count,
+        color: bandColors[band],
+      }));
+
+    if (data.length === 0) {
       return generateChartFallback('Score Distribution', 'donut');
     }
 
-    const config = generateScoreBandDonut(bands, {
+    return generateDonutChart(data, {
       title: 'Dimension Score Distribution',
+      size: options.width || 300,
       showLegend: true,
       showPercentages: true,
     });
-
-    const rendered = await renderChart(config, {
-      ...CHART_SIZES.square,
-      ...options,
-    }, {
-      generateDataTable: true,
-    });
-
-    return rendered.html;
   } catch (error) {
     logger.error({ error }, 'Failed to generate score band distribution');
     return generateChartFallback('Score Distribution', 'donut');
@@ -231,30 +186,26 @@ export async function generateBenchmarkComparison(
 ): Promise<string> {
   try {
     // Build comparison data from chapters with benchmarks
-    const items = ctx.chapters
+    const data: BarChartData[] = ctx.chapters
       .filter(ch => ch.benchmark)
       .map(ch => ({
         label: ch.name,
-        score: ch.score,
+        value: ch.score,
         benchmark: estimateBenchmarkScore(ch.score, ch.benchmark!.peerPercentile),
+        maxValue: 100,
       }));
 
-    if (items.length === 0) {
+    if (data.length === 0) {
       return generateChartFallback('Benchmark Comparison', 'bar');
     }
 
-    const config = generateBenchmarkComparisonChart(items, {
+    return generateHorizontalBarChart(data, {
       title: 'Your Scores vs Industry Benchmark',
+      width: options.width || 600,
+      showValues: true,
+      showBenchmark: true,
+      colorByScore: true,
     });
-
-    const rendered = await renderChart(config, {
-      ...CHART_SIZES.wide,
-      ...options,
-    }, {
-      generateDataTable: true,
-    });
-
-    return rendered.html;
   } catch (error) {
     logger.error({ error }, 'Failed to generate benchmark comparison');
     return generateChartFallback('Benchmark Comparison', 'bar');
@@ -269,30 +220,27 @@ export async function generateGapAnalysis(
   options: Partial<ChartRenderOptions> = {}
 ): Promise<string> {
   try {
-    const items = ctx.chapters
+    const data: BarChartData[] = ctx.chapters
       .filter(ch => ch.benchmark)
-      .map(ch => ({
-        label: ch.name,
-        score: ch.score,
-        benchmark: estimateBenchmarkScore(ch.score, ch.benchmark!.peerPercentile),
-      }));
+      .map(ch => {
+        const benchmark = estimateBenchmarkScore(ch.score, ch.benchmark!.peerPercentile);
+        return {
+          label: ch.name,
+          value: ch.score - benchmark,
+          maxValue: 50, // Gap range -50 to +50
+        };
+      });
 
-    if (items.length === 0) {
+    if (data.length === 0) {
       return generateChartFallback('Gap Analysis', 'bar');
     }
 
-    const config = generateGapAnalysisChart(items, {
+    return generateHorizontalBarChart(data, {
       title: 'Gap Analysis vs Industry Benchmark',
+      width: options.width || 600,
+      showValues: true,
+      colorByScore: false,
     });
-
-    const rendered = await renderChart(config, {
-      ...CHART_SIZES.wide,
-      ...options,
-    }, {
-      generateDataTable: true,
-    });
-
-    return rendered.html;
   } catch (error) {
     logger.error({ error }, 'Failed to generate gap analysis');
     return generateChartFallback('Gap Analysis', 'bar');
@@ -307,25 +255,25 @@ export async function generateStrengthsWeaknessesChart(
   options: Partial<ChartRenderOptions> = {}
 ): Promise<string> {
   try {
-    const dimensions = ctx.dimensions.map(toDimensionChartData);
+    // Sort dimensions by score
+    const sortedDims = [...ctx.dimensions].sort((a, b) => b.score - a.score);
 
-    if (dimensions.length === 0) {
+    const data: BarChartData[] = sortedDims.map(d => ({
+      label: d.name,
+      value: d.score,
+      maxValue: 100,
+    }));
+
+    if (data.length === 0) {
       return generateChartFallback('Strengths & Improvements', 'bar');
     }
 
-    const config = generateStrengthWeaknessChart(dimensions, 60, {
+    return generateHorizontalBarChart(data, {
       title: 'Strengths & Areas for Improvement',
+      width: options.width || 700,
+      showValues: true,
+      colorByScore: true,
     });
-
-    const rendered = await renderChart(config, {
-      width: 700,
-      height: Math.max(300, dimensions.length * 35),
-      ...options,
-    }, {
-      generateDataTable: true,
-    });
-
-    return rendered.html;
   } catch (error) {
     logger.error({ error }, 'Failed to generate strengths/weaknesses chart');
     return generateChartFallback('Strengths & Improvements', 'bar');
@@ -340,19 +288,12 @@ export async function generateHealthScoreGauge(
   options: Partial<ChartRenderOptions> = {}
 ): Promise<string> {
   try {
-    const config = generateSemiDonut(ctx.overallHealth.score, 100, {
+    return generateGaugeChart(ctx.overallHealth.score, 100, {
       title: 'Overall Business Health',
+      size: options.width || 250,
+      showLabel: true,
+      subtitle: ctx.overallHealth.status,
     });
-
-    const rendered = await renderChart(config, {
-      width: 300,
-      height: 200,
-      ...options,
-    }, {
-      altText: `Overall Business Health Score: ${ctx.overallHealth.score}/100`,
-    });
-
-    return rendered.html;
   } catch (error) {
     logger.error({ error }, 'Failed to generate health score gauge');
     return generateChartFallback('Health Score', 'gauge');
@@ -379,21 +320,18 @@ export async function generateChapterDimensionRadar(
       return generateChartFallback(`${chapter.name}`, 'radar');
     }
 
-    const dimensions = chapterDimensions.map(toDimensionChartData);
+    const data: RadarChartData[] = chapterDimensions.map(d => ({
+      label: d.name,
+      value: d.score,
+      maxValue: 100,
+    }));
 
-    const config = generateDimensionRadarChart(dimensions, undefined, {
+    return generateRadarChart(data, {
       title: `${chapter.name} Dimensions`,
-      fill: true,
+      size: options.width || 350,
+      showLabels: true,
+      showValues: true,
     });
-
-    const rendered = await renderChart(config, {
-      ...CHART_SIZES.square,
-      ...options,
-    }, {
-      generateDataTable: true,
-    });
-
-    return rendered.html;
   } catch (error) {
     logger.error({ error, chapterCode }, 'Failed to generate chapter dimension radar');
     return generateChartFallback('Dimension Overview', 'radar');
@@ -408,14 +346,14 @@ export async function generateChapterRadarGrid(
   options: Partial<ChartRenderOptions> = {}
 ): Promise<string> {
   const chartPromises = ctx.chapters.map(ch =>
-    generateChapterDimensionRadar(ctx, ch.code, { width: 280, height: 280 })
+    generateChapterDimensionRadar(ctx, ch.code, { width: 280 })
   );
 
   const charts = await Promise.all(chartPromises);
 
   return `
     <div class="chart-grid" role="group" aria-label="Chapter dimension radar charts">
-      ${charts.map((chart, i) => `
+      ${charts.map((chart) => `
         <div class="chart-cell">
           ${chart}
         </div>
@@ -432,9 +370,9 @@ export async function generateExecutiveDashboard(
 ): Promise<string> {
   try {
     const [overviewRadar, scoreBars, distribution] = await Promise.all([
-      generateChapterOverviewRadar(ctx, CHART_SIZES.medium),
-      generateAllChapterScoreBars(ctx, { width: 600, height: 250 }),
-      generateScoreBandDistribution(ctx, { width: 300, height: 300 }),
+      generateChapterOverviewRadar(ctx, { width: 400 }),
+      generateAllChapterScoreBars(ctx, { width: 600 }),
+      generateScoreBandDistribution(ctx, { width: 300 }),
     ]);
 
     return `
@@ -451,42 +389,6 @@ export async function generateExecutiveDashboard(
           ${scoreBars}
         </div>
       </div>
-      <style>
-        .executive-dashboard {
-          margin: 2rem 0;
-        }
-        .dashboard-row {
-          display: flex;
-          gap: 2rem;
-          margin-bottom: 2rem;
-          flex-wrap: wrap;
-        }
-        .dashboard-main {
-          flex: 2;
-          min-width: 400px;
-        }
-        .dashboard-side {
-          flex: 1;
-          min-width: 280px;
-        }
-        .dashboard-full {
-          width: 100%;
-        }
-        @media (max-width: 768px) {
-          .dashboard-row {
-            flex-direction: column;
-          }
-          .dashboard-main,
-          .dashboard-side {
-            min-width: 100%;
-          }
-        }
-        @media print {
-          .dashboard-row {
-            page-break-inside: avoid;
-          }
-        }
-      </style>
     `;
   } catch (error) {
     logger.error({ error }, 'Failed to generate executive dashboard');
@@ -499,7 +401,7 @@ export async function generateExecutiveDashboard(
  */
 export function getReportChartStyles(): string {
   return `
-    ${generateChartStyles()}
+    ${getSvgChartStyles()}
 
     /* Executive Dashboard Styles */
     .executive-dashboard {
@@ -515,7 +417,7 @@ export function getReportChartStyles(): string {
 
     .dashboard-main {
       flex: 2;
-      min-width: 400px;
+      min-width: 350px;
     }
 
     .dashboard-side {
@@ -525,6 +427,21 @@ export function getReportChartStyles(): string {
 
     .dashboard-full {
       width: 100%;
+    }
+
+    /* Chart grid layout */
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .chart-cell {
+      background: #FFFFFF;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
     }
 
     /* Chart error fallback */
@@ -550,8 +467,13 @@ export function getReportChartStyles(): string {
     @media print {
       .executive-dashboard,
       .chart-grid,
-      .biz-chart-container {
+      .svg-chart-container {
         page-break-inside: avoid;
+      }
+
+      .chart-cell {
+        box-shadow: none;
+        border: 1px solid #dee2e6;
       }
     }
 
@@ -566,7 +488,7 @@ export function getReportChartStyles(): string {
       }
 
       .chart-grid {
-        grid-template-columns: 1fr !important;
+        grid-template-columns: 1fr;
       }
     }
   `;
@@ -576,12 +498,10 @@ export function getReportChartStyles(): string {
 
 /**
  * Estimate benchmark score from percentile
- * (Simplified estimation assuming normal distribution)
  */
 function estimateBenchmarkScore(score: number, percentile: number): number {
   if (percentile === 50) return score;
 
-  // Estimate using typical business health distributions
   const estimatedSD = 15;
   const zScore = percentileToZScore(percentile);
   const estimatedMedian = score - (zScore * estimatedSD);
