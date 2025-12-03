@@ -18,7 +18,9 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "validate:reports": "tsx src/orchestration/reports/validation/validate-reports.ts",
     "generate:validated": "npm run start && npm run validate:reports",
-    "test:reports": "npm run validate:reports"
+    "test:reports": "npm run validate:reports",
+    "test:mappings": "npx vitest run src/orchestration/reports/config/__tests__/section-mapping.test.ts",
+    "validate:all": "npm run test:mappings && npm run validate:reports"
   },
   "keywords": [
     "business-analysis",
