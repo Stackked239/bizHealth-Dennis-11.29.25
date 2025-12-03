@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="BizHealth.ai Report Generator v1.0">
+  <title>Implementation Roadmap - EWM Global</title>
+  <style>
+    
+    /* Base Reset and Typography */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      font-family: 'Open Sans', Arial, sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #333;
+      background: #fff;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+      color: #212653;
+      margin-bottom: 0.5em;
+      line-height: 1.3;
+    }
+
+    h1 { font-size: 2.5rem; font-weight: 700; }
+    h2 { font-size: 2rem; font-weight: 600; page-break-before: always; }
+    h2:first-of-type { page-break-before: auto; }
+    h3 { font-size: 1.5rem; font-weight: 600; }
+    h4 { font-size: 1.25rem; font-weight: 500; }
+    h5 { font-size: 1.1rem; font-weight: 500; }
+
+    p {
+      margin-bottom: 1em;
+    }
+
+    /* Links */
+    a {
+      color: #969423;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Lists */
+    ul, ol {
+      margin-left: 1.5em;
+      margin-bottom: 1em;
+    }
+
+    li {
+      margin-bottom: 0.5em;
+    }
+
+    /* Page Layout */
+    .report-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .page {
+      padding: 2rem 0;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    /* Header */
+    .report-header {
+      text-align: center;
+      padding: 2rem 0;
+      border-bottom: 4px solid #212653;
+      margin-bottom: 2rem;
+    }
+
+    .report-header .logo {
+      max-height: 60px;
+      margin-bottom: 1rem;
+    }
+
+    .report-header h1 {
+      margin-bottom: 0.5rem;
+    }
+
+    .report-header .subtitle {
+      font-size: 1.25rem;
+      color: #666;
+    }
+
+    .report-header .company-name {
+      font-size: 1.5rem;
+      color: #969423;
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+
+    .report-header .date {
+      font-size: 0.9rem;
+      color: #888;
+      margin-top: 0.5rem;
+    }
+
+    /* Footer */
+    .report-footer {
+      text-align: center;
+      padding: 1rem 0;
+      border-top: 2px solid #eee;
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    @media print {
+      .report-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    }
+
+    /* Section Styles */
+    .section {
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #969423;
+    }
+
+    .section-icon {
+      font-size: 1.5rem;
+      margin-right: 0.75rem;
+    }
+
+    /* Score Cards */
+    .score-card {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #212653 0%, #212653dd 100%);
+      color: #fff;
+      min-width: 150px;
+    }
+
+    .score-card .score-value {
+      font-size: 3rem;
+      font-weight: 700;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    .score-card .score-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .score-card.small {
+      padding: 0.75rem;
+      min-width: 100px;
+    }
+
+    .score-card.small .score-value {
+      font-size: 1.75rem;
+    }
+
+    /* Health Score Display */
+    .health-score-display {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+    }
+
+    .health-score-circle {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #212653 0%, #212653cc 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    .health-score-circle .score {
+      font-size: 3.5rem;
+      font-weight: 700;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+      line-height: 1;
+    }
+
+    .health-score-circle .out-of {
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    .health-score-details {
+      text-align: left;
+    }
+
+    .health-score-details .status {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .health-score-details .trajectory {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      color: #666;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    th {
+      background: #212653;
+      color: #fff;
+      font-weight: 600;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    tr:hover {
+      background: #f0f0f0;
+    }
+
+    /* Score Table */
+    .score-table th:first-child {
+      width: 40%;
+    }
+
+    .score-table td.score {
+      font-weight: 600;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    /* Band Badge */
+    .band-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .band-badge.Excellence { background: #d4edda; color: #155724; }
+    .band-badge.Proficiency { background: #fff3cd; color: #856404; }
+    .band-badge.Attention { background: #ffeeba; color: #856404; }
+    .band-badge.Critical { background: #f8d7da; color: #721c24; }
+
+    /* Priority Badge */
+    .priority-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .priority-badge.high { background: #dc3545; color: #fff; }
+    .priority-badge.medium { background: #ffc107; color: #333; }
+    .priority-badge.low { background: #28a745; color: #fff; }
+
+    /* Cards */
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #212653;
+      margin: 0;
+    }
+
+    .card-body {
+      font-size: 0.95rem;
+    }
+
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+    @media (max-width: 768px) {
+      .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Flex Layout */
+    .flex { display: flex; }
+    .flex-wrap { flex-wrap: wrap; }
+    .flex-center { align-items: center; justify-content: center; }
+    .flex-between { justify-content: space-between; }
+    .gap-1 { gap: 0.5rem; }
+    .gap-2 { gap: 1rem; }
+    .gap-3 { gap: 1.5rem; }
+
+    /* Utility Classes */
+    .text-center { text-align: center; }
+    .text-right { text-align: right; }
+    .mt-1 { margin-top: 0.5rem; }
+    .mt-2 { margin-top: 1rem; }
+    .mt-3 { margin-top: 1.5rem; }
+    .mb-1 { margin-bottom: 0.5rem; }
+    .mb-2 { margin-bottom: 1rem; }
+    .mb-3 { margin-bottom: 1.5rem; }
+    .p-1 { padding: 0.5rem; }
+    .p-2 { padding: 1rem; }
+    .p-3 { padding: 1.5rem; }
+
+    /* Quick Win Card */
+    .quick-win-card {
+      background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+      border-left: 4px solid #969423;
+      padding: 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+    }
+
+    .quick-win-card .title {
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .quick-win-card .metrics {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.75rem;
+    }
+
+    .quick-win-card .metrics span {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* Risk Card */
+    .risk-card {
+      border-left: 4px solid #dc3545;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .risk-card.high { border-left-color: #dc3545; }
+    .risk-card.medium { border-left-color: #ffc107; }
+    .risk-card.low { border-left-color: #28a745; }
+
+    .risk-card .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .risk-card .category {
+      font-weight: 600;
+      color: #212653;
+    }
+
+    /* Finding Card */
+    .finding-card {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+    }
+
+    .finding-card.strength { background: #d4edda; border-left: 4px solid #28a745; }
+    .finding-card.gap { background: #f8d7da; border-left: 4px solid #dc3545; }
+    .finding-card.risk { background: #ffeeba; border-left: 4px solid #ffc107; }
+    .finding-card.opportunity { background: #cce5ff; border-left: 4px solid #0d6efd; }
+
+    .finding-card .label {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .finding-card .dimension {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Roadmap Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.5rem;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: #212653;
+      border-radius: 3px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 1.5rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -1.75rem;
+      top: 0.5rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #969423;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 3px #212653;
+    }
+
+    .timeline-item .phase-name {
+      font-weight: 600;
+      color: #212653;
+      font-size: 1.1rem;
+    }
+
+    .timeline-item .time-horizon {
+      font-size: 0.9rem;
+      color: #969423;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Callout Box */
+    .callout {
+      padding: 1.25rem;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+    }
+
+    .callout.info {
+      background: #e7f3ff;
+      border-left: 4px solid #0d6efd;
+    }
+
+    .callout.success {
+      background: #d4edda;
+      border-left: 4px solid #28a745;
+    }
+
+    .callout.warning {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+    }
+
+    .callout.danger {
+      background: #f8d7da;
+      border-left: 4px solid #dc3545;
+    }
+
+    .callout .title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      height: 24px;
+      background: #e9ecef;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .progress-bar .fill {
+      height: 100%;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: width 0.3s ease;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        font-size: 11pt;
+      }
+
+      .report-container {
+        max-width: none;
+        padding: 0;
+      }
+
+      .page-break {
+        page-break-before: always;
+      }
+
+      h2 {
+        page-break-before: always;
+      }
+
+      h2:first-of-type {
+        page-break-before: auto;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+    }
+  
+    
+  </style>
+</head>
+<body>
+  <div class="report-container">
+    
+    
+    <header class="report-header">
+      <h1>Implementation Roadmap</h1>
+      <p class="subtitle">Strategic Implementation Plan</p>
+      <p class="company-name">EWM Global</p>
+      <p class="date">Assessment Date: December 3, 2025</p>
+    </header>
+  
+
+    <section class="section">
+      <h2>Roadmap Overview</h2>
+
+      <div class="callout info">
+        <div class="title">Implementation Approach</div>
+        <p>
+          This roadmap provides a structured, phased approach to implementing the recommendations
+          from your business health assessment. Each phase builds on the previous one, ensuring
+          sustainable progress and measurable results.
+        </p>
+      </div>
+
+      <div class="grid grid-3 mt-3">
+        
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Phase 1</span>
+            </div>
+            <div class="card-body text-center">
+              <h4 style="color: #212653; margin-bottom: 0.5rem;">Foundation &amp; Quick Wins</h4>
+              <p style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">0-90 days</p>
+              <p style="font-size: 0.85rem; margin: 0;">
+                <strong>2</strong> initiatives
+              </p>
+            </div>
+          </div>
+        
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Phase 2</span>
+            </div>
+            <div class="card-body text-center">
+              <h4 style="color: #212653; margin-bottom: 0.5rem;">Core Capability Building</h4>
+              <p style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">3-12 months</p>
+              <p style="font-size: 0.85rem; margin: 0;">
+                <strong>6</strong> initiatives
+              </p>
+            </div>
+          </div>
+        
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Phase 3</span>
+            </div>
+            <div class="card-body text-center">
+              <h4 style="color: #212653; margin-bottom: 0.5rem;">Strategic Transformation</h4>
+              <p style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">12-24+ months</p>
+              <p style="font-size: 0.85rem; margin: 0;">
+                <strong>2</strong> initiatives
+              </p>
+            </div>
+          </div>
+        
+      </div>
+    </section>
+
+    <section class="section page-break">
+      <h2>Timeline Visualization</h2>
+
+      <style>
+        .gantt-container {
+          overflow-x: auto;
+          margin-bottom: 1.5rem;
+        }
+        .gantt-chart {
+          display: grid;
+          grid-template-columns: 200px repeat(18, 40px);
+          gap: 1px;
+          background: #ddd;
+          padding: 1px;
+          min-width: 920px;
+        }
+        .gantt-header {
+          background: #212653;
+          color: #fff;
+          padding: 0.5rem;
+          text-align: center;
+          font-size: 0.75rem;
+          font-weight: 600;
+        }
+        .gantt-label {
+          background: #f8f9fa;
+          padding: 0.5rem;
+          font-size: 0.85rem;
+          font-weight: 500;
+        }
+        .gantt-cell {
+          background: #fff;
+          padding: 0.25rem;
+        }
+        .gantt-bar {
+          height: 100%;
+          border-radius: 3px;
+          min-height: 20px;
+        }
+        .gantt-bar-1 { background: #212653; }
+        .gantt-bar-2 { background: #969423; }
+        .gantt-bar-3 { background: #6c757d; }
+      </style>
+
+      <div class="gantt-container">
+        <div class="gantt-chart">
+          <div class="gantt-header">Phase / Month</div>
+          <div class="gantt-header">M1</div><div class="gantt-header">M2</div><div class="gantt-header">M3</div><div class="gantt-header">M4</div><div class="gantt-header">M5</div><div class="gantt-header">M6</div><div class="gantt-header">M7</div><div class="gantt-header">M8</div><div class="gantt-header">M9</div><div class="gantt-header">M10</div><div class="gantt-header">M11</div><div class="gantt-header">M12</div><div class="gantt-header">M13</div><div class="gantt-header">M14</div><div class="gantt-header">M15</div><div class="gantt-header">M16</div><div class="gantt-header">M17</div><div class="gantt-header">M18</div>
+
+          
+              <div class="gantt-label">Foundation &amp; Quick Wins</div>
+              <div class="gantt-cell"><div class="gantt-bar gantt-bar-1"></div></div><div class="gantt-cell"><div class="gantt-bar gantt-bar-1"></div></div><div class="gantt-cell"><div class="gantt-bar gantt-bar-1"></div></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+            
+              <div class="gantt-label">Core Capability Building</div>
+              <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"><div class="gantt-bar gantt-bar-2"></div></div><div class="gantt-cell"><div class="gantt-bar gantt-bar-2"></div></div><div class="gantt-cell"><div class="gantt-bar gantt-bar-2"></div></div><div class="gantt-cell"><div class="gantt-bar gantt-bar-2"></div></div><div class="gantt-cell"><div class="gantt-bar gantt-bar-2"></div></div><div class="gantt-cell"><div class="gantt-bar gantt-bar-2"></div></div><div class="gantt-cell"><div class="gantt-bar gantt-bar-2"></div></div><div class="gantt-cell"><div class="gantt-bar gantt-bar-2"></div></div><div class="gantt-cell"><div class="gantt-bar gantt-bar-2"></div></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+            
+              <div class="gantt-label">Strategic Transformation</div>
+              <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"><div class="gantt-bar gantt-bar-3"></div></div><div class="gantt-cell"><div class="gantt-bar gantt-bar-3"></div></div><div class="gantt-cell"><div class="gantt-bar gantt-bar-3"></div></div><div class="gantt-cell"><div class="gantt-bar gantt-bar-3"></div></div><div class="gantt-cell"><div class="gantt-bar gantt-bar-3"></div></div><div class="gantt-cell"><div class="gantt-bar gantt-bar-3"></div></div>
+            
+        </div>
+      </div>
+
+      <div class="flex gap-3">
+        <span><span style="display: inline-block; width: 20px; height: 12px; background: #212653; border-radius: 2px; margin-right: 4px;"></span> Phase 1</span>
+        <span><span style="display: inline-block; width: 20px; height: 12px; background: #969423; border-radius: 2px; margin-right: 4px;"></span> Phase 2</span>
+        <span><span style="display: inline-block; width: 20px; height: 12px; background: #6c757d; border-radius: 2px; margin-right: 4px;"></span> Phase 3+</span>
+      </div>
+    </section>
+
+    
+      <section class="section page-break">
+        <h2>Phase 1: Foundation &amp; Quick Wins</h2>
+
+        <div class="flex gap-3 mb-3">
+          <div class="score-card small">
+            <div class="score-value">0-90</div>
+            <div class="score-label">days</div>
+          </div>
+          <div>
+            <p><strong>Initiatives:</strong> 2</p>
+            <p><strong>Focus:</strong> Focus on immediate value creation through quick wins and critical risk mitigation. Build momentum wi...</p>
+          </div>
+        </div>
+
+        <h3>Phase Objectives</h3>
+        <p>Focus on immediate value creation through quick wins and critical risk mitigation. Build momentum with visible early successes.</p>
+
+        
+
+        <h3>Initiatives in This Phase</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Priority</th>
+              <th>Initiative</th>
+              <th>Impact</th>
+              <th>Effort</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td><strong>#1</strong></td>
+                <td>
+                  Marketing Improvement Initiative
+                  <span class="band-badge Excellence" style="margin-left: 0.5rem; font-size: 0.7rem;">Quick Win</span>
+                </td>
+                <td>69/100</td>
+                <td>70/100</td>
+              </tr>
+            
+              <tr>
+                <td><strong>#2</strong></td>
+                <td>
+                  Financials Improvement Initiative
+                  
+                </td>
+                <td>61/100</td>
+                <td>70/100</td>
+              </tr>
+            
+            
+          </tbody>
+        </table>
+
+        
+
+        
+      </section>
+    
+      <section class="section page-break">
+        <h2>Phase 2: Core Capability Building</h2>
+
+        <div class="flex gap-3 mb-3">
+          <div class="score-card small">
+            <div class="score-value">3-12</div>
+            <div class="score-label">months</div>
+          </div>
+          <div>
+            <p><strong>Initiatives:</strong> 6</p>
+            <p><strong>Focus:</strong> Implement foundational improvements across key dimensions. Establish new processes and capabilities.</p>
+          </div>
+        </div>
+
+        <h3>Phase Objectives</h3>
+        <p>Implement foundational improvements across key dimensions. Establish new processes and capabilities.</p>
+
+        
+
+        <h3>Initiatives in This Phase</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Priority</th>
+              <th>Initiative</th>
+              <th>Impact</th>
+              <th>Effort</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td><strong>#3</strong></td>
+                <td>
+                  Leadership &amp; Governance Improvement Initiative
+                  <span class="band-badge Excellence" style="margin-left: 0.5rem; font-size: 0.7rem;">Quick Win</span>
+                </td>
+                <td>60/100</td>
+                <td>50/100</td>
+              </tr>
+            
+              <tr>
+                <td><strong>#4</strong></td>
+                <td>
+                  Strategy Improvement Initiative
+                  <span class="band-badge Excellence" style="margin-left: 0.5rem; font-size: 0.7rem;">Quick Win</span>
+                </td>
+                <td>55/100</td>
+                <td>50/100</td>
+              </tr>
+            
+              <tr>
+                <td><strong>#5</strong></td>
+                <td>
+                  Human Resources Improvement Initiative
+                  <span class="band-badge Excellence" style="margin-left: 0.5rem; font-size: 0.7rem;">Quick Win</span>
+                </td>
+                <td>54/100</td>
+                <td>50/100</td>
+              </tr>
+            
+              <tr>
+                <td><strong>#6</strong></td>
+                <td>
+                  Customer Experience Improvement Initiative
+                  <span class="band-badge Excellence" style="margin-left: 0.5rem; font-size: 0.7rem;">Quick Win</span>
+                </td>
+                <td>50/100</td>
+                <td>50/100</td>
+              </tr>
+            
+              <tr>
+                <td><strong>#7</strong></td>
+                <td>
+                  Technology &amp; Innovation Improvement Initiative
+                  
+                </td>
+                <td>45/100</td>
+                <td>50/100</td>
+              </tr>
+            
+              <tr>
+                <td><strong>#8</strong></td>
+                <td>
+                  Risk Management &amp; Sustainability Improvement Initiative
+                  
+                </td>
+                <td>41/100</td>
+                <td>50/100</td>
+              </tr>
+            
+            
+          </tbody>
+        </table>
+
+        
+
+        
+      </section>
+    
+      <section class="section page-break">
+        <h2>Phase 3: Strategic Transformation</h2>
+
+        <div class="flex gap-3 mb-3">
+          <div class="score-card small">
+            <div class="score-value">12-24+</div>
+            <div class="score-label">months</div>
+          </div>
+          <div>
+            <p><strong>Initiatives:</strong> 2</p>
+            <p><strong>Focus:</strong> Execute long-term strategic initiatives. Transform organizational capabilities for sustained competi...</p>
+          </div>
+        </div>
+
+        <h3>Phase Objectives</h3>
+        <p>Execute long-term strategic initiatives. Transform organizational capabilities for sustained competitive advantage.</p>
+
+        
+
+        <h3>Initiatives in This Phase</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Priority</th>
+              <th>Initiative</th>
+              <th>Impact</th>
+              <th>Effort</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td><strong>#9</strong></td>
+                <td>
+                  Operations Improvement Initiative
+                  
+                </td>
+                <td>38/100</td>
+                <td>50/100</td>
+              </tr>
+            
+              <tr>
+                <td><strong>#10</strong></td>
+                <td>
+                  Sales Improvement Initiative
+                  
+                </td>
+                <td>30/100</td>
+                <td>50/100</td>
+              </tr>
+            
+            
+          </tbody>
+        </table>
+
+        
+
+        
+      </section>
+    
+
+    <section class="section page-break">
+      <h2>Resource Planning Summary</h2>
+
+      <h3>Estimated Resource Allocation by Phase</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Phase</th>
+            <th>Timeline</th>
+            <th>Initiatives</th>
+            <th>Primary Focus</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+            <tr>
+              <td><strong>Foundation &amp; Quick Wins</strong></td>
+              <td>0-90 days</td>
+              <td>2</td>
+              <td>Focus on immediate value creation through quick wi...</td>
+            </tr>
+          
+            <tr>
+              <td><strong>Core Capability Building</strong></td>
+              <td>3-12 months</td>
+              <td>6</td>
+              <td>Implement foundational improvements across key dim...</td>
+            </tr>
+          
+            <tr>
+              <td><strong>Strategic Transformation</strong></td>
+              <td>12-24+ months</td>
+              <td>2</td>
+              <td>Execute long-term strategic initiatives. Transform...</td>
+            </tr>
+          
+        </tbody>
+      </table>
+
+      <h3 class="mt-3">Success Factors</h3>
+      <div class="callout success">
+        <ul style="margin-bottom: 0;">
+          <li><strong>Executive Sponsorship:</strong> Ensure C-level commitment and visibility</li>
+          <li><strong>Clear Accountability:</strong> Assign owners for each initiative</li>
+          <li><strong>Regular Reviews:</strong> Weekly check-ins, monthly progress reports</li>
+          <li><strong>Change Management:</strong> Communicate early and often with stakeholders</li>
+          <li><strong>Quick Wins First:</strong> Build momentum with early successes</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Next Steps</h2>
+
+      <div class="callout warning">
+        <div class="title">Immediate Actions</div>
+        <ol style="margin-bottom: 0;">
+          <li>Review this roadmap with your leadership team</li>
+          <li>Identify initiative owners and sponsors</li>
+          <li>Schedule kick-off meeting for Phase 1</li>
+          <li>Establish progress tracking mechanisms</li>
+          <li>Communicate the roadmap to key stakeholders</li>
+        </ol>
+      </div>
+    </section>
+
+    
+    <footer class="report-footer">
+      <p>&copy; 2025 BizHealth.ai - Confidential Business Assessment Report</p>
+      <p>Assessment ID: 2250d590-bc70-4630-a6e6-f7e6ce0028d5</p>
+    </footer>
+  
+  
+  </div>
+</body>
+</html>

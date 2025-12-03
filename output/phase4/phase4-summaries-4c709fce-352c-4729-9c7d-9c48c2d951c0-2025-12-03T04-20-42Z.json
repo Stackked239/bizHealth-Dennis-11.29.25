@@ -110,7 +110,7 @@
     "meta": {
       "assessment_run_id": "2250d590-bc70-4630-a6e6-f7e6ce0028d5",
       "company_profile_id": "cc88646d-6626-47e6-946d-fd4304b3f39d",
-      "created_at": "2025-12-03T05:16:46.655Z",
+      "created_at": "2025-12-03T04:15:17.401Z",
       "methodology_version": "1.0.0",
       "scoring_version": "1.0.0",
       "idm_schema_version": "1.0.0"
@@ -2378,7 +2378,7 @@
     }
   },
   "metadata": {
-    "compiled_at": "2025-12-03T05:16:46.683Z",
+    "compiled_at": "2025-12-03T04:15:17.460Z",
     "compiler_version": "1.0.0",
     "compilation_method": "typescript",
     "data_sources": {
@@ -2390,7 +2390,7 @@
       "enabled": true,
       "reports_generated": 3,
       "total_input_tokens": 5518,
-      "total_output_tokens": 22078
+      "total_output_tokens": 27892
     }
   },
   "generated_reports": [
@@ -2398,19 +2398,19 @@
       "reportType": "comprehensive_report",
       "reportName": "Comprehensive Assessment Report",
       "outputPath": "/Users/austinwarren/Downloads/bizHealth-Dennis-11.26.25-claude-consolidated-merge-01Wjazh6HwVZXSmGKBYer3WT/workflow-export/output/reports/comprehensive-report.html",
-      "generatedAt": "2025-12-03T05:18:57.967Z"
+      "generatedAt": "2025-12-03T04:18:14.569Z"
     },
     {
       "reportType": "owners_report",
       "reportName": "Business Owner Executive Summary",
       "outputPath": "/Users/austinwarren/Downloads/bizHealth-Dennis-11.26.25-claude-consolidated-merge-01Wjazh6HwVZXSmGKBYer3WT/workflow-export/output/reports/owners-report.html",
-      "generatedAt": "2025-12-03T05:19:40.551Z"
+      "generatedAt": "2025-12-03T04:19:04.388Z"
     },
     {
       "reportType": "quick_wins_report",
       "reportName": "Quick Wins Action Plan",
       "outputPath": "/Users/austinwarren/Downloads/bizHealth-Dennis-11.26.25-claude-consolidated-merge-01Wjazh6HwVZXSmGKBYer3WT/workflow-export/output/reports/quick-wins-report.html",
-      "generatedAt": "2025-12-03T05:21:06.372Z"
+      "generatedAt": "2025-12-03T04:20:42.028Z"
     }
   ]
 }

@@ -1,0 +1,2342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="BizHealth.ai Report Generator v1.0">
+  <title>Business Owner Report - EWM Global</title>
+  <style>
+    
+    /* Base Reset and Typography */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      font-family: 'Open Sans', Arial, sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #333;
+      background: #fff;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+      color: #212653;
+      margin-bottom: 0.5em;
+      line-height: 1.3;
+    }
+
+    h1 { font-size: 2.5rem; font-weight: 700; }
+    h2 { font-size: 2rem; font-weight: 600; page-break-before: always; }
+    h2:first-of-type { page-break-before: auto; }
+    h3 { font-size: 1.5rem; font-weight: 600; }
+    h4 { font-size: 1.25rem; font-weight: 500; }
+    h5 { font-size: 1.1rem; font-weight: 500; }
+
+    p {
+      margin-bottom: 1em;
+    }
+
+    /* Links */
+    a {
+      color: #969423;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Lists */
+    ul, ol {
+      margin-left: 1.5em;
+      margin-bottom: 1em;
+    }
+
+    li {
+      margin-bottom: 0.5em;
+    }
+
+    /* Page Layout */
+    .report-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .page {
+      padding: 2rem 0;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    /* Header */
+    .report-header {
+      text-align: center;
+      padding: 2rem 0;
+      border-bottom: 4px solid #212653;
+      margin-bottom: 2rem;
+    }
+
+    .report-header .logo {
+      max-height: 60px;
+      margin-bottom: 1rem;
+    }
+
+    .report-header h1 {
+      margin-bottom: 0.5rem;
+    }
+
+    .report-header .subtitle {
+      font-size: 1.25rem;
+      color: #666;
+    }
+
+    .report-header .company-name {
+      font-size: 1.5rem;
+      color: #969423;
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+
+    .report-header .date {
+      font-size: 0.9rem;
+      color: #888;
+      margin-top: 0.5rem;
+    }
+
+    /* Footer */
+    .report-footer {
+      text-align: center;
+      padding: 1rem 0;
+      border-top: 2px solid #eee;
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    @media print {
+      .report-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    }
+
+    /* Section Styles */
+    .section {
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #969423;
+    }
+
+    .section-icon {
+      font-size: 1.5rem;
+      margin-right: 0.75rem;
+    }
+
+    /* Score Cards */
+    .score-card {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #212653 0%, #212653dd 100%);
+      color: #fff;
+      min-width: 150px;
+    }
+
+    .score-card .score-value {
+      font-size: 3rem;
+      font-weight: 700;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    .score-card .score-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .score-card.small {
+      padding: 0.75rem;
+      min-width: 100px;
+    }
+
+    .score-card.small .score-value {
+      font-size: 1.75rem;
+    }
+
+    /* Health Score Display */
+    .health-score-display {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+    }
+
+    .health-score-circle {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #212653 0%, #212653cc 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    .health-score-circle .score {
+      font-size: 3.5rem;
+      font-weight: 700;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+      line-height: 1;
+    }
+
+    .health-score-circle .out-of {
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    .health-score-details {
+      text-align: left;
+    }
+
+    .health-score-details .status {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .health-score-details .trajectory {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      color: #666;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    th {
+      background: #212653;
+      color: #fff;
+      font-weight: 600;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    tr:hover {
+      background: #f0f0f0;
+    }
+
+    /* Score Table */
+    .score-table th:first-child {
+      width: 40%;
+    }
+
+    .score-table td.score {
+      font-weight: 600;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    /* Band Badge */
+    .band-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .band-badge.Excellence { background: #d4edda; color: #155724; }
+    .band-badge.Proficiency { background: #fff3cd; color: #856404; }
+    .band-badge.Attention { background: #ffeeba; color: #856404; }
+    .band-badge.Critical { background: #f8d7da; color: #721c24; }
+
+    /* Priority Badge */
+    .priority-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .priority-badge.high { background: #dc3545; color: #fff; }
+    .priority-badge.medium { background: #ffc107; color: #333; }
+    .priority-badge.low { background: #28a745; color: #fff; }
+
+    /* Cards */
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #212653;
+      margin: 0;
+    }
+
+    .card-body {
+      font-size: 0.95rem;
+    }
+
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+    @media (max-width: 768px) {
+      .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Flex Layout */
+    .flex { display: flex; }
+    .flex-wrap { flex-wrap: wrap; }
+    .flex-center { align-items: center; justify-content: center; }
+    .flex-between { justify-content: space-between; }
+    .gap-1 { gap: 0.5rem; }
+    .gap-2 { gap: 1rem; }
+    .gap-3 { gap: 1.5rem; }
+
+    /* Utility Classes */
+    .text-center { text-align: center; }
+    .text-right { text-align: right; }
+    .mt-1 { margin-top: 0.5rem; }
+    .mt-2 { margin-top: 1rem; }
+    .mt-3 { margin-top: 1.5rem; }
+    .mb-1 { margin-bottom: 0.5rem; }
+    .mb-2 { margin-bottom: 1rem; }
+    .mb-3 { margin-bottom: 1.5rem; }
+    .p-1 { padding: 0.5rem; }
+    .p-2 { padding: 1rem; }
+    .p-3 { padding: 1.5rem; }
+
+    /* Quick Win Card */
+    .quick-win-card {
+      background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+      border-left: 4px solid #969423;
+      padding: 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+    }
+
+    .quick-win-card .title {
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .quick-win-card .metrics {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.75rem;
+    }
+
+    .quick-win-card .metrics span {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* Risk Card */
+    .risk-card {
+      border-left: 4px solid #dc3545;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .risk-card.high { border-left-color: #dc3545; }
+    .risk-card.medium { border-left-color: #ffc107; }
+    .risk-card.low { border-left-color: #28a745; }
+
+    .risk-card .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .risk-card .category {
+      font-weight: 600;
+      color: #212653;
+    }
+
+    /* Finding Card */
+    .finding-card {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+    }
+
+    .finding-card.strength { background: #d4edda; border-left: 4px solid #28a745; }
+    .finding-card.gap { background: #f8d7da; border-left: 4px solid #dc3545; }
+    .finding-card.risk { background: #ffeeba; border-left: 4px solid #ffc107; }
+    .finding-card.opportunity { background: #cce5ff; border-left: 4px solid #0d6efd; }
+
+    .finding-card .label {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .finding-card .dimension {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Roadmap Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.5rem;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: #212653;
+      border-radius: 3px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 1.5rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -1.75rem;
+      top: 0.5rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #969423;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 3px #212653;
+    }
+
+    .timeline-item .phase-name {
+      font-weight: 600;
+      color: #212653;
+      font-size: 1.1rem;
+    }
+
+    .timeline-item .time-horizon {
+      font-size: 0.9rem;
+      color: #969423;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Callout Box */
+    .callout {
+      padding: 1.25rem;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+    }
+
+    .callout.info {
+      background: #e7f3ff;
+      border-left: 4px solid #0d6efd;
+    }
+
+    .callout.success {
+      background: #d4edda;
+      border-left: 4px solid #28a745;
+    }
+
+    .callout.warning {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+    }
+
+    .callout.danger {
+      background: #f8d7da;
+      border-left: 4px solid #dc3545;
+    }
+
+    .callout .title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      height: 24px;
+      background: #e9ecef;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .progress-bar .fill {
+      height: 100%;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: width 0.3s ease;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        font-size: 11pt;
+      }
+
+      .report-container {
+        max-width: none;
+        padding: 0;
+      }
+
+      .page-break {
+        page-break-before: always;
+      }
+
+      h2 {
+        page-break-before: always;
+      }
+
+      h2:first-of-type {
+        page-break-before: auto;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+    }
+  
+    
+    /* Narrative Content Styles */
+    .narrative-content {
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      border-left: 4px solid #969423;
+    }
+
+    .narrative-content .bh-h2 {
+      font-size: 1.4rem;
+      color: #212653;
+      margin-top: 1.25em;
+      margin-bottom: 0.5em;
+      border-bottom: 2px solid #969423;
+      padding-bottom: 0.5rem;
+    }
+
+    .narrative-content .bh-h3 {
+      font-size: 1.2rem;
+      color: #212653;
+      margin-top: 1em;
+      margin-bottom: 0.5em;
+    }
+
+    .narrative-content .bh-h4 {
+      font-size: 1.05rem;
+      color: #555;
+      margin-top: 1em;
+      margin-bottom: 0.5em;
+    }
+
+    .narrative-content .bh-p {
+      margin: 1em 0;
+      line-height: 1.7;
+    }
+
+    .narrative-content .bh-ul,
+    .narrative-content .bh-ol {
+      margin: 1em 0;
+      padding-left: 1.5em;
+    }
+
+    .narrative-content .bh-li,
+    .narrative-content .bh-li-num {
+      margin: 0.5em 0;
+      line-height: 1.6;
+    }
+
+    .narrative-content .bh-empty {
+      color: #999;
+      font-style: italic;
+    }
+
+    .narrative-content strong {
+      color: #212653;
+    }
+
+    /* ============================================
+       VISUAL ENHANCEMENT STYLES
+       ============================================ */
+
+    /* KEY TAKEAWAYS BOX */
+    .key-takeaways {
+      background: linear-gradient(135deg, #212653 0%, #2a3366 100%);
+      color: #fff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      box-shadow: 0 4px 12px rgba(33, 38, 83, 0.3);
+    }
+
+    .key-takeaways .takeaway-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 2px solid rgba(150, 148, 35, 0.5);
+      padding-bottom: 0.75rem;
+    }
+
+    .key-takeaways .takeaway-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin: 0.75rem 0;
+      padding: 0.5rem;
+      background: rgba(255,255,255,0.1);
+      border-radius: 6px;
+    }
+
+    .key-takeaways .takeaway-icon {
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .key-takeaways .takeaway-text {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* BENCHMARK CALLOUT BOXES */
+    .benchmark-callout {
+      background: #e7f3ff;
+      border: 1px solid #b8daff;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .benchmark-callout .benchmark-icon {
+      font-size: 2rem;
+      color: #212653;
+    }
+
+    .benchmark-callout .benchmark-content { flex: 1; }
+
+    .benchmark-callout .benchmark-label {
+      font-size: 0.85rem;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .benchmark-callout .benchmark-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #212653;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .benchmark-callout .benchmark-context {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    /* EXECUTIVE HIGHLIGHTS */
+    .executive-highlights {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .highlight-card {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      border-top: 4px solid #212653;
+    }
+
+    .highlight-card .highlight-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .highlight-card .highlight-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #212653;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .highlight-card .highlight-label {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 0.25rem;
+    }
+
+    /* EVIDENCE CITATION BLOCKS */
+    .evidence-citation {
+      background: #f8f9fa;
+      border-left: 4px solid #969423;
+      border-radius: 0 8px 8px 0;
+      padding: 0.75rem 1rem;
+      margin: 0.75rem 0 1.25rem 0;
+      font-size: 0.9rem;
+    }
+
+    .evidence-citation .citation-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .evidence-citation .citation-icon {
+      color: #969423;
+    }
+
+    .evidence-citation .question-ref {
+      color: #666;
+      font-size: 0.85rem;
+    }
+
+    .evidence-citation .response-text {
+      color: #333;
+      font-style: italic;
+      margin: 0.5rem 0;
+      padding-left: 1rem;
+      border-left: 2px solid #ddd;
+    }
+
+    .evidence-citation .benchmark-comparison {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid #e0e0e0;
+      font-size: 0.85rem;
+    }
+
+    .evidence-citation .benchmark-comparison.above { color: #28a745; }
+    .evidence-citation .benchmark-comparison.below { color: #dc3545; }
+    .evidence-citation .benchmark-comparison.at { color: #6c757d; }
+
+    /* COLOR-CODED INSIGHT CARDS */
+    .insight-card {
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 0.75rem 0;
+      border-left: 4px solid;
+    }
+
+    .insight-card.strength { background: #d4edda; border-left-color: #28a745; }
+    .insight-card.strength .insight-label { color: #155724; }
+
+    .insight-card.weakness { background: #f8d7da; border-left-color: #dc3545; }
+    .insight-card.weakness .insight-label { color: #721c24; }
+
+    .insight-card.opportunity { background: #cce5ff; border-left-color: #0d6efd; }
+    .insight-card.opportunity .insight-label { color: #004085; }
+
+    .insight-card.warning { background: #fff3cd; border-left-color: #ffc107; }
+    .insight-card.warning .insight-label { color: #856404; }
+
+    .insight-card .insight-label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.25rem;
+    }
+
+    .insight-card .insight-title {
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .insight-card .insight-detail {
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    /* INSIGHT CARDS GRID LAYOUT */
+    .insight-cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .insight-cards-container .insight-card {
+      margin: 0;
+    }
+
+    /* BENCHMARK SUMMARY TABLE */
+    .benchmark-summary {
+      margin: 1.5rem 0;
+    }
+
+    .benchmark-summary h4 {
+      color: #212653;
+      margin-bottom: 1rem;
+    }
+
+    .score-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .score-table th,
+    .score-table td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    .score-table th {
+      background: #f8f9fa;
+      font-weight: 600;
+      color: #212653;
+    }
+
+    .score-table .score {
+      font-weight: 600;
+      color: #212653;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .executive-highlights { grid-template-columns: repeat(2, 1fr); }
+      .benchmark-callout { flex-direction: column; text-align: center; }
+      .key-takeaways .takeaway-item { flex-direction: column; align-items: flex-start; }
+      .insight-cards-container { grid-template-columns: 1fr; }
+    }
+
+    /* PRINT OPTIMIZATIONS */
+    @media print {
+      .key-takeaways {
+        background: #212653 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .evidence-citation {
+        border-left-color: #969423 !important;
+        background: #f8f9fa !important;
+      }
+
+      .insight-card { page-break-inside: avoid; }
+      .benchmark-callout { page-break-inside: avoid; }
+      .executive-highlights { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    /* ================================================================
+       OPUS 4.5 MARKDOWN ELEMENT STYLING
+       Added 2025-12-02 to support rich markdown output
+       ================================================================ */
+
+    /* Responsive Table Container */
+    .table-responsive {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 1.5rem 0;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .bh-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+      min-width: 400px;
+      background: #fff;
+    }
+
+    .bh-table th {
+      background: #212653;
+      color: #fff;
+      font-weight: 600;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    .bh-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #e0e0e0;
+      vertical-align: top;
+      color: #333;
+    }
+
+    .bh-table tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    .bh-table td:first-child {
+      font-weight: 500;
+      color: #212653;
+    }
+
+    /* ASCII Visualization Container */
+    .visual-framework {
+      background: #212653;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      overflow-x: auto;
+      box-shadow: 0 2px 8px rgba(33, 38, 83, 0.2);
+    }
+
+    .ascii-viz {
+      color: #e8e8e8;
+      font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+      font-size: 0.75rem;
+      line-height: 1.3;
+      white-space: pre;
+      margin: 0;
+    }
+
+    /* Code Block */
+    .bh-code {
+      background: #f8f9fa;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 1rem;
+      overflow-x: auto;
+      font-size: 0.9rem;
+      margin: 1rem 0;
+      font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+    }
+
+    /* Blockquote/Callout */
+    .bh-callout {
+      background: #f8f9fa;
+      border-left: 4px solid #969423;
+      padding: 1rem 1.5rem;
+      margin: 1.5rem 0;
+      font-style: italic;
+      color: #555;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .bh-callout p { margin: 0; }
+    .bh-callout strong { color: #212653; }
+
+    /* Section Divider */
+    .bh-section-divider {
+      border: none;
+      height: 2px;
+      background: linear-gradient(to right, #212653, #969423, #212653);
+      margin: 2rem 0;
+    }
+
+    .bh-h1 {
+      font-size: 2rem;
+      color: #212653;
+      border-bottom: 3px solid #969423;
+      padding-bottom: 0.5rem;
+    }
+
+    .bh-strong { color: #212653; font-weight: 600; }
+
+    /* Print styles for markdown elements */
+    @media print {
+      .visual-framework {
+        background: #212653 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .ascii-viz { color: #e8e8e8 !important; font-size: 0.65rem; }
+      .bh-table th { background: #212653 !important; color: #fff !important; }
+      .table-responsive { overflow: visible; box-shadow: none; }
+      .bh-callout { page-break-inside: avoid; }
+    }
+
+    /* ================================================================
+       OWNER REPORT ENHANCEMENT STYLES
+       Added for owner-focused executive guide with cross-references
+       ================================================================ */
+
+    /* OWNER SECTION HEADERS */
+    .owner-section-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .owner-section-header h2 {
+      margin-bottom: 0.5rem;
+      color: #212653;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .owner-question {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      color: #666;
+      margin: 0;
+      padding-left: 0.5rem;
+      border-left: 3px solid #969423;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .owner-question .question-icon {
+      font-size: 1.1rem;
+    }
+
+    .owner-question em {
+      font-style: italic;
+    }
+
+    /* OWNER IMPLICATIONS GRID */
+    .owner-implications-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .implication-card {
+      background: #fff;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 1.25rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .implication-card .card-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .implication-card .card-title {
+      font-weight: 600;
+      color: #212653;
+      font-family: 'Montserrat', sans-serif;
+      margin-bottom: 0.5rem;
+    }
+
+    .implication-card p {
+      font-size: 0.9rem;
+      color: #555;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .implication-card.growth { border-top: 3px solid #28a745; }
+    .implication-card.risk { border-top: 3px solid #dc3545; }
+    .implication-card.value { border-top: 3px solid #969423; }
+
+    /* FINANCIAL SUMMARY GRID */
+    .financial-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .financial-card {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .financial-card.highlight {
+      background: linear-gradient(135deg, #212653 0%, #2d3a7a 100%);
+      color: #fff;
+      border: none;
+    }
+
+    .financial-card .card-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    .financial-card.highlight .card-label {
+      color: rgba(255,255,255,0.8);
+    }
+
+    .financial-card .card-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #212653;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .financial-card.highlight .card-value {
+      color: #fff;
+    }
+
+    .financial-card .card-sublabel {
+      font-size: 0.8rem;
+      color: #888;
+      margin-top: 0.25rem;
+    }
+
+    .financial-card.highlight .card-sublabel {
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* SECTION INTRO TEXT */
+    .section-intro {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    /* COMPREHENSIVE REPORT REFERENCE CALLOUTS */
+    .comprehensive-reference {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #f8f9fa;
+      border-left: 3px solid #969423;
+      padding: 0.75rem 1rem;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .comprehensive-reference .ref-icon {
+      flex-shrink: 0;
+      font-size: 1rem;
+    }
+
+    .comprehensive-reference .ref-text {
+      color: #555;
+    }
+
+    .comprehensive-reference .ref-text strong {
+      color: #212653;
+    }
+
+    .comprehensive-reference .ref-text em {
+      color: #969423;
+      font-style: normal;
+      font-weight: 500;
+    }
+
+    .comprehensive-reference.reference-missing {
+      border-left-color: #dc3545;
+      background: #fff5f5;
+    }
+
+    .comprehensive-reference.reference-missing .ref-text {
+      color: #dc3545;
+    }
+
+    /* REPORT RELATIONSHIP NOTICE (for Comprehensive Report) */
+    .report-relationship-notice {
+      display: flex;
+      gap: 1rem;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border: 1px solid #dee2e6;
+      border-left: 4px solid #212653;
+      border-radius: 0 8px 8px 0;
+      padding: 1.25rem;
+      margin: 1.5rem 0 2rem 0;
+    }
+
+    .report-relationship-notice .notice-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+
+    .report-relationship-notice .notice-content {
+      flex: 1;
+    }
+
+    .report-relationship-notice h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.1rem;
+      color: #212653;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .report-relationship-notice p {
+      margin: 0.5rem 0 0 0;
+      font-size: 0.95rem;
+      color: #555;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .report-relationship-notice strong {
+      color: #212653;
+    }
+
+    /* BUNDLE CONTENTS */
+    .bundle-contents {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+
+    .bundle-contents h3 {
+      margin: 0 0 1rem 0;
+      color: #212653;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .bundle-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .bundle-item {
+      display: flex;
+      flex-direction: column;
+      padding: 0.75rem;
+      background: #fff;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+    }
+
+    .bundle-item.primary {
+      border-left: 3px solid #212653;
+    }
+
+    .bundle-item strong {
+      color: #212653;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .bundle-item span {
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    /* REFERENCE TABLE */
+    .reference-table td:first-child {
+      font-weight: 500;
+    }
+
+    .reference-table em {
+      color: #969423;
+      font-style: normal;
+    }
+
+    /* RESPONSIVE ADJUSTMENTS FOR OWNER ENHANCEMENTS */
+    @media (max-width: 768px) {
+      .owner-implications-grid,
+      .financial-summary-grid,
+      .bundle-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      .owner-implications-grid,
+      .financial-summary-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .bundle-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .financial-card.highlight {
+        background: #212653 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .comprehensive-reference {
+        background: #f8f9fa !important;
+        border-left-color: #969423 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .report-relationship-notice {
+        background: #f8f9fa !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  
+  </style>
+</head>
+<body>
+  <div class="report-container">
+    
+    
+    <header class="report-header">
+      <h1>Business Owner Report</h1>
+      <p class="subtitle">Your Executive Decision Guide</p>
+      <p class="company-name">EWM Global</p>
+      <p class="date">Assessment Date: December 3, 2025</p>
+    </header>
+  
+
+    <!-- ================================================================
+         SECTION: Your Business Health at a Glance
+         ================================================================ -->
+    <section class="section" id="health-overview">
+      
+    <div class="owner-section-header">
+      <h2>Your Business Health at a Glance</h2>
+      
+        <p class="owner-question">
+          <span class="question-icon">&#128173;</span>
+          <em>"How is my business doing?"</em>
+        </p>
+      
+    </div>
+  
+
+      <div class="health-score-display">
+        <div class="health-score-circle">
+          <span class="score">53</span>
+          <span class="out-of">/ 100</span>
+        </div>
+        <div class="health-score-details">
+          <p class="status">Needs Improvement</p>
+          <p class="trajectory">
+            <span style="color: #6c757d;">&#x25AC;</span>
+            Your Trajectory: Flat
+          </p>
+          <p class="band">
+            <span class="band-badge Attention">Attention</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Executive Highlights Summary -->
+      
+    <div class="executive-highlights">
+      <div class="highlight-card">
+        <div class="highlight-icon">🎯</div>
+        <div class="highlight-value">53</div>
+        <div class="highlight-label">Health Score</div>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon">✅</div>
+        <div class="highlight-value">8</div>
+        <div class="highlight-label">Strengths</div>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon">⚠️</div>
+        <div class="highlight-value">22</div>
+        <div class="highlight-label">Issues to Address</div>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon">🚀</div>
+        <div class="highlight-value">5</div>
+        <div class="highlight-label">Quick Wins</div>
+      </div>
+    </div>
+  
+
+      <!-- Key Takeaways Box -->
+      
+    <div class="key-takeaways">
+      <div class="takeaway-title">
+        <span>📋</span> KEY TAKEAWAYS
+      </div>
+      
+        <div class="takeaway-item">
+          <span class="takeaway-icon">✅</span>
+          <span class="takeaway-text">
+            <strong>Top Strength:</strong> Strong Sales Target Alignment
+          </span>
+        </div>
+      
+        <div class="takeaway-item">
+          <span class="takeaway-icon">⚠️</span>
+          <span class="takeaway-text">
+            <strong>Critical Issue:</strong> Marketing Critical Underperformance
+          </span>
+        </div>
+      
+        <div class="takeaway-item">
+          <span class="takeaway-icon">🎯</span>
+          <span class="takeaway-text">
+            <strong>Top Priority:</strong> Marketing Improvement Initiative
+          </span>
+        </div>
+      
+    </div>
+  
+
+      <!-- Benchmark Callout -->
+      
+    </section>
+
+    <!-- ================================================================
+         SECTION: What This Means for You as the Owner
+         ================================================================ -->
+    <section class="section" id="what-this-means">
+      
+    <div class="owner-section-header">
+      <h2>What This Means for You as the Owner</h2>
+      
+        <p class="owner-question">
+          <span class="question-icon">&#128173;</span>
+          <em>"What should I understand from this?"</em>
+        </p>
+      
+    </div>
+  
+
+      <div class="owner-implications-grid">
+        <div class="implication-card growth">
+          <div class="card-icon">&#128200;</div>
+          <div class="card-title">For Your Growth</div>
+          <p>Your growth engine needs attention. Sales processes and market positioning require strategic focus to unlock revenue potential.</p>
+        </div>
+
+        <div class="implication-card risk">
+          <div class="card-icon">&#9888;&#65039;</div>
+          <div class="card-title">For Your Risk</div>
+          <p>Some operational and compliance risks need attention to protect business continuity and avoid potential issues.</p>
+        </div>
+
+        <div class="implication-card value">
+          <div class="card-icon">&#128142;</div>
+          <div class="card-title">For Your Business Value</div>
+          <p>Your business value is constrained by operational challenges. Systematic improvement will unlock hidden value.</p>
+        </div>
+      </div>
+
+      
+    <div class="comprehensive-reference">
+      <span class="ref-icon">&#128214;</span>
+      <span class="ref-text">
+        For complete business health overview, see <strong>Comprehensive Report</strong> &rarr;
+        <em>Executive Summary</em>
+      </span>
+    </div>
+  
+    </section>
+
+    <!-- ================================================================
+         SECTION: Your Critical Priorities
+         ================================================================ -->
+    <section class="section page-break" id="critical-priorities">
+      
+    <div class="owner-section-header">
+      <h2>Your Critical Priorities</h2>
+      
+        <p class="owner-question">
+          <span class="question-icon">&#128173;</span>
+          <em>"What must I focus on?"</em>
+        </p>
+      
+    </div>
+  
+
+      <!-- Visual Insight Cards -->
+      
+    <div class="insight-cards-container">
+      
+    <div class="insight-card strength">
+      <div class="insight-label">✅ Strength</div>
+      <div class="insight-title">Strong Sales Target Alignment</div>
+      <div class="insight-detail">Sales Target Alignment within Sales shows exceptional performance at 100/100.</div>
+      
+    <div class="evidence-citation">
+      <div class="citation-header">
+        <span class="citation-icon">📊</span>
+        <span>Evidence Source</span>
+      </div>
+      <div class="question-ref">
+        sales_q1: "Strong Sales Target Alignment"
+      </div>
+      <div class="response-text">
+        Your response: 3.5/5 — "Agree / Often"
+      </div>
+      
+    </div>
+  
+    </div>
+  
+
+    <div class="insight-card strength">
+      <div class="insight-label">✅ Strength</div>
+      <div class="insight-title">Strong Customer Retention</div>
+      <div class="insight-detail">Customer Retention within Sales shows exceptional performance at 98/100.</div>
+      
+    <div class="evidence-citation">
+      <div class="citation-header">
+        <span class="citation-icon">📊</span>
+        <span>Evidence Source</span>
+      </div>
+      <div class="question-ref">
+        sales_q7: "Strong Customer Retention"
+      </div>
+      <div class="response-text">
+        Your response: 3.5/5 — "Agree / Often"
+      </div>
+      
+    </div>
+  
+    </div>
+  
+
+    <div class="insight-card strength">
+      <div class="insight-label">✅ Strength</div>
+      <div class="insight-title">Strong Operational Reliability</div>
+      <div class="insight-detail">Operational Reliability within Operations shows exceptional performance at 100/100.</div>
+      
+    <div class="evidence-citation">
+      <div class="citation-header">
+        <span class="citation-icon">📊</span>
+        <span>Evidence Source</span>
+      </div>
+      <div class="question-ref">
+        operations_q4: "Strong Operational Reliability"
+      </div>
+      <div class="response-text">
+        Your response: 3.1/5 — "Neutral / Sometimes"
+      </div>
+      
+    </div>
+  
+    </div>
+  
+
+    <div class="insight-card weakness">
+      <div class="insight-label">❌ Gap</div>
+      <div class="insight-title">Strategy Performance Gap</div>
+      <div class="insight-detail">Strategy shows moderate performance at 45/100. This gap presents improvement opportunities that should be addressed within 6-12 months.</div>
+      
+    </div>
+  
+    </div>
+  
+
+      <div class="grid grid-2">
+        <div>
+          <h3 style="color: #28a745;">Your Top Strengths</h3>
+          
+            <ul>
+              
+                <li>
+                  <strong>Strong Sales Target Alignment</strong>
+                  <br><small>Sales</small>
+                </li>
+              
+                <li>
+                  <strong>Strong Customer Retention</strong>
+                  <br><small>Sales</small>
+                </li>
+              
+                <li>
+                  <strong>Strong Operational Reliability</strong>
+                  <br><small>Operations</small>
+                </li>
+              
+            </ul>
+          
+        </div>
+        <div>
+          <h3 style="color: #dc3545;">Your Priority Areas</h3>
+          
+            <ul>
+              
+                <li>
+                  <strong>Strategy Performance Gap</strong>
+                  <br><small>Strategy</small>
+                </li>
+              
+                <li>
+                  <strong>Market Position Gap</strong>
+                  <br><small>Strategy</small>
+                </li>
+              
+                <li>
+                  <strong>Sales Cycle Efficiency Gap</strong>
+                  <br><small>Sales</small>
+                </li>
+              
+                <li>
+                  <strong>Marketing Critical Underperformance</strong>
+                  <br><small>Marketing</small>
+                </li>
+              
+                <li>
+                  <strong>Marketing Economics (CAC/LTV) Gap</strong>
+                  <br><small>Marketing</small>
+                </li>
+              
+                <li>
+                  <strong>Marketing ROI Gap</strong>
+                  <br><small>Marketing</small>
+                </li>
+              
+                <li>
+                  <strong>Channel Strategy Gap</strong>
+                  <br><small>Marketing</small>
+                </li>
+              
+            </ul>
+          
+        </div>
+      </div>
+
+      
+    <div class="comprehensive-reference">
+      <span class="ref-icon">&#128214;</span>
+      <span class="ref-text">
+        For all prioritized recommendations, see <strong>Comprehensive Report</strong> &rarr;
+        <em>Strategic Recommendations</em>
+      </span>
+    </div>
+  
+    </section>
+
+    <!-- ================================================================
+         SECTION: Investment & ROI Overview
+         ================================================================ -->
+    <section class="section" id="investment-roi">
+      
+    <div class="owner-section-header">
+      <h2>Investment & ROI Overview</h2>
+      
+        <p class="owner-question">
+          <span class="question-icon">&#128173;</span>
+          <em>"How much will this cost and what will I get back?"</em>
+        </p>
+      
+    </div>
+  
+
+      <p class="section-intro">
+        Here's the high-level view of what you'll need to invest and what you can expect in return.
+        These are aggregate ranges across all recommended initiatives.
+      </p>
+
+      <div class="financial-summary-grid">
+        <div class="financial-card">
+          <div class="card-label">Your Estimated 12-18 Month Investment</div>
+          <div class="card-value">$120K - $180K</div>
+          <div class="card-sublabel">Across all initiatives</div>
+        </div>
+        <div class="financial-card">
+          <div class="card-label">Your Potential Revenue Impact</div>
+          <div class="card-value">$4.0M - $6.0M</div>
+          <div class="card-sublabel">Over 18 months</div>
+        </div>
+        <div class="financial-card highlight">
+          <div class="card-label">Your Expected ROI</div>
+          <div class="card-value">8.3x - 12.5x</div>
+          <div class="card-sublabel">Return on investment</div>
+        </div>
+      </div>
+
+      
+    <div class="comprehensive-reference">
+      <span class="ref-icon">&#128214;</span>
+      <span class="ref-text">
+        For complete ROI projections and investment models, see <strong>Comprehensive Report</strong> &rarr;
+        <em>Financial Impact Analysis</em>
+      </span>
+    </div>
+  
+    </section>
+
+    <!-- ================================================================
+         SECTION: Execution Overview
+         ================================================================ -->
+    
+      <section class="section page-break" id="execution-overview">
+        
+    <div class="owner-section-header">
+      <h2>Your Execution Overview</h2>
+      
+        <p class="owner-question">
+          <span class="question-icon">&#128173;</span>
+          <em>"What's my timeline?"</em>
+        </p>
+      
+    </div>
+  
+        <div class="narrative-content">
+          <h1 class="bh-h1">Priority Action Matrix</h1><h2 class="bh-h2">EWM Global — Strategic Implementation Framework</h2><hr class="bh-section-divider"><h1 class="bh-h1">Executive Summary</h1><p class="bh-p">This Priority Action Matrix consolidates all Phase 2 analyses into a structured, actionable framework for strategic execution.  Based on synthesis of the Cross-Dimensional Analysis, Strategic Recommendations, Consolidated Risk Assessment, Growth Opportunities, and Implementation Roadmap, this matrix identifies <strong class="bh-strong">28 discrete actions</strong> prioritized across impact and urgency dimensions. </p>
+        <div class="visual-framework">
+          <pre class="ascii-viz">╔═══════════════════════════════════════════════════════════════════════════════════╗
+║                         PRIORITY ACTION MATRIX OVERVIEW                           ║
+╠═══════════════════════════════════════════════════════════════════════════════════╣
+║                                                                                   ║
+║  TOTAL ACTIONS IDENTIFIED:           28                                           ║
+║                                                                                   ║
+║  BY IMPACT LEVEL:                           BY URGENCY:                           ║
+║  ├── Critical Impact:    6 actions          ├── Immediate (0-3mo):    10 actions ║
+║  ├── High Impact:       12 actions          ├── Short-term (3-6mo):    8 actions ║
+║  ├── Medium Impact:      8 actions          ├── Medium-term (6-12mo):  7 actions ║
+║  └── Low Impact:         2 actions          └── Long-term (12+mo):     3 actions ║
+║                                                                                   ║
+║  TOTAL INVESTMENT REQUIRED:          $1. 85M - $2. 35M (18 months)                 ║
+║  EXPECTED VALUE CREATION:            $8-12M annually + $35-50M exit value        ║
+║                                                                                   ║
+║  CRITICAL PATH ACTIONS:              6 (must complete in sequence)               ║
+║  QUICK WINS:                         8 (immediate momentum builders)             ║
+║  STRATEGIC INITIATIVES:             10 (major transformation drivers)            ║
+║  MONITORING ITEMS:                   4 (defer but track)                         ║
+║                                                                                   ║
+╚═══════════════════════════════════════════════════════════════════════════════════╝</pre>
+        </div>
+      <hr class="bh-section-divider"><h1 class="bh-h1">Priority Matrix Visualization</h1>
+        <div class="visual-framework">
+          <pre class="ascii-viz">═══════════════════════════════════════════════════════════════════════════════════════
+                              IMPACT × URGENCY MATRIX
+═══════════════════════════════════════════════════════════════════════════════════════
+
+                                    URGENCY / TIMEFRAME
+                    ┌─────────────┬─────────────┬─────────────┬─────────────┐
+                    │  IMMEDIATE  │  SHORT-TERM │ MEDIUM-TERM │  LONG-TERM  │
+                    │   (0-3mo)   │   (3-6mo)   │  (6-12mo)   │   (12+mo)   │
+    ┌───────────────┼─────────────┼─────────────┼─────────────┼──���──────────┤
+    │               │             │             │             │             │
+    │   CRITICAL    │ ★ Advisory  │ ★ VP Hires  │             │             │
+    │   IMPACT      │   Board     │ (2nd)       │             │             │
+    │               │ ★ Credit    │ ★ Culture   │             │             │
+    │   (Core       │   Facility  │   Activation│             │             │
+I   │   Business)   │ ★ RAPID     │             │             │             │
+M   │               │   Framework │             │             │             │
+P   ├───────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
+A   │               │             │             │             │             │
+C   │   HIGH        │ ● Response  │ ● Sales     │ ● Market    │ ● Exit      │
+T   │   IMPACT      │   SLAs      │   Velocity  │   Expansion │   Readiness │
+    │               │ ● Data      │ ● Tech      │ ● Customer  │             │
+    │   (Competitive│   Validation│   Utilization│  Advocacy  │             │
+L   │   Position)   │ ● First VP  │ ● Automation│ ● Leadership│             │
+E   │               │   Search    │ ● Margin    │   Pipeline  │             │
+V   │               │ ● Culture   │   Program   │             │             │
+E   │               │   Audit     │             │             │             │
+L   ├───────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
+    │               │             │             │             │             │
+    │   MEDIUM      │ ○ Process   │ ○ Compliance│ ○ Revenue   │ ○ ESG       │
+    │   IMPACT      │   Mapping   │   Monitoring│   Diversify │   Framework │
+    │               │ ○ Key Person│ ○ Risk      │ ○ Competitive│            │
+    │   (Specific   │   Analysis  │   Register  │   Positioning│            │
+    │   Areas)      │             │             │             │             │
+    ├───────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
+    │               │             │             │             │             │
+    │   LOW         │             │             │ △ Cyber     │ △ Advanced  │
+    │   IMPACT      │             │             │   Enhancement│  Analytics │
+    │               │             │             │             │             │
+    │   (Incremental│             │             │             │             │
+    │   Improvements│             │             │             │             │
+    └───────────────┴─────────────┴─────────────┴─────────────┴─────────────┘
+
+    LEGEND:  ★ Critical Path (Must Do)   ● Strategic Initiative   
+             ○ Important Action          △ Monitor/Defer
+
+═══════════════════════════════════════════════════════════════════════════════════════</pre>
+        </div>
+      <hr class="bh-section-divider"><h1 class="bh-h1">Section 1: Critical Path Actions</h1><p class="bh-p">These actions form the essential sequence that enables all other transformation initiatives.  Failure or delay in any Critical Path action blocks subsequent progress. </p><hr class="bh-section-divider"><h2 class="bh-h2">Action 1: Establish Advisory Board</h2>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Attribute</th><th>Detail</th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">Action Title</strong></td><td>Form 3-5 Member Strategic Advisory Board</td></tr><tr><td><strong class="bh-strong">Priority Score</strong></td><td><strong class="bh-strong">10/10</strong></td></tr><tr><td><strong class="bh-strong">Category</strong></td><td>Governance, Leadership, Strategy</td></tr><tr><td><strong class="bh-strong">Impact Level</strong></td><td>🔴 CRITICAL</td></tr><tr><td><strong class="bh-strong">Urgency</strong></td><td>⚡ IMMEDIATE (0-60 days)</td></tr></tbody>
+        </table>
+      </div>
+    <h3 class="bh-h3">Description</h3><p class="bh-p">Recruit and constitute a formal advisory board to address the governance vacuum that compounds every other organizational weakness.  This single intervention creates external accountability for all subsequent transformation actions. </p><h3 class="bh-h3">Dependencies</h3>
+        <div class="visual-framework">
+          <pre class="ascii-viz">DEPENDENCIES &amp; PREREQUISITES
+────────────────────────────────────────────────────────────────────
+Prerequisites:
+├── CEO commitment (20% bandwidth for 8 weeks)
+├── Board/ownership approval for equity compensation
+├── Clear charter and expectations document
+└── Budget authorization ($75-100K annually)
+
+Enabling:
+├── No dependencies — This is the PRIMARY enabler
+└── Should proceed FIRST and in PARALLEL with other immediate actions
+
+Blocks if Delayed:
+├── Strategic decision validation
+├── Exit planning credibility
+├── All other governance improvements
+└── External accountability mechanism
+────────────────────────────────────────────────────────────────────</pre>
+        </div>
+      <h3 class="bh-h3">Resource Requirements</h3>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Resource</th><th>Requirement</th><th>Cost</th></tr></thead>
+          <tbody><tr><td>CEO Time</td><td>20% allocation for 10 weeks</td><td>Existing</td></tr><tr><td>Legal</td><td>Advisory agreements, 15 hours</td><td>$7,500</td></tr><tr><td>Advisory Compensation</td><td>3-5 members, Year 1</td><td>$75,000-$100,000</td></tr><tr><td>Meeting/Travel</td><td>4 quarterly meetings</td><td>$10,000</td></tr><tr><td><strong class="bh-strong">TOTAL</strong></td><td></td><td><strong class="bh-strong">$92,500-$117,500</strong></td></tr></tbody>
+        </table>
+      </div>
+    <h3 class="bh-h3">Expected Outcomes</h3>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Metric</th><th>Current</th><th>Target</th><th>Timeframe</th></tr></thead>
+          <tbody><tr><td>Advisory Board Members</td><td>0</td><td>3-4</td><td>60 days</td></tr><tr><td>Board Oversight Score</td><td>2/5</td><td>3/5</td><td>90 days</td></tr><tr><td>Decision Effectiveness</td><td>2/5</td><td>3/5</td><td>6 months</td></tr><tr><td>External Strategic Input</td><td>None</td><td>Quarterly</td><td>90 days</td></tr></tbody>
+        </table>
+      </div>
+    <h3 class="bh-h3">Risk if Delayed</h3>
+        <div class="visual-framework">
+          <pre class="ascii-viz">╔════════════════════════════════════════════════════════════════════════════╗
+║  DELAY RISK ASSESSMENT: ADVISORY BOARD                                     ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║                                                                            ║
+║  30-Day Delay:    ⚠️ Moderate                                              ║
+║  • All transformation decisions lack external validation                   ║
+║  • Exit planning proceeds without governance credibility                   ║
+║  • $200K+ potential opportunity cost from suboptimal decisions            ║
+║                                                                            ║
+║  90-Day Delay:    🔴 Severe                                                ║
+║  • Governance vacuum persists through critical Phase 1                    ║
+║  • Strategic echo chamber makes $1M+ investment decisions                 ║
+║  • Exit timeline pushed 6+ months (valuation risk: $3-5M)                ║
+║                                                                            ║
+║  6-Month Delay:   ⛔ Critical                                              ║
+║  • All Phase 2-4 initiatives lack oversight                               ║
+║  • Exit valuation discount: 15-25% ($10-20M value destruction)           ║
+║  • Culture transformation lacks accountability mechanism                   ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝</pre>
+        </div>
+      <h3 class="bh-h3">Quick Win Potential</h3>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Dimension</th><th>Assessment</th></tr></thead>
+          <tbody><tr><td>**Early Results Possible? **</td><td>✅ Yes</td></tr><tr><td><strong class="bh-strong">Complexity</strong></td><td>Medium (recruiting challenge)</td></tr><tr><td><strong class="bh-strong">Visibility</strong></td><td>High — signals strategic intent</td></tr><tr><td><strong class="bh-strong">Momentum Building</strong></td><td>High — enables all other initiatives</td></tr></tbody>
+        </table>
+      </div>
+    <h3 class="bh-h3">Implementation Timeline</h3><pre class="bh-code"><code>WEEK 1-2:   Define charter, compensation, profile requirements
+WEEK 2-4:   Build candidate pipeline (15-20 names)
+WEEK 3-6:   Conduct outreach and conversations (8+ meetings)
+WEEK 4-8:   Interview and select top candidates
+WEEK 6-10:  Negotiate and contract (2-3 members minimum)
+WEEK 8-12:  Onboard and hold inaugural meeting</code></pre><hr class="bh-section-divider"><h2 class="bh-h2">Action 2: Secure Credit Facility</h2>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Attribute</th><th>Detail</th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">Action Title</strong></td><td>Establish $2-3M Revolving Credit Facility</td></tr><tr><td><strong class="bh-strong">Priority Score</strong></td><td><strong class="bh-strong">10/10</strong></td></tr><tr><td><strong class="bh-strong">Category</strong></td><td>Financial Stability, Risk Mitigation</td></tr><tr><td><strong class="bh-strong">Impact Level</strong></td><td>🔴 CRITICAL</td></tr><tr><td><strong class="bh-strong">Urgency</strong></td><td>⚡ IMMEDIATE (0-60 days)</td></tr></tbody>
+        </table>
+      </div>
+    <h3 class="bh-h3">Description</h3><p class="bh-p">Address critical liquidity vulnerability (cash ratio 0. 43, below 10th percentile) by establishing a credit facility that provides emergency backstop and growth investment capacity.  This action is foundational to all subsequent investments. </p><h3 class="bh-h3">Dependencies</h3>
+        <div class="visual-framework">
+          <pre class="ascii-viz">DEPENDENCIES &amp; PREREQUISITES
+────────────────────────────────────────────────────────────────────
+Prerequisites:
+├── Accurate financial data (validate discrepancies identified)
+├── Clean financial statements for bank presentation
+├── CFO bandwidth (40% for 8 weeks)
+└── CEO engagement for relationship conversations
+
+Parallel Actions:
+├── Financial data validation (Action 5)
+├── AR acceleration (same timeframe)
+└── Expense optimization review (same timeframe)
+
+Blocks if Delayed:
+├── All Phase 2-4 investments (no funding capacity)
+├── VP hiring (compensation requires budget confidence)
+├── Technology/automation investments
+└── Growth acceleration initiatives
+────────────────────────────────────────────────────────────────────</pre>
+        </div>
+      <h3 class="bh-h3">Resource Requirements</h3>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Resource</th><th>Requirement</th><th>Cost</th></tr></thead>
+          <tbody><tr><td>CFO Time</td><td>40% allocation for 8 weeks</td><td>Existing</td></tr><tr><td>Financial Consultant</td><td>Data validation, 40 hours</td><td>$20,000</td></tr><tr><td>Legal</td><td>Credit agreement review</td><td>$15,000</td></tr><tr><td>Banking Fees</td><td>Facility setup</td><td>$15,000</td></tr><tr><td><strong class="bh-strong">TOTAL</strong></td><td></td><td><strong class="bh-strong">$50,000</strong></td></tr></tbody>
+        </table>
+      </div>
+    <h3 class="bh-h3">Expected Outcomes</h3>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Metric</th><th>Current</th><th>Target</th><th>Timeframe</th></tr></thead>
+          <tbody><tr><td>Credit Facility</td><td>None</td><td>$2-3M</td><td>60 days</td></tr><tr><td>Cash Ratio</td><td>0. 43</td><td>0. 8+</td><td>90 days</td></tr><tr><td>Financial Resilience</td><td>2/5</td><td>3/5</td><td>90 days</td></tr><tr><td>Working Capital Days</td><td>~14</td><td>45+</td><td>90 days</td></tr></tbody>
+        </table>
+      </div>
+    <h3 class="bh-h3">Risk if Delayed</h3>
+        <div class="visual-framework">
+          <pre class="ascii-viz">╔════════════════════════════════════════════════════════════════════════════╗
+║  DELAY RISK ASSESSMENT: CREDIT FACILITY                                    ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║                                                                            ║
+║  30-Day Delay:    ⚠️ Moderate                                              ║
+║  • Company remains one client loss from crisis                            ║
+║  • Investment decisions constrained                                        ║
+║  • Team stress from financial uncertainty                                  ║
+║                                                                            ║
+║  90-Day Delay:    🔴 Severe                                                ║
+║  • Phase 2 investments cannot proceed                                      ║
+║  • VP hiring delayed (budget uncertainty)                                  ║
+║  • Competitive position weakens                                            ║
+║  • Exit timeline at risk                                                   ║
+║                                                                            ║
+║  6-Month Delay:   ⛔ Critical                                              ║
+║  • Transformation stalls completely                                        ║
+║  • Any market disruption becomes existential threat                       ║
+║  • Growth target abandoned                                                 ║
+║  • Exit value: catastrophic discount                                       ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝</pre>
+        </div>
+      <h3 class="bh-h3">Quick Win Potential</h3>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Dimension</th><th>Assessment</th></tr></thead>
+          <tbody><tr><td>**Early Results Possible?</td><td></td></tr></tbody>
+        </table>
+      </div>
+    
+        </div>
+        
+    <div class="comprehensive-reference">
+      <span class="ref-icon">&#128214;</span>
+      <span class="ref-text">
+        For detailed phased plan with dependencies, see <strong>Comprehensive Report</strong> &rarr;
+        <em>18-Month Implementation Roadmap</em>
+      </span>
+    </div>
+  
+      </section>
+    
+
+    <!-- ================================================================
+         SECTION: Quick Wins - Start Today
+         ================================================================ -->
+    
+      <section class="section" id="quick-wins">
+        
+    <div class="owner-section-header">
+      <h2>Quick Wins - Start Today</h2>
+      
+        <p class="owner-question">
+          <span class="question-icon">&#128173;</span>
+          <em>"What can I do right now?"</em>
+        </p>
+      
+    </div>
+  
+        <p class="section-intro">These high-impact, low-effort improvements can be implemented within 90 days:</p>
+        
+          <div class="quick-win-card">
+            <div class="title">Leadership &amp; Governance Improvement Initiative</div>
+            <p>Improve Leadership &amp; Governance score from 40 to 60 within the target horizon.</p>
+            <div class="metrics">
+              <span>Impact: 60/100</span>
+              <span>Effort: 50/100</span>
+              <span>ROI: 1.2x</span>
+            </div>
+          </div>
+        
+          <div class="quick-win-card">
+            <div class="title">Strategy Improvement Initiative</div>
+            <p>Improve Strategy score from 45 to 65 within the target horizon.</p>
+            <div class="metrics">
+              <span>Impact: 55/100</span>
+              <span>Effort: 50/100</span>
+              <span>ROI: 1.1x</span>
+            </div>
+          </div>
+        
+          <div class="quick-win-card">
+            <div class="title">Human Resources Improvement Initiative</div>
+            <p>Improve Human Resources score from 46 to 66 within the target horizon.</p>
+            <div class="metrics">
+              <span>Impact: 54/100</span>
+              <span>Effort: 50/100</span>
+              <span>ROI: 1.08x</span>
+            </div>
+          </div>
+        
+          <div class="quick-win-card">
+            <div class="title">Customer Experience Improvement Initiative</div>
+            <p>Improve Customer Experience score from 50 to 70 within the target horizon.</p>
+            <div class="metrics">
+              <span>Impact: 50/100</span>
+              <span>Effort: 50/100</span>
+              <span>ROI: 1x</span>
+            </div>
+          </div>
+        
+          <div class="quick-win-card">
+            <div class="title">Marketing Improvement Initiative</div>
+            <p>Improve Marketing score from 31 to 51 within the target horizon.</p>
+            <div class="metrics">
+              <span>Impact: 69/100</span>
+              <span>Effort: 70/100</span>
+              <span>ROI: 0.99x</span>
+            </div>
+          </div>
+        
+      </section>
+    
+
+    <!-- ================================================================
+         SECTION: Key Risks to Your Business
+         ================================================================ -->
+    
+      <section class="section" id="key-risks">
+        
+    <div class="owner-section-header">
+      <h2>Key Risks to Your Business</h2>
+      
+        <p class="owner-question">
+          <span class="question-icon">&#128173;</span>
+          <em>"What could hurt my business?"</em>
+        </p>
+      
+    </div>
+  
+        <div class="narrative-content">
+          <h1 class="bh-h1">Comprehensive Risk Assessment: EWM Global</h1><h2 class="bh-h2">Executive Summary</h2><p class="bh-p">After analyzing all 10 Phase 1 analyses, this assessment identifies <strong class="bh-strong">27 significant risks</strong> consolidated into <strong class="bh-strong">12 primary risk categories</strong>.  Three risks warrant <strong class="bh-strong">CRITICAL</strong> classification requiring immediate intervention: <strong class="bh-strong">Liquidity/Financial Fragility</strong>, <strong class="bh-strong">Governance Vacuum</strong>, and <strong class="bh-strong">Organizational Culture Erosion</strong>.  These risks form an interconnected &quot;vulnerability nexus&quot; where each amplifies the others, creating potential for cascading failures that could derail the company&#39;s 20% growth ambitions and exit strategy. </p><hr class="bh-section-divider"><h2 class="bh-h2">Risk Assessment Overview</h2>
+        <div class="visual-framework">
+          <pre class="ascii-viz">╔══════════════════════════════════════════════════════════════════════════════════╗
+║                     EWM GLOBAL - ENTERPRISE RISK DASHBOARD                        ║
+╠══════════════════════════════════════════════════════════════════════════════════╣
+║                                                                                   ║
+║  OVERALL RISK EXPOSURE: ELEVATED                                                  ║
+║  ██████████████████████████████░░░░░░░░░░  67% Risk Capacity Utilized            ║
+║                                                                                   ║
+║  RISK DISTRIBUTION BY SEVERITY                                                    ║
+║  ┌───────────────────────────────────────────────────────────────��────────────┐  ║
+║  │  CRITICAL   ███████████████  3 risks                                       │  ║
+║  │  HIGH       ████████████████████████████  7 risks                          │  ║
+║  │  MEDIUM     ████████████████████  5 risks                                  │  ║
+║  │  LOW        ██████  2 risks                                                │  ║
+║  └────────────────────────────────────────────────────────────────────────────┘  ║
+║                                                                                   ║
+║  RISK DISTRIBUTION BY CATEGORY                                                    ║
+║  ┌────────────────────────────────────────────────────────────────────────────┐  ║
+║  │  Financial      ████████████████████  4 risks                              │  ║
+║  │  Operational    ████████████████  4 risks                                  │  ║
+║  │  People         ████████████████  4 risks                                  │  ║
+║  │  Strategic      ██████████  2 risks                                        │  ║
+║  │  Compliance     ██████  2 risks                                            │  ║
+║  │  Market         ██████  1 risk                                             │  ║
+║  └────────────────────────────────────────────────────────────────────────────┘  ║
+║                                                                                   ║
+║  CASCADING RISK POTENTIAL: HIGH                                                   ║
+║  ⚠️ 3 critical risks are interconnected and mutually reinforcing                 ║
+║                                                                                   ║
+╚══════════════════════════════════════════════════════════════════════════════════╝</pre>
+        </div>
+      <hr class="bh-section-divider"><h2 class="bh-h2">Risk Interconnection Map</h2>
+        <div class="visual-framework">
+          <pre class="ascii-viz">                            ┌─────────────────────────────────────┐
+                            │        VULNERABILITY NEXUS          │
+                            │   (Mutually Reinforcing Risks)      │
+                            └─────────────────────────────────────┘
+                                            │
+              ┌─────────────────────────────┼─────────────────────────────┐
+              │                             │                             │
+              ▼                             ▼                             ▼
+    ┌─────────────────┐         ┌─────────────────┐         ┌─────────────────┐
+    │   LIQUIDITY     │◄───────►│   GOVERNANCE    │◄───────►│    CULTURE      │
+    │   FRAGILITY     │         │    VACUUM       │         │    EROSION      │
+    │   Cash: 0. 43    │         │   Board: 2/5    │         │  Culture: 2/5   │
+    │   Resilience:2/5│         │   Advisory:None │         │  Engage: 3/5    │
+    └────────┬────────┘         └────────┬────────┘         └────────┬────────┘
+             │                           │                           │
+             │    ┌──────────────────────┼──────────────────────┐    │
+             │    │                      │                      │    │
+             ▼    ▼                      ▼                      ▼    ▼
+    ┌─────────────────┐         ┌─────────────────┐         ┌─────────────────┐
+    │  GROWTH         │         │  OPERATIONAL    │         │  STRATEGIC      │
+    │  CONSTRAINTS    │         │  BOTTLENECKS    │         │  STAGNATION     │
+    │                 │         │                 │         │                 │
+    │ • Sales velocity│         │ • 50% equipment │         │ • Exit discount │
+    │ • Investment    │         │ • 24hr response │         │ • Market share  │
+    │   capacity      │         │ • Decision lag  │         │   ceiling       │
+    └─────────────────┘         └─────────────────┘         └─────────────────┘</pre>
+        </div>
+      <hr class="bh-section-divider"><h1 class="bh-h1">CRITICAL RISKS</h1><h2 class="bh-h2">Risk 1: Liquidity &amp; Financial Fragility</h2>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Attribute</th><th>Assessment</th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">Risk Category</strong></td><td>Financial</td></tr><tr><td><strong class="bh-strong">Severity</strong></td><td>🔴 CRITICAL</td></tr><tr><td><strong class="bh-strong">Likelihood</strong></td><td>HIGH</td></tr><tr><td><strong class="bh-strong">Velocity</strong></td><td>Could materialize within 30-90 days</td></tr><tr><td><strong class="bh-strong">Source Analyses</strong></td><td>Financial Strategy, Compliance, Growth Readiness, Risk Resilience, Scalability</td></tr></tbody>
+        </table>
+      </div>
+    <h3 class="bh-h3">Description</h3><p class="bh-p">EWM Global operates with severely constrained liquidity that threatens both operational continuity and growth execution.  The company&#39;s cash ratio of 0. 43 falls below the 10th percentile of industry benchmarks (minimum 0. 5, median 1. 2), indicating potential inability to meet short-term obligations during any operational disruption.  Combined with a financial resilience rating of 2/5 (&quot;Limited&quot;) and gross margins compressed to 32% (vs.  42% benchmark), the company lacks the financial cushion to weather unexpected challenges or fund growth initiatives. </p><h3 class="bh-h3">Impact Areas</h3>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Business Dimension</th><th>Impact Description</th><th>Severity</th></tr></thead>
+          <tbody><tr><td>Operations</td><td>Inability to respond to urgent needs; delayed vendor payments</td><td>High</td></tr><tr><td>Growth</td><td>Cannot fund 20% growth target; constrained investment capacity</td><td>Critical</td></tr><tr><td>Talent</td><td>Limited ability to make competitive offers; retention risk</td><td>Medium</td></tr><tr><td>Strategy</td><td>Weakened negotiating position; forced reactive decisions</td><td>High</td></tr><tr><td>Compliance</td><td>May be unable to maintain compliance infrastructure</td><td>High</td></tr><tr><td>Exit</td><td>Depressed valuation; concerns in due diligence</td><td>Critical</td></tr></tbody>
+        </table>
+      </div>
+    <h3 class="bh-h3">Evidence Synthesis</h3>
+        <div class="visual-framework">
+          <pre class="ascii-viz">LIQUIDITY RISK EVIDENCE CHAIN
+═══════════════════════════════════════════════════════════════════════════════
+
+Source Analysis              Finding                          Consistency
+────────────────────────��──────────────────────────────────────────────────────
+Financial Analysis           Cash ratio 0.</pre>
+        </div>
+      
+        </div>
+        
+    <div class="comprehensive-reference">
+      <span class="ref-icon">&#128214;</span>
+      <span class="ref-text">
+        For complete risk inventory and mitigation strategies, see <strong>Comprehensive Report</strong> &rarr;
+        <em>Comprehensive Risk Assessment</em>
+      </span>
+    </div>
+  
+      </section>
+    
+
+    <!-- ================================================================
+         SECTION: Where to Go for Detail
+         ================================================================ -->
+    
+    <section class="section" id="where-to-go">
+      <div class="owner-section-header">
+        <h2>Where to Go for Detail</h2>
+        <p class="owner-question">
+          <span class="question-icon">&#128173;</span>
+          <em>"Where can I learn more?"</em>
+        </p>
+      </div>
+
+      <p class="section-intro">
+        This Owner's Report is your executive summary. For complete analysis,
+        evidence, and implementation details, use this guide to navigate your
+        <strong>Comprehensive Report</strong>.
+      </p>
+
+      <div class="table-responsive">
+        <table class="bh-table reference-table">
+          <thead>
+            <tr>
+              <th>To learn more about...</th>
+              <th>See Comprehensive Report Section</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td>Business Health Overview</td>
+                <td><em>Executive Summary</em></td>
+              </tr>
+            
+              <tr>
+                <td>Growth & Revenue Strategy</td>
+                <td><em>Chapter 1: Growth Engine Deep Dive</em></td>
+              </tr>
+            
+              <tr>
+                <td>Operations & Financial Health</td>
+                <td><em>Chapter 2: Performance & Health Deep Dive</em></td>
+              </tr>
+            
+              <tr>
+                <td>People & Leadership</td>
+                <td><em>Chapter 3: People & Leadership Deep Dive</em></td>
+              </tr>
+            
+              <tr>
+                <td>Risk & Compliance</td>
+                <td><em>Chapter 4: Resilience & Safeguards Deep Dive</em></td>
+              </tr>
+            
+              <tr>
+                <td>Strategic Priorities</td>
+                <td><em>Strategic Recommendations</em></td>
+              </tr>
+            
+              <tr>
+                <td>Risk Overview</td>
+                <td><em>Comprehensive Risk Assessment</em></td>
+              </tr>
+            
+              <tr>
+                <td>Execution Timeline</td>
+                <td><em>18-Month Implementation Roadmap</em></td>
+              </tr>
+            
+              <tr>
+                <td>Investment & ROI</td>
+                <td><em>Financial Impact Analysis</em></td>
+              </tr>
+            
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bundle-contents">
+        <h3>Your Complete Report Bundle</h3>
+        <div class="bundle-grid">
+          <div class="bundle-item primary">
+            <strong>Owner's Report</strong>
+            <span>Executive decision guide (this document)</span>
+          </div>
+          <div class="bundle-item primary">
+            <strong>Comprehensive Report</strong>
+            <span>Full encyclopedia of analysis</span>
+          </div>
+          <div class="bundle-item">
+            <strong>Executive Brief</strong>
+            <span>One-page summary</span>
+          </div>
+          <div class="bundle-item">
+            <strong>Quick Wins Plan</strong>
+            <span>Immediate opportunities</span>
+          </div>
+          <div class="bundle-item">
+            <strong>Implementation Roadmap</strong>
+            <span>Detailed project plan</span>
+          </div>
+          <div class="bundle-item">
+            <strong>Financial Impact</strong>
+            <span>Investment & ROI details</span>
+          </div>
+          <div class="bundle-item">
+            <strong>Risk Assessment</strong>
+            <span>Complete risk inventory</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+
+    <!-- ================================================================
+         SECTION: Your Next Steps
+         ================================================================ -->
+    <section class="section" id="next-steps">
+      
+    <div class="owner-section-header">
+      <h2>Your Next Steps</h2>
+      
+        <p class="owner-question">
+          <span class="question-icon">&#128173;</span>
+          <em>"What do I do now?"</em>
+        </p>
+      
+    </div>
+  
+      <div class="callout success">
+        <div class="title">Your Recommended Actions</div>
+        <ol>
+          <li><strong>This Week:</strong> Review the Quick Wins section above and select 1-2 initiatives to begin immediately</li>
+          <li><strong>This Month:</strong> Schedule a strategic planning session with your leadership team to address your priority areas</li>
+          <li><strong>For Detail:</strong> Use the "Where to Go for Detail" section above to navigate to the Comprehensive Report for full analysis</li>
+          <li><strong>For Support:</strong> Consider engaging with BizHealth.ai for implementation support and ongoing monitoring</li>
+        </ol>
+      </div>
+    </section>
+
+    
+    <footer class="report-footer">
+      <p>&copy; 2025 BizHealth.ai - Confidential Business Assessment Report</p>
+      <p>Assessment ID: 2250d590-bc70-4630-a6e6-f7e6ce0028d5</p>
+      <p>Narrative Content: 111,116 words</p>
+    </footer>
+  
+  
+  </div>
+</body>
+</html>

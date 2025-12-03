@@ -1,0 +1,44 @@
+{
+  "reportType": "deepDive:peopleLeadership",
+  "reportName": "People & Leadership Deep Dive",
+  "generatedAt": "2025-12-03T05:22:26.092Z",
+  "companyName": "EWM Global",
+  "runId": "2250d590-bc70-4630-a6e6-f7e6ce0028d5",
+  "healthScore": 43,
+  "healthBand": "Attention",
+  "pageSuggestionEstimate": 8,
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Chapter Overview"
+    },
+    {
+      "id": "scorecard",
+      "title": "Dimension Scorecard"
+    },
+    {
+      "id": "dim-HRS",
+      "title": "Human Resources"
+    },
+    {
+      "id": "dim-LDG",
+      "title": "Leadership & Governance"
+    },
+    {
+      "id": "findings",
+      "title": "Findings Summary"
+    },
+    {
+      "id": "recommendations",
+      "title": "Recommendations"
+    },
+    {
+      "id": "risks",
+      "title": "Risk Assessment"
+    }
+  ],
+  "brand": {
+    "primaryColor": "#212653",
+    "accentColor": "#969423"
+  }
+}

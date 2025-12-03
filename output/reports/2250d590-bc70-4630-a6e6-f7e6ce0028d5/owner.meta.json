@@ -1,0 +1,52 @@
+{
+  "reportType": "owner",
+  "reportName": "Business Owner Report",
+  "generatedAt": "2025-12-03T05:22:26.076Z",
+  "companyName": "EWM Global",
+  "runId": "2250d590-bc70-4630-a6e6-f7e6ce0028d5",
+  "healthScore": 53,
+  "healthBand": "Attention",
+  "pageSuggestionEstimate": 5,
+  "sections": [
+    {
+      "id": "health-overview",
+      "title": "Your Business Health at a Glance"
+    },
+    {
+      "id": "what-this-means",
+      "title": "What This Means for You as the Owner"
+    },
+    {
+      "id": "critical-priorities",
+      "title": "Your Critical Priorities"
+    },
+    {
+      "id": "investment-roi",
+      "title": "Investment & ROI Overview"
+    },
+    {
+      "id": "execution-overview",
+      "title": "Your Execution Overview"
+    },
+    {
+      "id": "quick-wins",
+      "title": "Quick Wins - Start Today"
+    },
+    {
+      "id": "key-risks",
+      "title": "Key Risks to Your Business"
+    },
+    {
+      "id": "where-to-go",
+      "title": "Where to Go for Detail"
+    },
+    {
+      "id": "next-steps",
+      "title": "Your Next Steps"
+    }
+  ],
+  "brand": {
+    "primaryColor": "#212653",
+    "accentColor": "#969423"
+  }
+}
