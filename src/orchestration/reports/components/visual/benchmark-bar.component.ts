@@ -10,6 +10,7 @@ import {
   getBenchmarkComparison,
   type ScoreBand,
 } from '../../utils/color-utils.js';
+import { formatScore, formatScoreInt, safeRound } from '../../utils/number-formatter.js';
 
 /**
  * Benchmark bar item data
@@ -84,12 +85,14 @@ function getDeltaInfo(delta: number): { class: string; color: string; bgColor: s
 export function renderBenchmarkBar(props: BenchmarkBarProps): string {
   const { item, showDelta = true, maxValue = 100 } = props;
 
-  const clientPercent = Math.min(100, (item.clientScore / maxValue) * 100);
-  const benchmarkPercent = Math.min(100, (item.benchmarkScore / maxValue) * 100);
-  const delta = item.clientScore - item.benchmarkScore;
+  const safeClientScore = safeRound(item.clientScore, 1);
+  const safeBenchmarkScore = safeRound(item.benchmarkScore, 1);
+  const clientPercent = Math.min(100, (safeClientScore / maxValue) * 100);
+  const benchmarkPercent = Math.min(100, (safeBenchmarkScore / maxValue) * 100);
+  const delta = safeRound(safeClientScore - safeBenchmarkScore, 1);
   const deltaInfo = getDeltaInfo(delta);
 
-  const ariaLabel = `${item.label}: Client score ${item.clientScore}, Industry benchmark ${item.benchmarkScore}, ${delta >= 0 ? 'above' : 'below'} by ${Math.abs(delta)} points`;
+  const ariaLabel = `${item.label}: Client score ${formatScore(safeClientScore)}, Industry benchmark ${formatScore(safeBenchmarkScore)}, ${delta >= 0 ? 'above' : 'below'} by ${formatScore(Math.abs(delta))} points`;
 
   return `
     <div class="biz-benchmark-bar" role="figure" aria-label="${escapeHtml(ariaLabel)}">
@@ -105,7 +108,7 @@ export function renderBenchmarkBar(props: BenchmarkBarProps): string {
                 style="width: ${clientPercent}%;"
               ></div>
             </div>
-            <div class="biz-benchmark-bar__value">${item.clientScore}</div>
+            <div class="biz-benchmark-bar__value">${formatScore(safeClientScore)}</div>
           </div>
 
           <!-- Benchmark bar -->
@@ -117,7 +120,7 @@ export function renderBenchmarkBar(props: BenchmarkBarProps): string {
                 style="width: ${benchmarkPercent}%;"
               ></div>
             </div>
-            <div class="biz-benchmark-bar__value">${item.benchmarkScore}</div>
+            <div class="biz-benchmark-bar__value">${formatScore(safeBenchmarkScore)}</div>
           </div>
         </div>
 
@@ -126,7 +129,7 @@ export function renderBenchmarkBar(props: BenchmarkBarProps): string {
             class="biz-benchmark-bar__delta biz-benchmark-bar__delta--${deltaInfo.class}"
             style="background: ${deltaInfo.bgColor}; color: ${deltaInfo.color};"
           >
-            ${deltaInfo.symbol} ${delta >= 0 ? '+' : ''}${delta}
+            ${deltaInfo.symbol} ${delta >= 0 ? '+' : ''}${formatScore(delta)}
           </div>
         ` : ''}
       </div>
@@ -196,7 +199,10 @@ export function renderComparisonBar(
   benchmarkScore: number,
   topQuartile?: number
 ): string {
-  const maxVal = Math.max(clientScore, benchmarkScore, topQuartile || 0, 100);
+  const safeClient = safeRound(clientScore, 1);
+  const safeBenchmark = safeRound(benchmarkScore, 1);
+  const safeTopQuartile = topQuartile ? safeRound(topQuartile, 1) : undefined;
+  const maxVal = Math.max(safeClient, safeBenchmark, safeTopQuartile || 0, 100);
 
   return `
     <div style="margin-bottom: 16px;">
@@ -211,7 +217,7 @@ export function renderComparisonBar(
             left: 0;
             top: 0;
             height: 100%;
-            width: ${(clientScore / maxVal) * 100}%;
+            width: ${(safeClient / maxVal) * 100}%;
             background: linear-gradient(90deg, #212653, #2D3466);
             border-radius: 4px;
             display: flex;
@@ -223,43 +229,43 @@ export function renderComparisonBar(
             font-weight: 600;
           "
         >
-          ${clientScore}
+          ${formatScore(safeClient)}
         </div>
 
         <!-- Benchmark line -->
         <div
           style="
             position: absolute;
-            left: ${(benchmarkScore / maxVal) * 100}%;
+            left: ${(safeBenchmark / maxVal) * 100}%;
             top: -4px;
             bottom: -4px;
             width: 3px;
             background: #6B7280;
             border-radius: 2px;
           "
-          title="Industry Benchmark: ${benchmarkScore}"
+          title="Industry Benchmark: ${formatScore(safeBenchmark)}"
         >
           <div style="position: absolute; top: -16px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #6B7280; white-space: nowrap;">
-            ${benchmarkScore}
+            ${formatScore(safeBenchmark)}
           </div>
         </div>
 
-        ${topQuartile ? `
+        ${safeTopQuartile ? `
           <!-- Top quartile line -->
           <div
             style="
               position: absolute;
-              left: ${(topQuartile / maxVal) * 100}%;
+              left: ${(safeTopQuartile / maxVal) * 100}%;
               top: -4px;
               bottom: -4px;
               width: 2px;
               background: #22C55E;
               border-radius: 2px;
             "
-            title="Top Quartile: ${topQuartile}"
+            title="Top Quartile: ${formatScore(safeTopQuartile)}"
           >
             <div style="position: absolute; bottom: -16px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #22C55E; white-space: nowrap;">
-              ${topQuartile}
+              ${formatScore(safeTopQuartile)}
             </div>
           </div>
         ` : ''}
@@ -268,7 +274,7 @@ export function renderComparisonBar(
       <div style="display: flex; gap: 16px; margin-top: 8px; font-size: 10px; color: #6B7280;">
         <span>█ Client</span>
         <span>│ Industry Benchmark</span>
-        ${topQuartile ? '<span style="color: #22C55E;">│ Top Quartile</span>' : ''}
+        ${safeTopQuartile ? '<span style="color: #22C55E;">│ Top Quartile</span>' : ''}
       </div>
     </div>
   `;
@@ -281,7 +287,9 @@ export function renderInlineBenchmark(
   score: number,
   benchmark: number
 ): string {
-  const delta = score - benchmark;
+  const safeScore = safeRound(score, 1);
+  const safeBenchmark = safeRound(benchmark, 1);
+  const delta = safeRound(safeScore - safeBenchmark, 1);
   const deltaInfo = getDeltaInfo(delta);
 
   return `
@@ -296,7 +304,7 @@ export function renderInlineBenchmark(
       font-size: 11px;
       font-weight: 600;
     ">
-      ${deltaInfo.symbol} ${delta >= 0 ? '+' : ''}${delta} vs benchmark
+      ${deltaInfo.symbol} ${delta >= 0 ? '+' : ''}${formatScore(delta)} vs benchmark
     </span>
   `;
 }
