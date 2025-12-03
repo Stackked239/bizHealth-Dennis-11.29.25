@@ -53,3 +53,7 @@ data/
 coverage/
 # Output directories (generated at runtime)
 # output/ - commented out to sync output files to repository
+
+# Audit output (regenerated each run)
+output/audit/
+output/for-review/
