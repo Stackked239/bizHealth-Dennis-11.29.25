@@ -62,16 +62,19 @@ function createBizHealthRenderer(): Renderer {
   };
 
   // Code blocks - detect ASCII art vs regular code
-  // ASCII art is filtered out since we now use SVG charts for visualizations
+  // ASCII art is rendered with visual-framework styling for the dark-themed visualization boxes
   renderer.code = function(token: Tokens.Code): string {
     const code = token.text;
     // Detect ASCII art characters (box drawing, Unicode blocks, etc.)
     const isAsciiArt = /[═║╔╗╚╝┌┐└┘│─▓░█▲▼◄►●○■□╬╠╣╦╩┬┴├┤┼╭╮╯╰]/.test(code);
 
     if (isAsciiArt) {
-      // Skip ASCII art - we now use SVG charts for visualizations
-      // Return empty string to filter out legacy ASCII visualizations
-      return '';
+      // Render ASCII art with visual-framework styling for dark-themed visualization boxes
+      return `
+        <div class="visual-framework">
+          <pre class="ascii-viz">${escapeHtml(code)}</pre>
+        </div>
+      `;
     }
 
     const lang = token.lang ? ` class="language-${token.lang}"` : '';
