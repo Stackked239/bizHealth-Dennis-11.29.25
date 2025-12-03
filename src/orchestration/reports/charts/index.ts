@@ -43,10 +43,8 @@ export {
   BIZHEALTH_CHART_THEME,
   DEFAULT_CHART_OPTIONS,
   getScoreBandColor,
-  getScoreBand,
   colorWithOpacity,
   BAR_CHART_DEFAULTS,
-  SCORE_BAND_COLORS,
 } from './chart-theme.js';
 
 // Accessibility utilities

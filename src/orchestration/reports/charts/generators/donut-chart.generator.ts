@@ -11,7 +11,6 @@ import {
   BIZHEALTH_CHART_THEME,
   colorWithOpacity,
   getScoreBandColor,
-  SCORE_BAND_COLORS,
 } from '../chart-theme.js';
 
 /**
@@ -32,10 +31,10 @@ export function generateScoreBandDonut(
 
   // Map bands to colors
   const bandColorMap: Record<string, string> = {
-    excellence: SCORE_BAND_COLORS.excellence,
-    proficiency: SCORE_BAND_COLORS.proficiency,
-    attention: SCORE_BAND_COLORS.attention,
-    critical: SCORE_BAND_COLORS.critical,
+    excellence: BIZHEALTH_CHART_THEME.scoreBands.excellence,
+    proficiency: BIZHEALTH_CHART_THEME.scoreBands.proficiency,
+    attention: BIZHEALTH_CHART_THEME.scoreBands.attention,
+    critical: BIZHEALTH_CHART_THEME.scoreBands.critical,
   };
 
   const labels = bands.map(b => capitalizeFirst(b.band));

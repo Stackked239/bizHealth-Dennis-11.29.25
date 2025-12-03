@@ -7,7 +7,7 @@
 
 import { formatScore, formatScoreInt, clampScore } from '../utils/number-formatter.js';
 import { getScoreBand, getScoreColor, type ScoreBand } from '../utils/color-utils.js';
-import { getAccessibleSymbol } from '../utils/accessibility-utils.js';
+import { getStatusSymbol } from '../utils/accessibility-utils.js';
 
 /**
  * Score bar configuration
@@ -136,7 +136,7 @@ export function renderScoreBar(config: ScoreBarConfig): string {
   const bandColor = getBandColor(band);
   const bandGradient = getBandGradient(band);
   const dimensions = getSizeDimensions(size);
-  const accessibilitySymbol = showAccessibilitySymbols ? getAccessibleSymbol(band) : '';
+  const accessibilitySymbol = showAccessibilitySymbols ? getStatusSymbol(band) : '';
 
   const defaultAriaLabel = `${label}: ${formatScore(safeScore)} out of 100, rated ${band}${
     benchmark !== undefined ? `, industry benchmark ${formatScore(benchmark)}` : ''
