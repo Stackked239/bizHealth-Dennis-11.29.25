@@ -2,7 +2,12 @@
  * Report Components Index
  *
  * Exports all visual enhancement components for BizHealth reports.
+ * Includes both existing narrative components and the new 16 visual components.
  */
+
+// ============================================================================
+// EXISTING NARRATIVE COMPONENTS
+// ============================================================================
 
 export {
   generateKeyTakeaways,
@@ -42,3 +47,12 @@ export {
 } from './comprehensive-reference.component.js';
 
 export type { ReferenceOptions } from './comprehensive-reference.component.js';
+
+// ============================================================================
+// NEW VISUAL COMPONENTS (16 Components)
+// Tier 1: Core (gauge, score-tile, heatmap, bar-chart, metric-card, table)
+// Tier 2: Action (radar-chart, timeline, roadmap-timeline, kpi-dashboard, risk-matrix)
+// Tier 3: Specialized (benchmark-bar, waterfall, funnel, sparkline, action-card)
+// ============================================================================
+
+export * from './visual/index.js';
