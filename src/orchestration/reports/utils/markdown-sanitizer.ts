@@ -62,17 +62,16 @@ function createBizHealthRenderer(): Renderer {
   };
 
   // Code blocks - detect ASCII art vs regular code
+  // ASCII art is filtered out since we now use SVG charts for visualizations
   renderer.code = function(token: Tokens.Code): string {
     const code = token.text;
     // Detect ASCII art characters (box drawing, Unicode blocks, etc.)
     const isAsciiArt = /[═║╔╗╚╝┌┐└┘│─▓░█▲▼◄►●○■□╬╠╣╦╩┬┴├┤┼╭╮╯╰]/.test(code);
 
     if (isAsciiArt) {
-      return `
-        <div class="visual-framework">
-          <pre class="ascii-viz">${escapeHtml(code)}</pre>
-        </div>
-      `;
+      // Skip ASCII art - we now use SVG charts for visualizations
+      // Return empty string to filter out legacy ASCII visualizations
+      return '';
     }
 
     const lang = token.lang ? ` class="language-${token.lang}"` : '';
