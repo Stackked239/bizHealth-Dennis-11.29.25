@@ -20,6 +20,12 @@ import {
 } from './html-template.js';
 import { calculateROI } from '../../types/report.types.js';
 
+// Import chart integration for visual charts
+import {
+  generateAllChapterScoreBars,
+  getReportChartStyles,
+} from './charts/index.js';
+
 /**
  * Build financial impact report
  */
@@ -31,6 +37,11 @@ export async function buildFinancialReport(
   const reportName = 'Financial Impact Analysis';
 
   const { recommendations, quickWins, financialProjections } = ctx;
+
+  // Generate visual charts asynchronously
+  const [chapterBars] = await Promise.all([
+    generateAllChapterScoreBars(ctx, { width: 650, height: 200 }).catch(() => ''),
+  ]);
 
   // Sort recommendations by ROI
   const sortedByROI = [...recommendations].sort((a, b) =>
@@ -55,6 +66,21 @@ export async function buildFinancialReport(
   };
 
   const html = wrapHtmlDocument(`
+    <style>
+      /* Chart styles */
+      ${getReportChartStyles()}
+
+      .financial-chart-section {
+        margin: 2rem 0;
+        text-align: center;
+      }
+
+      .financial-chart-section .chart-wrapper {
+        display: inline-block;
+        max-width: 100%;
+      }
+    </style>
+
     ${generateReportHeader(ctx, reportName, 'ROI Projections & Investment Analysis')}
 
     <section class="section">
@@ -97,6 +123,15 @@ export async function buildFinancialReport(
           </p>
         </div>
       `}
+
+      ${chapterBars ? `
+        <div class="financial-chart-section">
+          <h3>Current Business Health by Chapter</h3>
+          <div class="chart-wrapper">
+            ${chapterBars}
+          </div>
+        </div>
+      ` : ''}
     </section>
 
     <section class="section page-break">

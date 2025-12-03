@@ -19,6 +19,13 @@ import {
   escapeHtml,
 } from './html-template.js';
 
+// Import chart integration for visual charts
+import {
+  generateChapterOverviewRadar,
+  generateAllChapterScoreBars,
+  getReportChartStyles,
+} from './charts/index.js';
+
 /**
  * Build risk assessment report
  */
@@ -28,6 +35,12 @@ export async function buildRiskReport(
 ): Promise<GeneratedReport> {
   const reportType = 'risk';
   const reportName = 'Risk Assessment Report';
+
+  // Generate visual charts asynchronously
+  const [chapterRadar, chapterBars] = await Promise.all([
+    generateChapterOverviewRadar(ctx, { width: 400, height: 300 }).catch(() => ''),
+    generateAllChapterScoreBars(ctx, { width: 550, height: 200 }).catch(() => ''),
+  ]);
 
   // Categorize risks by severity
   const getSeverityLevel = (severity: string | number): 'critical' | 'high' | 'medium' | 'low' => {
@@ -55,6 +68,25 @@ export async function buildRiskReport(
   }, {} as Record<string, typeof ctx.risks>);
 
   const html = wrapHtmlDocument(`
+    <style>
+      /* Chart styles */
+      ${getReportChartStyles()}
+
+      .risk-chart-section {
+        margin: 2rem 0;
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .risk-chart-section .chart-wrapper {
+        flex: 1;
+        min-width: 300px;
+        max-width: 550px;
+      }
+    </style>
+
     ${generateReportHeader(ctx, reportName, 'Comprehensive Risk Analysis')}
 
     <section class="section">
@@ -92,6 +124,13 @@ export async function buildRiskReport(
           }
         </p>
       </div>
+
+      ${(chapterRadar || chapterBars) ? `
+        <div class="risk-chart-section">
+          ${chapterRadar ? `<div class="chart-wrapper">${chapterRadar}</div>` : ''}
+          ${chapterBars ? `<div class="chart-wrapper">${chapterBars}</div>` : ''}
+        </div>
+      ` : ''}
     </section>
 
     <section class="section page-break">

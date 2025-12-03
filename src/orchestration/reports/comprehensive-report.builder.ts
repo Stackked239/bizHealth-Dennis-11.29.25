@@ -52,6 +52,16 @@ import {
   generateDimensionHeaderHtml,
 } from './constants/index.js';
 
+// Import chart integration for visual charts
+import {
+  generateChapterOverviewRadar,
+  generateAllChapterScoreBars,
+  generateScoreBandDistribution,
+  generateBenchmarkComparison,
+  generateChapterDimensionBars,
+  getReportChartStyles,
+} from './charts/index.js';
+
 /**
  * Build comprehensive assessment report with integrated narrative content
  */
@@ -93,6 +103,36 @@ export async function buildComprehensiveReport(
   // Generate narrative styles for proper markdown rendering
   const narrativeStyles = generateNarrativeStyles(options.brand.primaryColor, options.brand.accentColor);
 
+  // Generate charts asynchronously
+  logger.info('Generating visual charts for comprehensive report');
+  const [
+    chapterOverviewRadar,
+    chapterScoreBars,
+    scoreBandDistribution,
+    benchmarkComparison,
+    geDimensionBars,
+    phDimensionBars,
+    plDimensionBars,
+    rsDimensionBars,
+  ] = await Promise.all([
+    generateChapterOverviewRadar(ctx).catch(() => ''),
+    generateAllChapterScoreBars(ctx).catch(() => ''),
+    generateScoreBandDistribution(ctx).catch(() => ''),
+    generateBenchmarkComparison(ctx).catch(() => ''),
+    generateChapterDimensionBars(ctx, 'GE').catch(() => ''),
+    generateChapterDimensionBars(ctx, 'PH').catch(() => ''),
+    generateChapterDimensionBars(ctx, 'PL').catch(() => ''),
+    generateChapterDimensionBars(ctx, 'RS').catch(() => ''),
+  ]);
+
+  // Map chapter codes to their dimension bar charts
+  const chapterDimensionCharts: Record<string, string> = {
+    'GE': geDimensionBars,
+    'PH': phDimensionBars,
+    'PL': plDimensionBars,
+    'RS': rsDimensionBars,
+  };
+
   // Build HTML content with integrated narratives
   const contentSections = [
     generateReportHeader(ctx, reportName, 'Complete Business Health Assessment'),
@@ -105,18 +145,32 @@ export async function buildComprehensiveReport(
     // Executive Summary with narrative (with anchor ID for cross-references)
     `<section id="executive-summary" class="section">${generateExecutiveSummaryWithNarrative(ctx, narratives)}</section>`,
 
-    // Scorecard with benchmark summary
+    // Scorecard with visual charts and benchmark summary
     `<section id="scorecard" class="section page-break">
       ${generateScorecardSection(ctx)}
+
+      <!-- Visual Charts Dashboard -->
+      <div class="scorecard-charts">
+        <h3 style="color: ${options.brand.primaryColor}; margin: 2rem 0 1rem 0; font-family: 'Montserrat', sans-serif;">Visual Performance Overview</h3>
+        <div class="chart-dashboard">
+          <div class="chart-row">
+            <div class="chart-main">${chapterOverviewRadar}</div>
+            <div class="chart-side">${scoreBandDistribution}</div>
+          </div>
+          <div class="chart-full">${chapterScoreBars}</div>
+          ${benchmarkComparison ? `<div class="chart-full">${benchmarkComparison}</div>` : ''}
+        </div>
+      </div>
+
       ${generateBenchmarkSummaryTable(ctx)}
     </section>`,
 
-    // Chapter Deep Dives with proper anchor IDs matching section-mapping.ts
+    // Chapter Deep Dives with proper anchor IDs matching section-mapping.ts (now with dimension charts)
     narratives ? `
-      <section id="chapter-growth-engine" class="section page-break">${generateNarrativeSection('Chapter 1: Growth Engine Deep Dive', narratives.phase1.tier1.revenueEngine, getChapterScore(ctx, 'GE'), 'GE', ctx)}</section>
-      <section id="chapter-performance-health" class="section page-break">${generateNarrativeSection('Chapter 2: Performance & Health Deep Dive', narratives.phase1.tier1.operationalExcellence, getChapterScore(ctx, 'PH'), 'PH', ctx)}</section>
-      <section id="chapter-people-leadership" class="section page-break">${generateNarrativeSection('Chapter 3: People & Leadership Deep Dive', narratives.phase1.tier1.peopleLeadership, getChapterScore(ctx, 'PL'), 'PL', ctx)}</section>
-      <section id="chapter-resilience-safeguards" class="section page-break">${generateNarrativeSection('Chapter 4: Resilience & Safeguards Deep Dive', narratives.phase1.tier1.complianceSustainability, getChapterScore(ctx, 'RS'), 'RS', ctx)}</section>
+      <section id="chapter-growth-engine" class="section page-break">${generateNarrativeSection('Chapter 1: Growth Engine Deep Dive', narratives.phase1.tier1.revenueEngine, getChapterScore(ctx, 'GE'), 'GE', ctx, chapterDimensionCharts['GE'])}</section>
+      <section id="chapter-performance-health" class="section page-break">${generateNarrativeSection('Chapter 2: Performance & Health Deep Dive', narratives.phase1.tier1.operationalExcellence, getChapterScore(ctx, 'PH'), 'PH', ctx, chapterDimensionCharts['PH'])}</section>
+      <section id="chapter-people-leadership" class="section page-break">${generateNarrativeSection('Chapter 3: People & Leadership Deep Dive', narratives.phase1.tier1.peopleLeadership, getChapterScore(ctx, 'PL'), 'PL', ctx, chapterDimensionCharts['PL'])}</section>
+      <section id="chapter-resilience-safeguards" class="section page-break">${generateNarrativeSection('Chapter 4: Resilience & Safeguards Deep Dive', narratives.phase1.tier1.complianceSustainability, getChapterScore(ctx, 'RS'), 'RS', ctx, chapterDimensionCharts['RS'])}</section>
     ` : '',
 
     // Cross-Dimensional Synthesis (Phase 2)
@@ -272,14 +326,15 @@ function generateExecutiveSummaryWithNarrative(ctx: ReportContext, narratives: a
 }
 
 /**
- * Generate a narrative section with optional score badge and benchmark callout
+ * Generate a narrative section with optional score badge, benchmark callout, and chart
  */
 function generateNarrativeSection(
   title: string,
   content: string,
   score: number | null,
   chapterCode?: string,
-  ctx?: ReportContext
+  ctx?: ReportContext,
+  chartHtml?: string
 ): string {
   const narrativeHtml = NarrativeExtractionService.markdownToHtml(content);
 
@@ -314,6 +369,12 @@ function generateNarrativeSection(
     <section class="section page-break">
       ${headerHtml}
       ${benchmarkHtml}
+      ${chartHtml ? `
+        <div class="chapter-dimension-chart">
+          <h4 style="font-size: 0.95rem; color: #666; margin: 1.5rem 0 1rem 0;">Dimension Score Breakdown</h4>
+          ${chartHtml}
+        </div>
+      ` : ''}
       <div class="narrative-content">
         ${narrativeHtml}
       </div>
@@ -941,6 +1002,84 @@ function generateNarrativeStyles(primaryColor: string, accentColor: string): str
       }
 
       .bh-code {
+        page-break-inside: avoid;
+      }
+    }
+
+    /* ================================================================
+       CHART DASHBOARD STYLES
+       Added for server-side rendered Chart.js visualizations
+       ================================================================ */
+
+    .scorecard-charts {
+      margin: 2rem 0;
+      padding: 1.5rem;
+      background: #fafbfc;
+      border-radius: 12px;
+      border: 1px solid #e9ecef;
+    }
+
+    .chart-dashboard {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .chart-row {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .chart-main {
+      flex: 2;
+      min-width: 350px;
+    }
+
+    .chart-side {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .chart-full {
+      width: 100%;
+    }
+
+    .chapter-dimension-chart {
+      margin: 1.5rem 0;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+    }
+
+    /* Import chart component styles */
+    ${getReportChartStyles()}
+
+    @media (max-width: 768px) {
+      .chart-row {
+        flex-direction: column;
+      }
+
+      .chart-main,
+      .chart-side {
+        min-width: 100%;
+      }
+    }
+
+    @media print {
+      .scorecard-charts {
+        background: #fafbfc !important;
+        page-break-inside: avoid;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .chart-dashboard {
+        page-break-inside: avoid;
+      }
+
+      .chapter-dimension-chart {
         page-break-inside: avoid;
       }
     }
