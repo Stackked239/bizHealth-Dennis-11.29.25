@@ -7,7 +7,7 @@
  * - Phase 2: Deep-dive Cross-analysis
  * - Phase 3: Executive Synthesis
  * - Phase 4: Final Compilation & IDM Generation
- * - Phase 5: Report Generation (9 report types as HTML)
+ * - Phase 5: Report Generation (17 report types as HTML)
  *
  * Usage:
  *   npx tsx src/run-pipeline.ts [webhook.json] [--phase=0-5] [--output-dir=./output]
