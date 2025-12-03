@@ -1,0 +1,36 @@
+{
+  "reportType": "quickWins",
+  "reportName": "Quick Wins Action Plan",
+  "generatedAt": "2025-12-03T07:12:07.441Z",
+  "companyName": "EWM Global",
+  "runId": "9fad35a7-ab46-44fc-aff6-fd96530995df",
+  "healthScore": 53,
+  "healthBand": "Attention",
+  "pageSuggestionEstimate": 5,
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Quick Wins Overview"
+    },
+    {
+      "id": "list",
+      "title": "Prioritized List"
+    },
+    {
+      "id": "details",
+      "title": "Detailed Analysis"
+    },
+    {
+      "id": "action-plan",
+      "title": "30-60-90 Day Action Plan"
+    },
+    {
+      "id": "tracking",
+      "title": "Success Metrics"
+    }
+  ],
+  "brand": {
+    "primaryColor": "#212653",
+    "accentColor": "#969423"
+  }
+}

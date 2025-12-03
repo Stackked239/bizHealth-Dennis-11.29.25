@@ -73,6 +73,13 @@ export function getStatusSymbol(band: ScoreBand, asciiOnly: boolean = false): st
 }
 
 /**
+ * Alias for getStatusSymbol - Get accessibility symbol for a score band
+ */
+export function getAccessibleSymbol(band: ScoreBand, asciiOnly: boolean = false): string {
+  return getStatusSymbol(band, asciiOnly);
+}
+
+/**
  * Get accessibility symbol for a numeric score
  */
 export function getScoreSymbol(score: number, asciiOnly: boolean = false): string {

@@ -80,6 +80,11 @@ export const BIZHEALTH_CHART_THEME: ChartTheme = {
 };
 
 /**
+ * Score band colors for direct access
+ */
+export const SCORE_BAND_COLORS = BIZHEALTH_CHART_THEME.scoreBands;
+
+/**
  * Get score band color based on score value
  */
 export function getScoreBandColor(score: number): string {
@@ -97,6 +102,16 @@ export function getScoreBandName(score: number): string {
   if (score >= 60) return 'Proficiency';
   if (score >= 40) return 'Attention';
   return 'Critical';
+}
+
+/**
+ * Get score band key based on score value
+ */
+export function getScoreBand(score: number): 'excellence' | 'proficiency' | 'attention' | 'critical' {
+  if (score >= 80) return 'excellence';
+  if (score >= 60) return 'proficiency';
+  if (score >= 40) return 'attention';
+  return 'critical';
 }
 
 /**

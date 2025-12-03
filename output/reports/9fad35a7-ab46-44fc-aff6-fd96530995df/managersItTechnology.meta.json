@@ -1,0 +1,52 @@
+{
+  "reportType": "managersItTechnology",
+  "reportName": "IT & Technology Manager Report",
+  "generatedAt": "2025-12-03T07:12:07.474Z",
+  "companyName": "EWM Global",
+  "runId": "9fad35a7-ab46-44fc-aff6-fd96530995df",
+  "healthScore": 53,
+  "healthBand": "Attention",
+  "pageSuggestionEstimate": 15,
+  "sections": [
+    {
+      "id": "department_overview",
+      "title": "Technology & IT Overview"
+    },
+    {
+      "id": "technology_deep_dive",
+      "title": "Technology & Innovation Assessment"
+    },
+    {
+      "id": "it_infrastructure_deep_dive",
+      "title": "IT, Data & Systems Assessment"
+    },
+    {
+      "id": "cybersecurity_focus",
+      "title": "Cybersecurity Assessment"
+    },
+    {
+      "id": "findings",
+      "title": "Technology Findings"
+    },
+    {
+      "id": "risks",
+      "title": "Technology Risks"
+    },
+    {
+      "id": "recommendations",
+      "title": "Technology Recommendations"
+    },
+    {
+      "id": "quick_wins",
+      "title": "Quick Wins for IT"
+    },
+    {
+      "id": "kpis",
+      "title": "Technology KPIs"
+    }
+  ],
+  "brand": {
+    "primaryColor": "#212653",
+    "accentColor": "#969423"
+  }
+}
