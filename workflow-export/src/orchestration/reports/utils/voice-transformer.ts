@@ -1,8 +1,6 @@
 /**
  * Voice transformation utilities for Owner's Report
  *
- * IMPORTANT: Apply selectively to narrative content only!
- *
  * ✅ DO apply to:
  *    - Narrative paragraphs
  *    - Finding descriptions
@@ -19,17 +17,6 @@
 
 /**
  * Transform third-person analytical voice to owner-focused voice
- *
- * @param text - Narrative text to transform
- * @returns Transformed text with owner-focused voice
- *
- * @example
- * // CORRECT USAGE - narrative paragraph
- * const narrative = transformToOwnerVoice(finding.description);
- *
- * @example
- * // INCORRECT USAGE - don't use on headers
- * // const header = transformToOwnerVoice("Growth Engine Analysis"); // ❌
  */
 export function transformToOwnerVoice(text: string): string {
   if (!text) return '';
@@ -81,15 +68,11 @@ export function transformToOwnerVoice(text: string): string {
 
 /**
  * Check if text is likely a header/title (should NOT be transformed)
- * Use this to guard against accidental transformation of non-narrative content
  */
 export function isLikelyHeader(text: string): boolean {
   if (!text) return false;
-
-  // Headers are typically short
   if (text.length > 100) return false;
 
-  // Headers often start with specific patterns
   const headerPatterns = [
     /^Chapter \d/i,
     /^Section \d/i,
@@ -107,21 +90,11 @@ export function isLikelyHeader(text: string): boolean {
 
 /**
  * Safe wrapper that only transforms if text appears to be narrative
- * Use when you're not 100% sure about the content type
  */
 export function safeTransformToOwnerVoice(text: string): string {
   if (!text) return '';
-
-  // Don't transform if it looks like a header
-  if (isLikelyHeader(text)) {
-    return text;
-  }
-
-  // Don't transform very short text (likely labels)
-  if (text.split(/\s+/).length < 5) {
-    return text;
-  }
-
+  if (isLikelyHeader(text)) return text;
+  if (text.split(/\s+/).length < 5) return text;
   return transformToOwnerVoice(text);
 }
 
@@ -130,14 +103,8 @@ export function safeTransformToOwnerVoice(text: string): string {
  */
 export function truncateToSentences(text: string, maxSentences: number): string {
   if (!text) return '';
-
-  // Split by sentence-ending punctuation
   const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
-
-  if (sentences.length <= maxSentences) {
-    return text;
-  }
-
+  if (sentences.length <= maxSentences) return text;
   return sentences.slice(0, maxSentences).join(' ').trim();
 }
 
@@ -146,31 +113,7 @@ export function truncateToSentences(text: string, maxSentences: number): string 
  */
 export function truncateToWords(text: string, maxWords: number): string {
   if (!text) return '';
-
   const words = text.split(/\s+/);
-
-  if (words.length <= maxWords) {
-    return text;
-  }
-
+  if (words.length <= maxWords) return text;
   return words.slice(0, maxWords).join(' ') + '...';
-}
-
-/**
- * Ensure text starts with a capital letter
- */
-export function capitalizeFirst(text: string): string {
-  if (!text) return '';
-  return text.charAt(0).toUpperCase() + text.slice(1);
-}
-
-/**
- * Remove excessive whitespace and normalize line breaks
- */
-export function normalizeWhitespace(text: string): string {
-  if (!text) return '';
-  return text
-    .replace(/\s+/g, ' ')
-    .replace(/\n\s*\n/g, '\n\n')
-    .trim();
 }

@@ -1,6 +1,5 @@
 /**
  * Canonical section title mapping between Owner's and Comprehensive Reports
- * This ensures stable cross-references even if templates are updated
  *
  * IMPORTANT: When updating section titles in Comprehensive Report,
  * also update this file to maintain reference integrity.
@@ -14,7 +13,7 @@ export interface SectionMapping {
   ownerLabel: string;
   /** Exact section title in Comprehensive Report (must match exactly) */
   comprehensiveSectionTitle: string;
-  /** Anchor ID in Comprehensive Report for future linking */
+  /** Anchor ID in Comprehensive Report for deep linking */
   comprehensiveAnchor: string;
 }
 
@@ -97,11 +96,4 @@ export function getReference(id: string): string {
   const mapping = getSectionMapping(id);
   if (!mapping) return '';
   return `See Comprehensive Report → "${mapping.comprehensiveSectionTitle}"`;
-}
-
-/**
- * Get all section mappings
- */
-export function getAllSectionMappings(): SectionMapping[] {
-  return [...SECTION_MAPPINGS];
 }

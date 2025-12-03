@@ -806,6 +806,111 @@ echo "Reports generated: $report_count/11"
 
 ---
 
+## 📖 Owner & Comprehensive Report Bundles
+
+BizHealth.ai generates two primary strategic reports that work together as a coordinated bundle:
+
+### Report Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    REPORT BUNDLE                            │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │              OWNER'S REPORT                          │   │
+│  │         "Executive Decision Guide"                   │   │
+│  │                                                       │   │
+│  │  • Written FOR the owner, TO the owner               │   │
+│  │  • Uses "you/your" language throughout               │   │
+│  │  • Shows aggregated financial ranges                 │   │
+│  │  • 5-7 critical priorities (not 10+)                 │   │
+│  │  • References Comprehensive for detail               │   │
+│  │  • Target: 15-20 minute read                         │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                          │                                  │
+│                          │ References                       │
+│                          ▼                                  │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │           COMPREHENSIVE REPORT                       │   │
+│  │              "The Encyclopedia"                      │   │
+│  │                                                       │   │
+│  │  • Complete analysis across all dimensions           │   │
+│  │  • Full data tables and projections                  │   │
+│  │  • All recommendations with evidence                 │   │
+│  │  • Detailed implementation roadmaps                  │   │
+│  │  • Target: 60-90 minute read                         │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Key Design Principles
+
+| Aspect | Owner's Report | Comprehensive Report |
+|--------|----------------|---------------------|
+| **Voice** | "You should..." | "The company should..." |
+| **Financial Data** | Aggregated ranges | Detailed tables |
+| **Priorities** | Top 5-7 | All recommendations |
+| **Roadmap** | Phase overview | Full initiative grid |
+| **Size** | ~100-140 KB | ~200-250 KB |
+
+### Cross-Reference Mapping & Validation
+
+Cross-references between reports are managed via a central configuration:
+
+```
+src/orchestration/reports/config/section-mapping.ts
+```
+
+**Available Validation Commands**:
+
+```bash
+# Run section mapping unit tests
+npm run test:mappings
+
+# Validate mappings against actual reports
+npm run validate:reports
+
+# Run all validation (tests + report validation)
+npm run validate:all
+
+# Run comprehensive report test script
+./scripts/test-reports.sh
+```
+
+**Reference Debugging**:
+
+Enable debug logging to track cross-references during report generation:
+
+```bash
+# Enable reference logging
+export BIZHEALTH_DEBUG_REFS=true
+
+# Run pipeline
+npm run start
+
+# View reference usage summary
+```
+
+### Section Mapping Configuration
+
+The mapping configuration ensures stable cross-references between reports:
+
+| Owner's Report Label | Comprehensive Report Section |
+|---------------------|------------------------------|
+| Business Health Overview | Executive Summary |
+| Growth & Revenue Strategy | Chapter 1: Growth Engine Deep Dive |
+| Operations & Financial Health | Chapter 2: Performance & Health Deep Dive |
+| People & Leadership | Chapter 3: People & Leadership Deep Dive |
+| Risk & Compliance | Chapter 4: Resilience & Safeguards Deep Dive |
+| Strategic Priorities | Strategic Recommendations |
+| Risk Overview | Comprehensive Risk Assessment |
+| Execution Timeline | 18-Month Implementation Roadmap |
+| Investment & ROI | Financial Impact Analysis |
+
+---
+
 ## 📚 Additional Documentation
 
 - **README_COMPLETE.md** - Comprehensive workflow guide (1,100+ lines)

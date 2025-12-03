@@ -5,10 +5,6 @@
  * - BIZHEALTH_DEBUG_REFS=true: Full debug output with visual placeholders
  * - CI environment: Silent (no console output)
  * - Manual runs: Single WARN per missing ref (no visual placeholder)
- *
- * Usage:
- *   export BIZHEALTH_DEBUG_REFS=true
- *   npx tsx src/run-pipeline.ts
  */
 
 export interface ReferenceUsage {
@@ -52,7 +48,6 @@ class ReferenceLogger {
 
   /**
    * Log a reference usage attempt
-   * In non-debug production, logs a single WARN per missing ref
    */
   logReference(
     sectionId: string,
@@ -60,7 +55,6 @@ class ReferenceLogger {
     mappingFound: boolean,
     comprehensiveTitle: string | null
   ): void {
-    // Always track usage internally
     const usage: ReferenceUsage = {
       sectionId,
       referenceId,
@@ -70,7 +64,6 @@ class ReferenceLogger {
     };
     this.usages.push(usage);
 
-    // Track missing references
     if (referenceId && !mappingFound) {
       this.missingRefs.add(referenceId);
 
@@ -128,37 +121,11 @@ class ReferenceLogger {
     console.log('\n');
   }
 
-  /**
-   * Get all usages (for testing/export)
-   */
-  getUsages(): ReferenceUsage[] {
-    return [...this.usages];
-  }
+  getUsages(): ReferenceUsage[] { return [...this.usages]; }
+  getMissingRefs(): string[] { return [...this.missingRefs]; }
+  isEnabled(): boolean { return this.enabled; }
+  isCIEnvironment(): boolean { return this.isCI; }
 
-  /**
-   * Get missing references
-   */
-  getMissingRefs(): string[] {
-    return [...this.missingRefs];
-  }
-
-  /**
-   * Check if logging is enabled
-   */
-  isEnabled(): boolean {
-    return this.enabled;
-  }
-
-  /**
-   * Check if we're in CI environment
-   */
-  isCIEnvironment(): boolean {
-    return this.isCI;
-  }
-
-  /**
-   * Reset for new report generation
-   */
   reset(): void {
     this.usages = [];
     this.missingRefs.clear();
@@ -167,5 +134,4 @@ class ReferenceLogger {
   }
 }
 
-// Singleton instance
 export const referenceLogger = new ReferenceLogger();
