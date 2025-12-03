@@ -1,12 +1,12 @@
 {
   "reportType": "comprehensive",
   "reportName": "Comprehensive Assessment Report",
-  "generatedAt": "2025-12-03T07:12:07.425Z",
+  "generatedAt": "2025-12-03T07:25:33.894Z",
   "companyName": "EWM Global",
   "runId": "9fad35a7-ab46-44fc-aff6-fd96530995df",
   "healthScore": 53,
   "healthBand": "Attention",
-  "pageSuggestionEstimate": 282,
+  "pageSuggestionEstimate": 205,
   "sections": [
     {
       "id": "executive-summary",
