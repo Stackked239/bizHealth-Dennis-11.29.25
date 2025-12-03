@@ -338,6 +338,12 @@ export interface ReportRenderOptions {
 /**
  * Report type identifiers for Phase 5
  * (Extends the existing ReportType enum with consistent naming)
+ *
+ * Includes:
+ * - Core reports: comprehensive, owner, executiveBrief, quickWins, risk, roadmap, financial
+ * - Deep dive reports: growthEngine, performanceHealth, peopleLeadership, resilienceSafeguards
+ * - Recipe-based reports: employees, managersOperations, managersSalesMarketing,
+ *   managersFinancials, managersStrategy, managersItTechnology
  */
 export type Phase5ReportType =
   | 'comprehensive'
@@ -350,7 +356,14 @@ export type Phase5ReportType =
   | 'deepDive:growthEngine'
   | 'deepDive:performanceHealth'
   | 'deepDive:peopleLeadership'
-  | 'deepDive:resilienceSafeguards';
+  | 'deepDive:resilienceSafeguards'
+  // Recipe-based reports (from config/report-recipes/)
+  | 'employees'
+  | 'managersOperations'
+  | 'managersSalesMarketing'
+  | 'managersFinancials'
+  | 'managersStrategy'
+  | 'managersItTechnology';
 
 /**
  * Generated report output

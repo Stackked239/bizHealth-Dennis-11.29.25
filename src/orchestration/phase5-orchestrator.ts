@@ -4,7 +4,9 @@
  * Generates branded, executive-ready HTML (and optionally PDF) reports from
  * Phase 3 + Phase 4 outputs. Uses the IDM and master-analysis JSON as canonical inputs.
  *
- * Report Types Generated:
+ * Report Types Generated (17 total):
+ *
+ * Core Reports:
  * 1. Comprehensive Assessment Report
  * 2. Business Owner Report
  * 3. Executive Brief
@@ -12,9 +14,20 @@
  * 5. Risk Assessment Report
  * 6. Implementation Roadmap
  * 7. Financial Impact Analysis
+ *
+ * Deep Dive Reports:
  * 8. Deep Dive: Growth Engine
  * 9. Deep Dive: Performance & Health
- * + Additional deep dives for People & Leadership, Resilience & Safeguards
+ * 10. Deep Dive: People & Leadership
+ * 11. Deep Dive: Resilience & Safeguards
+ *
+ * Recipe-Based Reports (from config/report-recipes/):
+ * 12. Employee Business Health Summary
+ * 13. Operations Manager Report
+ * 14. Sales & Marketing Manager Report
+ * 15. Financial Manager Report
+ * 16. Strategy Manager Report
+ * 17. IT & Technology Manager Report
  */
 
 import * as fs from 'fs/promises';
@@ -54,6 +67,16 @@ import { buildRiskReport } from './reports/risk-report.builder.js';
 import { buildRoadmapReport } from './reports/roadmap-report.builder.js';
 import { buildFinancialReport } from './reports/financial-report.builder.js';
 import { buildDeepDiveReport } from './reports/deep-dive-report.builder.js';
+
+// Import recipe-based report builders
+import {
+  buildEmployeesReport,
+  buildManagersOperationsReport,
+  buildManagersSalesMarketingReport,
+  buildManagersFinancialsReport,
+  buildManagersStrategyReport,
+  buildManagersItTechnologyReport,
+} from './reports/recipe-report.builder.js';
 
 // ============================================================================
 // TYPES
@@ -651,6 +674,43 @@ export class Phase5Orchestrator {
         name: 'Resilience & Safeguards Deep Dive',
         description: 'Detailed analysis of Technology, IT, Risk Management, and Compliance',
         build: (ctx, opts) => buildDeepDiveReport(ctx, opts, 'RS'),
+      },
+      // Recipe-based reports (from config/report-recipes/)
+      {
+        type: 'employees',
+        name: 'Employee Business Health Summary',
+        description: 'Accessible summary for all employees with focus on company health, culture, and contribution',
+        build: buildEmployeesReport,
+      },
+      {
+        type: 'managersOperations',
+        name: 'Operations Manager Report',
+        description: 'Operations-focused analysis covering OPS dimension with efficiency metrics',
+        build: buildManagersOperationsReport,
+      },
+      {
+        type: 'managersSalesMarketing',
+        name: 'Sales & Marketing Manager Report',
+        description: 'Growth Engine focused report for sales and marketing leadership',
+        build: buildManagersSalesMarketingReport,
+      },
+      {
+        type: 'managersFinancials',
+        name: 'Financial Manager Report',
+        description: 'Financial health analysis with cash flow, profitability, and risk metrics',
+        build: buildManagersFinancialsReport,
+      },
+      {
+        type: 'managersStrategy',
+        name: 'Strategy Manager Report',
+        description: 'Strategic analysis covering market position, competitive landscape, and growth roadmap',
+        build: buildManagersStrategyReport,
+      },
+      {
+        type: 'managersItTechnology',
+        name: 'IT & Technology Manager Report',
+        description: 'Technology infrastructure, digital capabilities, and cybersecurity analysis',
+        build: buildManagersItTechnologyReport,
       },
     ];
   }
