@@ -25,6 +25,9 @@ import {
   getReportChartStyles,
 } from './charts/index.js';
 
+// Import legal terms component
+import { buildLegalTermsPage } from './components/index.js';
+
 /**
  * Build executive brief
  */
@@ -245,6 +248,14 @@ export async function buildExecutiveBrief(
         <p class="company">${escapeHtml(ctx.companyProfile.name)}</p>
         <p class="date">${new Date(ctx.metadata.generatedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
       </header>
+
+      <!-- Legal Terms & Disclaimers (Page 2) -->
+      ${buildLegalTermsPage({
+        companyName: ctx.companyProfile.name,
+        reportId: ctx.runId,
+        generatedAt: new Date(ctx.metadata.generatedAt),
+        variant: 'executive',
+      })}
 
       <div class="score-hero">
         <div class="score-circle">

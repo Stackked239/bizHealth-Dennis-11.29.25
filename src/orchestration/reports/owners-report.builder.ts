@@ -36,6 +36,7 @@ import {
   generateBenchmarkSummaryTable,
   renderWhereToGoForDetail,
   QUICK_REFS,
+  buildLegalTermsPage,
 } from './components/index.js';
 import { getChapterIcon } from './constants/index.js';
 
@@ -146,6 +147,14 @@ export async function buildOwnersReport(
 
   const html = wrapHtmlDocument(`
     ${generateReportHeader(ctx, reportName, 'Your Executive Decision Guide')}
+
+    <!-- Legal Terms & Disclaimers (Page 2) -->
+    ${buildLegalTermsPage({
+      companyName: ctx.companyProfile.name,
+      reportId: ctx.runId,
+      generatedAt: new Date(ctx.metadata.generatedAt),
+      variant: 'owners',
+    })}
 
     <!-- ================================================================
          SECTION: Your Business Health at a Glance
