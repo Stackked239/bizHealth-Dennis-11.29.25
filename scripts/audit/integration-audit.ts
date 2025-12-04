@@ -36,6 +36,9 @@ const SANITIZER_CALL_PATTERNS = [
   /removeAsciiArt\(/i,
   /sanitizeContent\(/i,
   /sanitizeMarkdown\(/i,
+  /convertMarkdownToHtml\(/i,          // Main sanitizer function
+  /processNarrativeContent\(/i,        // Wrapper with validation
+  /processNarrativeForReport\(/i,      // Convenience wrapper
 ];
 
 const VISUAL_COMPONENT_PATTERNS = [

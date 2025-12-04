@@ -237,7 +237,7 @@ export function renderMetricWithSparkline(
     showValue: false,
   });
 
-  const trendSymbol = trend === 'up' ? '▲' : trend === 'down' ? '▼' : '▬';
+  const trendSymbol = trend === 'up' ? '+' : trend === 'down' ? '-' : '=';
   const trendColor = trend === 'up' ? '#22C55E' : trend === 'down' ? '#EF4444' : '#6B7280';
 
   return `

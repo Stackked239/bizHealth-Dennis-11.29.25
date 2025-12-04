@@ -125,7 +125,7 @@ export function renderFunnel(props: FunnelChartProps): string {
           color: #EF4444;
           margin: 4px 0;
         ">
-          ↓ ${dropoff.toFixed(1)}% drop-off
+          -${dropoff.toFixed(1)}% drop-off
         </div>
       `;
     }
@@ -301,13 +301,13 @@ export function renderHorizontalFunnel(
         </div>
         ${index < stages.length - 1 ? `
           <div style="font-size: 8px; color: #EF4444; margin-top: 2px;">
-            → ${((stages[index + 1].value / stage.value) * 100).toFixed(0)}%
+            ${((stages[index + 1].value / stage.value) * 100).toFixed(0)}%
           </div>
         ` : ''}
       </div>
     `;
   }).join(`
-    <div style="display: flex; align-items: center; color: #D1D5DB; font-size: 20px;">→</div>
+    <div style="display: flex; align-items: center; color: #D1D5DB; font-size: 16px; font-weight: bold;">...</div>
   `);
 
   return `

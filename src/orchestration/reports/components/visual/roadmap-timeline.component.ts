@@ -290,7 +290,7 @@ export function renderSimplifiedRoadmap(
         <ul style="list-style: none; padding: 0; margin: 0;">
           ${phase.highlights.map(h => `
             <li style="font-size: 11px; color: #374151; padding: 2px 0; display: flex; align-items: flex-start; gap: 4px;">
-              <span style="color: ${color};">→</span>
+              <span style="color: ${color}; font-weight: bold;">*</span>
               ${escapeHtml(h)}
             </li>
           `).join('')}
