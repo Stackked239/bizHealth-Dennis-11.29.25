@@ -44,6 +44,7 @@ import {
   generateOverallBenchmarkCallout,
   generateBenchmarkSummaryTable,
   renderComprehensiveRelationshipStatement,
+  buildLegalTermsPage,
 } from './components/index.js';
 import {
   getChapterIcon,
@@ -136,6 +137,14 @@ export async function buildComprehensiveReport(
   // Build HTML content with integrated narratives
   const contentSections = [
     generateReportHeader(ctx, reportName, 'Complete Business Health Assessment'),
+
+    // Legal Terms & Disclaimers (Page 2)
+    buildLegalTermsPage({
+      companyName: ctx.companyProfile.name,
+      reportId: ctx.runId,
+      generatedAt: new Date(ctx.metadata.generatedAt),
+      variant: 'comprehensive',
+    }),
 
     // Relationship statement explaining how Owner's and Comprehensive reports work together
     renderComprehensiveRelationshipStatement(),

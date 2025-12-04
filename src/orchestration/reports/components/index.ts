@@ -63,6 +63,17 @@ export {
 export type { ScoreBarConfig, ScoreBarListConfig } from './score-bar.component.js';
 
 // ============================================================================
+// LEGAL TERMS & DISCLAIMERS COMPONENT
+// ============================================================================
+
+export {
+  buildLegalTermsPage,
+  getLegalTermsStyles,
+} from './legal-terms-disclaimers.component.js';
+
+export type { LegalTermsContext } from './legal-terms-disclaimers.component.js';
+
+// ============================================================================
 // NEW VISUAL COMPONENTS (16 Components)
 // Tier 1: Core (gauge, score-tile, heatmap, bar-chart, metric-card, table)
 // Tier 2: Action (radar-chart, timeline, roadmap-timeline, kpi-dashboard, risk-matrix)
