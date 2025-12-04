@@ -3,6 +3,9 @@
  *
  * Provides shared HTML templates, styling, and helper functions for
  * generating branded, executive-ready reports.
+ *
+ * UPDATED 2025-12-04: Integrated unified CSS framework from Phase 4/5 consolidation
+ * See: src/orchestration/reports/styles/unified-bizhealth-styles.ts
  */
 
 import type {
@@ -17,6 +20,9 @@ import type {
   ReportChapter,
 } from '../../types/report.types.js';
 import { DEFAULT_BRAND, getBandColor, formatHorizon, calculateROI } from '../../types/report.types.js';
+
+// Import unified CSS framework
+import { generateUnifiedStyles, generateCriticalFixesOnly, BRAND_COLORS } from './styles/index.js';
 
 // Import visual enhancement components
 import {
@@ -633,6 +639,9 @@ export function generateBaseStyles(brand: BrandConfig = DEFAULT_BRAND): string {
 
 /**
  * Generate complete HTML document wrapper
+ *
+ * UPDATED 2025-12-04: Now includes unified CSS framework with critical fixes
+ * for cover pages, dark sections, print optimization, and accessibility.
  */
 export function wrapHtmlDocument(
   content: string,
@@ -640,19 +649,33 @@ export function wrapHtmlDocument(
     title: string;
     brand?: BrandConfig;
     customCSS?: string;
+    /** Include unified styles framework (default: true) */
+    includeUnifiedStyles?: boolean;
   }
 ): string {
   const brand = options.brand || DEFAULT_BRAND;
+  const includeUnifiedStyles = options.includeUnifiedStyles !== false;
+
+  // Generate unified styles with brand colors
+  const unifiedStyles = includeUnifiedStyles
+    ? generateUnifiedStyles(brand.primaryColor, brand.accentColor)
+    : '';
 
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="generator" content="BizHealth.ai Report Generator v1.0">
+  <meta name="generator" content="BizHealth.ai Report Generator v2.0">
   <title>${escapeHtml(options.title)}</title>
   <style>
+    /* Base Styles */
     ${generateBaseStyles(brand)}
+
+    /* Unified CSS Framework (Phase 4/5 Consolidation) */
+    ${unifiedStyles}
+
+    /* Report-Specific Custom Styles */
     ${options.customCSS || ''}
   </style>
 </head>
@@ -1314,3 +1337,12 @@ export function generateProgressBar(value: number, max: number = 100, brand: Bra
     </div>
   `;
 }
+
+// ============================================================================
+// RE-EXPORTS - Unified CSS Framework
+// ============================================================================
+
+/**
+ * Re-export unified styles utilities for use in report builders
+ */
+export { generateUnifiedStyles, generateCriticalFixesOnly, BRAND_COLORS } from './styles/index.js';
