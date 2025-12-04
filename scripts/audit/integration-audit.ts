@@ -27,6 +27,8 @@ const SANITIZER_IMPORT_PATTERNS = [
   /import.*markdown-sanitizer/i,
   /from\s+['"].*sanitizer/i,
   /require.*sanitizer/i,
+  /import.*NarrativeExtractionService/i,  // Service that wraps sanitizer
+  /from\s+['"].*narrative-extraction/i,   // Narrative extraction service import
 ];
 
 const SANITIZER_CALL_PATTERNS = [
@@ -36,9 +38,11 @@ const SANITIZER_CALL_PATTERNS = [
   /removeAsciiArt\(/i,
   /sanitizeContent\(/i,
   /sanitizeMarkdown\(/i,
-  /convertMarkdownToHtml\(/i,          // Main sanitizer function
-  /processNarrativeContent\(/i,        // Wrapper with validation
-  /processNarrativeForReport\(/i,      // Convenience wrapper
+  /convertMarkdownToHtml\(/i,              // Main sanitizer function
+  /processNarrativeContent\(/i,            // Wrapper with validation
+  /processNarrativeForReport\(/i,          // Convenience wrapper
+  /NarrativeExtractionService\.markdownToHtml\(/i,  // Service wrapper
+  /\.markdownToHtml\(/i,                   // Any markdownToHtml call
 ];
 
 const VISUAL_COMPONENT_PATTERNS = [
