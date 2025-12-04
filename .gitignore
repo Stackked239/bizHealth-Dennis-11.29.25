@@ -57,3 +57,7 @@ coverage/
 # Audit output (regenerated each run)
 output/audit/
 output/for-review/
+output/audit-report.json
+output/audit-summary.md
+output/monitoring-baseline.json
+output/monitoring-week-*.json
