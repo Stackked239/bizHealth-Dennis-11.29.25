@@ -8,6 +8,7 @@
     "dev": "tsx src/index.ts",
     "build": "tsc --noEmit false || true",
     "start": "tsx src/index.ts",
+    "pipeline": "tsx src/run-pipeline.ts",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
     "test:transform": "tsx tests/test-transformation.ts",
@@ -20,7 +21,17 @@
     "generate:validated": "npm run start && npm run validate:reports",
     "test:reports": "npm run validate:reports",
     "test:mappings": "npx vitest run src/orchestration/reports/config/__tests__/section-mapping.test.ts",
-    "validate:all": "npm run test:mappings && npm run validate:reports"
+    "validate:all": "npm run test:mappings && npm run validate:reports",
+    "audit": "tsx scripts/audit/run-full-audit.ts",
+    "audit:structural": "tsx scripts/audit/structural-audit.ts",
+    "audit:prompts": "tsx scripts/audit/prompt-audit.ts",
+    "audit:integration": "tsx scripts/audit/integration-audit.ts",
+    "audit:idm": "tsx scripts/audit/idm-schema-audit.ts",
+    "audit:functional": "tsx scripts/audit/functional-audit.ts",
+    "audit:output": "tsx scripts/audit/output-audit.ts",
+    "audit:metrics": "tsx scripts/audit/metrics-collector.ts",
+    "audit:monitor": "tsx scripts/audit/continuous-monitoring.ts",
+    "audit:weekly": "npm run pipeline && npm run audit:monitor"
   },
   "keywords": [
     "business-analysis",
