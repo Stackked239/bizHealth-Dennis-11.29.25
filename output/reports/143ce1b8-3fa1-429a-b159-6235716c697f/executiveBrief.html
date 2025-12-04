@@ -1,0 +1,2507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="BizHealth.ai Report Generator v2.0">
+  <title>Executive Brief - EWM Global</title>
+  <style>
+    /* Base Styles */
+    
+    /* Base Reset and Typography */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      font-family: 'Open Sans', Arial, sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #333;
+      background: #fff;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+      color: #212653;
+      margin-bottom: 0.5em;
+      line-height: 1.3;
+    }
+
+    h1 { font-size: 2.5rem; font-weight: 700; }
+    h2 { font-size: 2rem; font-weight: 600; page-break-before: always; }
+    h2:first-of-type { page-break-before: auto; }
+    h3 { font-size: 1.5rem; font-weight: 600; }
+    h4 { font-size: 1.25rem; font-weight: 500; }
+    h5 { font-size: 1.1rem; font-weight: 500; }
+
+    p {
+      margin-bottom: 1em;
+    }
+
+    /* Links */
+    a {
+      color: #969423;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Lists */
+    ul, ol {
+      margin-left: 1.5em;
+      margin-bottom: 1em;
+    }
+
+    li {
+      margin-bottom: 0.5em;
+    }
+
+    /* Page Layout */
+    .report-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .page {
+      padding: 2rem 0;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    /* Header */
+    .report-header {
+      text-align: center;
+      padding: 2rem 0;
+      border-bottom: 4px solid #212653;
+      margin-bottom: 2rem;
+    }
+
+    .report-header .logo {
+      max-height: 60px;
+      margin-bottom: 1rem;
+    }
+
+    .report-header h1 {
+      margin-bottom: 0.5rem;
+    }
+
+    .report-header .subtitle {
+      font-size: 1.25rem;
+      color: #666;
+    }
+
+    .report-header .company-name {
+      font-size: 1.5rem;
+      color: #969423;
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+
+    .report-header .date {
+      font-size: 0.9rem;
+      color: #888;
+      margin-top: 0.5rem;
+    }
+
+    /* Footer */
+    .report-footer {
+      text-align: center;
+      padding: 1rem 0;
+      border-top: 2px solid #eee;
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    @media print {
+      .report-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    }
+
+    /* Section Styles */
+    .section {
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #969423;
+    }
+
+    .section-icon {
+      font-size: 1.5rem;
+      margin-right: 0.75rem;
+    }
+
+    /* Score Cards */
+    .score-card {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #212653 0%, #212653dd 100%);
+      color: #fff;
+      min-width: 150px;
+    }
+
+    .score-card .score-value {
+      font-size: 3rem;
+      font-weight: 700;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    .score-card .score-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .score-card.small {
+      padding: 0.75rem;
+      min-width: 100px;
+    }
+
+    .score-card.small .score-value {
+      font-size: 1.75rem;
+    }
+
+    /* Health Score Display */
+    .health-score-display {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+    }
+
+    .health-score-circle {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #212653 0%, #212653cc 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    .health-score-circle .score {
+      font-size: 3.5rem;
+      font-weight: 700;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+      line-height: 1;
+    }
+
+    .health-score-circle .out-of {
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    .health-score-details {
+      text-align: left;
+    }
+
+    .health-score-details .status {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .health-score-details .trajectory {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      color: #666;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    th {
+      background: #212653;
+      color: #fff;
+      font-weight: 600;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    tr:hover {
+      background: #f0f0f0;
+    }
+
+    /* Score Table */
+    .score-table th:first-child {
+      width: 40%;
+    }
+
+    .score-table td.score {
+      font-weight: 600;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    /* Band Badge */
+    .band-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .band-badge.Excellence { background: #d4edda; color: #155724; }
+    .band-badge.Proficiency { background: #fff3cd; color: #856404; }
+    .band-badge.Attention { background: #ffeeba; color: #856404; }
+    .band-badge.Critical { background: #f8d7da; color: #721c24; }
+
+    /* Priority Badge */
+    .priority-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .priority-badge.high { background: #dc3545; color: #fff; }
+    .priority-badge.medium { background: #ffc107; color: #333; }
+    .priority-badge.low { background: #28a745; color: #fff; }
+
+    /* Cards */
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #212653;
+      margin: 0;
+    }
+
+    .card-body {
+      font-size: 0.95rem;
+    }
+
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+    @media (max-width: 768px) {
+      .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Flex Layout */
+    .flex { display: flex; }
+    .flex-wrap { flex-wrap: wrap; }
+    .flex-center { align-items: center; justify-content: center; }
+    .flex-between { justify-content: space-between; }
+    .gap-1 { gap: 0.5rem; }
+    .gap-2 { gap: 1rem; }
+    .gap-3 { gap: 1.5rem; }
+
+    /* Utility Classes */
+    .text-center { text-align: center; }
+    .text-right { text-align: right; }
+    .mt-1 { margin-top: 0.5rem; }
+    .mt-2 { margin-top: 1rem; }
+    .mt-3 { margin-top: 1.5rem; }
+    .mb-1 { margin-bottom: 0.5rem; }
+    .mb-2 { margin-bottom: 1rem; }
+    .mb-3 { margin-bottom: 1.5rem; }
+    .p-1 { padding: 0.5rem; }
+    .p-2 { padding: 1rem; }
+    .p-3 { padding: 1.5rem; }
+
+    /* Quick Win Card */
+    .quick-win-card {
+      background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+      border-left: 4px solid #969423;
+      padding: 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+    }
+
+    .quick-win-card .title {
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .quick-win-card .metrics {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.75rem;
+    }
+
+    .quick-win-card .metrics span {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* Risk Card */
+    .risk-card {
+      border-left: 4px solid #dc3545;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .risk-card.high { border-left-color: #dc3545; }
+    .risk-card.medium { border-left-color: #ffc107; }
+    .risk-card.low { border-left-color: #28a745; }
+
+    .risk-card .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .risk-card .category {
+      font-weight: 600;
+      color: #212653;
+    }
+
+    /* Finding Card */
+    .finding-card {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+    }
+
+    .finding-card.strength { background: #d4edda; border-left: 4px solid #28a745; }
+    .finding-card.gap { background: #f8d7da; border-left: 4px solid #dc3545; }
+    .finding-card.risk { background: #ffeeba; border-left: 4px solid #ffc107; }
+    .finding-card.opportunity { background: #cce5ff; border-left: 4px solid #0d6efd; }
+
+    .finding-card .label {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .finding-card .dimension {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Roadmap Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.5rem;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: #212653;
+      border-radius: 3px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 1.5rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -1.75rem;
+      top: 0.5rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #969423;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 3px #212653;
+    }
+
+    .timeline-item .phase-name {
+      font-weight: 600;
+      color: #212653;
+      font-size: 1.1rem;
+    }
+
+    .timeline-item .time-horizon {
+      font-size: 0.9rem;
+      color: #969423;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Callout Box */
+    .callout {
+      padding: 1.25rem;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+    }
+
+    .callout.info {
+      background: #e7f3ff;
+      border-left: 4px solid #0d6efd;
+    }
+
+    .callout.success {
+      background: #d4edda;
+      border-left: 4px solid #28a745;
+    }
+
+    .callout.warning {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+    }
+
+    .callout.danger {
+      background: #f8d7da;
+      border-left: 4px solid #dc3545;
+    }
+
+    .callout .title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      height: 24px;
+      background: #e9ecef;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .progress-bar .fill {
+      height: 100%;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: width 0.3s ease;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        font-size: 11pt;
+      }
+
+      .report-container {
+        max-width: none;
+        padding: 0;
+      }
+
+      .page-break {
+        page-break-before: always;
+      }
+
+      h2 {
+        page-break-before: always;
+      }
+
+      h2:first-of-type {
+        page-break-before: auto;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+    }
+  
+
+    /* Unified CSS Framework (Phase 4/5 Consolidation) */
+    
+/* ============================================================
+   BIZHEALTH.AI UNIFIED CSS FRAMEWORK
+   Phase 4 Styling Patterns for Phase 5 Report Generation
+   Generated: 2025-12-04
+   ============================================================ */
+
+/* ===== BRAND COLOR VARIABLES ===== */
+:root {
+  --biz-navy: #212653;
+  --biz-green: #969423;
+  --biz-grey: #7C7C7C;
+  --biz-white: #FFFFFF;
+  --biz-light-bg: #f8f9fa;
+  --biz-border: #e9ecef;
+
+  /* Score Band Colors */
+  --band-excellence: #28a745;
+  --band-proficiency: #0d6efd;
+  --band-attention: #ffc107;
+  --band-critical: #dc3545;
+
+  /* Spacing Scale (8px base) */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-xxl: 48px;
+}
+
+/* ===== CRITICAL FIX 1: Cover Page Background Override ===== */
+/* Issue: .page class white background overrides .cover-page BizNavy */
+.cover-page {
+  background: #212653 !important;
+  background-color: #212653 !important;
+}
+
+.page.cover-page {
+  background: #212653 !important;
+  background-color: #212653 !important;
+}
+
+/* ===== CRITICAL FIX 2: Dark Section Text Visibility ===== */
+/* Issue: Only strong/em styled in Phase 5; regular p text inherits dark color */
+.dark-section,
+.dark-section p,
+.dark-section span,
+.dark-section li,
+.dark-section strong,
+.dark-section em,
+.dark-section a,
+.dark-section h1,
+.dark-section h2,
+.dark-section h3,
+.dark-section h4,
+.dark-section h5,
+.dark-section h6,
+.dark-section label,
+.dark-section td,
+.dark-section th {
+  color: #FFFFFF !important;
+}
+
+.cover-page,
+.cover-page p,
+.cover-page span,
+.cover-page h1,
+.cover-page h2,
+.cover-page h3,
+.cover-page .subtitle,
+.cover-page .tagline {
+  color: #FFFFFF !important;
+}
+
+/* ===== CRITICAL FIX 3: Remove Problematic Overlays ===== */
+/* Issue: Light gradient overlays (5-8% opacity) reducing legibility */
+.cover-page::before,
+.cover-page::after,
+.dark-section::before,
+.dark-section::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* ===== FIX 4: Typography Hierarchy ===== */
+body {
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+  color: #212653;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+h1 { font-size: 2.5rem; font-weight: 700; }
+h2 { font-size: 2rem; font-weight: 600; border-bottom: 2px solid #969423; padding-bottom: 0.5rem; }
+h3 { font-size: 1.5rem; font-weight: 600; }
+h4 { font-size: 1.25rem; font-weight: 500; }
+
+/* ===== FIX 5: Score Display Contrast ===== */
+.score-value {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 3.5rem;
+  color: inherit;
+}
+
+.score-denominator,
+.score-out-of {
+  color: #CCCCCC; /* Intentional subtle hierarchy - not a bug */
+  font-size: 1.5rem;
+}
+
+.health-score-circle {
+  width: 180px;
+  height: 180px;
+  background: linear-gradient(135deg, #212653 0%, #212653cc 100%);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  color: #FFFFFF;
+}
+
+.health-score-circle .score {
+  font-size: 3.5rem;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+  line-height: 1;
+  color: #FFFFFF;
+}
+
+.health-score-circle .out-of {
+  font-size: 1rem;
+  opacity: 0.8;
+  color: #FFFFFF;
+}
+
+/* ===== FIX 6: Information Box Consistency ===== */
+.strength-box,
+.box-strength {
+  background: rgba(150, 148, 35, 0.1);
+  border-left: 4px solid #969423;
+  padding: 15px 20px;
+  margin: 15px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.gap-box,
+.risk-box,
+.box-gap,
+.box-risk {
+  background: rgba(211, 47, 47, 0.1);
+  border-left: 4px solid #D32F2F;
+  padding: 15px 20px;
+  margin: 15px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.action-box,
+.box-action,
+.recommendation-box {
+  background: rgba(33, 38, 83, 0.05);
+  border-left: 4px solid #212653;
+  padding: 15px 20px;
+  margin: 15px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.opportunity-box,
+.box-opportunity {
+  background: rgba(13, 110, 253, 0.1);
+  border-left: 4px solid #0d6efd;
+  padding: 15px 20px;
+  margin: 15px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+/* ===== FIX 7: Score Tile Cards ===== */
+.score-tile,
+.score-card {
+  background: #FFFFFF;
+  border-left: 4px solid #969423;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 16px;
+}
+
+.score-card .score-value {
+  font-size: 3rem;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.score-card .score-label {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== FIX 8: Score Band Badges ===== */
+.band-badge,
+.score-band {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.band-badge.Excellence,
+.score-band.excellence {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.band-badge.Proficiency,
+.score-band.proficiency {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.band-badge.Attention,
+.score-band.attention {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.band-badge.Critical,
+.score-band.critical {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* ===== FIX 9: Key Takeaways Box (Dark Section) ===== */
+.key-takeaways {
+  background: #212653 !important;
+  color: #FFFFFF !important;
+  padding: 24px;
+  border-radius: 8px;
+  margin: 24px 0;
+}
+
+.key-takeaways h3,
+.key-takeaways h4,
+.key-takeaways p,
+.key-takeaways li,
+.key-takeaways span,
+.key-takeaways .takeaway-title,
+.key-takeaways .takeaway-text {
+  color: #FFFFFF !important;
+}
+
+.key-takeaways .takeaway-icon {
+  color: #969423 !important;
+}
+
+/* ===== FIX 10: Table Styling ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+}
+
+th {
+  background-color: #212653;
+  color: #FFFFFF;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+}
+
+td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+/* ===== FIX 11: Interactive Table of Contents ===== */
+.table-of-contents {
+  background: #f8f9fa;
+  padding: 24px;
+  border-radius: 8px;
+  margin: 24px 0;
+}
+
+.table-of-contents h3 {
+  color: #212653;
+  margin-bottom: 1rem;
+}
+
+.table-of-contents ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.table-of-contents li {
+  margin: 8px 0;
+}
+
+.table-of-contents a {
+  color: #212653;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.table-of-contents a:hover {
+  background-color: #e9ecef;
+  color: #969423;
+}
+
+.table-of-contents .section-icon {
+  margin-right: 12px;
+  color: #969423;
+}
+
+/* Nested TOC items */
+.table-of-contents ul ul {
+  padding-left: 24px;
+  margin-top: 4px;
+}
+
+.table-of-contents ul ul a {
+  font-size: 0.9rem;
+  padding: 6px 12px;
+}
+
+/* ===== FIX 12: Cross-Reference Links ===== */
+.cross-reference,
+.see-comprehensive,
+.comprehensive-reference {
+  background: rgba(150, 148, 35, 0.1);
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin: 16px 0;
+  font-style: italic;
+  border-left: 3px solid #969423;
+}
+
+.cross-reference a,
+.see-comprehensive a,
+.comprehensive-reference a {
+  color: #969423;
+  font-weight: 600;
+}
+
+/* ===== FIX 13: Print Optimization ===== */
+@media print {
+  body {
+    font-size: 12pt;
+    line-height: 1.4;
+    max-width: none;
+    padding: 0;
+  }
+
+  .cover-page {
+    background: #212653 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .key-takeaways {
+    background: #212653 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .key-takeaways,
+  .key-takeaways * {
+    color: #FFFFFF !important;
+  }
+
+  h2 {
+    page-break-before: always;
+  }
+
+  h2:first-of-type {
+    page-break-before: auto;
+  }
+
+  .score-card,
+  .score-tile,
+  .insight-card,
+  .recommendation-box,
+  .risk-box,
+  .strength-box,
+  .gap-box {
+    page-break-inside: avoid;
+  }
+
+  .svg-chart-container,
+  .chart-container {
+    page-break-inside: avoid;
+  }
+
+  .table-of-contents {
+    page-break-after: always;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  th {
+    background-color: #212653 !important;
+    color: #FFFFFF !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .band-badge.Excellence { background-color: #d4edda !important; color: #155724 !important; }
+  .band-badge.Proficiency { background-color: #cce5ff !important; color: #004085 !important; }
+  .band-badge.Attention { background-color: #fff3cd !important; color: #856404 !important; }
+  .band-badge.Critical { background-color: #f8d7da !important; color: #721c24 !important; }
+}
+
+/* ===== FIX 14: Responsive Design ===== */
+@media (max-width: 768px) {
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+
+  .executive-highlights,
+  .insight-cards-container,
+  .owner-implications-grid,
+  .financial-summary-grid,
+  .bundle-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .health-score-circle {
+    width: 140px;
+    height: 140px;
+  }
+
+  .score-value {
+    font-size: 2.5rem;
+  }
+
+  .dashboard-row,
+  .chart-grid {
+    flex-direction: column;
+  }
+
+  table {
+    font-size: 0.875rem;
+  }
+
+  th, td {
+    padding: 8px 12px;
+  }
+}
+
+/* ===== FIX 15: Accessibility Enhancements ===== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus states for keyboard navigation */
+a:focus,
+button:focus {
+  outline: 3px solid #969423;
+  outline-offset: 2px;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ===== ADDITIONAL COMPONENT STYLES ===== */
+
+/* Finding Cards */
+.finding-card {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  border-left: 4px solid;
+}
+
+.finding-card.strength { background: #d4edda; border-left-color: #28a745; }
+.finding-card.gap { background: #f8d7da; border-left-color: #dc3545; }
+.finding-card.risk { background: #ffeeba; border-left-color: #ffc107; }
+.finding-card.opportunity { background: #cce5ff; border-left-color: #0d6efd; }
+
+.finding-card .label {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.finding-card .dimension {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+/* Quick Win Cards */
+.quick-win-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+  border-left: 4px solid #969423;
+  padding: 1.25rem;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 1rem;
+}
+
+.quick-win-card .title {
+  font-weight: 600;
+  color: #212653;
+  margin-bottom: 0.5rem;
+}
+
+.quick-win-card .metrics {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.75rem;
+}
+
+.quick-win-card .metrics span {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Risk Cards */
+.risk-card {
+  border-left: 4px solid #dc3545;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.risk-card.high { border-left-color: #dc3545; }
+.risk-card.medium { border-left-color: #ffc107; }
+.risk-card.low { border-left-color: #28a745; }
+
+.risk-card .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.risk-card .category {
+  font-weight: 600;
+  color: #212653;
+}
+
+/* Timeline/Roadmap */
+.timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0.5rem;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #212653;
+  border-radius: 3px;
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 1.5rem;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -1.75rem;
+  top: 0.5rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #969423;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 3px #212653;
+}
+
+.timeline-item .phase-name {
+  font-weight: 600;
+  color: #212653;
+  font-size: 1.1rem;
+}
+
+.timeline-item .time-horizon {
+  font-size: 0.9rem;
+  color: #969423;
+  margin-bottom: 0.5rem;
+}
+
+/* Callout Boxes */
+.callout {
+  padding: 1.25rem;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+.callout.info {
+  background: #e7f3ff;
+  border-left: 4px solid #0d6efd;
+}
+
+.callout.success {
+  background: #d4edda;
+  border-left: 4px solid #28a745;
+}
+
+.callout.warning {
+  background: #fff3cd;
+  border-left: 4px solid #ffc107;
+}
+
+.callout.danger {
+  background: #f8d7da;
+  border-left: 4px solid #dc3545;
+}
+
+.callout .title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* Insight Cards */
+.insight-card {
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0.75rem 0;
+  border-left: 4px solid;
+}
+
+.insight-card.strength { background: #d4edda; border-left-color: #28a745; }
+.insight-card.strength .insight-label { color: #155724; }
+
+.insight-card.weakness,
+.insight-card.gap { background: #f8d7da; border-left-color: #dc3545; }
+.insight-card.weakness .insight-label,
+.insight-card.gap .insight-label { color: #721c24; }
+
+.insight-card.opportunity { background: #cce5ff; border-left-color: #0d6efd; }
+.insight-card.opportunity .insight-label { color: #004085; }
+
+.insight-card.warning,
+.insight-card.risk { background: #fff3cd; border-left-color: #ffc107; }
+.insight-card.warning .insight-label,
+.insight-card.risk .insight-label { color: #856404; }
+
+.insight-card .insight-label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
+}
+
+.insight-card .insight-title {
+  font-weight: 600;
+  color: #212653;
+  margin-bottom: 0.5rem;
+}
+
+.insight-card .insight-detail {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+/* Grid Layouts */
+.insight-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.insight-cards-container .insight-card {
+  margin: 0;
+}
+
+/* Progress Bar */
+.progress-bar {
+  height: 24px;
+  background: #e9ecef;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.progress-bar .fill {
+  height: 100%;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: width 0.3s ease;
+}
+
+/* Benchmark Callouts */
+.benchmark-callout {
+  background: #e7f3ff;
+  border: 1px solid #b8daff;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.benchmark-callout .benchmark-icon {
+  font-size: 2rem;
+  color: #212653;
+}
+
+.benchmark-callout .benchmark-content { flex: 1; }
+
+.benchmark-callout .benchmark-label {
+  font-size: 0.85rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.benchmark-callout .benchmark-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #212653;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.benchmark-callout .benchmark-context {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Evidence Citations */
+.evidence-citation {
+  background: #f8f9fa;
+  border-left: 4px solid #969423;
+  border-radius: 0 8px 8px 0;
+  padding: 0.75rem 1rem;
+  margin: 0.75rem 0 1.25rem 0;
+  font-size: 0.9rem;
+}
+
+.evidence-citation .citation-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #212653;
+  margin-bottom: 0.5rem;
+}
+
+.evidence-citation .citation-icon {
+  color: #969423;
+}
+
+.evidence-citation .question-ref {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.evidence-citation .response-text {
+  color: #333;
+  font-style: italic;
+  margin: 0.5rem 0;
+  padding-left: 1rem;
+  border-left: 2px solid #ddd;
+}
+
+.evidence-citation .benchmark-comparison {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e0e0e0;
+  font-size: 0.85rem;
+}
+
+.evidence-citation .benchmark-comparison.above { color: #28a745; }
+.evidence-citation .benchmark-comparison.below { color: #dc3545; }
+.evidence-citation .benchmark-comparison.at { color: #6c757d; }
+
+/* Bundle Grid (Owner Report) */
+.bundle-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.bundle-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+}
+
+.bundle-item.primary {
+  border-left: 3px solid #212653;
+}
+
+.bundle-item a {
+  color: #212653;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.bundle-item a:hover {
+  color: #969423;
+}
+
+.bundle-item p {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0.25rem 0 0 0;
+}
+
+
+    /* Report-Specific Custom Styles */
+    
+  </style>
+</head>
+<body>
+  <div class="report-container">
+    
+    <style>
+      .executive-brief {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .brief-header {
+        text-align: center;
+        padding: 1.5rem 0;
+        border-bottom: 3px solid #212653;
+        margin-bottom: 1.5rem;
+      }
+
+      .brief-header h1 {
+        font-size: 1.75rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .brief-header .company {
+        font-size: 1.25rem;
+        color: #969423;
+      }
+
+      .brief-header .date {
+        font-size: 0.85rem;
+        color: #888;
+      }
+
+      .score-hero {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        padding: 1.5rem;
+        background: linear-gradient(135deg, #212653 0%, #212653dd 100%);
+        border-radius: 12px;
+        color: #fff;
+        margin-bottom: 1.5rem;
+      }
+
+      .score-hero .score-circle {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.15);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 4px solid rgba(255,255,255,0.5);
+      }
+
+      .score-hero .score-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        line-height: 1;
+      }
+
+      .score-hero .score-label {
+        font-size: 0.8rem;
+        opacity: 0.9;
+      }
+
+      .score-hero .score-details {
+        text-align: left;
+      }
+
+      .score-hero .status {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+      }
+
+      .score-hero .trajectory {
+        font-size: 0.95rem;
+        opacity: 0.9;
+      }
+
+      .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .metric-box {
+        text-align: center;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border-left: 3px solid #969423;
+      }
+
+      .metric-box .value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #212653;
+      }
+
+      .metric-box .label {
+        font-size: 0.75rem;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .two-column {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .brief-section h3 {
+        font-size: 1rem;
+        color: #212653;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #969423;
+      }
+
+      .brief-section ul {
+        margin: 0;
+        padding-left: 1.25rem;
+      }
+
+      .brief-section li {
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .actions-section {
+        background: #fff3cd;
+        padding: 1rem;
+        border-radius: 8px;
+        border-left: 4px solid #ffc107;
+        margin-bottom: 1.5rem;
+      }
+
+      .actions-section h3 {
+        color: #856404;
+        margin-bottom: 0.75rem;
+        font-size: 1rem;
+      }
+
+      .actions-section ol {
+        margin: 0;
+        padding-left: 1.25rem;
+      }
+
+      .actions-section li {
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .cta-section {
+        text-align: center;
+        padding: 1rem;
+        background: #212653;
+        color: #fff;
+        border-radius: 8px;
+      }
+
+      .cta-section p {
+        margin: 0;
+        font-size: 0.9rem;
+      }
+
+      @media print {
+        .executive-brief {
+          max-width: none;
+        }
+      }
+
+      /* Chart styles */
+      
+    
+    .svg-chart-container {
+      display: flex;
+      justify-content: center;
+      margin: 1rem 0;
+      page-break-inside: avoid;
+    }
+
+    .svg-chart-container svg {
+      max-width: 100%;
+      height: auto;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+    }
+
+    @media print {
+      .svg-chart-container {
+        page-break-inside: avoid;
+      }
+
+      .svg-chart-container svg {
+        box-shadow: none;
+        border: 1px solid #e0e0e0;
+      }
+    }
+  
+
+    /* Executive Dashboard Styles */
+    .executive-dashboard {
+      margin: 2rem 0;
+    }
+
+    .dashboard-row {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .dashboard-main {
+      flex: 2;
+      min-width: 350px;
+    }
+
+    .dashboard-side {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .dashboard-full {
+      width: 100%;
+    }
+
+    /* Chart grid layout */
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .chart-cell {
+      background: #FFFFFF;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Chart error fallback */
+    .chart-error,
+    .chart-fallback {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: #f8f9fa;
+      border: 2px dashed #dee2e6;
+      border-radius: 8px;
+      color: #6c757d;
+      min-height: 200px;
+      text-align: center;
+    }
+
+    .chart-fallback-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    @media print {
+      .executive-dashboard,
+      .chart-grid,
+      .svg-chart-container {
+        page-break-inside: avoid;
+      }
+
+      .chart-cell {
+        box-shadow: none;
+        border: 1px solid #dee2e6;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-row {
+        flex-direction: column;
+      }
+
+      .dashboard-main,
+      .dashboard-side {
+        min-width: 100%;
+      }
+
+      .chart-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  
+
+      .executive-charts {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+        flex-wrap: wrap;
+      }
+
+      .executive-charts .chart-wrapper {
+        flex: 1;
+        min-width: 300px;
+        max-width: 600px;
+      }
+    </style>
+
+    <div class="executive-brief">
+      <header class="brief-header">
+        <h1>Business Health Executive Brief</h1>
+        <p class="company">EWM Global</p>
+        <p class="date">December 4, 2025</p>
+      </header>
+
+      <!-- Legal Terms & Disclaimers (Page 2) -->
+      
+    
+    <style>
+      
+    /* LEGAL TERMS PAGE - PRINT STYLING */
+    @media print {
+      .legal-terms-page {
+        page-break-before: always;
+        page-break-after: always;
+      }
+
+      .legal-content h2 {
+        page-break-after: avoid;
+      }
+
+      .legal-section {
+        page-break-inside: avoid;
+      }
+
+      .legal-acknowledgment {
+        page-break-inside: avoid;
+      }
+    }
+
+    /* HEADER BLOCK */
+    .legal-terms-header {
+      background-color: #212653; /* BizNavy */
+      color: #FFFFFF;
+      padding: 24px 40px;
+      text-align: center;
+      border-bottom: 4px solid #969423; /* BizGreen accent */
+    }
+
+    .legal-terms-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.5rem; /* 24px */
+      font-weight: 700;
+      margin: 0 0 8px 0;
+    }
+
+    .legal-terms-subtitle {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 1rem; /* 16px */
+      font-style: italic;
+      color: #E5E7EB;
+      margin: 0;
+    }
+
+    /* EMPATHETIC INTRODUCTION */
+    .legal-intro {
+      background-color: #F3F4F6;
+      padding: 16px 24px;
+      border-left: 4px solid #969423;
+      margin: 24px 0;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: #374151;
+    }
+
+    .legal-intro p {
+      margin: 0;
+    }
+
+    /* DOCUMENT METADATA BLOCK */
+    .legal-metadata {
+      background-color: #F9FAFB;
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      padding: 16px 24px;
+      margin: 24px 0;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 0.875rem;
+      color: #374151;
+    }
+
+    .legal-metadata p {
+      margin: 4px 0;
+    }
+
+    .legal-metadata strong {
+      color: #212653;
+    }
+
+    /* BODY TEXT STYLING */
+    .legal-content {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 0.875rem; /* ~14px, equivalent to 11pt */
+      line-height: 1.6;
+      color: #374151;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px;
+    }
+
+    .legal-content h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.125rem; /* 18px */
+      font-weight: 600;
+      color: #212653;
+      margin-top: 32px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #E5E7EB;
+      padding-bottom: 8px;
+    }
+
+    .legal-content h3 {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #374151;
+      margin-top: 24px;
+      margin-bottom: 12px;
+    }
+
+    .legal-content p {
+      margin: 12px 0;
+      text-align: justify;
+    }
+
+    .legal-intro-text {
+      background-color: #FEF3C7;
+      border: 1px solid #FCD34D;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+
+    .legal-section {
+      margin-bottom: 24px;
+    }
+
+    /* CONTACT BLOCK */
+    .contact-block {
+      font-style: normal;
+      background-color: #F3F4F6;
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 16px;
+    }
+
+    .contact-block a {
+      color: #212653;
+      text-decoration: underline;
+    }
+
+    .contact-block a:hover {
+      color: #969423;
+    }
+
+    /* ACKNOWLEDGMENT BLOCK */
+    .legal-acknowledgment {
+      background-color: #F3F4F6;
+      border-left: 4px solid #212653;
+      padding: 24px;
+      margin-top: 40px;
+      margin-bottom: 24px;
+    }
+
+    .acknowledgment-text {
+      font-size: 0.875rem;
+      color: #1F2937;
+      margin: 0;
+      text-transform: none;
+    }
+
+    .acknowledgment-text strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #212653;
+    }
+
+    /* FOOTER */
+    .legal-footer {
+      border-top: 2px solid #E5E7EB;
+      padding-top: 24px;
+      margin-top: 40px;
+      text-align: center;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 0.8125rem;
+      color: #6B7280;
+    }
+
+    .legal-footer p {
+      margin: 4px 0;
+    }
+
+    .legal-footer a {
+      color: #212653;
+      text-decoration: underline;
+    }
+
+    .legal-footer a:hover {
+      color: #969423;
+    }
+  
+      
+        /* EXECUTIVE VARIANT STYLES - CSS-only accordion */
+        .legal-content {
+          font-size: 0.875rem;
+          line-height: 1.5;
+        }
+
+        .legal-section {
+          border: 1px solid #E5E7EB;
+          border-radius: 8px;
+          margin-bottom: 8px;
+          overflow: hidden;
+        }
+
+        .legal-section h2 {
+          margin: 0;
+          padding: 0;
+          border: none;
+        }
+
+        .legal-details {
+          border: none;
+        }
+
+        .legal-details summary {
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1rem;
+          font-weight: 600;
+          color: #212653;
+          padding: 16px;
+          cursor: pointer;
+          background-color: #F9FAFB;
+          list-style: none;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .legal-details summary::-webkit-details-marker {
+          display: none;
+        }
+
+        .legal-details summary::after {
+          content: '+';
+          font-size: 1.25rem;
+          font-weight: 300;
+          color: #969423;
+          transition: transform 0.2s;
+        }
+
+        .legal-details[open] summary::after {
+          content: '-';
+        }
+
+        .legal-details[open] summary {
+          border-bottom: 1px solid #E5E7EB;
+        }
+
+        .legal-details-content {
+          padding: 16px;
+        }
+
+        .legal-details-content h3 {
+          margin-top: 16px;
+        }
+
+        .legal-details-content h3:first-child {
+          margin-top: 0;
+        }
+      
+    </style>
+  
+    <div class="legal-terms-page">
+      <!-- HEADER -->
+      <header class="legal-terms-header">
+        <h1 class="legal-terms-title">Legal Terms & Disclaimers</h1>
+        <p class="legal-terms-subtitle">Important Information About Your BizHealth.ai Report</p>
+      </header>
+
+      <div class="legal-content">
+        <!-- EMPATHETIC INTRODUCTION -->
+        <div class="legal-intro">
+          <p>We want you to get maximum value from your BizHealth.ai report. To protect both you and us, the following terms clarify that this is AI-powered informational content only—not professional advice—and outline important limitations and privacy practices.</p>
+        </div>
+
+        <!-- DOCUMENT IDENTIFICATION -->
+        <div class="legal-metadata">
+          <p><strong>BizHealth.ai Client Report</strong></p>
+          <p>Effective Date: December 4, 2025</p>
+          <p>Report ID: 143ce1b8-3fa1-429a-b159-6235716c697f</p>
+          <p>Client Entity: EWM Global</p>
+        </div>
+
+        <!-- LEGAL CONTENT -->
+        
+    <!-- ACCEPTANCE OF TERMS -->
+    <p class="legal-intro-text">
+      <strong>ACCEPTANCE OF TERMS:</strong> By accessing, receiving, or using this BizHealth.ai report (the "Report"), you ("Client," "you," or "your") acknowledge that you have read, understood, and agree to be bound by these Legal Terms & Disclaimers in their entirety. If you do not agree to these terms, do not access or use this Report.
+    </p>
+
+    <!-- SECTION 1: NATURE OF SERVICE & SCOPE LIMITATIONS -->
+    
+      <section class="legal-section">
+        <details class="legal-details" open>
+          <summary>1. NATURE OF SERVICE & SCOPE LIMITATIONS</summary>
+          <div class="legal-details-content">
+            
+
+      <h3>1.1 Informational Purposes Only</h3>
+      <p>This Report is provided for general informational and educational purposes only. It is designed to offer insights into your business operations based on the data you have provided. The Report does not constitute professional advice of any kind, including but not limited to legal, financial, tax, accounting, investment, or business consulting advice.</p>
+
+      <h3>1.2 Not Professional Advice</h3>
+      <p>BizHealth.ai is not a law firm, accounting firm, financial advisory firm, or professional consulting practice. The information contained in this Report should not be relied upon as a substitute for consultation with qualified professionals who can provide advice tailored to your specific circumstances. You are strongly encouraged to seek the advice of qualified professionals regarding any matters addressed in this Report.</p>
+
+      <h3>1.3 Scope of Analysis</h3>
+      <p>This Report is based solely on the information you provided through our assessment questionnaire and any supplemental data submitted to BizHealth.ai. We have not independently verified, audited, or investigated the accuracy, completeness, or reliability of this information. The analysis contained herein reflects only the data available to us at the time of assessment and may not capture all relevant factors affecting your business.</p>
+    
+          </div>
+        </details>
+      </section>
+    
+
+    <!-- SECTION 2: COMPREHENSIVE LIABILITY LIMITATIONS -->
+    
+      <section class="legal-section">
+        <details class="legal-details" open>
+          <summary>2. COMPREHENSIVE LIABILITY LIMITATIONS</summary>
+          <div class="legal-details-content">
+            
+
+      <h3>2.1 No Warranties</h3>
+      <p>THIS REPORT IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, WHETHER EXPRESS, IMPLIED, OR STATUTORY. TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, BIZHEALTH.AI EXPRESSLY DISCLAIMS ALL WARRANTIES, INCLUDING BUT NOT LIMITED TO: (A) IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT; (B) WARRANTIES ARISING FROM COURSE OF DEALING, USAGE, OR TRADE PRACTICE; (C) WARRANTIES THAT THE REPORT WILL MEET YOUR REQUIREMENTS OR EXPECTATIONS; (D) WARRANTIES THAT THE REPORT WILL BE ERROR-FREE, ACCURATE, RELIABLE, OR COMPLETE; AND (E) WARRANTIES REGARDING THE RESULTS YOU MAY OBTAIN FROM USING THIS REPORT.</p>
+
+      <h3>2.2 Limitation of Liability</h3>
+      <p>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL BIZHEALTH.AI, ITS AFFILIATES, OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, LICENSORS, OR SERVICE PROVIDERS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, PUNITIVE, OR EXEMPLARY DAMAGES, INCLUDING BUT NOT LIMITED TO DAMAGES FOR LOSS OF PROFITS, GOODWILL, USE, DATA, OR OTHER INTANGIBLE LOSSES, ARISING OUT OF OR IN CONNECTION WITH: (A) YOUR USE OF OR INABILITY TO USE THIS REPORT; (B) ANY DECISIONS MADE OR ACTIONS TAKEN BASED ON THIS REPORT; (C) ANY ERRORS, OMISSIONS, OR INACCURACIES IN THE REPORT; (D) UNAUTHORIZED ACCESS TO OR ALTERATION OF YOUR DATA; OR (E) ANY OTHER MATTER RELATING TO THIS REPORT, REGARDLESS OF THE THEORY OF LIABILITY (CONTRACT, TORT, NEGLIGENCE, STRICT LIABILITY, OR OTHERWISE) AND EVEN IF BIZHEALTH.AI HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.</p>
+
+      <h3>2.3 Cap on Liability</h3>
+      <p>IF, NOTWITHSTANDING THE FOREGOING, BIZHEALTH.AI IS FOUND LIABLE FOR ANY LOSS OR DAMAGE ARISING OUT OF OR IN CONNECTION WITH THIS REPORT, OUR TOTAL AGGREGATE LIABILITY SHALL NOT EXCEED THE LESSER OF: (A) THE AMOUNT YOU PAID TO BIZHEALTH.AI FOR THIS SPECIFIC REPORT; OR (B) ONE HUNDRED UNITED STATES DOLLARS (USD $100.00).</p>
+
+      <h3>2.4 Essential Basis of the Bargain</h3>
+      <p>You acknowledge and agree that the limitations of liability set forth in this Section 2 are fundamental elements of the agreement between you and BizHealth.ai. BizHealth.ai would not provide this Report without such limitations. These limitations shall apply even if any remedy fails of its essential purpose.</p>
+
+      <h3>2.5 Specific Disclaimer of Liability</h3>
+      <p>Without limiting the foregoing, BizHealth.ai specifically disclaims any liability for: (a) Business decisions made based on this Report; (b) Financial investments or expenditures made in reliance on this Report; (c) Changes to business operations, personnel, or strategy based on this Report; (d) Third-party actions or omissions; (e) Market conditions, economic factors, or industry trends; (f) Regulatory compliance or legal matters; and (g) Any outcomes, results, or consequences of implementing recommendations contained in this Report.</p>
+    
+          </div>
+        </details>
+      </section>
+    
+
+    <!-- SECTION 3: DATA USAGE, PRIVACY & CONFIDENTIALITY -->
+    
+      <section class="legal-section">
+        <details class="legal-details" open>
+          <summary>3. DATA USAGE, PRIVACY & CONFIDENTIALITY</summary>
+          <div class="legal-details-content">
+            
+
+      <h3>3.1 Data Collection and Use</h3>
+      <p>BizHealth.ai collects and processes the data you provide through our assessment questionnaire to generate this Report. By submitting your data, you grant BizHealth.ai a non-exclusive, royalty-free license to use, process, analyze, and store such data for the purposes of: (a) generating this Report; (b) improving our services, algorithms, and analytical models; (c) developing aggregated, anonymized insights and benchmarks; and (d) complying with applicable laws and regulations.</p>
+
+      <h3>3.2 AI and Machine Learning</h3>
+      <p>This Report is generated using artificial intelligence and machine learning technologies. Your data may be used to train, validate, and improve our AI models. All such use will be conducted in accordance with our Privacy Policy and applicable data protection laws. We implement appropriate technical and organizational measures to protect your data during AI processing.</p>
+
+      <h3>3.3 Aggregated Data</h3>
+      <p>BizHealth.ai may use your data in aggregated, anonymized form for research, benchmarking, product development, and marketing purposes. Such aggregated data will not identify you or your business specifically.</p>
+
+      <h3>3.4 Confidentiality</h3>
+      <p>BizHealth.ai will treat the specific information you provide as confidential and will not disclose such information to third parties except: (a) with your express consent; (b) to service providers who assist in generating this Report, subject to appropriate confidentiality obligations; (c) in aggregated, anonymized form as described above; (d) as required by law, regulation, legal process, or governmental request; or (e) to protect the rights, property, or safety of BizHealth.ai or others.</p>
+
+      <h3>3.5 Data Retention</h3>
+      <p>BizHealth.ai retains your data in accordance with our data retention policies and applicable legal requirements. You may request deletion of your personal data by contacting us at the address provided below, subject to our legal obligations and legitimate business interests.</p>
+    
+          </div>
+        </details>
+      </section>
+    
+
+    <!-- SECTION 4: METHODOLOGY & ANALYTICAL LIMITATIONS -->
+    
+      <section class="legal-section">
+        <details class="legal-details" open>
+          <summary>4. METHODOLOGY & ANALYTICAL LIMITATIONS</summary>
+          <div class="legal-details-content">
+            
+
+      <h3>4.1 Methodology Disclaimer</h3>
+      <p>The scores, ratings, assessments, and recommendations contained in this Report are generated using proprietary algorithms and methodologies developed by BizHealth.ai. These methodologies involve subjective judgments and assumptions that may not be appropriate for all businesses, industries, or circumstances.</p>
+
+      <h3>4.2 Limitations of AI-Generated Content</h3>
+      <p>As an AI-powered service, the analysis and recommendations in this Report are generated by machine learning models that: (a) may produce outputs that are incorrect, incomplete, or inappropriate; (b) are based on patterns identified in training data that may not reflect your specific situation; (c) may not account for nuances, context, or factors not captured in your input data; (d) are subject to inherent limitations and biases in AI technology; and (e) should be independently verified and evaluated by qualified professionals.</p>
+
+      <h3>4.3 Benchmark Data</h3>
+      <p>Any benchmark comparisons, industry averages, or peer group analyses contained in this Report are based on data and methodologies that may have limitations, including but not limited to: (a) varying sample sizes and data quality; (b) different time periods or market conditions; (c) classification and categorization differences; (d) regional, size, or industry variations; and (e) potential selection bias. Such comparisons are provided for informational purposes only and should not be relied upon as definitive indicators of performance.</p>
+
+      <h3>4.4 Forward-Looking Statements</h3>
+      <p>This Report may contain projections, forecasts, estimates, or other forward-looking statements. Such statements are inherently uncertain and are based on assumptions that may prove incorrect. Actual results may differ materially from any projections or forecasts contained herein. BizHealth.ai makes no representation or warranty regarding the achievement of any projected outcomes.</p>
+
+      <h3>4.5 Temporal Limitations</h3>
+      <p>This Report reflects an assessment at a single point in time based on the data available on the assessment date. Business conditions, market dynamics, and other factors change over time. This Report should not be relied upon as an accurate representation of conditions at any other time. We recommend periodic reassessments to maintain current insights.</p>
+    
+          </div>
+        </details>
+      </section>
+    
+
+    <!-- SECTION 5: INTELLECTUAL PROPERTY RIGHTS -->
+    
+      <section class="legal-section">
+        <details class="legal-details" open>
+          <summary>5. INTELLECTUAL PROPERTY RIGHTS</summary>
+          <div class="legal-details-content">
+            
+
+      <h3>5.1 Ownership</h3>
+      <p>This Report, including all content, analyses, scores, recommendations, formatting, design, graphics, and presentation, constitutes proprietary intellectual property of BizHealth.ai. All rights, title, and interest in and to the Report, including all intellectual property rights, remain exclusively with BizHealth.ai.</p>
+
+      <h3>5.2 Limited License</h3>
+      <p>Subject to your payment of applicable fees and compliance with these terms, BizHealth.ai grants you a limited, non-exclusive, non-transferable, revocable license to: (a) access and view this Report for your internal business purposes; (b) print and store copies for your records; and (c) share this Report with your employees, advisors, and consultants who have a legitimate need to review it, provided they agree to maintain its confidentiality.</p>
+
+      <h3>5.3 Restrictions</h3>
+      <p>You may not: (a) reproduce, distribute, or publicly display this Report, in whole or in part, except as expressly permitted herein; (b) modify, adapt, translate, or create derivative works based on this Report; (c) reverse engineer, decompile, or attempt to extract the underlying methodologies, algorithms, or scoring systems; (d) use this Report for any competitive or commercial purpose, including resale or sublicensing; (e) remove, alter, or obscure any proprietary notices, trademarks, or branding from this Report; or (f) use this Report in any manner that could damage, disable, or impair BizHealth.ai's services or reputation.</p>
+
+      <h3>5.4 Trademarks</h3>
+      <p>"BizHealth.ai" and associated logos, marks, and branding are trademarks or registered trademarks of BizHealth.ai, LLC. You may not use these marks without our prior written consent.</p>
+
+      <h3>5.5 Feedback</h3>
+      <p>If you provide any feedback, suggestions, or ideas regarding this Report or our services, you grant BizHealth.ai a perpetual, irrevocable, royalty-free, worldwide license to use, modify, and incorporate such feedback into our products and services without any obligation to you.</p>
+    
+          </div>
+        </details>
+      </section>
+    
+
+    <!-- SECTION 6: REGULATORY COMPLIANCE & CONSUMER RIGHTS -->
+    
+      <section class="legal-section">
+        <details class="legal-details" open>
+          <summary>6. REGULATORY COMPLIANCE & CONSUMER RIGHTS</summary>
+          <div class="legal-details-content">
+            
+
+      <h3>6.1 Not Regulated Advice</h3>
+      <p>This Report does not constitute advice or services subject to professional licensing or regulatory oversight. BizHealth.ai is not registered, licensed, or authorized as a professional advisor in any jurisdiction. You should consult appropriately licensed professionals for advice in regulated areas.</p>
+
+      <h3>6.2 Consumer Protection</h3>
+      <p>Certain jurisdictions provide consumers with rights that cannot be waived or limited by contract. Nothing in these terms is intended to limit or exclude any rights you may have under applicable consumer protection laws that cannot be lawfully excluded or limited.</p>
+
+      <h3>6.3 State-Specific Disclosures</h3>
+      <p>Residents of certain U.S. states may have additional rights under state law. For example: (a) California residents may have rights under the California Consumer Privacy Act (CCPA); (b) Residents of other states may have rights under applicable state privacy or consumer protection laws. Please refer to our Privacy Policy for state-specific disclosures.</p>
+
+      <h3>6.4 International Users</h3>
+      <p>If you access this Report from outside the United States, you are responsible for compliance with local laws. This Report is provided from the United States and is subject to U.S. law. Some features or content may not be appropriate or available in all jurisdictions.</p>
+
+      <h3>6.5 GDPR Compliance</h3>
+      <p>For users in the European Economic Area, United Kingdom, or Switzerland, BizHealth.ai processes personal data in accordance with the General Data Protection Regulation (GDPR) and applicable local data protection laws. Our Privacy Policy provides additional information regarding your rights and our data processing practices.</p>
+
+      <h3>6.6 Accessibility</h3>
+      <p>BizHealth.ai is committed to making our services accessible to individuals with disabilities. If you experience accessibility issues with this Report, please contact us and we will endeavor to provide the information in an alternative format.</p>
+    
+          </div>
+        </details>
+      </section>
+    
+
+    <!-- SECTION 7: LEGAL DISPUTE RESOLUTION -->
+    
+      <section class="legal-section">
+        <details class="legal-details">
+          <summary>7. LEGAL DISPUTE RESOLUTION</summary>
+          <div class="legal-details-content">
+            
+
+      <h3>7.1 Governing Law</h3>
+      <p>These terms and any disputes arising out of or related to this Report shall be governed by and construed in accordance with the laws of the State of Delaware, United States, without regard to its conflict of law principles.</p>
+
+      <h3>7.2 Arbitration Agreement</h3>
+      <p>Any dispute, controversy, or claim arising out of or relating to this Report or these terms, including the formation, interpretation, breach, or termination thereof, shall be resolved by binding arbitration administered by the American Arbitration Association ("AAA") in accordance with its Commercial Arbitration Rules. The arbitration shall be conducted by a single arbitrator in Wilmington, Delaware, or another mutually agreed location.</p>
+
+      <h3>7.3 Class Action Waiver</h3>
+      <p>YOU AND BIZHEALTH.AI AGREE THAT EACH MAY BRING CLAIMS AGAINST THE OTHER ONLY IN YOUR OR ITS INDIVIDUAL CAPACITY AND NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY PURPORTED CLASS OR REPRESENTATIVE PROCEEDING. The arbitrator may not consolidate more than one person's claims and may not preside over any form of class or representative proceeding.</p>
+
+      <h3>7.4 Small Claims Exception</h3>
+      <p>Notwithstanding the foregoing, either party may bring an individual action in small claims court if the claim qualifies for small claims jurisdiction.</p>
+
+      <h3>7.5 Equitable Relief</h3>
+      <p>Nothing in this section shall prevent either party from seeking injunctive or other equitable relief from a court of competent jurisdiction to prevent the actual or threatened infringement, misappropriation, or violation of intellectual property rights or confidentiality obligations.</p>
+
+      <h3>7.6 Limitation Period</h3>
+      <p>Any claim or cause of action arising out of or related to this Report must be filed within one (1) year after such claim or cause of action arose, or it shall be forever barred.</p>
+    
+          </div>
+        </details>
+      </section>
+    
+
+    <!-- SECTION 8: INDEMNIFICATION -->
+    
+      <section class="legal-section">
+        <details class="legal-details">
+          <summary>8. INDEMNIFICATION</summary>
+          <div class="legal-details-content">
+            
+      <p>You agree to defend, indemnify, and hold harmless BizHealth.ai, its affiliates, officers, directors, employees, agents, licensors, and service providers from and against any claims, liabilities, damages, judgments, awards, losses, costs, expenses, or fees (including reasonable attorneys' fees) arising out of or relating to: (a) your use of this Report; (b) any breach of these terms by you; (c) your violation of any third-party rights; (d) any decisions made or actions taken based on this Report; (e) your provision of inaccurate, incomplete, or misleading information; or (f) your violation of any applicable law or regulation.</p>
+    
+          </div>
+        </details>
+      </section>
+    
+
+    <!-- SECTION 9: MODIFICATIONS & UPDATES -->
+    
+      <section class="legal-section">
+        <details class="legal-details">
+          <summary>9. MODIFICATIONS & UPDATES</summary>
+          <div class="legal-details-content">
+            
+
+      <h3>9.1 Modifications to Terms</h3>
+      <p>BizHealth.ai reserves the right to modify these Legal Terms & Disclaimers at any time. Modified terms will apply to Reports generated after the effective date of the modification. We encourage you to review the terms applicable to each Report you receive.</p>
+
+      <h3>9.2 Report Updates</h3>
+      <p>BizHealth.ai may, but is not obligated to, provide updated versions of this Report. Any updated Report will be subject to the terms in effect at the time of generation. Previous versions of this Report may not reflect current conditions or updated methodologies.</p>
+    
+          </div>
+        </details>
+      </section>
+    
+
+    <!-- SECTION 10: TERMINATION & SURVIVAL -->
+    
+      <section class="legal-section">
+        <details class="legal-details">
+          <summary>10. TERMINATION & SURVIVAL</summary>
+          <div class="legal-details-content">
+            
+
+      <h3>10.1 Termination</h3>
+      <p>The license granted to use this Report may be terminated by BizHealth.ai at any time if you breach these terms. Upon termination, you must cease using this Report and destroy all copies in your possession.</p>
+
+      <h3>10.2 Survival</h3>
+      <p>The following provisions shall survive termination: Section 2 (Liability Limitations), Section 5 (Intellectual Property), Section 7 (Dispute Resolution), Section 8 (Indemnification), and any other provisions that by their nature should survive.</p>
+
+      <h3>10.3 Effect of Termination</h3>
+      <p>Termination of your license does not limit any other remedies available to BizHealth.ai and does not relieve you of your obligations under these terms.</p>
+    
+          </div>
+        </details>
+      </section>
+    
+
+    <!-- SECTION 11: MISCELLANEOUS PROVISIONS -->
+    
+      <section class="legal-section">
+        <details class="legal-details">
+          <summary>11. MISCELLANEOUS PROVISIONS</summary>
+          <div class="legal-details-content">
+            
+
+      <h3>11.1 Entire Agreement</h3>
+      <p>These Legal Terms & Disclaimers, together with our Terms of Service and Privacy Policy (available at www.bizhealth.ai/legal), constitute the entire agreement between you and BizHealth.ai regarding this Report and supersede all prior agreements and understandings.</p>
+
+      <h3>11.2 Severability</h3>
+      <p>If any provision of these terms is found to be unenforceable or invalid, that provision shall be limited or eliminated to the minimum extent necessary, and the remaining provisions shall remain in full force and effect.</p>
+
+      <h3>11.3 Waiver</h3>
+      <p>No waiver of any term shall be deemed a further or continuing waiver of such term or any other term. BizHealth.ai's failure to enforce any provision of these terms shall not constitute a waiver of that provision.</p>
+
+      <h3>11.4 Assignment</h3>
+      <p>You may not assign or transfer your rights or obligations under these terms without BizHealth.ai's prior written consent. BizHealth.ai may assign its rights and obligations without restriction.</p>
+
+      <h3>11.5 No Third-Party Beneficiaries</h3>
+      <p>These terms do not create any third-party beneficiary rights. Nothing in these terms shall be construed to create any rights enforceable by any person or entity not a party hereto.</p>
+
+      <h3>11.6 Force Majeure</h3>
+      <p>BizHealth.ai shall not be liable for any failure or delay in performance due to circumstances beyond its reasonable control, including but not limited to acts of God, natural disasters, war, terrorism, riots, embargoes, acts of civil or military authorities, fire, floods, accidents, strikes, or shortages of transportation, facilities, fuel, energy, labor, or materials.</p>
+
+      <h3>11.7 Headings</h3>
+      <p>The section headings in these terms are for convenience only and have no legal or contractual effect.</p>
+
+      <h3>11.8 Language</h3>
+      <p>These terms are provided in English. Any translations are provided for convenience only. In the event of any conflict between the English version and a translated version, the English version shall control.</p>
+    
+          </div>
+        </details>
+      </section>
+    
+
+    <!-- SECTION 12: CONTACT INFORMATION -->
+    
+      <section class="legal-section">
+        <details class="legal-details">
+          <summary>12. CONTACT INFORMATION</summary>
+          <div class="legal-details-content">
+            
+      <p>If you have any questions about these Legal Terms & Disclaimers or this Report, please contact us at:</p>
+      <address class="contact-block">
+        <strong>BizHealth.ai, LLC</strong><br>
+        Email: <a href="mailto:legal@bizhealth.ai">legal@bizhealth.ai</a><br>
+        Website: <a href="https://www.bizhealth.ai/legal">www.bizhealth.ai/legal</a>
+      </address>
+    
+          </div>
+        </details>
+      </section>
+    
+  
+
+        <!-- ACKNOWLEDGMENT BLOCK -->
+        <div class="legal-acknowledgment">
+          <p class="acknowledgment-text">
+            <strong>ACKNOWLEDGMENT</strong>
+            BY ACCESSING OR USING THIS REPORT, YOU ACKNOWLEDGE THAT YOU HAVE READ, UNDERSTOOD, AND AGREE TO BE BOUND BY THESE LEGAL TERMS & DISCLAIMERS IN THEIR ENTIRETY.
+          </p>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="legal-footer">
+          <p>Copyright &copy; 2025 BizHealth.ai, LLC. All Rights Reserved.</p>
+          <p>Document Version: 2.0 | Last Updated: November 19, 2025</p>
+          <p>For complete Terms of Service and Privacy Policy, visit:
+            <a href="https://www.bizhealth.ai/legal">www.bizhealth.ai/legal</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  
+
+      <div class="score-hero">
+        <div class="score-circle">
+          <span class="score-value">53</span>
+          <span class="score-label">/ 100</span>
+        </div>
+        <div class="score-details">
+          <p class="status">Needs Improvement</p>
+          <p class="trajectory">
+            <span style="color: #6c757d;">&#x25AC;</span> Trajectory: Flat
+          </p>
+          <p><span class="band-badge Attention">Attention</span></p>
+        </div>
+      </div>
+
+      <div class="metrics-grid">
+        
+          <div class="metric-box">
+            <div class="value">49</div>
+            <div class="label">Growth Engine</div>
+          </div>
+        
+          <div class="metric-box">
+            <div class="value">51</div>
+            <div class="label">Performance &amp; Health</div>
+          </div>
+        
+          <div class="metric-box">
+            <div class="value">43</div>
+            <div class="label">People &amp; Leadership</div>
+          </div>
+        
+          <div class="metric-box">
+            <div class="value">70</div>
+            <div class="label">Resilience &amp; Safeguards</div>
+          </div>
+        
+      </div>
+
+      
+        <div class="executive-charts">
+          <div class="chart-wrapper">
+            
+    <div class="svg-chart-container" role="figure" aria-label="Chapter Performance Overview">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 232" style="max-width: 100%; height: auto;"><rect width="600" height="232" fill="white" rx="4"/><text x="300" y="28" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Chapter Performance Overview</text><text x="132" y="70" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Growth Engine</text><rect x="140" y="50" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="50" width="196" height="30" fill="#e67e22" rx="4"/><text x="344" y="70" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">49</text><text x="132" y="108" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Performance &amp; He...</text><rect x="140" y="88" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="88" width="204" height="30" fill="#e67e22" rx="4"/><text x="352" y="108" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">51</text><text x="132" y="146" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">People &amp; Leaders...</text><rect x="140" y="126" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="126" width="172" height="30" fill="#e67e22" rx="4"/><text x="320" y="146" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">43</text><text x="132" y="184" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Resilience &amp; Saf...</text><rect x="140" y="164" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="164" width="280" height="30" fill="#f39c12" rx="4"/><text x="428" y="184" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">70</text></svg>
+    </div>
+  
+          </div>
+        </div>
+      
+
+      <div class="two-column">
+        <div class="brief-section">
+          <h3>Key Strengths</h3>
+          <ul>
+            <li>Strong Sales Target Alignment</li><li>Strong Customer Retention</li>
+            
+          </ul>
+        </div>
+        <div class="brief-section">
+          <h3>Priority Areas</h3>
+          <ul>
+            <li>Strategy Performance Gap</li><li>Market Position Gap</li>
+            
+          </ul>
+        </div>
+      </div>
+
+      <div class="actions-section">
+        <h3>Critical Actions Required</h3>
+        <ol>
+          <li><strong>Marketing Improvement Initiative</strong> (0-90 Days)</li><li><strong>Financials Improvement Initiative</strong> (0-90 Days)</li><li><strong>Leadership &amp; Governance Improvement Initiative</strong> (3-12 Months)</li>
+        </ol>
+      </div>
+
+      
+        <div class="brief-section" style="margin-bottom: 1.5rem;">
+          <h3>Strategic Imperatives</h3>
+          <ul>
+            <li>Improve Marketing (currently 31/100)</li><li>Improve Financials (currently 39/100)</li><li>Improve Leadership &amp; Governance (currently 40/100)</li>
+          </ul>
+        </div>
+      
+
+      <div class="cta-section">
+        <p><strong>Next Step:</strong> Review the full Comprehensive Assessment Report for detailed analysis and implementation guidance.</p>
+      </div>
+
+      
+    <footer class="report-footer">
+      <p>&copy; 2025 BizHealth.ai - Confidential Business Assessment Report</p>
+      <p>Assessment ID: 143ce1b8-3fa1-429a-b159-6235716c697f</p>
+    </footer>
+  
+    </div>
+  
+  </div>
+</body>
+</html>
