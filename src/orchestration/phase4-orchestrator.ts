@@ -1,5 +1,17 @@
 /**
- * Phase 4 Orchestrator
+ * Phase 4 Orchestrator - IDM Consolidation
+ *
+ * PURPOSE: Consolidate all analyses into the canonical Insights Data Model (IDM)
+ *
+ * INPUTS:
+ *   - phase0_output.json (normalized questionnaire data)
+ *   - phase1_output.json (10 AI dimensional analyses)
+ *   - phase2_output.json (5 cross-dimensional syntheses)
+ *   - phase3_output.json (executive synthesis)
+ *
+ * OUTPUTS:
+ *   - phase4_output.json (consolidation metadata)
+ *   - idm_output.json (canonical data model for Phase 5)
  *
  * Performs executive summary compilation on Phase 1-3 results to generate:
  * - Strength & Challenge Summaries
@@ -10,7 +22,10 @@
  * - Financial Projections
  * - Quick Wins
  * - Risk Assessment
- * - HTML Reports (9 variants)
+ *
+ * NOTE: Report generation is handled exclusively by Phase 5.
+ *       This phase previously generated 2-3 reports but that functionality
+ *       was consolidated into Phase 5 on 2025-12-04 for unified styling.
  *
  * Hybrid workflow: Can use Python compiler or native TypeScript implementation
  */
@@ -150,7 +165,11 @@ export interface Phase4OrchestratorConfig {
   compilationMethod?: 'python' | 'typescript';
   pythonScriptPath?: string;
   logger?: pino.Logger;
-  /** Enable HTML report generation */
+  /**
+   * Enable HTML report generation (DEPRECATED)
+   * @deprecated Report generation moved to Phase 5 as of 2025-12-04
+   * This option defaults to false. Set to true only for rollback scenarios.
+   */
   generateReports?: boolean;
   /** Anthropic API key for report generation */
   anthropicApiKey?: string;
@@ -180,7 +199,8 @@ export class Phase4Orchestrator {
       compilationMethod: config.compilationMethod || 'typescript',
       pythonScriptPath: config.pythonScriptPath || 'scripts/phase4-idm-compiler.py',
       logger: this.logger,
-      generateReports: config.generateReports ?? true,
+      // UPDATED 2025-12-04: Report generation disabled by default (now handled by Phase 5)
+      generateReports: config.generateReports ?? false,
       anthropicApiKey: config.anthropicApiKey,
       anthropicClient: config.anthropicClient,
       reportTypes: config.reportTypes || [
@@ -254,9 +274,18 @@ export class Phase4Orchestrator {
         },
       };
 
+      // ============================================================
+      // DEPRECATED: Report generation moved exclusively to Phase 5
+      // Date: 2025-12-04
+      // Reason: Phase 4/5 consolidation - Phase 4 is now IDM-only
+      //         Phase 5 now handles all 17 report types with unified
+      //         CSS framework and superior content integration.
+      // ============================================================
       // Generate HTML reports if IDM is available and report generation is enabled
+      // NOTE: This code block is preserved for rollback capability but
+      //       generateReports now defaults to false in config.
       if (idm && this.config.generateReports && this.reportGenerator) {
-        this.logger.info('📄 Starting report generation...');
+        this.logger.info('📄 Starting report generation (DEPRECATED - Phase 5 is preferred)...');
         const reportResult = await this.generateReports(idm, companyProfileId);
         results.generated_reports = reportResult.reports;
         results.metadata.report_generation = {
