@@ -38,6 +38,8 @@ import {
   RecommendationHorizon,
   Benchmark,
   OverallBenchmark,
+  IDMVisualizations,
+  VisualizationSpecIDM,
   CHAPTER_NAMES,
   DIMENSION_METADATA,
   SUB_INDICATOR_DEFINITIONS,
@@ -52,6 +54,7 @@ import {
   getQuestionsForDimension,
   getQuestionsForSubIndicator
 } from '../types/idm.types.js';
+import { visualizationExtractor } from '../services/visualization-extractor.service.js';
 import { QuestionnaireResponses, CategoryResponses } from '../types/questionnaire.types.js';
 import { CompanyProfile } from '../types/company-profile.types.js';
 import {
@@ -836,6 +839,139 @@ function buildRoadmap(recommendations: Recommendation[]): Roadmap {
 }
 
 // ============================================================================
+// VISUALIZATION EXTRACTION
+// ============================================================================
+
+/**
+ * Extract visualizations from all phase outputs
+ * This collects visualization specifications from AI-generated content
+ */
+function extractVisualizations(
+  phase1Results: Phase1Results,
+  phase2Results: Phase2Results,
+  phase3Results: Phase3Results
+): IDMVisualizations {
+  const phase1Vizs: VisualizationSpecIDM[] = [];
+  const phase2Vizs: VisualizationSpecIDM[] = [];
+  const phase3Vizs: VisualizationSpecIDM[] = [];
+
+  // Extract from Phase 1 Tier 1 analyses
+  const tier1Analyses = Object.entries(phase1Results.tier1 || {});
+  for (const [analysisKey, analysis] of tier1Analyses) {
+    if (analysis?.status === 'complete' && analysis.content) {
+      try {
+        const extraction = visualizationExtractor.extract(
+          analysis.content,
+          `phase1_tier1_${analysisKey}`
+        );
+        // Add metadata to each visualization
+        for (const viz of extraction.visualizations) {
+          phase1Vizs.push({
+            ...viz,
+            metadata: {
+              ...viz.metadata,
+              generatedBy: 'phase1',
+              assessmentSection: `tier1_${analysisKey}`
+            }
+          });
+        }
+      } catch (error) {
+        console.warn(`[IDM Consolidator] Failed to extract visualizations from tier1 ${analysisKey}:`, error);
+      }
+    }
+  }
+
+  // Extract from Phase 1 Tier 2 analyses
+  const tier2Analyses = Object.entries(phase1Results.tier2 || {});
+  for (const [analysisKey, analysis] of tier2Analyses) {
+    if (analysis?.status === 'complete' && analysis.content) {
+      try {
+        const extraction = visualizationExtractor.extract(
+          analysis.content,
+          `phase1_tier2_${analysisKey}`
+        );
+        for (const viz of extraction.visualizations) {
+          phase1Vizs.push({
+            ...viz,
+            metadata: {
+              ...viz.metadata,
+              generatedBy: 'phase1',
+              assessmentSection: `tier2_${analysisKey}`
+            }
+          });
+        }
+      } catch (error) {
+        console.warn(`[IDM Consolidator] Failed to extract visualizations from tier2 ${analysisKey}:`, error);
+      }
+    }
+  }
+
+  // Extract from Phase 2 analyses
+  const phase2Analyses = Object.entries(phase2Results || {});
+  for (const [analysisKey, analysis] of phase2Analyses) {
+    if (analysis?.status === 'complete' && analysis.content) {
+      try {
+        const extraction = visualizationExtractor.extract(
+          analysis.content,
+          `phase2_${analysisKey}`
+        );
+        for (const viz of extraction.visualizations) {
+          phase2Vizs.push({
+            ...viz,
+            metadata: {
+              ...viz.metadata,
+              generatedBy: 'phase2',
+              assessmentSection: analysisKey
+            }
+          });
+        }
+      } catch (error) {
+        console.warn(`[IDM Consolidator] Failed to extract visualizations from phase2 ${analysisKey}:`, error);
+      }
+    }
+  }
+
+  // Extract from Phase 3 analyses
+  const phase3Analyses = Object.entries(phase3Results || {});
+  for (const [analysisKey, analysis] of phase3Analyses) {
+    if (analysis?.status === 'complete' && analysis.content) {
+      try {
+        const extraction = visualizationExtractor.extract(
+          analysis.content,
+          `phase3_${analysisKey}`
+        );
+        for (const viz of extraction.visualizations) {
+          phase3Vizs.push({
+            ...viz,
+            metadata: {
+              ...viz.metadata,
+              generatedBy: 'phase3',
+              assessmentSection: analysisKey
+            }
+          });
+        }
+      } catch (error) {
+        console.warn(`[IDM Consolidator] Failed to extract visualizations from phase3 ${analysisKey}:`, error);
+      }
+    }
+  }
+
+  const totalCount = phase1Vizs.length + phase2Vizs.length + phase3Vizs.length;
+
+  console.log(
+    `[IDM Consolidator] Extracted ${totalCount} visualizations ` +
+    `(Phase 1: ${phase1Vizs.length}, Phase 2: ${phase2Vizs.length}, Phase 3: ${phase3Vizs.length})`
+  );
+
+  return {
+    phase1: phase1Vizs,
+    phase2: phase2Vizs,
+    phase3: phase3Vizs,
+    totalCount
+  };
+}
+
+// ============================================================================
 // SCORES SUMMARY
 // ============================================================================
 
@@ -979,6 +1115,9 @@ export class IDMConsolidator {
     // Build scores summary with overall benchmark
     const scoresSummary = buildScoresSummary(chapters, dimensions, findings, overallBenchmarkResult);
 
+    // Extract visualizations from all phases
+    const visualizations = extractVisualizations(phase1Results, phase2Results, phase3Results);
+
     // Construct IDM
     const idmData: IDM = {
       meta,
@@ -990,7 +1129,8 @@ export class IDMConsolidator {
       quick_wins: quickWins,
       risks,
       roadmap,
-      scores_summary: scoresSummary
+      scores_summary: scoresSummary,
+      visualizations
     };
 
     // Validate against schema
@@ -1050,4 +1190,5 @@ export const testExports = {
   buildRoadmap,
   buildScoresSummary,
   extractCompanyBenchmarkProfile,
+  extractVisualizations,
 };

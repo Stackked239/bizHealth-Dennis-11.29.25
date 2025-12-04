@@ -33,6 +33,7 @@ import * as marketPosition from './market-position.prompts';
 import * as resourceOptimization from './resource-optimization.prompts';
 import * as riskResilience from './risk-resilience.prompts';
 import * as scalabilityReadiness from './scalability-readiness.prompts';
+import { withVisualizationInstructions } from '../shared/visualization-instructions';
 
 export const tier2Prompts = {
   growthReadiness,
@@ -335,7 +336,7 @@ export function generateTier2BatchConfig(
         messages: [
           {
             role: 'system',
-            content: tier2Prompts.growthReadiness.systemPrompt,
+            content: withVisualizationInstructions(tier2Prompts.growthReadiness.systemPrompt),
           },
           {
             role: 'user',
@@ -365,7 +366,7 @@ export function generateTier2BatchConfig(
         messages: [
           {
             role: 'system',
-            content: tier2Prompts.marketPosition.systemPrompt,
+            content: withVisualizationInstructions(tier2Prompts.marketPosition.systemPrompt),
           },
           {
             role: 'user',
@@ -395,7 +396,7 @@ export function generateTier2BatchConfig(
         messages: [
           {
             role: 'system',
-            content: tier2Prompts.resourceOptimization.systemPrompt,
+            content: withVisualizationInstructions(tier2Prompts.resourceOptimization.systemPrompt),
           },
           {
             role: 'user',
@@ -425,7 +426,7 @@ export function generateTier2BatchConfig(
         messages: [
           {
             role: 'system',
-            content: tier2Prompts.riskResilience.systemPrompt,
+            content: withVisualizationInstructions(tier2Prompts.riskResilience.systemPrompt),
           },
           {
             role: 'user',
@@ -455,7 +456,7 @@ export function generateTier2BatchConfig(
         messages: [
           {
             role: 'system',
-            content: tier2Prompts.scalabilityReadiness.systemPrompt,
+            content: withVisualizationInstructions(tier2Prompts.scalabilityReadiness.systemPrompt),
           },
           {
             role: 'user',

@@ -28,6 +28,7 @@ import * as operationalExcellence from './operational-excellence.prompts';
 import * as financialStrategic from './financial-strategic.prompts';
 import * as peopleLeadership from './people-leadership.prompts';
 import * as complianceSustainability from './compliance-sustainability.prompts';
+import { withVisualizationInstructions } from '../shared/visualization-instructions';
 
 export const tier1Prompts = {
   revenueEngine,
@@ -151,7 +152,7 @@ export function generateTier1BatchConfig(
         messages: [
           {
             role: 'system',
-            content: tier1Prompts.revenueEngine.systemPrompt,
+            content: withVisualizationInstructions(tier1Prompts.revenueEngine.systemPrompt),
           },
           {
             role: 'user',
@@ -177,7 +178,7 @@ export function generateTier1BatchConfig(
         messages: [
           {
             role: 'system',
-            content: tier1Prompts.operationalExcellence.systemPrompt,
+            content: withVisualizationInstructions(tier1Prompts.operationalExcellence.systemPrompt),
           },
           {
             role: 'user',
@@ -203,7 +204,7 @@ export function generateTier1BatchConfig(
         messages: [
           {
             role: 'system',
-            content: tier1Prompts.financialStrategic.systemPrompt,
+            content: withVisualizationInstructions(tier1Prompts.financialStrategic.systemPrompt),
           },
           {
             role: 'user',
@@ -229,7 +230,7 @@ export function generateTier1BatchConfig(
         messages: [
           {
             role: 'system',
-            content: tier1Prompts.peopleLeadership.systemPrompt,
+            content: withVisualizationInstructions(tier1Prompts.peopleLeadership.systemPrompt),
           },
           {
             role: 'user',
@@ -255,7 +256,7 @@ export function generateTier1BatchConfig(
         messages: [
           {
             role: 'system',
-            content: tier1Prompts.complianceSustainability.systemPrompt,
+            content: withVisualizationInstructions(tier1Prompts.complianceSustainability.systemPrompt),
           },
           {
             role: 'user',
