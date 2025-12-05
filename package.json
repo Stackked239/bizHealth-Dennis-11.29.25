@@ -25,7 +25,14 @@
     "test:ascii": "npx vitest run test/visualization/ascii-validation.test.ts",
     "test:mappings": "npx vitest run src/orchestration/reports/config/__tests__/section-mapping.test.ts",
     "validate:all": "npm run test:mappings && npm run validate:reports && npm run validate:ascii",
-    "ci": "npm run pipeline:validate && npm test"
+    "ci": "npm run pipeline:validate && npm test",
+    "test:formatting": "vitest run src/qa/__tests__/formatting-equivalency.test.ts",
+    "test:css": "vitest run src/qa/__tests__/css-usage.test.ts",
+    "test:formatting:watch": "vitest watch src/qa/__tests__/",
+    "test:formatting:update-snapshots": "vitest run --update src/qa/__tests__/",
+    "generate:test-reports": "tsx src/qa/scripts/generate-test-reports.ts",
+    "generate:qa-samples": "tsx src/qa/scripts/generate-qa-samples.ts",
+    "qa:full": "npm run generate:test-reports && npm run test:formatting && npm run test:css"
   },
   "keywords": [
     "business-analysis",
@@ -51,6 +58,7 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@types/jsdom": "^21.1.6",
     "@types/marked": "^5.0.2",
     "@types/node": "^20.10.5",
     "@types/pg": "^8.10.9",
@@ -62,6 +70,7 @@
     "prettier": "^3.1.1",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3",
-    "vitest": "^1.1.0"
+    "vitest": "^1.1.0",
+    "jsdom": "^24.0.0"
   }
 }
