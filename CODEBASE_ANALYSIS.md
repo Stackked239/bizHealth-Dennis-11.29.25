@@ -1,2147 +1,2179 @@
-# BizHealth.ai Pipeline - Comprehensive Codebase Analysis
+# BizHealth Report Pipeline - Comprehensive Codebase Analysis
 
-**Version**: 1.0.0
-**Analysis Date**: December 3, 2025
-**Total Codebase**: 61,675 lines of TypeScript across 120+ files
-**Architecture**: 6-phase AI-powered business assessment pipeline
-**Analysis Depth**: Ultra-thorough with file-level examination
+**Analysis Version**: 2.0.0
+**Analysis Date**: December 4, 2025
+**Analysis Depth**: Ultra-Comprehensive (--ultrathink)
 
 ---
 
 ## Table of Contents
 
 1. [Executive Summary](#executive-summary)
-2. [Architecture Overview](#architecture-overview)
+2. [System Architecture](#system-architecture)
 3. [Complete Directory Structure](#complete-directory-structure)
-4. [Phase-by-Phase Deep Analysis](#phase-by-phase-deep-analysis)
-5. [Technology Stack](#technology-stack)
-6. [Data Flow & Transformation](#data-flow--transformation)
-7. [Report Generation System](#report-generation-system)
-8. [API Integration](#api-integration)
-9. [Type System & Validation](#type-system--validation)
-10. [Performance & Cost Analysis](#performance--cost-analysis)
-11. [Known Issues & Limitations](#known-issues--limitations)
-12. [Recommendations](#recommendations)
-13. [File Reference Index](#file-reference-index)
+4. [Phase 0: Raw Capture & Normalization](#phase-0-raw-capture--normalization)
+5. [Phase 1: Cross-functional AI Analyses](#phase-1-cross-functional-ai-analyses)
+6. [Phase 2: Deep-dive Cross-analysis](#phase-2-deep-dive-cross-analysis)
+7. [Phase 3: Executive Synthesis](#phase-3-executive-synthesis)
+8. [Phase 4: IDM Consolidation](#phase-4-idm-consolidation)
+9. [Phase 5: Report Generation](#phase-5-report-generation)
+10. [The Insights Data Model (IDM)](#the-insights-data-model-idm)
+11. [AI Prompt Engineering](#ai-prompt-engineering)
+12. [Visualization System](#visualization-system)
+13. [Report Builder Architecture](#report-builder-architecture)
+14. [Service Layer](#service-layer)
+15. [Data Transformation Layer](#data-transformation-layer)
+16. [Validation Framework](#validation-framework)
+17. [API Integration](#api-integration)
+18. [Styling & Branding System](#styling--branding-system)
+19. [Type System](#type-system)
+20. [Performance & Cost Analysis](#performance--cost-analysis)
+21. [Known Issues & Limitations](#known-issues--limitations)
+22. [Complete File Reference](#complete-file-reference)
 
 ---
 
 ## Executive Summary
 
-BizHealth.ai is a **production-grade, enterprise-scale AI-powered business assessment pipeline** that transforms 93 questionnaire responses into comprehensive strategic intelligence through a sophisticated 6-phase pipeline (Phase 0-5) generating 17 different professional HTML reports.
+BizHealth Report Pipeline is a **production-grade, enterprise-scale AI-powered business assessment system** that transforms questionnaire responses into comprehensive strategic intelligence through a sophisticated six-phase pipeline.
 
 ### System Capabilities At A Glance
 
 | Metric | Value |
 |--------|-------|
-| **Total Code** | 61,675 LOC TypeScript |
 | **Pipeline Phases** | 6 (Phase 0-5) |
-| **AI Analyses** | 20 distinct analyses |
+| **AI Analyses** | 20 distinct analyses (10 Tier 1 + 5 Tier 2 + 5 synthesis) |
 | **Report Types** | 17 professional HTML reports |
 | **Business Dimensions** | 12 across 4 strategic chapters |
-| **Questions Analyzed** | 93 questionnaire responses |
+| **Questions Analyzed** | 87 questionnaire responses |
 | **Execution Time** | 10-15 minutes per assessment |
-| **Cost Per Run** | $10-20 (Opus 4.5 + Batch API) |
-| **Token Usage** | 300K-410K tokens per run |
-| **Output Size** | 554 KB HTML + 63 KB IDM |
+| **Cost Per Assessment** | $10-20 (Anthropic Batch API) |
+| **Token Usage** | ~550K tokens per run |
 
-### Key Innovation
+### Key Architectural Innovations
 
-The system uses a **canonical Insights Data Model (IDM)** as the single source of truth, serving as an intermediate representation that decouples AI analysis from report generation. This allows for efficient report generation without re-running expensive AI analyses.
+1. **Canonical IDM Architecture**: Single source of truth for all report generation
+2. **Tiered AI Analysis**: Two-tier approach where Tier 2 builds upon Tier 1 outputs
+3. **Anthropic Batch API Integration**: 50% cost reduction with parallel processing
+4. **Extended Thinking**: 32K token budget for deep analytical reasoning
+5. **Visualization Abstraction**: Structured JSON visualization output from AI, rendered by HTML builders
+6. **Zod Validation Throughout**: Runtime type safety at all data boundaries
+
+### The Four Strategic Chapters
+
+| Code | Chapter Name | Dimensions | Focus |
+|------|--------------|------------|-------|
+| **GE** | Growth Engine | STR, SAL, MKT, CXP | Revenue generation, market positioning |
+| **PH** | Performance & Health | OPS, FIN | Operational efficiency, financial health |
+| **PL** | People & Leadership | HRS, LDG | Talent, culture, leadership effectiveness |
+| **RS** | Resilience & Safeguards | TIN, IDS, RMS, CMP | Technology, risk, compliance |
+
+### The 12 Business Dimensions
+
+| Code | Dimension Name | Chapter | Weight |
+|------|----------------|---------|--------|
+| STR | Strategy | GE | 10% |
+| SAL | Sales | GE | 9% |
+| MKT | Marketing | GE | 8% |
+| CXP | Customer Experience | GE | 8% |
+| OPS | Operations | PH | 9% |
+| FIN | Financials | PH | 10% |
+| HRS | Human Resources | PL | 8% |
+| LDG | Leadership & Governance | PL | 10% |
+| TIN | Technology & Innovation | RS | 8% |
+| IDS | IT, Data & Systems | RS | 7% |
+| RMS | Risk Management & Sustainability | RS | 7% |
+| CMP | Compliance & Legal | RS | 6% |
 
 ---
 
-## Architecture Overview
+## System Architecture
 
-### High-Level System Design
+### High-Level Data Flow
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│             BIZHEALTH AI ASSESSMENT PIPELINE                 │
-│                6 Phases • 20 Analyses • 17 Reports           │
-└─────────────────────────────────────────────────────────────┘
-
-WEBHOOK INPUT (JSON)
-93 Questions + Company Profile
-           ↓
-    ┌──────────────┐
-    │   PHASE 0    │  Data Normalization
-    │   ~26ms      │  No AI, Pure Transform
-    └──────┬───────┘
-           ↓
-   phase0_output.json (95 KB)
-   • Normalized Company Profile
-   • 93 Questions → 12 Dimensions
-   • Industry Benchmarks
-           ↓
-    ┌──────────────┐
-    │   PHASE 1    │  AI Analysis (Tier 1 & 2)
-    │   4-5 min    │  Batch API: 10 Analyses
-    └──────┬───────┘
-           ↓
-   phase1_output.json (376 KB)
-   • 5 Tier 1 Foundational Analyses
-   • 5 Tier 2 Interconnection Analyses
-   • ~160K tokens per batch
-           ↓
-    ┌──────────────┐
-    │   PHASE 2    │  Cross-Dimensional Analysis
-    │   2-3 min    │  5 Synthesis Analyses
-    └──────┬───────┘
-           ↓
-   phase2_output.json (428 KB)
-   • Strategic Recommendations (15+)
-   • Consolidated Risks (18+)
-   • Growth Opportunities (10+)
-   • Implementation Roadmap
-           ↓
-    ┌──────────────┐
-    │   PHASE 3    │  Executive Synthesis
-    │   2-3 min    │  Health Score Calculation
-    └──────┬───────┘
-           ↓
-   phase3_output.json (547 KB)
-   • Overall Health Score (0-100)
-   • Executive Summary
-   • Action Matrix
-   • Investment Roadmap
-           ↓
-    ┌──────────────┐
-    │   PHASE 4    │  IDM Consolidation
-    │   <1 sec     │  No AI, Assembly Only
-    └──────┬───────┘
-           ↓
-   idm_output.json (63 KB)
-   ⭐ CANONICAL DATA MODEL ⭐
-   Single Source of Truth for Reports
-           ↓
-    ┌──────────────┐
-    │   PHASE 5    │  Report Generation
-    │   ~63ms      │  No AI, Template Based
-    └──────┬───────┘
-           ↓
-   17 HTML Reports (554 KB)
-   • 7 Core Reports
-   • 4 Deep Dive Reports
-   • 6 Recipe-Based Reports
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                              INPUT LAYER                                         │
+│                     sample_webhook.json (Questionnaire)                          │
+│                     87 Questions + Company Profile                               │
+└─────────────────────────────────────────────────────────────────────────────────┘
+                                       │
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│  PHASE 0: RAW CAPTURE & NORMALIZATION                                            │
+│  ┌─────────────────┐   ┌─────────────────┐   ┌─────────────────┐                │
+│  │ Phase 0A        │   │ Phase 0B        │   │ Benchmark       │                │
+│  │ Raw Capture     │ → │ Normalization   │ → │ Retrieval       │                │
+│  │ Immutable Store │   │ Transform       │   │ Industry Match  │                │
+│  └─────────────────┘   └─────────────────┘   └─────────────────┘                │
+│  Output: phase0_output.json                                                      │
+│  - NormalizedCompanyProfile                                                      │
+│  - NormalizedQuestionnaireResponses (4 chapters, 12 dimensions)                  │
+│  - NormalizedBenchmarkData                                                       │
+└─────────────────────────────────────────────────────────────────────────────────┘
+                                       │
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│  PHASE 1: CROSS-FUNCTIONAL AI ANALYSES (Anthropic Batch API)                    │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │ TIER 1 (5 Foundational Analyses)                                        │    │
+│  │ ┌───────────────┐ ┌───────────────┐ ┌───────────────┐                   │    │
+│  │ │ Revenue       │ │ Operational   │ │ Financial     │                   │    │
+│  │ │ Engine        │ │ Excellence    │ │ Strategic     │                   │    │
+│  │ │ STR+SAL+MKT+  │ │ OPS focus     │ │ FIN focus     │                   │    │
+│  │ │ CXP           │ │               │ │               │                   │    │
+│  │ └───────────────┘ └───────────────┘ └───────────────┘                   │    │
+│  │ ┌───────────────┐ ┌───────────────┐                                     │    │
+│  │ │ People &      │ │ Compliance &  │                                     │    │
+│  │ │ Leadership    │ │ Sustainability│                                     │    │
+│  │ │ HRS+LDG       │ │ RMS+CMP       │                                     │    │
+│  │ └───────────────┘ └───────────────┘                                     │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│                                       │                                          │
+│                                       ▼                                          │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │ TIER 2 (5 Interconnection Analyses - Depends on Tier 1)                 │    │
+│  │ ┌───────────────┐ ┌───────────────┐ ┌───────────────┐                   │    │
+│  │ │ Growth        │ │ Market        │ │ Resource      │                   │    │
+│  │ │ Readiness     │ │ Position      │ │ Optimization  │                   │    │
+│  │ └───────────────┘ └───────────────┘ └───────────────┘                   │    │
+│  │ ┌───────────────┐ ┌───────────────┐                                     │    │
+│  │ │ Risk &        │ │ Scalability   │                                     │    │
+│  │ │ Resilience    │ │ Readiness     │                                     │    │
+│  │ └───────────────┘ └───────────────┘                                     │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│  Output: phase1_output.json                                                      │
+│  - 10 AI analysis results with narratives and visualizations                     │
+└─────────────────────────────────────────────────────────────────────────────────┘
+                                       │
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│  PHASE 2: DEEP-DIVE CROSS-ANALYSIS (Anthropic Batch API)                        │
+│  ┌───────────────┐ ┌───────────────┐ ┌───────────────┐                          │
+│  │ Cross-        │ │ Strategic     │ │ Consolidated  │                          │
+│  │ Dimensional   │ │ Recommendations│ │ Risks         │                          │
+│  │ Synthesis     │ │               │ │               │                          │
+│  └───────────────┘ └───────────────┘ └───────────────┘                          │
+│  ┌───────────────┐ ┌───────────────┐                                            │
+│  │ Growth        │ │ Implementation│                                            │
+│  │ Opportunities │ │ Roadmap       │                                            │
+│  └───────────────┘ └───────────────┘                                            │
+│  Output: phase2_output.json                                                      │
+│  - 5 synthesis analyses building on Phase 1                                      │
+└─────────────────────────────────────────────────────────────────────────────────┘
+                                       │
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│  PHASE 3: EXECUTIVE SYNTHESIS (Anthropic Batch API)                             │
+│  ┌───────────────┐ ┌───────────────┐ ┌───────────────┐                          │
+│  │ Executive     │ │ Scorecard     │ │ Action        │                          │
+│  │ Summary       │ │ (Health Score)│ │ Matrix        │                          │
+│  └───────────────┘ └───────────────┘ └───────────────┘                          │
+│  ┌───────────────┐ ┌───────────────┐                                            │
+│  │ Investment    │ │ Final         │                                            │
+│  │ Roadmap       │ │ Recommendations│                                           │
+│  └───────────────┘ └───────────────┘                                            │
+│  Output: phase3_output.json                                                      │
+│  - 5 executive-level outputs with overall health score (0-100)                   │
+└─────────────────────────────────────────────────────────────────────────────────┘
+                                       │
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│  PHASE 4: IDM CONSOLIDATION (No AI - Data Transformation)                       │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │                     INSIGHTS DATA MODEL (IDM)                           │    │
+│  │  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐   │    │
+│  │  │ metadata     │ │ scores_      │ │ chapters[4]  │ │ findings[]   │   │    │
+│  │  │              │ │ summary      │ │ dimensions[12]│ │              │   │    │
+│  │  └──────────────┘ └──────────────┘ └──────────────┘ └──────────────┘   │    │
+│  │  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐   │    │
+│  │  │ recommendations│ │ quick_wins[]│ │ risks[]      │ │ roadmap[]    │   │    │
+│  │  │ []            │ │              │ │              │ │              │   │    │
+│  │  └──────────────┘ └──────────────┘ └──────────────┘ └──────────────┘   │    │
+│  │  ┌──────────────┐                                                       │    │
+│  │  │ visualizations│                                                      │    │
+│  │  │ []            │                                                      │    │
+│  │  └──────────────┘                                                       │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│  Output: phase4_output.json + idm_output.json                                    │
+│  - Canonical data model (~63KB JSON)                                             │
+└─────────────────────────────────────────────────────────────────────────────────┘
+                                       │
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│  PHASE 5: REPORT GENERATION (No AI - HTML Template Rendering)                   │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │ EXECUTIVE REPORTS (3)                                                   │    │
+│  │ • Comprehensive Assessment Report (comprehensive.html)                  │    │
+│  │ • Business Owner Report (owner.html)                                    │    │
+│  │ • Executive Brief (executiveBrief.html)                                 │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │ STRATEGIC REPORTS (4)                                                   │    │
+│  │ • Quick Wins Action Plan (quickWins.html)                               │    │
+│  │ • Risk Assessment Report (risk.html)                                    │    │
+│  │ • Implementation Roadmap (roadmap.html)                                 │    │
+│  │ • Financial Impact Analysis (financial.html)                            │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │ CHAPTER DEEP DIVES (4)                                                  │    │
+│  │ • Growth Engine (deep-dive-ge.html)                                     │    │
+│  │ • Performance & Health (deep-dive-ph.html)                              │    │
+│  │ • People & Leadership (deep-dive-pl.html)                               │    │
+│  │ • Resilience & Safeguards (deep-dive-rs.html)                           │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │ MANAGER REPORTS (6)                                                     │    │
+│  │ • Employees Report (employees.html)                                     │    │
+│  │ • Operations Manager (managersOperations.html)                          │    │
+│  │ • Sales & Marketing Manager (managersSalesMarketing.html)               │    │
+│  │ • Finance Manager (managersFinancials.html)                             │    │
+│  │ • Strategy Manager (managersStrategy.html)                              │    │
+│  │ • IT/Technology Manager (managersItTechnology.html)                     │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│  Output: 17 HTML reports + manifest.json                                         │
+└─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### Design Patterns Used
+### Orchestrator Pattern
 
-**1. Orchestrator Pattern** (6 orchestrators: phase0-orchestrator.ts through phase5-orchestrator.ts)
-- Each phase has dedicated orchestrator class managing lifecycle
-- Handles data flow, error recovery, progress tracking
-- Clean separation between phases
+Each phase is implemented as an orchestrator class that:
+1. Loads inputs from previous phase outputs
+2. Executes phase-specific logic (AI analysis or data transformation)
+3. Validates outputs with Zod schemas
+4. Persists results to filesystem
+5. Returns structured result with status and metadata
 
-**2. Builder Pattern** (9 report builders in `src/orchestration/reports/`)
-- Modular construction of complex HTML reports
-- Separate builders for each report type
-- Component-based composition
+```typescript
+// Pattern used by all phase orchestrators
+interface PhaseOrchestrator<TConfig, TResult> {
+  execute(config: TConfig): Promise<TResult>;
+}
 
-**3. Factory Pattern** (Client and orchestrator creation)
-- `createAnthropicBatchClient()` for API client instantiation
-- `createPhaseXOrchestrator()` for orchestrator creation
-- Configuration-driven initialization
-
-**4. Service Layer Pattern** (Business logic services)
-- `BenchmarkLookupService`, `NarrativeExtractionService`
-- Clear separation of business logic from orchestration
-- Reusable across phases
-
-**5. Repository Pattern** (Data access abstraction)
-- `RawAssessmentStorageService`, `AssessmentIndex`
-- Abstracted data persistence layer
-- Supports both filesystem and database storage
+interface PhaseResult {
+  phase: string;
+  status: 'complete' | 'partial' | 'failed';
+  metadata: {
+    startTime: string;
+    endTime: string;
+    duration: number;
+  };
+}
+```
 
 ---
 
 ## Complete Directory Structure
 
 ```
-workflow-export/
-├── src/                                 # Source code (61,675 LOC)
-│   │
-│   ├── api/                            # External API integrations
-│   │   ├── anthropic-client.ts         # Batch API client (800+ LOC)
-│   │   │   • AnthropicBatchClient class
-│   │   │   • submitBatch(), waitForCompletion(), getBatchResults()
-│   │   │   • Exponential backoff retry logic
-│   │   │   • Token usage tracking
-│   │   └── report-endpoints.ts         # HTTP API endpoints for reports
-│   │
-│   ├── orchestration/                  # Phase orchestrators (core pipeline)
-│   │   │
-│   │   ├── phase0-orchestrator.ts      # Data normalization (1,200 LOC)
-│   │   │   • executePhase0()
-│   │   │   • transformCompanyProfile()
-│   │   │   • transformQuestionnaireResponses()
-│   │   │   • retrieveBenchmarks()
-│   │   │
-│   │   ├── phase1-orchestrator.ts      # AI analyses (1,100 LOC)
-│   │   │   • executePhase1()
-│   │   │   • executeTier1Batch() - 5 foundational analyses
-│   │   │   • executeTier2Batch() - 5 interconnection analyses
-│   │   │   • processAnalysisResults()
-│   │   │
-│   │   ├── phase2-orchestrator.ts      # Cross-analysis (850 LOC)
-│   │   │   • executePhase2()
-│   │   │   • synthesizeRecommendations()
-│   │   │   • consolidateRisks()
-│   │   │   • identifyOpportunities()
-│   │   │
-│   │   ├── phase3-orchestrator.ts      # Executive synthesis (800 LOC)
-│   │   │   • executePhase3()
-│   │   │   • calculateOverallHealthScore()
-│   │   │   • generateExecutiveSummary()
-│   │   │   • buildActionMatrix()
-│   │   │
-│   │   ├── phase4-orchestrator.ts      # IDM compilation (900 LOC)
-│   │   │   • executePhase4()
-│   │   │   • compileIDM()
-│   │   │   • validateIDMSchema()
-│   │   │
-│   │   ├── phase5-orchestrator.ts      # Report generation (800 LOC)
-│   │   │   • executePhase5()
-│   │   │   • generateAllReports()
-│   │   │   • writeReportManifest()
-│   │   │
-│   │   ├── idm-consolidator.ts         # IDM assembly (1,500 LOC)
-│   │   │   • consolidateIDM() - Main consolidation function
-│   │   │   • calculateDimensionScores()
-│   │   │   • calculateChapterScores()
-│   │   │   • extractFindings()
-│   │   │   • extractRecommendations()
-│   │   │   • identifyQuickWins()
-│   │   │
-│   │   └── reports/                    # Report builder subsystem
-│   │       ├── comprehensive-report.builder.ts  (31 KB, 800 LOC)
-│   │       ├── owners-report.builder.ts         (41 KB, 1,100 LOC)
-│   │       ├── executive-brief.builder.ts       (9.5 KB, 250 LOC)
-│   │       ├── quick-wins-report.builder.ts     (10 KB, 280 LOC)
-│   │       ├── risk-report.builder.ts           (14 KB, 350 LOC)
-│   │       ├── roadmap-report.builder.ts        (12 KB, 320 LOC)
-│   │       ├── financial-report.builder.ts      (15 KB, 400 LOC)
-│   │       ├── deep-dive-report.builder.ts      (17 KB, 450 LOC)
-│   │       ├── recipe-report.builder.ts         (26 KB, 650 LOC)
-│   │       ├── html-template.ts                 (34 KB, 900 LOC)
-│   │       │
-│   │       ├── charts/                 # Chart generation system
-│   │       │   ├── chart-renderer.ts           # Main chart renderer
-│   │       │   ├── svg-chart-renderer.ts       # SVG generation
-│   │       │   ├── chart-theme.ts              # Theme configuration
-│   │       │   ├── chart-accessibility.ts      # WCAG compliance
-│   │       │   └── generators/                 # Chart type generators
-│   │       │       ├── comparison-bar.generator.ts
-│   │       │       ├── donut-chart.generator.ts
-│   │       │       ├── radar-chart.generator.ts
-│   │       │       ├── gauge-chart.generator.ts
-│   │       │       └── score-bar-chart.generator.ts
-│   │       │
-│   │       ├── components/             # UI components for reports
-│   │       │   ├── benchmark-callout.component.ts
-│   │       │   ├── evidence-citation.component.ts
-│   │       │   ├── key-takeaways.component.ts
-│   │       │   ├── score-bar.component.ts
-│   │       │   └── visual/                     # 15 visual components
-│   │       │       ├── action-card.component.ts
-│   │       │       ├── bar-chart.component.ts
-│   │       │       ├── gauge.component.ts
-│   │       │       ├── heatmap.component.ts
-│   │       │       ├── kpi-dashboard.component.ts
-│   │       │       ├── metric-card.component.ts
-│   │       │       ├── radar-chart.component.ts
-│   │       │       ├── risk-matrix.component.ts
-│   │       │       ├── roadmap-timeline.component.ts
-│   │       │       ├── score-tile.component.ts
-│   │       │       ├── sparkline.component.ts
-│   │       │       ├── status-badge.component.ts
-│   │       │       ├── trend-indicator.component.ts
-│   │       │       └── ... (more components)
-│   │       │
-│   │       ├── config/                 # Report configuration
-│   │       │   ├── section-mapping.ts          # IDM → Report section mapping
-│   │       │   └── owner-report-constraints.ts # Owner report constraints
-│   │       │
-│   │       ├── constants/              # Report constants
-│   │       │   └── dimension-icons.ts          # Icon mappings for dimensions
-│   │       │
-│   │       ├── utils/                  # Report utilities
-│   │       │   ├── accessibility-utils.ts      # Status symbols, WCAG helpers
-│   │       │   ├── color-utils.ts              # Color band utilities
-│   │       │   ├── conditional-renderer.ts     # Conditional content rendering
-│   │       │   ├── markdown-sanitizer.ts       # Markdown XSS prevention
-│   │       │   ├── number-formatter.ts         # Number formatting
-│   │       │   ├── reference-logger.ts         # Cross-reference tracking
-│   │       │   └── voice-transformer.ts        # Audience-specific voice
-│   │       │
-│   │       └── validation/             # Report validation
-│   │           ├── section-mapping-validator.ts
-│   │           └── validate-reports.ts
-│   │
-│   ├── data-transformation/            # Data normalization layer
-│   │   ├── benchmark-service.ts                # Industry benchmark retrieval
-│   │   │   • getBenchmarksForCategory()
-│   │   │   • Multi-dimensional filtering
-│   │   │   • Fallback hierarchy
-│   │   ├── company-profile-transformer.ts      # Company data transformation
-│   │   ├── questionnaire-transformer.ts        # Question mapping
-│   │   ├── normalized-company-profile-transformer.ts
-│   │   └── normalized-questionnaire-transformer.ts
-│   │
-│   ├── prompts/                        # AI analysis prompts
-│   │   ├── tier1/                      # 5 foundational analyses
-│   │   │   ├── revenue-engine.prompts.ts
-│   │   │   │   • systemPrompt - Senior business consultant role
-│   │   │   │   • userPrompt() - Context injection
-│   │   │   │   • Frameworks: CLV, Sales Pipeline, RevOps
-│   │   │   ├── operational-excellence.prompts.ts
-│   │   │   │   • Frameworks: Lean Six Sigma, ITIL, VSM
-│   │   │   ├── financial-strategic.prompts.ts
-│   │   │   │   • Frameworks: Financial Ratios, SWOT, Balanced Scorecard
-│   │   │   ├── people-leadership.prompts.ts
-│   │   │   │   • Frameworks: SHRM, McKinsey 7S, HR Maturity
-│   │   │   ├── compliance-sustainability.prompts.ts
-│   │   │   │   • Frameworks: COSO, ISO 31000, NIST, ESG
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── tier2/                      # 5 cross-cutting analyses
-│   │   │   ├── growth-readiness.prompts.ts
-│   │   │   ├── market-position.prompts.ts
-│   │   │   ├── resource-optimization.prompts.ts
-│   │   │   ├── risk-resilience.prompts.ts
-│   │   │   ├── scalability-readiness.prompts.ts
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── templates/                  # Prompt templates
-│   │   │   └── base-analysis-prompt.ts
-│   │   │
-│   │   ├── parsers/                    # Response parsing
-│   │   │   └── analysis-response-parser.ts
-│   │   │
-│   │   └── schemas/                    # Output schemas
-│   │       └── visualization-output.schema.ts
-│   │
-│   ├── services/                       # Business logic services
-│   │   ├── assessment-index.ts                 # Assessment tracking
-│   │   │   • createIndexEntry()
-│   │   │   • updateIndexEntry()
-│   │   │   • getAssessmentByRunId()
-│   │   ├── benchmark-lookup-service.ts         # Benchmark data service
-│   │   ├── confidence-scoring-framework.ts     # Confidence scoring
-│   │   ├── lifecycle-modifier-engine.ts        # Lifecycle adjustments
-│   │   ├── narrative-extraction.service.ts     # AI narrative extraction
-│   │   └── raw-assessment-storage.ts           # Immutable raw storage
-│   │
-│   ├── types/                          # TypeScript type definitions
-│   │   ├── idm.types.ts                        # Canonical data model (600 LOC)
-│   │   │   • IDM - Root interface
-│   │   │   • Chapter, Dimension, SubIndicator
-│   │   │   • Finding, Recommendation, QuickWin, Risk
-│   │   │   • ScoreBand, Trajectory enums
-│   │   │   • DimensionCode (12 codes)
-│   │   │   • ChapterCode (4 codes)
-│   │   ├── webhook.types.ts                    # Input webhook structure
-│   │   ├── normalized.types.ts                 # Normalized data structures
-│   │   ├── company-profile.types.ts            # Company profile types
-│   │   ├── questionnaire.types.ts              # Questionnaire types
-│   │   ├── raw-input.types.ts                  # Raw data storage types
-│   │   ├── recipe.types.ts                     # Recipe-based report types
-│   │   ├── report.types.ts                     # Report structures
-│   │   └── visualization.types.ts              # Chart types
-│   │
-│   ├── utils/                          # Shared utilities
-│   │   ├── logger.ts                           # Pino logger configuration
-│   │   │   • createLogger() - Module-scoped loggers
-│   │   │   • Development: pretty-printed
-│   │   │   • Production: JSON format
-│   │   ├── errors.ts                           # Error handling
-│   │   │   • Custom error classes
-│   │   │   • formatError() utility
-│   │   ├── benchmark-calculator.ts             # Benchmark calculations
-│   │   ├── phase-consolidator.ts               # Phase output consolidation
-│   │   ├── recipe-validator.ts                 # Recipe validation
-│   │   └── security.ts                         # Security utilities
-│   │
-│   ├── validation/                     # Zod schema validation
-│   │   ├── normalized.schemas.ts               # Phase 0 output schemas
-│   │   ├── raw-input.schemas.ts                # Webhook input schemas
-│   │   └── schemas.ts                          # Common schemas
-│   │
-│   ├── database/                       # Optional PostgreSQL layer
-│   │   ├── db-client.ts                        # Connection pooling
-│   │   ├── queries.ts                          # Query helpers
-│   │   └── types.ts                            # Database types
-│   │
-│   ├── visualization/                  # Visualization components
-│   │   ├── ascii-detector.ts                   # ASCII chart detection
-│   │   ├── integration.ts                      # Chart integration
-│   │   └── components/
-│   │       └── gauge.ts                        # Gauge chart component
-│   │
-│   ├── index.ts                        # Main entry point
-│   └── run-pipeline.ts                 # CLI entry point (741 LOC)
+src/
+├── run-pipeline.ts                      # Main pipeline entry point
+├── phase0-index.ts                      # Phase 0 exports
+├── index.ts                             # Package exports
 │
-├── output/                             # Pipeline outputs
-│   ├── phase0_output.json              # Normalized data (95 KB)
-│   ├── phase1_output.json              # AI analyses (376 KB)
-│   ├── phase2_output.json              # Cross-analysis (428 KB)
-│   ├── phase3_output.json              # Executive synthesis (547 KB)
-│   ├── phase4_output.json              # Compilation metadata (72 KB)
-│   ├── phase5_output.json              # Report manifest (6 KB)
-│   ├── idm_output.json                 # Canonical IDM (63 KB)
-│   ├── pipeline_summary.json           # Execution summary
-│   ├── phase1/                         # Phase 1 timestamped results
-│   ├── phase2/                         # Phase 2 timestamped results
-│   ├── phase3/                         # Phase 3 timestamped results
-│   ├── phase4/                         # Phase 4 timestamped results
-│   └── reports/                        # Generated HTML reports
-│       └── {assessment_run_id}/        # Per-assessment directory
-│           ├── comprehensive.html (60-215 KB)
-│           ├── comprehensive.meta.json
-│           ├── owner.html (17-100 KB)
-│           ├── owner.meta.json
-│           ├── executiveBrief.html (19 KB)
-│           ├── quickWins.html (25 KB)
-│           ├── risk.html (21 KB)
-│           ├── roadmap.html (29 KB)
-│           ├── financial.html (25 KB)
-│           ├── deep-dive-ge.html (35 KB)
-│           ├── deep-dive-ph.html (27 KB)
-│           ├── deep-dive-pl.html (26 KB)
-│           ├── deep-dive-rs.html (32 KB)
-│           ├── managersOperations.html
-│           ├── managersSalesMarketing.html
-│           ├── managersFinancials.html
-│           ├── managersStrategy.html
-│           ├── managersItTechnology.html
-│           └── manifest.json
+├── orchestration/                       # Phase orchestrators (6 files)
+│   ├── phase0-orchestrator.ts          # Raw capture & normalization
+│   ├── phase1-orchestrator.ts          # AI analyses (10)
+│   ├── phase2-orchestrator.ts          # Deep-dive cross-analysis (5)
+│   ├── phase3-orchestrator.ts          # Executive synthesis (5)
+│   ├── phase4-orchestrator.ts          # IDM generation
+│   ├── phase5-orchestrator.ts          # Report generation (17)
+│   ├── idm-consolidator.ts             # IDM consolidation logic (1195 lines)
+│   ├── visualization-aggregator.ts     # Visualization collection
+│   │
+│   └── reports/                         # Report builders and components
+│       ├── comprehensive-report.builder.ts
+│       ├── owners-report.builder.ts
+│       ├── executive-brief.builder.ts
+│       ├── quick-wins-report.builder.ts
+│       ├── risk-report.builder.ts
+│       ├── roadmap-report.builder.ts
+│       ├── financial-report.builder.ts
+│       ├── deep-dive-report.builder.ts
+│       ├── recipe-report.builder.ts
+│       ├── html-template.ts             # Shared HTML generation
+│       ├── index.ts
+│       │
+│       ├── config/                       # Report configuration
+│       │   ├── section-mapping.ts       # Section ID mappings
+│       │   ├── owner-report-constraints.ts
+│       │   └── index.ts
+│       │
+│       ├── constants/                    # Report constants
+│       │   ├── dimension-icons.ts       # Icon mappings
+│       │   └── index.ts
+│       │
+│       ├── charts/                       # Chart generation
+│       │   ├── chart-renderer.ts
+│       │   ├── chart-accessibility.ts
+│       │   ├── chart-theme.ts
+│       │   ├── d3-chart-renderer.ts
+│       │   ├── svg-chart-renderer.ts
+│       │   ├── d3-chart-integration.ts
+│       │   ├── report-chart-integration.ts
+│       │   ├── index.ts
+│       │   │
+│       │   ├── d3/                       # D3.js chart implementations
+│       │   │   ├── charts/
+│       │   │   │   ├── gauge-chart.ts
+│       │   │   │   ├── radar-chart.ts
+│       │   │   │   ├── bar-chart.ts
+│       │   │   │   ├── donut-chart.ts
+│       │   │   │   ├── heatmap-chart.ts
+│       │   │   │   ├── sparkline-chart.ts
+│       │   │   │   ├── comparison-chart.ts
+│       │   │   │   └── index.ts
+│       │   │   ├── utils/
+│       │   │   ├── types.ts
+│       │   │   ├── theme.ts
+│       │   │   └── index.ts
+│       │   │
+│       │   ├── generators/               # Chart generators
+│       │   │   ├── radar-chart.generator.ts
+│       │   │   ├── donut-chart.generator.ts
+│       │   │   ├── score-bar-chart.generator.ts
+│       │   │   ├── comparison-bar.generator.ts
+│       │   │   └── index.ts
+│       │   │
+│       │   └── types/
+│       │       └── chart.types.ts
+│       │
+│       ├── utils/                        # Report utilities
+│       │   ├── markdown-sanitizer.ts
+│       │   ├── number-formatter.ts
+│       │   ├── color-utils.ts
+│       │   ├── voice-transformer.ts
+│       │   ├── conditional-renderer.ts
+│       │   ├── reference-logger.ts
+│       │   ├── accessibility-utils.ts
+│       │   └── index.ts
+│       │
+│       ├── styles/                       # CSS styles
+│       │   ├── unified-bizhealth-styles.ts
+│       │   ├── typography.css
+│       │   ├── variables.css
+│       │   ├── visual-components.css
+│       │   ├── report-enhancements.css
+│       │   ├── print.css
+│       │   └── index.ts
+│       │
+│       ├── components/                   # Report components
+│       │   ├── key-takeaways.component.ts
+│       │   ├── score-bar.component.ts
+│       │   ├── benchmark-callout.component.ts
+│       │   ├── evidence-citation.component.ts
+│       │   ├── comprehensive-reference.component.ts
+│       │   ├── legal-terms-disclaimers.component.ts
+│       │   ├── index.ts
+│       │   │
+│       │   └── visual/                   # Visual components
+│       │       ├── gauge.component.ts
+│       │       ├── radar-chart.component.ts
+│       │       ├── bar-chart.component.ts
+│       │       ├── sparkline.component.ts
+│       │       ├── heatmap.component.ts
+│       │       ├── donut.component.ts
+│       │       ├── table.component.ts
+│       │       ├── metric-card.component.ts
+│       │       ├── score-tile.component.ts
+│       │       ├── benchmark-bar.component.ts
+│       │       ├── kpi-dashboard.component.ts
+│       │       ├── risk-matrix.component.ts
+│       │       ├── roadmap-timeline.component.ts
+│       │       ├── timeline.component.ts
+│       │       ├── funnel.component.ts
+│       │       ├── waterfall.component.ts
+│       │       ├── action-card.component.ts
+│       │       └── index.ts
+│       │
+│       └── validation/                   # Report validation
+│           ├── section-mapping-validator.ts
+│           ├── validate-reports.ts
+│           └── index.ts
 │
-├── data/                               # Persistent data storage
-│   ├── index/                          # Assessment index
-│   │   └── assessment-index.json
-│   ├── normalized/                     # Normalized data cache
-│   │   ├── {company_profile_id}/
-│   │   └── {questionnaire_response_id}/
-│   ├── raw/                            # Immutable raw storage
-│   │   └── {assessment_run_id}.json
-│   └── logs/                           # Execution logs
-│       ├── writes/                     # Write operation logs
-│       └── integrity/                  # Data integrity logs
+├── types/                               # TypeScript type definitions
+│   ├── idm.types.ts                    # IDM schema (890 lines)
+│   ├── webhook.types.ts                # Input webhook structure
+│   ├── normalized.types.ts             # Normalized data types
+│   ├── company-profile.types.ts        # Company profile types
+│   ├── questionnaire.types.ts          # Questionnaire types
+│   ├── report.types.ts                 # Report type definitions
+│   ├── raw-input.types.ts              # Raw input types
+│   ├── recipe.types.ts                 # Recipe types
+│   └── visualization.types.ts          # Visualization types
 │
-├── samples/                            # 25 sample webhook files
-├── tests/                              # Test suites
-├── scripts/                            # Utility scripts
-│   ├── render-pdf.ts                   # PDF rendering
-│   └── ...
-├── config/                             # Configuration files
-├── package.json                        # Dependencies & scripts
-├── tsconfig.json                       # TypeScript configuration
-├── .env                                # Environment variables
-└── README.md                           # Documentation
+├── prompts/                             # AI prompt templates
+│   ├── tier1/                           # Tier 1 analysis prompts
+│   │   ├── revenue-engine.prompts.ts
+│   │   ├── operational-excellence.prompts.ts
+│   │   ├── financial-strategic.prompts.ts
+│   │   ├── people-leadership.prompts.ts
+│   │   ├── compliance-sustainability.prompts.ts
+│   │   └── index.ts
+│   │
+│   ├── tier2/                           # Tier 2 analysis prompts
+│   │   ├── growth-readiness.prompts.ts
+│   │   ├── market-position.prompts.ts
+│   │   ├── resource-optimization.prompts.ts
+│   │   ├── risk-resilience.prompts.ts
+│   │   ├── scalability-readiness.prompts.ts
+│   │   └── index.ts
+│   │
+│   ├── templates/                       # Prompt templates
+│   │   ├── base-analysis-prompt.ts     # Base prompt with visualization output
+│   │   ├── visualization-supplement.ts
+│   │   └── index.ts
+│   │
+│   ├── shared/
+│   │   └── visualization-instructions.ts
+│   │
+│   ├── parsers/                         # Response parsers
+│   │   ├── analysis-response-parser.ts
+│   │   └── index.ts
+│   │
+│   └── schemas/                         # Output schemas
+│       ├── visualization-output.schema.ts
+│       └── index.ts
+│
+├── api/                                 # API clients
+│   ├── anthropic-client.ts             # Anthropic Batch API integration
+│   └── report-endpoints.ts             # Report API endpoints
+│
+├── services/                            # Business logic services
+│   ├── raw-assessment-storage.ts       # Raw data storage
+│   ├── assessment-index.ts             # Assessment index management
+│   ├── narrative-extraction.service.ts # Narrative extraction from AI output
+│   ├── benchmark-lookup-service.ts     # Benchmark data retrieval
+│   ├── confidence-scoring-framework.ts # Confidence scoring
+│   └── lifecycle-modifier-engine.ts    # Lifecycle modifiers
+│
+├── data-transformation/                 # Data transformers
+│   ├── company-profile-transformer.ts  # Company profile transformation
+│   ├── questionnaire-transformer.ts    # Questionnaire transformation
+│   ├── normalized-company-profile-transformer.ts
+│   ├── normalized-questionnaire-transformer.ts
+│   └── benchmark-service.ts            # Benchmark data service
+│
+├── validation/                          # Zod validation schemas
+│   ├── schemas.ts                      # Main validation schemas
+│   ├── normalized.schemas.ts           # Normalized data schemas
+│   └── raw-input.schemas.ts            # Raw input schemas
+│
+├── visualization/                       # Visualization utilities
+│   ├── integration.ts
+│   ├── ascii-detector.ts               # ASCII art detection/removal
+│   ├── index.ts
+│   └── components/
+│       └── gauge.ts
+│
+├── database/                            # Database integration
+│   ├── db-client.ts
+│   ├── queries.ts
+│   ├── types.ts
+│   └── index.ts
+│
+├── reporting/                           # Legacy reporting
+│   ├── report-prompts.ts
+│   ├── report-generator.ts
+│   └── index.ts
+│
+├── reports/                             # Report generation
+│   ├── report-generator.ts
+│   └── index.ts
+│
+├── utils/                               # Utilities
+│   ├── logger.ts                       # Pino logger
+│   ├── errors.ts                       # Error types
+│   ├── security.ts                     # Security utilities
+│   ├── phase-consolidator.ts           # Phase consolidation
+│   ├── recipe-validator.ts             # Recipe validation
+│   └── benchmark-calculator.ts         # Benchmark calculations
+│
+├── scripts/                             # Utility scripts
+│   └── render-pdf.ts                   # PDF rendering
+│
+├── data/                                # Static data
+│   └── benchmark-database.json         # Benchmark data
+│
+└── __tests__/                           # Test files
+    └── phase0.test.ts
 ```
 
 ---
 
-## Phase-by-Phase Deep Analysis
+## Phase 0: Raw Capture & Normalization
 
-### Phase 0: Raw Capture & Normalization
+### Overview
 
-**File**: `src/orchestration/phase0-orchestrator.ts` (1,200 LOC)
+**File**: `src/orchestration/phase0-orchestrator.ts`
+**Purpose**: Transform raw webhook data into normalized, analysis-ready structures
+**Duration**: ~100ms
+**AI Calls**: None
 
-**Purpose**: Transform raw webhook JSON into clean, validated, normalized structures ready for AI analysis.
+### Sub-Phases
 
-**Key Responsibilities**:
-1. **Raw Data Capture** - Immutable storage of original webhook payload
-2. **Company Profile Normalization** - Extract and structure company information
-3. **Questionnaire Normalization** - Map 93 questions to 12 dimensions
-4. **Benchmark Retrieval** - Fetch industry comparison data
-5. **Index Management** - Create assessment index entry for tracking
+#### Phase 0A: Raw Capture
+- Receives webhook payload from questionnaire submission
+- Stores raw data immutably with audit metadata
+- Generates unique assessment_run_id (UUID v4)
 
-**Data Flow**:
-```typescript
-WebhookPayload (JSON)
-  ↓ Validation (Zod schemas in validation/raw-input.schemas.ts)
-  ↓ Raw Storage (data/raw/{assessment_run_id}.json) - IMMUTABLE
-  ↓ Company Profile Extraction
-  ├─ Basic Information (name, industry, location, founded)
-  ├─ Size Metrics (revenue, employees, locations, growth rate)
-  ├─ Products/Services Mix (product categories, service offerings)
-  └─ Competitors (competitive landscape)
-  ↓ Questionnaire Transformation
-  ├─ 93 questions → 12 dimensions mapping
-  ├─ Response normalization (1-5 scale → 0-100 scores)
-  ├─ Sub-indicator mapping (dimension breakdown)
-  └─ Score calculation (weighted aggregation)
-  ↓ Benchmark Retrieval
-  ├─ Industry benchmarks (SIC/NAICS codes)
-  ├─ Size-based comparisons (revenue/employee cohorts)
-  ├─ Revenue tier benchmarks (percentiles)
-  └─ Location-based data (geographic factors)
-  ↓ Output: phase0_output.json (95 KB)
-```
+#### Phase 0B: Normalization
+- Transforms raw data into two normalized structures:
+  1. **NormalizedCompanyProfile**: Company metadata, benchmark selectors
+  2. **NormalizedQuestionnaireResponses**: Questions organized by chapter/dimension
 
-**Key Functions**:
+#### Benchmark Retrieval
+- Matches company profile to industry benchmarks
+- Uses hierarchical fallback logic for best match
+- Returns percentile distributions for all metrics
+
+### Key Types
 
 ```typescript
-// Main orchestration
-export async function executePhase0(
-  webhookPayload: WebhookPayload
-): Promise<Phase0Output>
+// Phase 0 Output Bundle
+interface Phase0Output {
+  assessment_run_id: string;
+  companyProfile: NormalizedCompanyProfile;
+  questionnaireResponses: NormalizedQuestionnaireResponses;
+  benchmarkData: NormalizedBenchmarkData;
+  indexEntry: AssessmentIndexEntry;
+}
 
-// Company profile transformation
-function transformToNormalizedCompanyProfile(
-  businessOverview: BusinessOverview
-): NormalizedCompanyProfile
+// Normalized Company Profile
+interface NormalizedCompanyProfile {
+  metadata: NormalizedCPMetadata;
+  company_name: string;
+  location: { city: string; state: string; country: string };
+  industry: { code: string; name: string; vertical: string };
+  financials: { /* revenue, projections */ };
+  employees: { /* headcount by type */ };
+  products_services: ProductService[];
+  competitors: Competitor[];
+  current_challenges: string[];
+  benchmark_selectors: BenchmarkSelectors;
+}
 
-// Questionnaire transformation
-function transformToNormalizedQuestionnaireResponses(
-  responses: QuestionnaireResponses,
-  mapping: QuestionMapping
-): NormalizedQuestionnaireResponses
-
-// Benchmark retrieval
-async function getBenchmarksForCategory(
-  industry: string,
-  revenue: number,
-  employees: number
-): Promise<BenchmarkData>
-```
-
-**Input Structure** (sample_webhook.json):
-```json
-{
-  "event": "new_questionnaire_response",
-  "submission_id": "uuid",
-  "timestamp": "2025-12-03T08:42:51.000Z",
-  "business_overview": {
-    "company_name": "EWM Global",
-    "industry": "information",
-    "industry_category": "technology",
-    "revenue": 24000000,
-    "employees": 85,
-    "year_founded": 2010,
-    "headquarters": "New York, NY",
-    "website": "https://ewmglobal.com",
-    "products_services": ["Software", "Consulting"],
-    "competitors": ["Competitor A", "Competitor B"]
-  },
-  "strategy": { /* 8 questions with 1-5 scale responses */ },
-  "sales": { /* 11 questions */ },
-  "marketing": { /* 9 questions */ },
-  "customer_experience": { /* 8 questions */ },
-  "operations": { /* 8 questions */ },
-  "financials": { /* 12 questions */ },
-  "human_resources": { /* 7 questions */ },
-  "leadership": { /* 6 questions */ },
-  "technology": { /* 7 questions */ },
-  "it_infrastructure": { /* 7 questions */ },
-  "risk_management": { /* 7 questions */ },
-  "compliance": { /* 7 questions */ }
+// Normalized Questionnaire Responses
+interface NormalizedQuestionnaireResponses {
+  meta: NormalizedQRMetadata;
+  chapters: NormalizedChapter[];  // 4 chapters
+  overall_metrics: {
+    total_questions: number;      // 87
+    completion_rate: number;
+    overall_avg_normalized_score: number;
+    chapter_scores: Record<ChapterCode, number>;
+    dimension_scores: Record<DimensionCode, number>;
+  };
+  derived_metrics: {
+    sales_velocity?: number;
+    cac_ltv_ratio?: number;
+    cash_ratio?: number;
+    debt_to_asset_ratio?: number;
+    capacity_utilization_avg?: number;
+    growth_gap?: number;
+  };
 }
 ```
 
-**Output Structure** (phase0_output.json - 95 KB):
-```json
-{
-  "assessment_run_id": "d90e6912-fa14-4d9a-8d82-e28c409f795c",
-  "company_profile_id": "ewm-global-478cbd43",
-  "output": {
-    "companyProfile": {
-      "id": "70baaa41-7ca9-4e09-8453-a80530905139",
-      "snapshot_id": "eee86e0f-529c-4e4d-a381-ea548187e3b7",
-      "name": "EWM Global",
-      "industry": "information",
-      "revenue": 24000000,
-      "employees": 85,
-      /* ... complete profile */
-    },
-    "questionnaireResponses": {
-      "chapters": [
-        {
-          "code": "GE",
-          "name": "Growth Engine",
-          "dimensions": ["STR", "SAL", "MKT", "CXP"]
-        },
-        /* ... 3 more chapters */
-      ],
-      "dimensions": [
-        {
-          "code": "STR",
-          "name": "Strategy",
-          "score": 67,
-          "questions": [ /* 8 normalized questions */ ]
-        },
-        /* ... 11 more dimensions */
-      ],
-      "questions": [ /* 93 normalized questions with scores */ ]
-    },
-    "benchmarks": {
-      "industry": "information",
-      "revenue_cohort": "20M-50M",
-      "employee_cohort": "50-100",
-      "benchmarks": [ /* 12 dimension benchmarks with percentiles */ ]
-    }
-  },
-  "phases_completed": {
-    "raw_capture": true,
-    "cp_normalization": true,
-    "qr_normalization": true,
-    "benchmark_retrieval": true,
-    "index_update": true
-  },
-  "metadata": {
-    "startedAt": "2025-12-03T08:42:51.491Z",
-    "completedAt": "2025-12-03T08:42:51.500Z",
-    "durationMs": 9
-  }
-}
-```
+### Dimension to Question Mapping
 
-**Performance**: ~26ms execution (no API calls, pure data transformation)
+Each of the 87 questions maps to a specific dimension:
 
-**No AI Used**: This phase is entirely local processing with Zod validation
+| Dimension | Question Count | Question IDs |
+|-----------|---------------|--------------|
+| STR (Strategy) | 7 | STR_01 - STR_07 |
+| SAL (Sales) | 8 | SAL_01 - SAL_08 |
+| MKT (Marketing) | 9 | MKT_01 - MKT_09 |
+| CXP (Customer Experience) | 5 | CXP_01 - CXP_05 |
+| OPS (Operations) | 8 | OPS_01 - OPS_08 |
+| FIN (Financials) | 10 | FIN_01 - FIN_10 |
+| HRS (Human Resources) | 8 | HRS_01 - HRS_08 |
+| LDG (Leadership) | 7 | LDG_01 - LDG_07 |
+| TIN (Technology/Innovation) | 8 | TIN_01 - TIN_08 |
+| IDS (IT/Data/Systems) | 7 | IDS_01 - IDS_07 |
+| RMS (Risk Management) | 7 | RMS_01 - RMS_07 |
+| CMP (Compliance) | 3 | CMP_01 - CMP_03 |
+
+### Output Files
+
+- `output/phase0_output.json` - Complete Phase 0 output bundle
+- `data/raw/{assessment_run_id}/raw_assessment.json` - Immutable raw data
 
 ---
 
-### Phase 1: Cross-Functional AI Analyses
+## Phase 1: Cross-functional AI Analyses
 
-**File**: `src/orchestration/phase1-orchestrator.ts` (1,100 LOC)
+### Overview
 
-**Purpose**: Execute 10 foundational AI analyses through parallel batch processing using Anthropic Batch API.
+**File**: `src/orchestration/phase1-orchestrator.ts`
+**Purpose**: Execute 10 AI analyses across business dimensions
+**Duration**: 4-5 minutes
+**AI Calls**: 10 (via Anthropic Batch API)
 
-**Architecture**: 2 Sequential Batches
-- **Batch 1 (Tier 1)**: 5 foundational analyses executed in parallel
-- **Batch 2 (Tier 2)**: 5 interconnection analyses executed in parallel (depends on Tier 1)
+### Analysis Structure
 
-**AI Model Configuration**:
+Phase 1 executes in two tiers:
+
+#### Tier 1: Foundational Analyses (5)
+
+| Analysis | Prompt File | Dimensions | Purpose |
+|----------|-------------|------------|---------|
+| **Revenue Engine** | `tier1/revenue-engine.prompts.ts` | STR, SAL, MKT, CXP | Revenue generation, customer acquisition economics |
+| **Operational Excellence** | `tier1/operational-excellence.prompts.ts` | OPS | Workflow efficiency, reliability, utilization |
+| **Financial Strategic** | `tier1/financial-strategic.prompts.ts` | FIN | Cash flow, profitability, financial readiness |
+| **People & Leadership** | `tier1/people-leadership.prompts.ts` | HRS, LDG | HR infrastructure, culture, leadership effectiveness |
+| **Compliance & Sustainability** | `tier1/compliance-sustainability.prompts.ts` | RMS, CMP | Regulatory compliance, sustainability practices |
+
+#### Tier 2: Interconnection Analyses (5)
+
+Tier 2 analyses depend on Tier 1 outputs:
+
+| Analysis | Prompt File | Dependencies | Purpose |
+|----------|-------------|--------------|---------|
+| **Growth Readiness** | `tier2/growth-readiness.prompts.ts` | All Tier 1 | Cross-functional growth capability |
+| **Market Position** | `tier2/market-position.prompts.ts` | Revenue Engine | Competitive dynamics, market positioning |
+| **Resource Optimization** | `tier2/resource-optimization.prompts.ts` | Operational, Financial | Resource utilization efficiency |
+| **Risk & Resilience** | `tier2/risk-resilience.prompts.ts` | All Tier 1 | Risk landscape, business resilience |
+| **Scalability Readiness** | `tier2/scalability-readiness.prompts.ts` | All Tier 1 | Infrastructure scalability |
+
+### AI Configuration
+
 ```typescript
-{
+const PHASE1_CONFIG = {
   model: 'claude-opus-4-5-20251101',
-  maxTokens: 64000,              // Max output tokens
-  thinkingBudgetTokens: 32000,   // Extended thinking budget
-  temperature: 1.0,              // Required for extended thinking
-  batchAPI: true                 // 50% cost reduction
+  max_tokens: 64000,
+  thinking: {
+    type: 'enabled',
+    budget_tokens: 32000
+  },
+  temperature: 1.0  // Required for extended thinking
+};
+```
+
+### Prompt Structure
+
+Each analysis prompt follows this structure:
+
+```typescript
+// System Prompt (defines AI role and expertise)
+export const systemPrompt = `
+# SYSTEM PROMPT: Tier 1 Cross-Functional Analysis
+## Analysis Type: Revenue Engine Analysis
+
+### Your Role & Expertise
+You are a senior business consultant with 20+ years of experience...
+
+### Analysis Scope
+1. Strategy (Questions 1-7)
+2. Sales (Questions 1-8)
+3. Marketing (Questions 1-9)
+4. Customer Experience (Questions 1-5)
+
+### Analytical Frameworks & Standards
+- Customer Lifetime Value (CLV) Framework
+- Sales Funnel / Pipeline Management Framework
+- Strategic Planning Maturity Assessment
+- Revenue Operations (RevOps) Framework
+- Industry Benchmark Comparison Framework
+`;
+
+// User Prompt (contains actual data)
+export function buildUserPrompt(
+  companyProfile: CompanyProfile,
+  questionnaireResponses: QuestionnaireResponses,
+  benchmarkData: BenchmarkData
+): string {
+  return `...`;
 }
 ```
 
-**Tier 1 Analyses (Batch 1 - Foundational)**:
+### Visualization Output Format
 
-1. **Revenue Engine Analysis** (`prompts/tier1/revenue-engine.prompts.ts`)
-   - **Dimensions**: Strategy, Sales, Marketing, Customer Experience
-   - **Frameworks**:
-     - Customer Lifetime Value (CLV) Economics
-     - Sales Funnel / Pipeline Management
-     - Strategic Planning Maturity Assessment
-     - Revenue Operations (RevOps) Framework
-     - Customer Journey Mapping
-   - **Output Focus**: Revenue growth drivers, CAC/LTV analysis, pipeline efficiency
-   - **Token Usage**: ~15K-20K per analysis (including thinking)
-   - **Prompt Structure**:
-     ```typescript
-     export const systemPrompt = `
-     # SYSTEM PROMPT: Tier 1 Cross-Functional Analysis
-     ## Analysis Type: Revenue Engine Analysis
+AI outputs structured JSON with visualizations:
 
-     ### Your Role & Expertise
-     You are a senior business consultant with 20+ years of experience
-     in revenue growth, sales operations, marketing strategy, and
-     customer experience optimization.
-
-     ### Analysis Scope
-     1. Strategy (Questions 1-7): Strategic clarity, planning maturity
-     2. Sales (Questions 1-8): Pipeline, conversion, team effectiveness
-     3. Marketing (Questions 1-9): Lead generation, brand, channels
-     4. Customer Experience (Questions 1-5): Satisfaction, retention, NPS
-
-     ### Analytical Frameworks & Standards
-     1. Customer Lifetime Value (CLV) Framework
-     2. Sales Funnel / Pipeline Management Framework
-     3. Strategic Planning Maturity Assessment
-     4. Revenue Operations (RevOps) Framework
-     ...
-     `;
-     ```
-
-2. **Operational Excellence Analysis** (`prompts/tier1/operational-excellence.prompts.ts`)
-   - **Dimensions**: Operations, Technology, IT/Data, Risk Management
-   - **Frameworks**:
-     - Lean Six Sigma Methodology
-     - Value Stream Mapping (VSM)
-     - ITIL (IT Infrastructure Library)
-     - Disaster Recovery Planning
-   - **Output Focus**: Process efficiency, technology utilization, operational risks
-   - **Token Usage**: ~15K-20K per analysis
-
-3. **Financial & Strategic Alignment Analysis** (`prompts/tier1/financial-strategic.prompts.ts`)
-   - **Dimensions**: Strategy, Financials
-   - **Frameworks**:
-     - Financial Ratio Analysis
-     - SWOT Analysis
-     - Balanced Scorecard
-     - Strategic Resource Allocation
-   - **Output Focus**: Financial health, strategic clarity, resource allocation
-   - **Token Usage**: ~12K-18K per analysis
-
-4. **People & Leadership Ecosystem Analysis** (`prompts/tier1/people-leadership.prompts.ts`)
-   - **Dimensions**: HR, Leadership & Governance
-   - **Frameworks**:
-     - SHRM Competency Model
-     - McKinsey 7S Framework
-     - HR Maturity Model
-     - Leadership Effectiveness Framework
-   - **Output Focus**: Culture, talent management, leadership effectiveness
-   - **Token Usage**: ~15K-20K per analysis
-
-5. **Compliance & Sustainability Framework Analysis** (`prompts/tier1/compliance-sustainability.prompts.ts`)
-   - **Dimensions**: Compliance, Risk Management, Sustainability
-   - **Frameworks**:
-     - COSO Internal Control Framework
-     - ISO 31000 (Risk Management)
-     - NIST Cybersecurity Framework
-     - ISO 22301 (Business Continuity)
-     - ESG (Environmental, Social, Governance)
-   - **Output Focus**: Regulatory compliance, risk framework, sustainability practices
-   - **Token Usage**: ~12K-18K per analysis
-
-**Tier 2 Analyses (Batch 2 - Cross-Cutting)**:
-
-6. **Growth Readiness Analysis** (`prompts/tier2/growth-readiness.prompts.ts`)
-   - Scalability assessment across all dimensions
-   - Growth barriers and expansion readiness
-   - Infrastructure gaps and enablers
-
-7. **Market Position Analysis** (`prompts/tier2/market-position.prompts.ts`)
-   - Competitive advantage and market dynamics
-   - Positioning and differentiation strategies
-   - Market share and competitive threats
-
-8. **Resource Optimization Analysis** (`prompts/tier2/resource-optimization.prompts.ts`)
-   - Technology and resource utilization
-   - Efficiency opportunities
-   - Resource allocation optimization
-
-9. **Risk & Resilience Analysis** (`prompts/tier2/risk-resilience.prompts.ts`)
-   - Comprehensive risk inventory
-   - Business continuity and resilience
-   - Risk mitigation strategies
-
-10. **Scalability Readiness Analysis** (`prompts/tier2/scalability-readiness.prompts.ts`)
-    - Systems and processes for growth
-    - Infrastructure gaps and enablers
-    - Scalability bottlenecks
-
-**Batch Execution Process**:
-```
-1. Prepare Batch Requests (10 analyses)
-   • Load Phase 0 normalized data
-   • Apply prompt templates with company context
-   • Configure thinking budget and max tokens
-   ↓
-2. Submit Batch 1 (Tier 1 - 5 analyses)
-   • POST /v1/messages/batches
-   • Receive batch_id
-   ↓
-3. Poll for Completion (30s intervals)
-   • GET /v1/messages/batches/{batch_id}
-   • Check processing_status
-   • Track request_counts
-   ↓
-4. Retrieve Batch 1 Results
-   • GET /v1/messages/batches/{batch_id}/results
-   • Parse analysis outputs
-   • Extract thinking and response
-   ↓
-5. Submit Batch 2 (Tier 2 - 5 analyses with Tier 1 context)
-   • Include Tier 1 findings in prompts
-   • POST /v1/messages/batches
-   ↓
-6. Poll for Completion (30s intervals)
-   ↓
-7. Retrieve Batch 2 Results
-   ↓
-8. Validate & Store (phase1_output.json)
-   • Validate against Zod schemas
-   • Track token usage
-   • Save to filesystem
-```
-
-**Output Structure** (phase1_output.json - 376 KB):
 ```json
 {
-  "phase": "phase_1",
-  "status": "complete",
-  "company_profile_id": "16d8f737-9173-4b44-888d-6ac31e376370",
-  "tier1": {
-    "revenue_engine": {
-      "analysis_id": "uuid",
-      "status": "complete",
-      "content": "...comprehensive 6,000+ word analysis...",
-      "metadata": {
-        "input_tokens": 7542,
-        "output_tokens": 9823,
-        "thinking_tokens": 15234,
-        "model": "claude-opus-4-5-20251101",
-        "execution_time_ms": 245000
-      }
-    },
-    "operational_excellence": { /* ... */ },
-    "financial_strategic": { /* ... */ },
-    "people_leadership": { /* ... */ },
-    "compliance_sustainability": { /* ... */ }
-  },
-  "tier2": {
-    "growth_readiness": { /* ... */ },
-    "market_position": { /* ... */ },
-    "resource_optimization": { /* ... */ },
-    "risk_resilience": { /* ... */ },
-    "scalability_readiness": { /* ... */ }
-  },
-  "metadata": {
-    "total_analyses": 10,
-    "successful_analyses": 10,
-    "failed_analyses": 0,
-    "total_duration_ms": 2097626,
-    "batch1_duration_ms": 457394,
-    "batch2_duration_ms": 1640160,
-    "total_input_tokens": 75420,
-    "total_output_tokens": 98230,
-    "total_thinking_tokens": 152340
-  }
-}
-```
-
-**Execution Time**: 4-5 minutes (Batch 1: ~8 min, Batch 2: ~27 min in parallel)
-
-**Token Usage Per Analysis**:
-- **Input**: 5K-8K tokens (company profile + questionnaire + benchmarks)
-- **Output**: 6K-10K tokens (structured findings + recommendations)
-- **Thinking**: 10K-20K tokens (deep reasoning with extended thinking)
-- **Total**: 21K-38K tokens per analysis
-
-**Cost Per Assessment** (Claude Opus 4.5 with Batch API):
-- 10 analyses × $0.50-1.00 = **$5-10 per Phase 1**
-- With Batch API: 50% reduction vs standard API
-- Total pipeline cost: **$10-20 per assessment**
-
----
-
-### Phase 2: Deep-Dive Cross-Analysis
-
-**File**: `src/orchestration/phase2-orchestrator.ts` (850 LOC)
-
-**Purpose**: Synthesize insights across all Phase 1 analyses to identify patterns, connections, and strategic opportunities.
-
-**5 Cross-Dimensional Analyses**:
-
-1. **Cross-Dimensional Synthesis**
-   - Identifies patterns across all 10 Phase 1 analyses
-   - Maps interdependencies between dimensions
-   - Highlights reinforcing and conflicting themes
-   - Discovers emergent insights not visible in individual analyses
-
-2. **Strategic Recommendations**
-   - Generates 15+ prioritized action items
-   - Maps to time horizon: 90 days, 12 months, 24+ months
-   - Estimates effort (low/medium/high), cost (quantified)
-   - Projects expected impact with success metrics
-   - Defines prerequisites and dependencies
-   - Assigns responsible teams
-
-3. **Consolidated Risk Assessment**
-   - Compiles 18+ risks from all analyses
-   - Categorizes by probability (high/medium/low)
-   - Assesses impact (high/medium/low)
-   - Develops mitigation strategies with timelines
-   - Assigns ownership and accountability
-   - Creates risk heat map
-
-4. **Growth Opportunities**
-   - Identifies 10+ prioritized opportunities
-   - Assesses market potential and feasibility
-   - Estimates investment requirements (capital, resources)
-   - Projects ROI and payback period
-   - Defines implementation timeline
-   - Analyzes competitive implications
-
-5. **Implementation Roadmap**
-   - Creates 18-month phased plan
-   - Defines milestones and success criteria
-   - Maps dependencies and sequencing
-   - Allocates resources across initiatives
-   - Establishes progress metrics
-   - Identifies critical path items
-
-**Output Structure** (phase2_output.json - 428 KB):
-```json
-{
-  "phase": "phase_2",
-  "status": "complete",
-  "cross_dimensional": {
-    "patterns": [ /* Cross-cutting patterns */ ],
-    "interconnections": [ /* Dimension relationships */ ],
-    "emergent_insights": [ /* Novel discoveries */ ]
-  },
-  "strategic_recommendations": [
-    {
-      "id": "uuid",
-      "title": "Implement RevOps Platform",
-      "description": "...",
-      "horizon": "12_months",
-      "priority": "high",
-      "estimated_effort": "high",
-      "estimated_cost": 150000,
-      "expected_impact": "20% revenue increase",
-      "success_metrics": ["CAC reduction 15%", "LTV increase 25%"],
-      "prerequisites": ["CRM consolidation", "Data integration"]
-    }
-    /* ... 14 more recommendations */
-  ],
-  "consolidated_risks": [
-    {
-      "id": "uuid",
-      "title": "Cybersecurity Vulnerability",
-      "description": "...",
-      "probability": "high",
-      "impact": "high",
-      "mitigation_strategy": "Implement SOC 2 controls",
-      "mitigation_timeline": "6 months",
-      "responsible_team": "IT Security"
-    }
-    /* ... 17 more risks */
-  ],
-  "growth_opportunities": [
-    {
-      "id": "uuid",
-      "title": "Enterprise Market Expansion",
-      "market_potential": "$10M ARR",
-      "feasibility": "high",
-      "investment_required": 500000,
-      "projected_roi": "300%",
-      "timeline": "18 months"
-    }
-    /* ... 9 more opportunities */
-  ],
-  "implementation_roadmap": {
-    "phases": [
+  "analysisType": "revenue_engine",
+  "narrative": {
+    "executiveSummary": "...",
+    "sections": [
       {
-        "phase_number": 1,
-        "timeframe": "90 days",
-        "focus": "Foundation & Quick Wins",
-        "key_deliverables": [ /* ... */ ],
-        "success_metrics": [ /* ... */ ]
-      },
-      {
-        "phase_number": 2,
-        "timeframe": "12 months",
-        "focus": "Strategic Initiatives",
-        "key_deliverables": [ /* ... */ ],
-        "success_metrics": [ /* ... */ ]
-      },
-      {
-        "phase_number": 3,
-        "timeframe": "24+ months",
-        "focus": "Transformation",
-        "key_deliverables": [ /* ... */ ],
-        "success_metrics": [ /* ... */ ]
+        "id": "strategy_assessment",
+        "title": "Strategy Assessment",
+        "content": "As shown in [viz:strategy_health_score]...",
+        "visualizationRefs": ["strategy_health_score", "growth_trend"]
       }
     ]
   },
-  "metadata": {
-    "successful_analyses": 5,
-    "total_duration_ms": 730401
-  }
-}
-```
-
-**Execution Time**: 2-3 minutes
-**Cost**: $2.50-5 per Phase 2
-
----
-
-### Phase 3: Executive Synthesis
-
-**File**: `src/orchestration/phase3-orchestrator.ts` (800 LOC)
-
-**Purpose**: Create executive-ready summaries optimized for C-suite and board stakeholders.
-
-**5 Executive Deliverables**:
-
-1. **Executive Summary** (500-word strategic overview)
-   - Concise narrative of overall health
-   - Key strengths and critical gaps
-   - Top strategic priorities
-   - Investment requirements summary
-
-2. **Business Health Scorecard** (Overall Health Score 0-100)
-   - Calculation methodology:
-     ```
-     Overall Score =
-       (Growth Engine × 0.30) +
-       (Performance & Health × 0.30) +
-       (People & Leadership × 0.20) +
-       (Resilience & Safeguards × 0.20)
-     ```
-   - Score band classification:
-     - **80-100**: Excellence - Best-in-class performance
-     - **60-79**: Proficiency - Strong with minor gaps
-     - **40-59**: Attention Required - Significant improvement needed
-     - **0-39**: Critical - Immediate action required
-
-3. **Action Matrix** (Prioritized by urgency and impact)
-   - 2x2 matrix: Urgency × Impact
-   - Critical actions (high/high)
-   - Strategic priorities (high impact, lower urgency)
-   - Quick wins (high urgency, lower impact)
-   - Monitoring items (low/low)
-
-4. **Investment Roadmap** (Financial requirements and ROI)
-   - Phase 1 (90 days): $X with Y% ROI
-   - Phase 2 (12 months): $X with Y% ROI
-   - Phase 3 (24+ months): $X with Y% ROI
-   - Total investment: Aggregated cost
-   - Expected cumulative ROI: Projected returns
-
-5. **Final Recommendations** (Top 5-7 strategic priorities)
-   - Ranked by impact potential
-   - Clear action items
-   - Ownership assignment
-   - Timeline for execution
-
-**Output Structure** (phase3_output.json - 547 KB):
-```json
-{
-  "phase": "phase_3",
-  "status": "complete",
-  "summary": {
-    "overall_health_score": 72,
-    "health_status": "Proficiency",
-    "health_descriptor": "Stable - Requires Strategic Attention",
-    "trend": "Improving"
-  },
-  "executive_summary": {
-    "overview": "EWM Global demonstrates strong foundational capabilities...",
-    "key_strengths": [ /* ... */ ],
-    "critical_gaps": [ /* ... */ ],
-    "strategic_priorities": [ /* ... */ ]
-  },
-  "scorecard": {
-    "overall_health_score": 72,
-    "chapters": [
-      {
-        "code": "GE",
-        "name": "Growth Engine",
-        "score": 68,
-        "status": "Proficiency"
-      },
-      {
-        "code": "PH",
-        "name": "Performance & Health",
-        "score": 75,
-        "status": "Proficiency"
-      },
-      {
-        "code": "PL",
-        "name": "People & Leadership",
-        "score": 70,
-        "status": "Proficiency"
-      },
-      {
-        "code": "RS",
-        "name": "Resilience & Safeguards",
-        "score": 74,
-        "status": "Proficiency"
-      }
-    ]
-  },
-  "action_matrix": {
-    "critical_actions": [ /* High urgency, high impact */ ],
-    "strategic_priorities": [ /* High impact, lower urgency */ ],
-    "quick_wins": [ /* High urgency, lower impact */ ],
-    "monitoring_items": [ /* Low urgency, low impact */ ]
-  },
-  "investment_roadmap": {
-    "phase_1": {
-      "investment": 75000,
-      "roi_percentage": 150
-    },
-    "phase_2": {
-      "investment": 250000,
-      "roi_percentage": 200
-    },
-    "phase_3": {
-      "investment": 500000,
-      "roi_percentage": 300
-    },
-    "total_investment": 825000,
-    "cumulative_roi": 250
-  },
-  "final_recommendations": [
-    /* Top 5-7 strategic priorities */
+  "visualizations": [
+    {
+      "id": "strategy_health_score",
+      "type": "gauge",
+      "data": { "value": 72, "max": 100, "benchmark": 65, "trend": "up" },
+      "context": { "dimension": "STR", "chapter": "GE", "label": "Strategy Health" }
+    }
   ],
   "metadata": {
-    "successful_analyses": 5,
-    "total_duration_ms": 885871
+    "dimensionsCovered": ["STR", "SAL", "MKT", "CXP"],
+    "confidenceLevel": "high",
+    "dataQuality": "complete"
   }
 }
 ```
 
-**Execution Time**: 2-3 minutes
-**Cost**: $2.50-5 per Phase 3
+### Visualization Types
 
----
+| Type | Purpose | Data Structure |
+|------|---------|---------------|
+| `gauge` | Scores, health metrics | `{ value, max, benchmark, trend }` |
+| `bar` | Comparisons | `{ clientValue, benchmarkValue, unit, higherIsBetter }` |
+| `radar` | Multi-dimensional views | `{ dimensions[], clientValues[], benchmarkValues[] }` |
+| `comparison` | Metric tables | `{ metrics: [{ label, clientValue, benchmarkValue, status }] }` |
+| `heatmap` | Matrices | `{ rows[], columns[], values[][] }` |
+| `sparkline` | Trends | `{ points[], labels[], highlightLast }` |
 
-### Phase 4: IDM Consolidation & Generation
+### Output Structure
 
-**File**: `src/orchestration/idm-consolidator.ts` (1,500 LOC)
-
-**Purpose**: Compile all analyses into the canonical **Insights Data Model (IDM)** - the single source of truth for all reporting.
-
-**IDM Consolidation Pipeline**:
-```
-Phase 0-3 Data
-  ↓
-Extract Benchmark Profile
-  • Industry classification
-  • Revenue/employee cohorts
-  • Percentile distributions
-  ↓
-Calculate Dimension Scores (from questionnaire)
-  • 93 questions → 12 dimension scores
-  • Weighted aggregation
-  • Sub-indicator breakdowns
-  ↓
-Calculate Chapter Scores (from dimensions)
-  • Growth Engine (STR+SAL+MKT+CXP)
-  • Performance & Health (OPS+FIN)
-  • People & Leadership (HRS+LDG)
-  • Resilience & Safeguards (TIN+IDS+RMS+CMP)
-  ↓
-Calculate Overall Health Score (from chapters)
-  • Weighted average (30%+30%+20%+20%)
-  • Score band classification
-  • Trajectory determination
-  ↓
-Determine Score Bands & Trajectories
-  • Excellence (80-100)
-  • Proficiency (60-79)
-  • Attention (40-59)
-  • Critical (0-39)
-  ↓
-Extract Findings from Phase 1-3
-  • Strengths (positive findings)
-  • Gaps (improvement areas)
-  • Risks (threats)
-  • Opportunities (growth areas)
-  ↓
-Extract Recommendations with Horizon Mapping
-  • 90 days (quick wins)
-  • 12 months (strategic initiatives)
-  • 24+ months (transformation)
-  ↓
-Identify Quick Wins (impact ≥ 7, effort ≤ 4)
-  • High impact, low effort filter
-  • Implementation steps
-  • Expected outcomes
-  ↓
-Build Implementation Roadmap
-  • 3 phases (90 days, 12 months, 24+ months)
-  • Milestones and deliverables
-  • Resource requirements
-  ↓
-Validate Against Zod Schemas
-  • Runtime type checking
-  • Schema compliance
-  • Error reporting
-  ↓
-Output: Canonical IDM (idm_output.json - 63 KB)
-```
-
-**IDM Structure** (Complete Schema):
 ```typescript
-interface IDM {
-  // Metadata
-  meta: {
-    id: UUID;
-    version: string; // "1.0.0"
-    created_at: ISO8601;
-    assessment_run_id: UUID;
-    company_profile_id: UUID;
-    company_name: string;
+interface Phase1Results {
+  phase: 'phase_1';
+  status: 'complete' | 'partial' | 'failed';
+  company_profile_id: string;
+  tier1: {
+    revenue_engine: AnalysisOutput;
+    operational_excellence: AnalysisOutput;
+    financial_strategic: AnalysisOutput;
+    people_leadership: AnalysisOutput;
+    compliance_sustainability: AnalysisOutput;
   };
-
-  // Company Information
-  company: {
-    name: string;
-    industry: string;
-    industry_category: string;
-    year_founded: number;
-    headquarters: string;
-    website: string;
-    size_metrics: {
-      revenue: number;
-      employees: number;
-      locations: number;
-      growth_rate: number;
-    };
-    products_services: string[];
-    competitors: string[];
+  tier2: {
+    growth_readiness: AnalysisOutput;
+    market_position: AnalysisOutput;
+    resource_optimization: AnalysisOutput;
+    risk_resilience: AnalysisOutput;
+    scalability_readiness: AnalysisOutput;
   };
-
-  // Overall Health Scoring
-  scores_summary: {
-    overall_health_score: 0-100;
-    descriptor: string;
-    health_status: 'Critical' | 'Attention' | 'Proficiency' | 'Excellence';
-    trend: 'Improving' | 'Flat' | 'Declining';
-    executive_summary: string;
-  };
-
-  // 4 Strategic Chapters with 12 Dimensions
-  chapters: [
-    {
-      code: 'GE' | 'PH' | 'PL' | 'RS';
-      name: string;
-      description: string;
-      score: 0-100;
-      status: ScoreBand;
-      trajectory: Trajectory;
-      summary: string;
-
-      dimensions: [
-        {
-          code: 'STR' | 'SAL' | 'MKT' | 'CXP' | 'OPS' | 'FIN' |
-                'HRS' | 'LDG' | 'TIN' | 'IDS' | 'RMS' | 'CMP';
-          name: string;
-          description: string;
-          score: 0-100;
-          band: ScoreBand;
-          trajectory: Trajectory;
-
-          sub_indicators: [
-            {
-              id: string;
-              name: string;
-              description: string;
-              score: 0-100;
-              benchmark: {
-                p10: number;
-                p25: number;
-                p50: number; // Median
-                p75: number;
-                p90: number;
-                company_percentile: number;
-              };
-            }
-          ];
-
-          findings: Finding[];
-          recommendations: Recommendation[];
-          quick_wins: QuickWin[];
-          risks: Risk[];
-        }
-      ];
-    }
-  ];
-
-  // Consolidated Findings (30+)
-  findings: [
-    {
-      id: UUID;
-      type: 'strength' | 'gap' | 'risk' | 'opportunity';
-      dimension: DimensionCode;
-      chapter: ChapterCode;
-      title: string;
-      description: string;
-      impact: 'high' | 'medium' | 'low';
-      evidence: string[];
-      recommendations: string[];
-      source_analysis: string; // Phase 1/2/3 analysis source
-    }
-  ];
-
-  // Strategic Recommendations (10+)
-  recommendations: [
-    {
-      id: UUID;
-      title: string;
-      description: string;
-      dimension: DimensionCode;
-      chapter: ChapterCode;
-      priority: 'critical' | 'high' | 'medium' | 'low';
-      horizon: '90_days' | '12_months' | '24_months_plus';
-      estimated_effort: 'low' | 'medium' | 'high';
-      estimated_cost: number;
-      expected_impact: string;
-      success_metrics: string[];
-      prerequisites: string[];
-      responsible_team: string;
-      dependencies: string[];
-    }
-  ];
-
-  // Quick Wins (5+) - High impact, low effort
-  quick_wins: [
-    {
-      id: UUID;
-      title: string;
-      description: string;
-      dimension: DimensionCode;
-      chapter: ChapterCode;
-      impact_score: 7-10;  // Must be ≥ 7
-      effort_score: 0-4;   // Must be ≤ 4
-      timeframe_days: number;
-      implementation_steps: string[];
-      expected_outcome: string;
-      success_metrics: string[];
-    }
-  ];
-
-  // Risk Assessment (18+)
-  risks: [
-    {
-      id: UUID;
-      title: string;
-      description: string;
-      dimension: DimensionCode;
-      chapter: ChapterCode;
-      probability: 'high' | 'medium' | 'low';
-      impact: 'high' | 'medium' | 'low';
-      risk_score: number; // Probability × Impact
-      mitigation_strategy: string;
-      mitigation_timeline: string;
-      responsible_team: string;
-      contingency_plan: string;
-    }
-  ];
-
-  // Implementation Roadmap (18-month plan)
-  roadmap: {
-    overall_timeline_months: 18;
-    total_estimated_investment: number;
-    expected_roi_percentage: number;
-
-    phases: [
-      {
-        phase_number: 1 | 2 | 3;
-        name: string;
-        timeframe: string;
-        focus: string;
-        key_deliverables: string[];
-        success_metrics: string[];
-        resource_requirements: {
-          budget: number;
-          headcount: number;
-          tools: string[];
-        };
-        dependencies: string[];
-        risks: string[];
-      }
-    ];
-  };
-
-  // Benchmark Comparisons
-  benchmark_data: {
-    industry_benchmark: {
-      industry: string;
-      revenue_cohort: string;
-      employee_cohort: string;
-      peer_count: number;
-    };
-    dimension_comparisons: [
-      {
-        dimension: DimensionCode;
-        company_score: number;
-        industry_median: number;
-        company_percentile: number;
-        gap: number; // Positive = above median
-      }
-    ];
+  metadata: {
+    started_at: string;
+    completed_at: string;
+    duration_ms: number;
+    tier1_batch_id: string;
+    tier2_batch_id: string;
+    total_input_tokens: number;
+    total_output_tokens: number;
   };
 }
 ```
 
-**Chapter-Dimension Mapping**:
-```
-Growth Engine (GE):
-  ├─ Strategy (STR)
-  ├─ Sales (SAL)
-  ├─ Marketing (MKT)
-  └─ Customer Experience (CXP)
+---
 
-Performance & Health (PH):
-  ├─ Operations (OPS)
-  └─ Financials (FIN)
+## Phase 2: Deep-dive Cross-analysis
 
-People & Leadership (PL):
-  ├─ Human Resources (HRS)
-  └─ Leadership & Governance (LDG)
+### Overview
 
-Resilience & Safeguards (RS):
-  ├─ Technology & Innovation (TIN)
-  ├─ IT & Data Systems (IDS)
-  ├─ Risk Management & Security (RMS)
-  └─ Compliance & Sustainability (CMP)
-```
+**File**: `src/orchestration/phase2-orchestrator.ts`
+**Purpose**: Generate 5 synthesis analyses from Phase 1 results
+**Duration**: 2-3 minutes
+**AI Calls**: 5 (via Anthropic Batch API)
 
-**Validation**: All IDM data validated against Zod schemas in `/src/types/idm.types.ts` (600 LOC)
+### Analyses
 
-**Key Functions**:
+| Analysis | Purpose | Inputs |
+|----------|---------|--------|
+| **Cross-Dimensional** | Identify patterns across dimensions | All Tier 1 + Tier 2 |
+| **Strategic Recommendations** | Prioritized, actionable recommendations | Phase 1 findings |
+| **Consolidated Risks** | Comprehensive risk inventory | Risk-related findings |
+| **Growth Opportunities** | High-potential growth areas | Growth-related analyses |
+| **Implementation Roadmap** | Phased execution plan | All recommendations |
+
+### Output Structure
+
 ```typescript
-// Main consolidation function
-export function consolidateIDM(input: IDMConsolidatorInput): IDMConsolidationResult {
-  // 1. Extract benchmark profile
-  const benchmarkProfile = extractBenchmarkProfile(input.phase0);
+interface Phase2Results {
+  phase: 'phase_2';
+  status: 'complete' | 'partial' | 'failed';
+  analyses: {
+    cross_dimensional: Phase2AnalysisOutput;
+    strategic_recommendations: Phase2AnalysisOutput;
+    consolidated_risks: Phase2AnalysisOutput;
+    growth_opportunities: Phase2AnalysisOutput;
+    implementation_roadmap: Phase2AnalysisOutput;
+  };
+  summary: {
+    total_recommendations: number;
+    total_risks_identified: number;
+    total_opportunities: number;
+    roadmap_phases: number;
+  };
+  metadata: {
+    started_at: string;
+    completed_at: string;
+    duration_ms: number;
+    batch_id: string;
+  };
+}
+```
 
-  // 2. Calculate scores
-  const dimensionScores = calculateDimensionScores(input.phase0.questionnaire);
-  const chapterScores = calculateChapterScores(dimensionScores);
-  const overallScore = calculateOverallHealthScore(chapterScores);
+---
 
-  // 3. Determine bands and trajectories
-  const scoreBands = determineScoreBands(dimensionScores);
-  const trajectories = determineTrajectories(dimensionScores);
+## Phase 3: Executive Synthesis
 
-  // 4. Extract insights
-  const findings = extractFindings(input.phase1, input.phase2, input.phase3);
-  const recommendations = extractRecommendations(input.phase2, input.phase3);
-  const quickWins = identifyQuickWins(recommendations); // impact ≥ 7, effort ≤ 4
-  const risks = extractRisks(input.phase2);
+### Overview
 
-  // 5. Build roadmap
-  const roadmap = buildImplementationRoadmap(recommendations, input.phase3);
+**File**: `src/orchestration/phase3-orchestrator.ts`
+**Purpose**: Generate executive-level outputs with overall health score
+**Duration**: 2-3 minutes
+**AI Calls**: 5 (via Anthropic Batch API)
 
-  // 6. Assemble IDM
-  const idm: IDM = {
-    meta: { /* ... */ },
-    company: { /* ... */ },
-    scores_summary: { /* ... */ },
-    chapters: [ /* ... */ ],
+### Outputs
+
+| Output | Purpose | Key Content |
+|--------|---------|-------------|
+| **Executive Summary** | High-level strategic overview | 2-3 page executive summary |
+| **Scorecard** | Quantified health metrics | Overall score (0-100), chapter scores |
+| **Action Matrix** | Prioritized actions | Impact/urgency matrix |
+| **Investment Roadmap** | Financial projections | ROI, investment requirements |
+| **Final Recommendations** | Risk-adjusted guidance | Top 5-10 strategic priorities |
+
+### Health Score Calculation
+
+```typescript
+interface Phase3Summary {
+  overall_health_score: number;    // 0-100, weighted average
+  health_status: ScoreBand;        // Excellence/Proficiency/Attention/Critical
+  chapter_scores: {
+    GE: number;
+    PH: number;
+    PL: number;
+    RS: number;
+  };
+  critical_risks_count: number;
+  high_priority_actions_count: number;
+  total_investment_required: string;
+  expected_roi: string;
+}
+```
+
+### Score Bands
+
+| Band | Range | Description |
+|------|-------|-------------|
+| **Excellence** | 80-100 | Exceptional performance, strategic leadership position |
+| **Proficiency** | 60-79 | Solid performance, competitive positioning |
+| **Attention** | 40-59 | Needs improvement, strategic vulnerabilities |
+| **Critical** | 0-39 | Urgent intervention required |
+
+---
+
+## Phase 4: IDM Consolidation
+
+### Overview
+
+**File**: `src/orchestration/idm-consolidator.ts` (1,195 lines)
+**Purpose**: Consolidate all phases into canonical Insights Data Model
+**Duration**: <1 second
+**AI Calls**: None
+
+### Consolidation Process
+
+```typescript
+function consolidateIDM(input: IDMConsolidatorInput): IDMConsolidationResult {
+  // 1. Build company profile from Phase 0
+  const companyProfile = buildCompanyProfile(input.companyProfile);
+
+  // 2. Extract questions organized by dimension
+  const questions = extractQuestions(input.questionnaireResponses);
+
+  // 3. Build 12 dimensions from Phase 1-3 content
+  const dimensions = buildDimensions(input.phase1Results, input.phase2Results, questions);
+
+  // 4. Build 4 chapters from dimensions
+  const chapters = buildChapters(dimensions, input.phase1Results, input.phase2Results);
+
+  // 5. Extract and categorize findings
+  const findings = extractFindings(input.phase1Results, input.phase2Results);
+
+  // 6. Extract recommendations with priorities
+  const recommendations = extractRecommendations(input.phase1Results, input.phase2Results, input.phase3Results);
+
+  // 7. Identify quick wins (high impact, low effort)
+  const quickWins = identifyQuickWins(recommendations);
+
+  // 8. Extract and categorize risks
+  const risks = extractRisks(input.phase1Results, input.phase2Results, input.phase3Results);
+
+  // 9. Build implementation roadmap
+  const roadmap = buildRoadmap(recommendations, input.phase3Results);
+
+  // 10. Calculate health scores
+  const scoresSummary = calculateScores(dimensions, chapters, input.phase3Results);
+
+  // 11. Collect visualizations
+  const visualizations = collectVisualizations(input.phase1Results, input.phase2Results);
+
+  // 12. Validate with Zod schema
+  const idm = IDMSchema.parse({
+    metadata,
+    scores_summary,
+    chapters,
     findings,
     recommendations,
     quick_wins,
     risks,
     roadmap,
-    benchmark_data: { /* ... */ }
+    visualizations
+  });
+
+  return { success: true, idm };
+}
+```
+
+### Key Functions
+
+| Function | Purpose |
+|----------|---------|
+| `extractQuestions()` | Maps questionnaire responses to IDM question format |
+| `buildDimensions()` | Creates 12 dimension objects with scores and narratives |
+| `buildChapters()` | Groups dimensions into 4 chapters |
+| `extractFindings()` | Extracts key findings from AI analyses |
+| `extractRecommendations()` | Extracts and prioritizes recommendations |
+| `identifyQuickWins()` | Filters for high-impact, low-effort recommendations |
+| `extractRisks()` | Extracts and categorizes risks by severity |
+| `buildRoadmap()` | Creates phased implementation plan |
+| `calculateScores()` | Computes weighted health scores |
+
+---
+
+## Phase 5: Report Generation
+
+### Overview
+
+**File**: `src/orchestration/phase5-orchestrator.ts` (780 lines)
+**Purpose**: Generate 17 HTML reports from IDM
+**Duration**: ~100ms
+**AI Calls**: None
+
+### Report Generation Process
+
+```typescript
+async function executePhase5(config: Phase5Config): Promise<Phase5Result> {
+  // 1. Load Phase 0-4 outputs
+  const phase0 = await loadPhaseOutput('phase0');
+  const phase1 = await loadPhaseOutput('phase1');
+  const phase2 = await loadPhaseOutput('phase2');
+  const phase3 = await loadPhaseOutput('phase3');
+  const phase4 = await loadPhaseOutput('phase4');
+  const idm = await loadIDM();
+
+  // 2. Extract narrative content from phase outputs
+  const narratives = NarrativeExtractionService.extract(phase1, phase2, phase3);
+
+  // 3. Build report context
+  const ctx: ReportContext = {
+    idm,
+    companyProfile: phase0.companyProfile,
+    phase1Output: phase1,
+    phase2Output: phase2,
+    phase3Output: phase3,
+    narrativeContent: narratives,
+    runId: config.runId,
+    metadata: { generatedAt: new Date().toISOString() }
   };
 
-  // 7. Validate
-  const validation = IDMSchema.safeParse(idm);
+  // 4. Generate each report type
+  const reports = await Promise.all(
+    config.reportTypes.map(type => generateReport(type, ctx, options))
+  );
 
-  return {
-    idm,
-    validationPassed: validation.success,
-    validationErrors: validation.success ? [] : validation.error.errors
+  // 5. Write reports to output directory
+  await writeReports(reports, outputDir);
+
+  // 6. Generate manifest
+  await writeManifest(reports, outputDir);
+
+  return { phase: 'phase_5', status: 'complete', reports };
+}
+```
+
+### Report Builders
+
+| Report Type | Builder File | Audience |
+|-------------|--------------|----------|
+| Comprehensive | `comprehensive-report.builder.ts` | Board, executives |
+| Owner | `owners-report.builder.ts` | Business owners |
+| Executive Brief | `executive-brief.builder.ts` | C-suite |
+| Quick Wins | `quick-wins-report.builder.ts` | Operations |
+| Risk | `risk-report.builder.ts` | Risk committee |
+| Roadmap | `roadmap-report.builder.ts` | Project managers |
+| Financial | `financial-report.builder.ts` | CFO, finance |
+| Deep Dive (4) | `deep-dive-report.builder.ts` | Department heads |
+| Manager (6) | Various builders | Functional managers |
+
+### Output Structure
+
+```
+output/reports/{run-id}/
+├── manifest.json                   # Report inventory
+├── comprehensive.html              # ~50 pages
+├── owner.html                      # ~20 pages
+├── executiveBrief.html            # 2-3 pages
+├── quickWins.html                 # 5-10 pages
+├── risk.html                      # 10-15 pages
+├── roadmap.html                   # 10-15 pages
+├── financial.html                 # 10-15 pages
+├── deep-dive-ge.html              # 15-20 pages
+├── deep-dive-ph.html              # 10-15 pages
+├── deep-dive-pl.html              # 10-15 pages
+├── deep-dive-rs.html              # 15-20 pages
+├── employees.html                 # 5-10 pages
+├── managersOperations.html        # 10-15 pages
+├── managersSalesMarketing.html    # 10-15 pages
+├── managersFinancials.html        # 10-15 pages
+├── managersStrategy.html          # 10-15 pages
+└── managersItTechnology.html      # 10-15 pages
+```
+
+---
+
+## The Insights Data Model (IDM)
+
+### Overview
+
+**File**: `src/types/idm.types.ts` (890 lines)
+**Purpose**: Canonical data structure for all report generation
+
+### Complete IDM Schema
+
+```typescript
+interface IDM {
+  metadata: IDMMetadata;
+  scores_summary: ScoresSummary;
+  chapters: Chapter[];              // 4 chapters
+  findings: Finding[];              // Key findings
+  recommendations: Recommendation[]; // Prioritized recommendations
+  quick_wins: QuickWin[];           // High-impact, low-effort
+  risks: Risk[];                    // Categorized risks
+  roadmap: RoadmapPhase[];          // Implementation phases
+  visualizations: Visualization[];   // Chart data
+}
+
+interface IDMMetadata {
+  assessment_run_id: string;
+  company_profile_id: string;
+  company_name: string;
+  industry: string;
+  assessment_date: string;
+  generated_at: string;
+  pipeline_version: string;
+  idm_version: string;
+}
+
+interface ScoresSummary {
+  overall_health_score: number;     // 0-100
+  overall_band: ScoreBand;
+  chapter_scores: Record<ChapterCode, ChapterScore>;
+  dimension_scores: Record<DimensionCode, number>;
+  benchmarks: {
+    overall_benchmark: number;
+    industry_percentile: number;
+  };
+}
+
+interface Chapter {
+  code: ChapterCode;                // GE, PH, PL, RS
+  name: string;
+  description: string;
+  score: number;
+  band: ScoreBand;
+  dimensions: Dimension[];          // 2-4 dimensions per chapter
+  key_insights: string[];
+  critical_issues: string[];
+}
+
+interface Dimension {
+  code: DimensionCode;              // STR, SAL, MKT, etc.
+  name: string;
+  description: string;
+  chapter: ChapterCode;
+  score: number;
+  band: ScoreBand;
+  benchmark: number;
+  trend: 'improving' | 'stable' | 'declining';
+  questions: IDMQuestion[];
+  sub_indicators: SubIndicator[];
+  strengths: string[];
+  weaknesses: string[];
+  opportunities: string[];
+  narrative: string;                // AI-generated analysis
+}
+
+interface Finding {
+  id: string;
+  type: 'strength' | 'weakness' | 'opportunity' | 'threat';
+  severity: 'critical' | 'high' | 'medium' | 'low';
+  dimension: DimensionCode;
+  chapter: ChapterCode;
+  title: string;
+  description: string;
+  evidence: string[];
+  impact: string;
+}
+
+interface Recommendation {
+  id: string;
+  priority: 'critical' | 'high' | 'medium' | 'low';
+  dimension: DimensionCode;
+  chapter: ChapterCode;
+  title: string;
+  description: string;
+  rationale: string;
+  expected_impact: string;
+  effort_level: 'low' | 'medium' | 'high';
+  timeframe: 'immediate' | 'short-term' | 'medium-term' | 'long-term';
+  dependencies: string[];
+  success_metrics: string[];
+  estimated_cost?: string;
+  estimated_roi?: string;
+}
+
+interface QuickWin {
+  id: string;
+  dimension: DimensionCode;
+  title: string;
+  description: string;
+  impact: 'high' | 'medium';
+  effort: 'low';
+  timeframe: 'immediate' | 'short-term';
+  steps: string[];
+  expected_outcome: string;
+}
+
+interface Risk {
+  id: string;
+  severity: 'critical' | 'high' | 'medium' | 'low';
+  likelihood: 'high' | 'medium' | 'low';
+  category: string;
+  dimension: DimensionCode;
+  chapter: ChapterCode;
+  title: string;
+  description: string;
+  potential_impact: string;
+  mitigation_strategy: string;
+  owner?: string;
+  timeline?: string;
+}
+
+interface RoadmapPhase {
+  phase: number;
+  name: string;
+  timeframe: string;              // "0-30 days", "30-90 days", etc.
+  focus_areas: string[];
+  key_initiatives: RoadmapInitiative[];
+  dependencies: string[];
+  success_metrics: string[];
+  estimated_investment: string;
+  expected_outcomes: string[];
+}
+```
+
+### Question Mappings
+
+The IDM contains 87 question mappings:
+
+```typescript
+const QUESTION_MAPPINGS: QuestionMapping[] = [
+  // Strategy (7 questions)
+  { questionId: 'STR_01', dimension: 'STR', subIndicator: 'competitive_differentiation', weight: 0.15 },
+  { questionId: 'STR_02', dimension: 'STR', subIndicator: 'market_share', weight: 0.12 },
+  { questionId: 'STR_03', dimension: 'STR', subIndicator: 'sales_growth', weight: 0.15 },
+  { questionId: 'STR_04', dimension: 'STR', subIndicator: 'business_goals', weight: 0.20 },
+  { questionId: 'STR_05', dimension: 'STR', subIndicator: 'goals_barriers', weight: 0.10 },
+  { questionId: 'STR_06', dimension: 'STR', subIndicator: 'plan_review', weight: 0.15 },
+  { questionId: 'STR_07', dimension: 'STR', subIndicator: 'growth_exit_plan', weight: 0.13 },
+
+  // Sales (8 questions)
+  { questionId: 'SAL_01', dimension: 'SAL', subIndicator: 'sales_mix', weight: 0.10 },
+  { questionId: 'SAL_02', dimension: 'SAL', subIndicator: 'target_alignment', weight: 0.15 },
+  // ... 85 more mappings
+];
+```
+
+### Dimension Weights
+
+```typescript
+const DIMENSION_WEIGHTS: Record<DimensionCode, number> = {
+  STR: 0.10,  // Strategy - high impact on direction
+  SAL: 0.09,  // Sales - revenue generation
+  MKT: 0.08,  // Marketing - demand generation
+  CXP: 0.08,  // Customer Experience - retention
+  OPS: 0.09,  // Operations - efficiency
+  FIN: 0.10,  // Financials - high impact on viability
+  HRS: 0.08,  // Human Resources - talent
+  LDG: 0.10,  // Leadership - high multiplier effect
+  TIN: 0.08,  // Technology & Innovation
+  IDS: 0.07,  // IT/Data/Systems
+  RMS: 0.07,  // Risk Management
+  CMP: 0.06   // Compliance - foundational
+};
+// Total: 1.00
+```
+
+---
+
+## AI Prompt Engineering
+
+### Prompt Architecture
+
+All prompts follow a consistent structure defined in `src/prompts/templates/base-analysis-prompt.ts`:
+
+```typescript
+// 1. System Prompt (role + expertise + frameworks)
+const systemPrompt = `
+# SYSTEM PROMPT: [Analysis Type]
+
+### Your Role & Expertise
+You are a senior business consultant with 20+ years of experience...
+
+### Analysis Scope
+[Dimensions and questions covered]
+
+### Analytical Frameworks & Standards
+- [Framework 1]
+- [Framework 2]
+...
+`;
+
+// 2. User Prompt (data + instructions)
+function buildUserPrompt(data): string {
+  return `
+## COMPANY CONTEXT
+${companyContext}
+
+## QUESTIONNAIRE DATA
+${questionnaireData}
+
+## BENCHMARK DATA
+${benchmarkData}
+
+## ANALYSIS INSTRUCTIONS
+${specificInstructions}
+
+${ANALYSIS_QUALITY_STANDARDS}
+${VISUALIZATION_OUTPUT_INSTRUCTIONS}
+`;
+}
+```
+
+### Visualization Output Instructions
+
+```typescript
+const VISUALIZATION_OUTPUT_INSTRUCTIONS = `
+## OUTPUT FORMAT REQUIREMENTS
+
+Your response MUST be valid JSON conforming to the following structure.
+Do NOT include any text outside the JSON block.
+Do NOT use ASCII graphics, progress bars, or text-based visualizations.
+
+### Required JSON Structure:
+
+{
+  "analysisType": "string",
+  "narrative": {
+    "executiveSummary": "2-3 sentence summary",
+    "sections": [
+      {
+        "id": "unique_section_id",
+        "title": "Section Title",
+        "content": "Markdown content with [viz:id] references",
+        "visualizationRefs": ["viz_id_1", "viz_id_2"]
+      }
+    ]
+  },
+  "visualizations": [
+    {
+      "id": "unique_id",
+      "type": "gauge|bar|radar|comparison|heatmap|sparkline",
+      "data": { /* type-specific data */ },
+      "context": {
+        "dimension": "STR",
+        "chapter": "GE",
+        "label": "Display Label",
+        "placement": "section_header|inline|comparison_block"
+      }
+    }
+  ],
+  "metadata": {
+    "dimensionsCovered": ["STR", "SAL"],
+    "confidenceLevel": "high|medium|low",
+    "dataQuality": "complete|partial|limited"
+  }
+}
+
+### CRITICAL RULES:
+1. NEVER use ASCII characters for visualizations
+2. ALWAYS reference visualizations by ID: [viz:visualization_id]
+3. ALWAYS include benchmark data when available
+4. Output ONLY valid JSON
+`;
+```
+
+### Analytical Frameworks Applied
+
+| Analysis | Frameworks |
+|----------|------------|
+| Revenue Engine | CLV Economics, Sales Funnel, RevOps, Strategic Planning Maturity |
+| Operational Excellence | Lean/Six Sigma, OEE, Capacity Planning |
+| Financial Strategic | DuPont Analysis, Cash Flow Analysis, Working Capital |
+| People & Leadership | Employee Lifecycle, Leadership Competency, Culture Assessment |
+| Compliance & Sustainability | GRC Framework, ESG Assessment, Risk Management |
+
+---
+
+## Visualization System
+
+### Architecture
+
+The visualization system has two layers:
+
+1. **AI Output Layer**: Structured JSON from AI analyses
+2. **Rendering Layer**: HTML/SVG generation in report builders
+
+### Visualization Types
+
+#### Gauge
+```typescript
+interface GaugeVisualization {
+  id: string;
+  type: 'gauge';
+  data: {
+    value: number;      // Current score
+    max: number;        // Maximum (usually 100)
+    benchmark: number;  // Industry benchmark
+    trend: 'up' | 'down' | 'flat';
+  };
+  context: {
+    dimension?: DimensionCode;
+    chapter?: ChapterCode;
+    label: string;
+    placement: 'section_header' | 'inline';
   };
 }
 ```
 
-**Performance**: <1 second (no API calls, pure data compilation)
+#### Bar Chart
+```typescript
+interface BarVisualization {
+  id: string;
+  type: 'bar';
+  data: {
+    clientValue: number;
+    benchmarkValue: number;
+    unit: string;           // "%", "$", "days", etc.
+    higherIsBetter: boolean;
+  };
+  context: {
+    dimension?: DimensionCode;
+    label: string;
+    placement: 'inline' | 'comparison_block';
+  };
+}
+```
 
-**Output**: idm_output.json (63 KB) - Single source of truth for all reports
+#### Radar Chart
+```typescript
+interface RadarVisualization {
+  id: string;
+  type: 'radar';
+  data: {
+    dimensions: string[];      // Axis labels
+    clientValues: number[];    // Client scores
+    benchmarkValues: number[]; // Benchmark scores
+  };
+  context: {
+    chapter?: ChapterCode;
+    label: string;
+    placement: 'section_header';
+  };
+}
+```
+
+#### Comparison Table
+```typescript
+interface ComparisonVisualization {
+  id: string;
+  type: 'comparison';
+  data: {
+    metrics: Array<{
+      label: string;
+      clientValue: number;
+      benchmarkValue: number;
+      status: 'good' | 'caution' | 'critical';
+    }>;
+  };
+  context: {
+    dimension?: DimensionCode;
+    label: string;
+    placement: 'comparison_block';
+  };
+}
+```
+
+### Chart Rendering
+
+Charts are rendered using D3.js in `src/orchestration/reports/charts/`:
+
+```typescript
+// Gauge chart rendering
+export function renderGaugeChart(data: GaugeData): string {
+  const svg = d3.create('svg')
+    .attr('width', 200)
+    .attr('height', 120);
+
+  // Draw arc
+  const arc = d3.arc()
+    .innerRadius(40)
+    .outerRadius(55)
+    .startAngle(-Math.PI / 2)
+    .endAngle(Math.PI / 2);
+
+  // ... render gauge
+
+  return svg.node().outerHTML;
+}
+```
 
 ---
 
-### Phase 5: Report Generation
+## Report Builder Architecture
 
-**File**: `src/orchestration/phase5-orchestrator.ts` (800 LOC)
+### Builder Pattern
 
-**Purpose**: Generate 17 professional HTML reports from the IDM and phase outputs.
+Each report builder follows a consistent pattern:
 
-**Report Types**:
-
-**Core Reports (7)**:
-1. **Comprehensive Assessment** (60-215 KB HTML)
-   - Complete end-to-end analysis
-   - All dimensions, findings, recommendations
-   - 80-100 pages when printed
-
-2. **Business Owner Report** (17-100 KB HTML)
-   - Owner-focused insights
-   - Direct "you/your" language
-   - Executive priorities
-   - 15-20 pages
-
-3. **Executive Brief** (19 KB HTML)
-   - One-page summary
-   - Key metrics dashboard
-   - Top 3 priorities
-   - Critical issues only
-
-4. **Quick Wins Action Plan** (25 KB HTML)
-   - 5+ immediate opportunities
-   - 30-90 day implementation
-   - Step-by-step guides
-   - 10-15 pages
-
-5. **Risk Assessment** (21 KB HTML)
-   - Risk heat map
-   - Critical risks (high/high)
-   - Mitigation strategies
-   - 15-20 pages
-
-6. **Implementation Roadmap** (29 KB HTML)
-   - 18-month phased plan
-   - Milestones and dependencies
-   - Resource requirements
-   - 10-15 pages
-
-7. **Financial Impact Analysis** (25 KB HTML)
-   - ROI projections by initiative
-   - Cash flow analysis
-   - Break-even analysis
-   - 15-20 pages
-
-**Deep Dive Reports (4)**:
-8. **Growth Engine Deep Dive** (35 KB HTML)
-   - Strategy, Sales, Marketing, CX analysis
-   - Revenue growth strategies
-   - Market positioning
-   - 25-30 pages
-
-9. **Performance & Health Deep Dive** (27 KB HTML)
-   - Operations, Financials analysis
-   - Operational efficiency
-   - Financial health
-   - 20-25 pages
-
-10. **People & Leadership Deep Dive** (26 KB HTML)
-    - HR, Leadership & Governance analysis
-    - Culture and talent management
-    - Leadership effectiveness
-    - 20-25 pages
-
-11. **Resilience & Safeguards Deep Dive** (32 KB HTML)
-    - Technology, IT, Risk, Compliance analysis
-    - Technology readiness
-    - Cybersecurity
-    - 25-30 pages
-
-**Recipe-Based Reports (6)**:
-12. **Employee Business Health Summary**
-13. **Operations Manager Report**
-14. **Sales & Marketing Manager Report**
-15. **Financial Manager Report**
-16. **Strategy & Planning Manager Report**
-17. **IT & Technology Manager Report**
-
-**Narrative Integration**:
-- **26,253 words** of AI-generated analysis integrated
-- **Phase 1**: 9,746 words
-- **Phase 2**: 7,317 words
-- **Phase 3**: 9,190 words
-
-**Report Builder Architecture**:
-
-Each report builder follows this pattern:
 ```typescript
-// Example: Comprehensive Report Builder
-export function buildComprehensiveReport(
-  context: ReportContext,
-  narratives: NarrativeContent,
-  options: ReportRenderOptions = {}
-): string {
-  const { idm, brand } = context;
+export async function buildReport(
+  ctx: ReportContext,
+  options: ReportRenderOptions
+): Promise<GeneratedReport> {
+  // 1. Extract relevant data from context
+  const { idm, companyProfile, narrativeContent } = ctx;
 
-  // 1. Build sections
+  // 2. Generate sections
   const sections = [
-    buildHeader(idm, brand),
-    buildTableOfContents(),
-    buildExecutiveSummary(idm, narratives),
-    buildOverallHealthSection(idm),
-    buildChapterSections(idm, narratives),
-    buildDimensionDetails(idm, narratives),
-    buildFindingsSection(idm),
-    buildRecommendationsSection(idm),
-    buildQuickWinsSection(idm),
-    buildRiskAssessment(idm),
-    buildRoadmap(idm),
-    buildBenchmarkComparisons(idm),
-    buildAppendices(idm)
+    generateHeader(ctx, reportName),
+    generateTableOfContents(tocItems),
+    generateExecutiveSummary(idm, narratives),
+    generateScorecard(idm.scores_summary),
+    // ... more sections
+    generateFooter(ctx)
   ];
 
-  // 2. Integrate AI narrative
-  const enrichedSections = sections.map(section =>
-    enrichWithNarrative(section, narratives)
-  );
-
   // 3. Generate charts
-  const charts = generateCharts(idm);
+  const charts = await Promise.all([
+    generateChapterRadar(ctx),
+    generateScoreBars(ctx),
+    // ... more charts
+  ]);
 
-  // 4. Apply HTML template
-  return renderHTMLTemplate(
-    enrichedSections,
-    charts,
-    brand,
+  // 4. Wrap in HTML document
+  const html = wrapHtmlDocument(
+    sections.join('\n'),
     {
-      title: 'Comprehensive Assessment Report',
-      reportType: 'comprehensive',
-      generatedAt: new Date().toISOString()
+      title: reportName,
+      styles: generateUnifiedStyles(),
+      scripts: getChartScripts()
     }
   );
+
+  return {
+    type: reportType,
+    name: reportName,
+    html,
+    metadata: { generatedAt: new Date().toISOString() }
+  };
 }
 ```
 
-**Chart Generation System** (src/orchestration/reports/charts/):
-- **Types**: Bar, Donut, Radar, Gauge, Heatmap, Timeline
-- **Technology**: SVG-based (no Chart.js dependencies in output)
-- **Accessibility**: WCAG 2.1 AA compliant
-  - ARIA labels for screen readers
-  - Color-blind friendly palettes
-  - Keyboard navigation support
-  - Alt text for all visual elements
-- **Responsive**: Adapts to different screen sizes
+### ReportContext Interface
 
-**Visual Components** (src/orchestration/reports/components/visual/):
-1. Action cards with priority indicators
-2. Metric cards with trend sparklines
-3. KPI dashboard with gauge charts
-4. Risk matrix (probability × impact)
-5. Score tiles with color bands
-6. Benchmark callouts with industry comparison
-7. Timeline/roadmap visualization
-8. Evidence citations with source references
-9. Key takeaways with executive summary
-10. Status badges (Excellence/Proficiency/Attention/Critical)
-
-**HTML Template System** (`html-template.ts` - 34 KB, 900 LOC):
 ```typescript
-export function renderHTMLTemplate(
-  content: string,
-  brand: BrandConfig,
-  meta: ReportMeta
-): string {
-  return `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${meta.title} - ${brand.name}</title>
-
-  <style>
-    /* Reset & Base Styles */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      font-size: 16px;
-      line-height: 1.6;
-      color: #1f2937;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem;
-      background: #ffffff;
-    }
-
-    /* Typography */
-    h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: #111827;
-      margin-bottom: 1rem;
-    }
-
-    h2 {
-      font-size: 2rem;
-      font-weight: 600;
-      color: #1f2937;
-      margin-top: 3rem;
-      margin-bottom: 1.5rem;
-      border-bottom: 2px solid #e5e7eb;
-      padding-bottom: 0.5rem;
-    }
-
-    h3 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: #374151;
-      margin-top: 2rem;
-      margin-bottom: 1rem;
-    }
-
-    p {
-      margin-bottom: 1rem;
-    }
-
-    /* Score Bands */
-    .score-band-excellence {
-      background: #d1fae5;
-      color: #065f46;
-      border-left: 4px solid #10b981;
-    }
-
-    .score-band-proficiency {
-      background: #dbeafe;
-      color: #1e3a8a;
-      border-left: 4px solid #3b82f6;
-    }
-
-    .score-band-attention {
-      background: #fed7aa;
-      color: #78350f;
-      border-left: 4px solid #f59e0b;
-    }
-
-    .score-band-critical {
-      background: #fee2e2;
-      color: #7f1d1d;
-      border-left: 4px solid #ef4444;
-    }
-
-    /* Components */
-    .score-card {
-      display: flex;
-      align-items: center;
-      padding: 2rem;
-      border-radius: 0.75rem;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      margin: 2rem 0;
-    }
-
-    .score-value {
-      font-size: 4rem;
-      font-weight: 700;
-      margin-right: 2rem;
-    }
-
-    .dimension-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-      margin: 2rem 0;
-    }
-
-    .recommendation-card {
-      border-left: 4px solid;
-      padding: 1.5rem;
-      margin-bottom: 1rem;
-      background: #f9fafb;
-      border-radius: 0.5rem;
-    }
-
-    .priority-critical {
-      border-left-color: #ef4444;
-    }
-
-    .priority-high {
-      border-left-color: #f59e0b;
-    }
-
-    .priority-medium {
-      border-left-color: #3b82f6;
-    }
-
-    /* Print Styles */
-    @media print {
-      body {
-        max-width: none;
-        padding: 0;
-      }
-
-      .no-print {
-        display: none;
-      }
-
-      h2 {
-        page-break-before: always;
-      }
-
-      .score-card,
-      .recommendation-card,
-      .dimension-grid > * {
-        page-break-inside: avoid;
-      }
-    }
-
-    /* Accessibility */
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-
-    @media (prefers-color-scheme: dark) {
-      body {
-        background: #111827;
-        color: #f9fafb;
-      }
-
-      h1, h2, h3 {
-        color: #f9fafb;
-      }
-    }
-  </style>
-</head>
-<body>
-  <header class="report-header">
-    <img src="${brand.logoUrl}" alt="${brand.name}" height="60">
-    <h1>${meta.title}</h1>
-    <p class="report-meta">
-      Generated: ${new Date(meta.generatedAt).toLocaleDateString()}
-    </p>
-  </header>
-
-  <main class="report-content">
-    ${content}
-  </main>
-
-  <footer class="report-footer">
-    <p>&copy; ${new Date().getFullYear()} ${brand.name}. All rights reserved.</p>
-    <p>Report ID: ${meta.reportId}</p>
-    <p>Assessment Run: ${meta.assessmentRunId}</p>
-  </footer>
-</body>
-</html>
-  `;
+interface ReportContext {
+  idm: IDM;
+  companyProfile: NormalizedCompanyProfile;
+  phase1Output: Phase1Results;
+  phase2Output: Phase2Results;
+  phase3Output: Phase3Results;
+  narrativeContent: NarrativeContent;
+  runId: string;
+  metadata: {
+    generatedAt: string;
+    pipelineVersion: string;
+  };
 }
 ```
 
-**Report Output Structure**:
-```
-output/reports/{assessment_run_id}/
-  ├── comprehensive.html (215 KB)
-  ├── comprehensive.meta.json
-  ├── owner.html (100 KB)
-  ├── owner.meta.json
-  ├── executiveBrief.html (19 KB)
-  ├── executiveBrief.meta.json
-  ├── quickWins.html (25 KB)
-  ├── quickWins.meta.json
-  ├── risk.html (21 KB)
-  ├── risk.meta.json
-  ├── roadmap.html (29 KB)
-  ├── roadmap.meta.json
-  ├── financial.html (25 KB)
-  ├── financial.meta.json
-  ├── deep-dive-ge.html (35 KB)
-  ├── deep-dive-ge.meta.json
-  ├── deep-dive-ph.html (27 KB)
-  ├── deep-dive-ph.meta.json
-  ├── deep-dive-pl.html (26 KB)
-  ├── deep-dive-pl.meta.json
-  ├── deep-dive-rs.html (32 KB)
-  ├── deep-dive-rs.meta.json
-  ├── managersOperations.html
-  ├── managersSalesMarketing.html
-  ├── managersFinancials.html
-  ├── managersStrategy.html
-  ├── managersItTechnology.html
-  └── manifest.json
-```
+### Visual Components
 
-**Performance**: ~63ms execution (no API calls, pure HTML generation)
+Located in `src/orchestration/reports/components/visual/`:
 
-**Total Output**: 554 KB of professional HTML reports
+| Component | File | Purpose |
+|-----------|------|---------|
+| Gauge | `gauge.component.ts` | Score visualization |
+| Radar Chart | `radar-chart.component.ts` | Multi-dimensional comparison |
+| Bar Chart | `bar-chart.component.ts` | Value comparisons |
+| Sparkline | `sparkline.component.ts` | Trend visualization |
+| Heatmap | `heatmap.component.ts` | Matrix visualization |
+| Score Tile | `score-tile.component.ts` | Score cards |
+| Metric Card | `metric-card.component.ts` | KPI display |
+| Risk Matrix | `risk-matrix.component.ts` | Risk visualization |
+| Roadmap Timeline | `roadmap-timeline.component.ts` | Implementation timeline |
+| KPI Dashboard | `kpi-dashboard.component.ts` | Dashboard layout |
 
 ---
 
-## Technology Stack
+## Service Layer
 
-### Core Technologies
+### Raw Assessment Storage
 
-**Runtime & Language**:
-- **Node.js**: 18+ with ES Modules
-- **TypeScript**: 5.3+ with strict mode enabled
-- **tsx**: Direct TypeScript execution for Node.js
+**File**: `src/services/raw-assessment-storage.ts`
 
-**AI Integration**:
-- **Anthropic Claude API**: Batch API for cost optimization
-- **Model**: Claude Opus 4.5 (`claude-opus-4-5-20251101`)
-- **SDK**: `@anthropic-ai/sdk` v0.32.1
+Handles immutable storage of raw webhook data:
 
-**Validation & Type Safety**:
-- **Zod**: v3.25+ for runtime type checking and validation
-- All data structures validated at boundaries
-- Schema-driven development
+```typescript
+class RawAssessmentStorageService {
+  async store(webhookPayload: WebhookPayload): Promise<StorageResult> {
+    const runId = generateUUID();
+    const path = `data/raw/${runId}/raw_assessment.json`;
 
-**Logging**:
-- **Pino**: v8.16+ structured logging
-- **Pino-pretty**: v10.2+ for development formatting
-- Hierarchical module-based logging with context
+    await fs.writeFile(path, JSON.stringify({
+      payload: webhookPayload,
+      metadata: {
+        received_at: new Date().toISOString(),
+        source: 'webhook',
+        version: SCHEMA_VERSION
+      }
+    }));
 
-**Optional Database**:
-- **PostgreSQL**: 12+ with connection pooling
-- **pg**: v8.11+ Node.js driver
-- Used for persistence layer (assessment index, raw storage)
-
-**Utilities**:
-- **uuid**: v9.0+ for ID generation
-- **dotenv**: v16.3+ for environment configuration
-- **marked**: v17.0+ for markdown parsing
-- **canvas**: v2.11+ for chart generation (optional)
-- **chart.js**: v4.4+ for chart library (optional)
-- **chartjs-node-canvas**: v4.1+ for Node chart rendering (optional)
-
-### Key Dependencies
-
-```json
-{
-  "dependencies": {
-    "@anthropic-ai/sdk": "^0.32.1",
-    "canvas": "^2.11.2",
-    "chart.js": "^4.4.1",
-    "chartjs-node-canvas": "^4.1.6",
-    "dotenv": "^16.3.1",
-    "marked": "^17.0.1",
-    "pg": "^8.11.3",
-    "pino": "^8.16.2",
-    "pino-pretty": "^10.2.3",
-    "uuid": "^9.0.1",
-    "zod": "^3.25.76"
-  },
-  "devDependencies": {
-    "@types/node": "^20.10.5",
-    "@types/pg": "^8.10.9",
-    "@types/uuid": "^9.0.7",
-    "@vitest/coverage-v8": "^1.1.0",
-    "typescript": "^5.3.3",
-    "vitest": "^1.1.0",
-    "tsx": "^4.7.0",
-    "eslint": "^8.56.0",
-    "prettier": "^3.1.1"
+    return { runId, path };
   }
 }
 ```
 
-### AI Model Specifications
+### Narrative Extraction Service
 
-**Primary Model**: Claude Opus 4.5
+**File**: `src/services/narrative-extraction.service.ts`
 
-**Capabilities**:
-- **Max Output Tokens**: 64,000 (2x vs Opus 4)
-- **Extended Thinking**: Up to 128,000 tokens (32,000 default budget)
-- **Context Window**: 200,000 tokens
-- **Temperature**: 0.0-1.0 (default: 1.0 for extended thinking)
-- **Batch API**: 50% cost reduction vs on-demand
-- **Cost**: 67% cheaper than Opus 4
+Extracts AI-generated narratives from phase outputs:
 
-**Configuration** (.env):
-```bash
-# AI Model Configuration
-DEFAULT_MODEL=claude-opus-4-5-20251101
-DEFAULT_MAX_TOKENS=64000
-DEFAULT_THINKING_TOKENS=32000
-DEFAULT_TEMPERATURE=1.0
+```typescript
+class NarrativeExtractionService {
+  static extract(
+    phase1Output: Phase1Results,
+    phase2Output: Phase2Results,
+    phase3Output: Phase3Results
+  ): NarrativeContent {
+    return {
+      phase1: {
+        tier1: {
+          revenueEngine: this.safeGetContent(phase1.tier1, 'revenue_engine'),
+          operationalExcellence: this.safeGetContent(phase1.tier1, 'operational_excellence'),
+          // ...
+        },
+        tier2: { /* ... */ }
+      },
+      phase2: { /* ... */ },
+      phase3: { /* ... */ },
+      metadata: {
+        totalWords: this.countTotalWords(content),
+        contentSufficient: totalWords >= 15000
+      }
+    };
+  }
 
-# Batch API Configuration
-BATCH_POLL_INTERVAL_MS=30000   # 30 seconds
-BATCH_TIMEOUT_MS=3600000        # 1 hour
+  static markdownToHtml(markdown: string): string {
+    return convertMarkdownToHtml(markdown);
+  }
+}
+```
+
+### Benchmark Lookup Service
+
+**File**: `src/services/benchmark-lookup-service.ts`
+
+Retrieves industry benchmarks with hierarchical fallback:
+
+```typescript
+class BenchmarkLookupService {
+  async lookup(selectors: BenchmarkSelectors): Promise<BenchmarkMatchResult> {
+    // Try exact match
+    let result = await this.exactMatch(selectors);
+    if (result) return { dataset: result, match_level: 'exact' };
+
+    // Fallback 1: Relax revenue cohort
+    result = await this.fallback1(selectors);
+    if (result) return { dataset: result, match_level: 'fallback_1' };
+
+    // Fallback 2: Relax employee cohort
+    // Fallback 3: Relax industry vertical
+    // Fallback 4: Use general industry benchmarks
+
+    return { dataset: generalBenchmarks, match_level: 'fallback_4' };
+  }
+}
 ```
 
 ---
 
-## Data Flow & Transformation
+## Data Transformation Layer
 
-### Complete Pipeline Data Flow
+### Company Profile Transformer
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    WEBHOOK INPUT (JSON)                      │
-│                   93 Questions + Profile                     │
-└──────────────────────────┬──────────────────────────────────┘
-                           ↓
-    ┌──────────────────────┴──────────────────────┐
-    │         phase0_output.json (95 KB)          │
-    │  • Normalized Company Profile               │
-    │  • Normalized Questionnaire (93 questions)  │
-    │  • Benchmark Data (12,000+ data points)     │
-    └──────────────────────┬──────────────────────┘
-                           ↓
-    ┌──────────────────────┴──────────────────────┐
-    │        phase1_output.json (376 KB)          │
-    │  • 10 AI Analyses (Tier 1: 5, Tier 2: 5)   │
-    │  • Revenue Engine, Operations, Financial... │
-    │  • Growth, Market, Risk, Scalability...     │
-    │  • Token usage metadata                     │
-    └──────────────────────┬──────────────────────┘
-                           ↓
-    ┌──────────────────────┴──────────────────────┐
-    │        phase2_output.json (428 KB)          │
-    │  • Cross-Dimensional Synthesis              │
-    │  • Strategic Recommendations (15+)          │
-    │  • Consolidated Risks (18+)                 │
-    │  • Growth Opportunities (10+)               │
-    │  • Implementation Roadmap (3 phases)        │
-    └──────────────────────┬──────────────────────┘
-                           ↓
-    ┌──────────────────────┴──────────────────────┐
-    │        phase3_output.json (547 KB)          │
-    │  • Executive Summary (500 words)            │
-    │  • Business Health Scorecard                │
-    │  • Overall Health Score: 72/100             │
-    │  • Action Matrix (prioritized)              │
-    │  • Investment Roadmap ($825K total)         │
-    │  • Final Recommendations (Top 5-7)          │
-    └──────────────────────┬──────────────────────┘
-                           ↓
-    ┌──────────────────────┴──────────────────────┐
-    │          idm_output.json (63 KB)            │
-    │  ⭐ CANONICAL DATA MODEL - Single Truth    │
-    │  • 4 Chapters with scores                   │
-    │  • 12 Dimensions with sub-indicators        │
-    │  • 30+ Findings (strengths/gaps/risks)      │
-    │  • 10+ Recommendations (prioritized)        │
-    │  • 5+ Quick Wins (high impact, low effort)  │
-    │  • Risk Assessment (18+ risks)              │
-    │  • 18-Month Roadmap (3 phases)              │
-    └──────────────────────┬──────────────────────┘
-                           ↓
-    ┌──────────────────────┴──────────────────────┐
-    │         17 HTML Reports (554 KB)            │
-    │  • 7 Core Reports (Comprehensive, Owner...) │
-    │  • 4 Deep Dive Reports (GE, PH, PL, RS)    │
-    │  • 6 Recipe-Based Reports (Managers...)     │
-    │  • Professional styling with charts         │
-    │  • Accessibility-compliant (WCAG 2.1 AA)    │
-    └─────────────────────────────────────────────┘
+**File**: `src/data-transformation/company-profile-transformer.ts`
+
+Transforms raw webhook data to NormalizedCompanyProfile:
+
+```typescript
+function transformCompanyProfile(
+  webhook: WebhookPayload
+): NormalizedCompanyProfile {
+  const overview = webhook.business_overview;
+
+  return {
+    metadata: {
+      profile_id: generateProfileId(overview.company_name),
+      snapshot_id: generateUUID(),
+      assessment_run_id: '', // Set by orchestrator
+      created_at: new Date().toISOString(),
+      // ...
+    },
+    company_name: overview.company_name,
+    location: {
+      city: extractCity(overview.location),
+      state: extractState(overview.location),
+      country: overview.country
+    },
+    industry: {
+      code: mapIndustryCode(overview.industry),
+      name: overview.industry,
+      vertical: determineVertical(overview.industry)
+    },
+    financials: {
+      last_year_revenue: overview.last_year_revenue,
+      projected_revenue: overview.projected_revenue,
+      revenue_growth_rate: calculateGrowthRate(overview),
+      // ...
+    },
+    employees: {
+      total_headcount: calculateTotalHeadcount(overview),
+      full_time: overview.full_time_employees,
+      part_time: overview.part_time_employees,
+      // ...
+    },
+    benchmark_selectors: deriveBenchmarkSelectors(overview)
+  };
+}
 ```
 
-### Data Transformation Points
+### Questionnaire Transformer
 
-**Transformation 1: Webhook → Normalized Data** (Phase 0)
-```
-Raw JSON (93 questions, business overview)
-  ↓ Parse & validate
-  ↓ Extract company metadata
-  ↓ Normalize responses (1-5 scale → 0-100)
-  ↓ Map to 12 dimensions
-  ↓ Retrieve benchmarks
-  ↓ Normalized structured data
-```
+**File**: `src/data-transformation/questionnaire-transformer.ts`
 
-**Transformation 2: Normalized → AI Context** (Phase 1)
-```
-Normalized data
-  ↓ Format for AI prompts
-  ↓ Add framework context (CLV, SWOT, etc.)
-  ↓ Include benchmark comparisons
-  ↓ Dimension-specific question subsets
-  ↓ AI-ready context packages (10 analyses)
-```
+Transforms raw responses to NormalizedQuestionnaireResponses:
 
-**Transformation 3: AI Analyses → Structured Insights** (Phase 2-3)
-```
-Raw AI response text (26,253 words)
-  ↓ Parse structured content
-  ↓ Extract findings (strengths/gaps/risks)
-  ↓ Extract recommendations with priorities
-  ↓ Identify patterns across analyses
-  ↓ Synthesize executive summary
-  ↓ Structured strategic insights
-```
+```typescript
+function transformQuestionnaire(
+  webhook: WebhookPayload,
+  assessmentRunId: string
+): NormalizedQuestionnaireResponses {
+  const chapters: NormalizedChapter[] = [];
 
-**Transformation 4: All Phases → IDM** (Phase 4)
-```
-Phase 0-3 outputs
-  ↓ Extract all findings
-  ↓ Aggregate recommendations
-  ↓ Calculate scores (dimension → chapter → overall)
-  ↓ Identify quick wins (impact ≥ 7, effort ≤ 4)
-  ↓ Build implementation roadmap
-  ↓ Validate against schemas
-  ↓ Canonical IDM (single source of truth)
-```
+  // Transform each chapter
+  for (const [code, dimensionCodes] of Object.entries(CHAPTER_DIMENSIONS)) {
+    const dimensions = dimensionCodes.map(dimCode =>
+      transformDimension(webhook, dimCode)
+    );
 
-**Transformation 5: IDM → HTML Reports** (Phase 5)
+    chapters.push({
+      chapter_code: code as ChapterCode,
+      name: CHAPTER_NAMES[code],
+      dimensions,
+      chapter_metrics: calculateChapterMetrics(dimensions)
+    });
+  }
+
+  return {
+    meta: {
+      response_id: generateUUID(),
+      assessment_run_id: assessmentRunId,
+      // ...
+    },
+    chapters,
+    overall_metrics: calculateOverallMetrics(chapters),
+    derived_metrics: calculateDerivedMetrics(webhook)
+  };
+}
 ```
-IDM + Phase 1-3 narratives
-  ↓ Extract relevant sections per report type
-  ↓ Apply report-specific templates
-  ↓ Generate charts from scores
-  ↓ Integrate AI narrative (26,253 words)
-  ↓ Apply professional styling
-  ↓ Validate HTML output
-  ↓ 17 professional HTML reports
-```
-
-### Storage Patterns
-
-**Persistent Storage** (data/):
-```
-data/
-├── index/                  # Assessment index
-│   └── assessment-index.json
-├── normalized/             # Normalized data cache
-│   ├── {company_profile_id}/
-│   │   └── cp-{snapshot_id}.json
-│   └── {company_profile_id}/
-│       └── qr-{assessment_run_id}.json
-├── raw/                    # Immutable raw storage
-│   └── {company_profile_id}/
-│       └── {assessment_run_id}.json
-└── logs/                   # Execution logs
-    ├── writes/             # Write operation logs
-    └── integrity/          # Data integrity logs
-```
-
-**Transient Storage** (output/):
-```
-output/
-├── phase{0-5}_output.json  # Phase results
-├── idm_output.json         # Canonical model
-├── pipeline_summary.json   # Execution metadata
-├── phase1/                 # Timestamped Phase 1 results
-├── phase2/                 # Timestamped Phase 2 results
-├── phase3/                 # Timestamped Phase 3 results
-├── phase4/                 # Timestamped Phase 4 results
-└── reports/                # Generated HTML reports
-    └── {assessment_run_id}/
-```
-
-### Index and Caching Mechanisms
-
-**Assessment Index** (`src/services/assessment-index.ts`):
-- Tracks all assessments with metadata
-- Enables fast lookup by run_id, company_id
-- Links all phase outputs and reports
-- Supports phase completion tracking
-
-**Benchmark Caching** (`src/data-transformation/benchmark-service.ts`):
-- Industry benchmarks cached in memory
-- Multi-dimensional filtering (industry, size, revenue, location)
-- 12,000+ data points for comparison
-- Percentile distributions (p10, p25, p50, p75, p90)
-
-**Normalized Data Cache** (`data/normalized/`):
-- Reusable transformed data
-- Avoids redundant transformations
-- Speeds up re-runs and analysis updates
-- Immutable snapshots with versioning
 
 ---
 
-## Report Generation System
+## Validation Framework
 
-[Content continues with detailed report generation system analysis...]
+### Zod Schemas
 
-**Due to length constraints, the complete analysis continues in the README.md file. The remaining sections cover:**
+**File**: `src/validation/schemas.ts`
 
-8. API Integration (Anthropic Batch API deep dive)
-9. Type System & Validation (Zod schemas, type safety)
-10. Performance & Cost Analysis (execution metrics, optimization)
-11. Known Issues & Limitations (bugs, scalability concerns)
-12. Recommendations (short-term and long-term improvements)
-13. File Reference Index (complete file catalog with LOC)
+All data is validated with Zod schemas:
 
-**Total Analysis**: 61,675 LOC examined across 120+ files
-**Analysis Depth**: Ultra-thorough with file-level examination
-**Overall Assessment**: Production-grade, enterprise-scale system with room for scalability improvements
+```typescript
+// Common schemas
+const DateTimeSchema = z.string().datetime();
+const UuidSchema = z.string().uuid();
+const PercentageSchema = z.number().min(0).max(100);
+const ScaleRatingSchema = z.number().min(1).max(10);
 
-**Codebase Quality**: **8.5/10**
-**Production Readiness**: **8/10**
-**Innovation Level**: **9/10**
-**Business Impact**: **9/10**
+// Webhook validation
+const WebhookPayloadSchema = z.object({
+  event: z.string(),
+  timestamp: DateTimeSchema,
+  submission_id: z.string(),
+  business_overview: BusinessOverviewSchema,
+  strategy: StrategyResponsesSchema,
+  sales: SalesResponsesSchema,
+  // ... all sections
+});
 
-**Final Score**: **8.6/10**
+// IDM validation
+const IDMSchema = z.object({
+  metadata: IDMMetadataSchema,
+  scores_summary: ScoresSummarySchema,
+  chapters: z.array(ChapterSchema).length(4),
+  findings: z.array(FindingSchema),
+  recommendations: z.array(RecommendationSchema),
+  quick_wins: z.array(QuickWinSchema),
+  risks: z.array(RiskSchema),
+  roadmap: z.array(RoadmapPhaseSchema),
+  visualizations: z.array(VisualizationSchema)
+});
+```
+
+### Validation at Boundaries
+
+```typescript
+// Phase 0 input validation
+const validatedWebhook = WebhookPayloadSchema.parse(rawWebhook);
+
+// Phase 1 output validation
+const validatedResults = Phase1ResultsSchema.parse(batchResults);
+
+// IDM validation
+const validatedIDM = IDMSchema.parse(consolidatedIDM);
+```
 
 ---
 
-**Document Version**: 1.0.0
-**Last Updated**: December 3, 2025
-**Maintained By**: Development Team
+## API Integration
+
+### Anthropic Batch API Client
+
+**File**: `src/api/anthropic-client.ts`
+
+```typescript
+class AnthropicBatchClient {
+  private client: Anthropic;
+  private logger: Logger;
+
+  async createBatch(requests: BatchRequest[]): Promise<BatchJob> {
+    const batch = await this.client.messages.batches.create({
+      requests: requests.map(req => ({
+        custom_id: req.custom_id,
+        params: {
+          model: req.params.model,
+          max_tokens: req.params.max_tokens,
+          messages: req.params.messages,
+          thinking: req.params.thinking,
+          temperature: req.params.temperature
+        }
+      }))
+    });
+
+    return batch;
+  }
+
+  async pollUntilComplete(batchId: string): Promise<BatchResult[]> {
+    while (true) {
+      const status = await this.client.messages.batches.retrieve(batchId);
+
+      if (status.processing_status === 'ended') {
+        return await this.retrieveResults(batchId);
+      }
+
+      await this.delay(POLL_INTERVAL_MS);
+    }
+  }
+
+  async retrieveResults(batchId: string): Promise<BatchResult[]> {
+    const results = [];
+
+    for await (const result of this.client.messages.batches.results(batchId)) {
+      results.push(result);
+    }
+
+    return results;
+  }
+}
+```
+
+### Batch Request Structure
+
+```typescript
+interface BatchRequest {
+  custom_id: string;  // Analysis identifier
+  params: {
+    model: string;    // 'claude-opus-4-5-20251101'
+    max_tokens: number;  // 64000
+    messages: Array<{ role: string; content: string }>;
+    thinking?: { type: 'enabled'; budget_tokens: number };
+    temperature?: number;  // 1.0 for extended thinking
+    system?: string;
+  };
+}
+```
+
+---
+
+## Styling & Branding System
+
+### Brand Colors
+
+**File**: `src/orchestration/reports/styles/unified-bizhealth-styles.ts`
+
+```typescript
+const BRAND_COLORS = {
+  bizNavy: '#212653',     // Primary brand color
+  bizGreen: '#969423',    // Accent/secondary color
+  bizGrey: '#7C7C7C',     // Neutral text
+  bizWhite: '#FFFFFF',
+  lightBg: '#f8f9fa',
+  border: '#e9ecef',
+
+  // Score bands
+  bandExcellence: '#28a745',  // Green
+  bandProficiency: '#0d6efd', // Blue
+  bandAttention: '#ffc107',   // Yellow
+  bandCritical: '#dc3545'     // Red
+};
+```
+
+### CSS Framework
+
+```css
+:root {
+  --biz-navy: #212653;
+  --biz-green: #969423;
+  --biz-grey: #7C7C7C;
+
+  /* Score bands */
+  --band-excellence: #28a745;
+  --band-proficiency: #0d6efd;
+  --band-attention: #ffc107;
+  --band-critical: #dc3545;
+
+  /* Spacing (8px base) */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-xxl: 48px;
+}
+
+/* Typography */
+body {
+  font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--biz-grey);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--biz-navy);
+  font-weight: 600;
+}
+```
+
+---
+
+## Type System
+
+### Core Types Location
+
+| Type Category | File | Description |
+|--------------|------|-------------|
+| IDM | `types/idm.types.ts` | Insights Data Model (890 lines) |
+| Webhook | `types/webhook.types.ts` | Input webhook structure |
+| Normalized | `types/normalized.types.ts` | Normalized data structures |
+| Company Profile | `types/company-profile.types.ts` | Company profile types |
+| Questionnaire | `types/questionnaire.types.ts` | Questionnaire types |
+| Report | `types/report.types.ts` | Report generation types |
+| Visualization | `types/visualization.types.ts` | Visualization types |
+
+### Type Exports
+
+```typescript
+// Main type exports from src/types/
+export type {
+  // IDM types
+  IDM,
+  IDMMetadata,
+  ScoresSummary,
+  Chapter,
+  Dimension,
+  Finding,
+  Recommendation,
+  QuickWin,
+  Risk,
+  RoadmapPhase,
+  Visualization,
+
+  // Codes
+  ChapterCode,
+  DimensionCode,
+  ScoreBand,
+
+  // Webhook types
+  WebhookPayload,
+  BusinessOverview,
+  StrategyResponses,
+  // ...
+
+  // Normalized types
+  NormalizedCompanyProfile,
+  NormalizedQuestionnaireResponses,
+  NormalizedBenchmarkData,
+  Phase0Output,
+
+  // Report types
+  ReportContext,
+  ReportRenderOptions,
+  GeneratedReport,
+  ReportMeta
+};
+```
+
+---
+
+## Performance & Cost Analysis
+
+### Execution Times
+
+| Phase | Duration | Description |
+|-------|----------|-------------|
+| Phase 0 | ~100ms | Data normalization (no AI) |
+| Phase 1 Tier 1 | 2-3 min | 5 analyses via Batch API |
+| Phase 1 Tier 2 | 2-3 min | 5 analyses via Batch API |
+| Phase 2 | 2-3 min | 5 synthesis analyses |
+| Phase 3 | 2-3 min | 5 executive outputs |
+| Phase 4 | <1 sec | IDM consolidation (no AI) |
+| Phase 5 | ~100ms | 17 report generation (no AI) |
+| **Total** | **10-15 min** | Complete pipeline |
+
+### Token Usage
+
+| Phase | Input Tokens | Output Tokens | Thinking Tokens |
+|-------|--------------|---------------|-----------------|
+| Phase 1 Tier 1 | ~50K | ~100K | ~150K |
+| Phase 1 Tier 2 | ~80K | ~80K | ~150K |
+| Phase 2 | ~60K | ~60K | ~100K |
+| Phase 3 | ~40K | ~40K | ~80K |
+| **Total** | **~230K** | **~280K** | **~480K** |
+
+### Cost Estimation
+
+```
+Standard API Pricing:
+- Input: $15 / 1M tokens
+- Output: $75 / 1M tokens
+
+Batch API (50% discount):
+- Input: $7.50 / 1M tokens
+- Output: $37.50 / 1M tokens
+
+Cost Calculation:
+- Input: 230K × $7.50 / 1M = $1.73
+- Output: 280K × $37.50 / 1M = $10.50
+- Total: ~$12-15 per assessment
+
+Extended Thinking (if charged separately):
+- ~480K tokens × $7.50 / 1M = $3.60
+- Total with thinking: ~$15-20 per assessment
+```
+
+---
+
+## Known Issues & Limitations
+
+### Current Issues
+
+1. **Employees Report Generation**
+   - Status: Intermittent failures
+   - Error: `text.replace is not a function`
+   - Impact: 16/17 reports generate successfully
+
+2. **ASCII Art in AI Outputs**
+   - Status: Non-blocking warnings
+   - Cause: AI sometimes generates ASCII visualizations despite instructions
+   - Mitigation: ASCII detector strips non-compliant content
+
+3. **Extended Thinking Token Accounting**
+   - Status: Unclear pricing
+   - Issue: Anthropic Batch API thinking token costs not documented
+
+### Limitations
+
+1. **Single-Threaded Batch Processing**
+   - Batch API is sequential within tiers
+   - Tier 2 must wait for Tier 1 completion
+
+2. **Static Benchmark Data**
+   - Current implementation uses mock benchmarks
+   - Production requires external benchmark database
+
+3. **PDF Generation**
+   - Requires separate PDF rendering step
+   - Not integrated into main pipeline
+
+4. **Database Storage**
+   - Optional feature, disabled by default
+   - Uses file-based storage primarily
+
+---
+
+## Complete File Reference
+
+### Orchestration Layer (8 files)
+
+| File | Lines | Purpose |
+|------|-------|---------|
+| `phase0-orchestrator.ts` | ~400 | Raw capture & normalization |
+| `phase1-orchestrator.ts` | ~500 | AI analyses (10) |
+| `phase2-orchestrator.ts` | ~400 | Cross-analysis (5) |
+| `phase3-orchestrator.ts` | ~400 | Executive synthesis (5) |
+| `phase4-orchestrator.ts` | ~674 | IDM consolidation |
+| `phase5-orchestrator.ts` | ~780 | Report generation (17) |
+| `idm-consolidator.ts` | ~1195 | IDM building logic |
+| `visualization-aggregator.ts` | ~200 | Visualization collection |
+
+### Type Definitions (9 files)
+
+| File | Lines | Purpose |
+|------|-------|---------|
+| `idm.types.ts` | ~890 | Complete IDM schema |
+| `webhook.types.ts` | ~218 | Webhook payload types |
+| `normalized.types.ts` | ~454 | Normalized data types |
+| `company-profile.types.ts` | ~200 | Company profile types |
+| `questionnaire.types.ts` | ~150 | Questionnaire types |
+| `report.types.ts` | ~150 | Report types |
+| `visualization.types.ts` | ~100 | Visualization types |
+| `raw-input.types.ts` | ~50 | Raw input types |
+| `recipe.types.ts` | ~50 | Recipe types |
+
+### Prompt Templates (12 files)
+
+| File | Lines | Purpose |
+|------|-------|---------|
+| `tier1/revenue-engine.prompts.ts` | ~500 | Revenue Engine analysis |
+| `tier1/operational-excellence.prompts.ts` | ~400 | Operational analysis |
+| `tier1/financial-strategic.prompts.ts` | ~400 | Financial analysis |
+| `tier1/people-leadership.prompts.ts` | ~400 | People analysis |
+| `tier1/compliance-sustainability.prompts.ts` | ~400 | Compliance analysis |
+| `tier2/growth-readiness.prompts.ts` | ~350 | Growth readiness |
+| `tier2/market-position.prompts.ts` | ~350 | Market position |
+| `tier2/resource-optimization.prompts.ts` | ~350 | Resource optimization |
+| `tier2/risk-resilience.prompts.ts` | ~350 | Risk & resilience |
+| `tier2/scalability-readiness.prompts.ts` | ~350 | Scalability |
+| `templates/base-analysis-prompt.ts` | ~443 | Base prompt template |
+| `templates/visualization-supplement.ts` | ~100 | Visualization instructions |
+
+### Report Builders (10 files)
+
+| File | Lines | Purpose |
+|------|-------|---------|
+| `comprehensive-report.builder.ts` | ~500 | Comprehensive report |
+| `owners-report.builder.ts` | ~400 | Owner report |
+| `executive-brief.builder.ts` | ~300 | Executive brief |
+| `quick-wins-report.builder.ts` | ~300 | Quick wins |
+| `risk-report.builder.ts` | ~350 | Risk report |
+| `roadmap-report.builder.ts` | ~350 | Roadmap report |
+| `financial-report.builder.ts` | ~350 | Financial report |
+| `deep-dive-report.builder.ts` | ~400 | Deep dive (4 variants) |
+| `recipe-report.builder.ts` | ~300 | Manager reports |
+| `html-template.ts` | ~600 | Shared HTML generation |
+
+### Visual Components (18 files)
+
+| File | Purpose |
+|------|---------|
+| `gauge.component.ts` | Gauge visualization |
+| `radar-chart.component.ts` | Radar chart |
+| `bar-chart.component.ts` | Bar chart |
+| `sparkline.component.ts` | Sparkline |
+| `heatmap.component.ts` | Heatmap |
+| `table.component.ts` | Data table |
+| `metric-card.component.ts` | Metric card |
+| `score-tile.component.ts` | Score tile |
+| `benchmark-bar.component.ts` | Benchmark bar |
+| `kpi-dashboard.component.ts` | KPI dashboard |
+| `risk-matrix.component.ts` | Risk matrix |
+| `roadmap-timeline.component.ts` | Roadmap timeline |
+| `timeline.component.ts` | Timeline |
+| `funnel.component.ts` | Funnel chart |
+| `waterfall.component.ts` | Waterfall chart |
+| `action-card.component.ts` | Action card |
+| `donut.component.ts` | Donut chart |
+| `score-bar.component.ts` | Score bar |
+
+---
+
+## Appendix A: Score Band Colors
+
+| Band | Score Range | Color | Hex |
+|------|-------------|-------|-----|
+| Excellence | 80-100 | Green | `#28a745` |
+| Proficiency | 60-79 | Blue | `#0d6efd` |
+| Attention | 40-59 | Yellow | `#ffc107` |
+| Critical | 0-39 | Red | `#dc3545` |
+
+---
+
+## Appendix B: Chapter-Dimension Mapping
+
+```
+Growth Engine (GE)
+├── Strategy (STR) - 7 questions
+├── Sales (SAL) - 8 questions
+├── Marketing (MKT) - 9 questions
+└── Customer Experience (CXP) - 5 questions
+
+Performance & Health (PH)
+├── Operations (OPS) - 8 questions
+└── Financials (FIN) - 10 questions
+
+People & Leadership (PL)
+├── Human Resources (HRS) - 8 questions
+└── Leadership & Governance (LDG) - 7 questions
+
+Resilience & Safeguards (RS)
+├── Technology & Innovation (TIN) - 8 questions
+├── IT, Data & Systems (IDS) - 7 questions
+├── Risk Management (RMS) - 7 questions
+└── Compliance & Legal (CMP) - 3 questions
+
+Total: 87 questions across 12 dimensions in 4 chapters
+```
+
+---
+
+*BizHealth Report Pipeline - Enterprise Business Intelligence Powered by Claude Opus 4.5*
+
+*Analysis Generated: December 4, 2025*
