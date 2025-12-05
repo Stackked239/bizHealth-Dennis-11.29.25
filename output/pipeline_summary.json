@@ -2,7 +2,7 @@
   "config": {
     "webhookPath": "./sample_webhook.json",
     "outputDir": "./output",
-    "startPhase": 0,
+    "startPhase": 5,
     "endPhase": 5,
     "skipDatabase": true,
     "generateReports": true,
@@ -15,94 +15,9 @@
   },
   "results": [
     {
-      "phase": 0,
-      "status": "success",
-      "duration_ms": 22,
-      "output_path": "output/phase0_output.json",
-      "details": {
-        "assessment_run_id": "86a66ed1-6c1a-4733-b862-350680f45471",
-        "company_profile_id": "ewm-global-478cbd43",
-        "phases_completed": {
-          "raw_capture": true,
-          "cp_normalization": true,
-          "qr_normalization": true,
-          "benchmark_retrieval": true,
-          "index_update": true
-        },
-        "stats": {
-          "totalEntries": 1,
-          "byStatus": {
-            "raw_captured": 0,
-            "normalized": 0,
-            "ready_for_analysis": 1,
-            "analysis_complete": 0,
-            "error": 0
-          },
-          "byCompany": {
-            "ewm-global-478cbd43": 1
-          }
-        }
-      }
-    },
-    {
-      "phase": 1,
-      "status": "success",
-      "duration_ms": 638410,
-      "output_path": "output/phase1_output.json",
-      "details": {
-        "status": "complete",
-        "successful_analyses": 10,
-        "failed_analyses": 0,
-        "total_analyses": 10
-      }
-    },
-    {
-      "phase": 2,
-      "status": "success",
-      "duration_ms": 484476,
-      "output_path": "output/phase2_output.json",
-      "details": {
-        "status": "complete",
-        "successful_analyses": 5,
-        "failed_analyses": 0
-      }
-    },
-    {
-      "phase": 3,
-      "status": "success",
-      "duration_ms": 635574,
-      "output_path": "output/phase3_output.json",
-      "details": {
-        "status": "complete",
-        "overall_health_score": 72,
-        "health_status": "Stable - Requires Strategic Attention"
-      }
-    },
-    {
-      "phase": 4,
-      "status": "success",
-      "duration_ms": 255005,
-      "output_path": "output/phase4_output.json",
-      "details": {
-        "status": "complete",
-        "health_score": 72,
-        "health_descriptor": "Stable - Requires Strategic Attention",
-        "reports_generated": 3,
-        "report_types": [
-          "comprehensive_report",
-          "owners_report",
-          "quick_wins_report"
-        ],
-        "report_tokens": {
-          "input": 5518,
-          "output": 21253
-        }
-      }
-    },
-    {
       "phase": 5,
       "status": "success",
-      "duration_ms": 126,
+      "duration_ms": 527,
       "output_path": "output/phase5_output.json",
       "details": {
         "status": "partial",
@@ -112,6 +27,6 @@
       }
     }
   ],
-  "total_duration_ms": 2013614,
-  "completed_at": "2025-12-05T04:03:24.372Z"
+  "total_duration_ms": 529,
+  "completed_at": "2025-12-05T21:46:07.881Z"
 }
