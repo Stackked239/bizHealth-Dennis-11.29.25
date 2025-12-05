@@ -118,39 +118,95 @@ export function mapDimensionToGauge(
 /**
  * Map IDM risks to heatmap data points
  * Converts risk severity and likelihood to 4x4 grid positions
+ * ENHANCED: More robust mapping for all severity/likelihood variations
  *
  * @param risks - Array of Risk objects from IDM
  * @returns Array of risk heatmap data points for visualization
  */
 export function mapRisksToHeatmap(risks: Risk[]): RiskHeatmapDataPoint[] {
+  // Comprehensive severity mapping (handles all variations)
   const severityMap: Record<string, number> = {
-    'critical': 4,
-    'high': 3,
-    'medium': 2,
-    'low': 1
+    // Level 4 - Critical
+    'critical': 4, 'CRITICAL': 4, 'Critical': 4,
+    'severe': 4, 'SEVERE': 4, 'Severe': 4,
+    'very high': 4, 'very-high': 4, 'veryhigh': 4,
+    '4': 4, '5': 4, '100': 4, '90': 4, '80': 4,
+    // Level 3 - High
+    'high': 3, 'HIGH': 3, 'High': 3,
+    'significant': 3, 'SIGNIFICANT': 3, 'Significant': 3,
+    'major': 3, 'MAJOR': 3, 'Major': 3,
+    '3': 3, '70': 3, '75': 3,
+    // Level 2 - Medium
+    'medium': 2, 'MEDIUM': 2, 'Medium': 2,
+    'moderate': 2, 'MODERATE': 2, 'Moderate': 2,
+    'medium-high': 2, 'med-high': 2,
+    '2': 2, '50': 2, '60': 2,
+    // Level 1 - Low
+    'low': 1, 'LOW': 1, 'Low': 1,
+    'minor': 1, 'MINOR': 1, 'Minor': 1,
+    'minimal': 1, 'MINIMAL': 1, 'Minimal': 1,
+    'low-medium': 1, 'negligible': 1,
+    '1': 1, '0': 1, '10': 1, '20': 1, '25': 1, '30': 1,
   };
 
+  // Comprehensive likelihood mapping
   const likelihoodMap: Record<string, number> = {
-    'high': 4,
-    'medium-high': 3,
-    'medium': 2,
-    'low': 1
+    // Level 4 - High/Almost Certain
+    'high': 4, 'HIGH': 4, 'High': 4,
+    'very high': 4, 'very-high': 4, 'veryhigh': 4,
+    'almost certain': 4, 'certain': 4, 'likely': 4,
+    '4': 4, '5': 4, '100': 4, '90': 4, '80': 4,
+    // Level 3 - Medium-High
+    'medium-high': 3, 'med-high': 3, 'MEDIUM-HIGH': 3,
+    'probable': 3, 'PROBABLE': 3, 'Probable': 3,
+    '3': 3, '70': 3, '75': 3,
+    // Level 2 - Medium
+    'medium': 2, 'MEDIUM': 2, 'Medium': 2,
+    'moderate': 2, 'MODERATE': 2, 'Moderate': 2,
+    'possible': 2, 'POSSIBLE': 2, 'Possible': 2,
+    '2': 2, '50': 2, '60': 2,
+    // Level 1 - Low
+    'low': 1, 'LOW': 1, 'Low': 1,
+    'low-medium': 1, 'unlikely': 1, 'UNLIKELY': 1,
+    'rare': 1, 'RARE': 1, 'Rare': 1,
+    'remote': 1, 'improbable': 1,
+    '1': 1, '0': 1, '10': 1, '20': 1, '25': 1, '30': 1,
   };
 
-  return risks.map(risk => {
-    // Handle both string and numeric severity/likelihood
-    const severityValue = typeof risk.severity === 'number'
-      ? Math.min(4, Math.max(1, Math.ceil(risk.severity / 25)))
-      : severityMap[String(risk.severity).toLowerCase()] || 2;
+  // Log mapping for debugging
+  console.log(`[mapRisksToHeatmap] Processing ${risks.length} risks`);
 
-    const likelihoodValue = typeof risk.likelihood === 'number'
-      ? Math.min(4, Math.max(1, Math.ceil(risk.likelihood / 25)))
-      : likelihoodMap[String(risk.likelihood).toLowerCase()] || 2;
+  return risks.map((risk, index) => {
+    // Normalize input values
+    const severityInput = String(risk.severity ?? 'medium').toLowerCase().trim();
+    const likelihoodInput = String(risk.likelihood ?? 'medium').toLowerCase().trim();
+
+    // Try direct lookup first
+    let severityValue = severityMap[severityInput] ??
+                        severityMap[risk.severity as string] ?? 2;
+    let likelihoodValue = likelihoodMap[likelihoodInput] ??
+                          likelihoodMap[risk.likelihood as string] ?? 2;
+
+    // Fallback: if input looks like a number, parse it
+    if (severityValue === 2 && /^\d+$/.test(severityInput)) {
+      const num = parseInt(severityInput, 10);
+      severityValue = num > 75 ? 4 : num > 50 ? 3 : num > 25 ? 2 : 1;
+    }
+    if (likelihoodValue === 2 && /^\d+$/.test(likelihoodInput)) {
+      const num = parseInt(likelihoodInput, 10);
+      likelihoodValue = num > 75 ? 4 : num > 50 ? 3 : num > 25 ? 2 : 1;
+    }
+
+    // Debug first few risks
+    if (index < 3) {
+      console.log(`[Risk ${index}] id="${risk.id}" severity="${risk.severity}" -> ${severityValue}, likelihood="${risk.likelihood}" -> ${likelihoodValue}`);
+    }
 
     // Determine color based on combined risk score
     const riskScore = severityValue * likelihoodValue;
     const color = riskScore >= 12 ? BRAND.critical :
-                  riskScore >= 6 ? BRAND.warning :
+                  riskScore >= 8 ? BRAND.caution :
+                  riskScore >= 4 ? BRAND.warning :
                   BRAND.success;
 
     return {
@@ -162,6 +218,32 @@ export function mapRisksToHeatmap(risks: Risk[]): RiskHeatmapDataPoint[] {
       color
     };
   });
+}
+
+/**
+ * Map top N risks for focused displays (e.g., Owner's Report)
+ *
+ * @param risks - Array of Risk objects from IDM
+ * @param topN - Number of top risks to include (default 5)
+ * @returns Array of top N risk heatmap data points sorted by severity
+ */
+export function mapTopRisksToHeatmap(risks: Risk[], topN: number = 5): RiskHeatmapDataPoint[] {
+  // Sort by severity (critical first), then by likelihood
+  const severityOrder: Record<string, number> = {
+    'critical': 4, 'high': 3, 'medium': 2, 'low': 1
+  };
+
+  const sortedRisks = [...risks].sort((a, b) => {
+    const aSev = severityOrder[String(a.severity).toLowerCase()] ?? 2;
+    const bSev = severityOrder[String(b.severity).toLowerCase()] ?? 2;
+    if (bSev !== aSev) return bSev - aSev;
+
+    const aLik = severityOrder[String(a.likelihood).toLowerCase()] ?? 2;
+    const bLik = severityOrder[String(b.likelihood).toLowerCase()] ?? 2;
+    return bLik - aLik;
+  });
+
+  return mapRisksToHeatmap(sortedRisks.slice(0, topN));
 }
 
 /**

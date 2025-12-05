@@ -48,6 +48,7 @@ import {
   formatCurrencyRange,
   formatCurrency as formatCurrencyConstraint,
 } from './config/owner-report-constraints.js';
+import { sanitizeOrphanedVisualizationHeaders } from './utils/content-sanitizer.js';
 
 // Import chart integration for visual charts
 import {
@@ -386,9 +387,16 @@ export async function buildOwnersReport(
     missingRefs: referenceLogger.getMissingRefs().length,
   }, 'Owners report built with cross-references');
 
+  // Sanitize orphaned visualization headers from AI-generated content
+  const { html: sanitizedHtml, removedCount, removedItems } = sanitizeOrphanedVisualizationHeaders(html);
+
+  if (removedCount > 0) {
+    logger.info({ removedCount, removedItems }, 'Sanitized orphaned visualization headers from owner report');
+  }
+
   // Write HTML file
   const htmlPath = path.join(options.outputDir, `${reportType}.html`);
-  await fs.writeFile(htmlPath, html, 'utf-8');
+  await fs.writeFile(htmlPath, sanitizedHtml, 'utf-8');
 
   // Generate metadata with new section IDs
   const meta: ReportMeta = {

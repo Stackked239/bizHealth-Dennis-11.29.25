@@ -3,8 +3,8 @@
 /**
  * BizHealth Phase 5 Visualization Validation Script
  *
- * Validates Phase 5 comprehensive reports for:
- * - Minimum visualization count (25+)
+ * Validates Phase 5 reports for:
+ * - Minimum visualization count based on report type configuration
  * - No orphaned visualization headers
  * - Required visualizations present (risk heatmap, roadmap timeline, etc.)
  * - Print-safe CSS
@@ -20,15 +20,56 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 // ============================================================================
-// CONFIGURATION
+// CONFIGURATION - Per-Report Type Minimums
 // ============================================================================
 
-const MINIMUM_VISUAL_COUNT = 25;
+/** Report type visual configuration */
+interface ReportVisualConfig {
+  minVisualCount: number;
+  targetVisualCount: number;
+}
+
+/** Per-report type minimum and target visual counts */
+const REPORT_VISUAL_CONFIGS: Record<string, ReportVisualConfig> = {
+  comprehensive: { minVisualCount: 25, targetVisualCount: 50 },
+  owner: { minVisualCount: 6, targetVisualCount: 15 },
+  executiveBrief: { minVisualCount: 3, targetVisualCount: 8 },
+  quickWins: { minVisualCount: 3, targetVisualCount: 8 },
+  risk: { minVisualCount: 4, targetVisualCount: 12 },
+  roadmap: { minVisualCount: 4, targetVisualCount: 10 },
+  financial: { minVisualCount: 3, targetVisualCount: 10 },
+  'deep-dive-ge': { minVisualCount: 4, targetVisualCount: 10 },
+  'deep-dive-ph': { minVisualCount: 3, targetVisualCount: 10 },
+  'deep-dive-pl': { minVisualCount: 3, targetVisualCount: 10 },
+  'deep-dive-rs': { minVisualCount: 4, targetVisualCount: 10 },
+  employees: { minVisualCount: 2, targetVisualCount: 6 },
+  managersOperations: { minVisualCount: 1, targetVisualCount: 8 },
+  managersSalesMarketing: { minVisualCount: 2, targetVisualCount: 8 },
+  managersFinancials: { minVisualCount: 1, targetVisualCount: 8 },
+  managersStrategy: { minVisualCount: 2, targetVisualCount: 8 },
+  managersItTechnology: { minVisualCount: 2, targetVisualCount: 8 },
+};
+
+/** Default for unknown report types */
+const DEFAULT_VISUAL_COUNT = 25;
+
+/** Get minimum visual count for a report type */
+function getMinVisualCount(reportType: string): number {
+  return REPORT_VISUAL_CONFIGS[reportType]?.minVisualCount ?? DEFAULT_VISUAL_COUNT;
+}
+
+/** Get target visual count for a report type */
+function getTargetVisualCount(reportType: string): number {
+  return REPORT_VISUAL_CONFIGS[reportType]?.targetVisualCount ?? DEFAULT_VISUAL_COUNT;
+}
 
 interface ValidationResult {
   path: string;
+  reportType: string;
   passed: boolean;
   visualCount: number;
+  minRequired: number;
+  targetCount: number;
   orphanedHeaders: string[];
   missingVisuals: string[];
   printIssues: string[];
@@ -40,14 +81,29 @@ interface ValidationResult {
 // ============================================================================
 
 /**
+ * Extract report type from filename
+ */
+function getReportTypeFromPath(htmlPath: string): string {
+  const fileName = path.basename(htmlPath, '.html');
+  return fileName;
+}
+
+/**
  * Validate a single report HTML file
  */
 function validateReport(htmlPath: string): ValidationResult {
   const html = fs.readFileSync(htmlPath, 'utf-8');
+  const reportType = getReportTypeFromPath(htmlPath);
+  const minRequired = getMinVisualCount(reportType);
+  const targetCount = getTargetVisualCount(reportType);
+
   const results: ValidationResult = {
     path: htmlPath,
+    reportType,
     passed: true,
     visualCount: 0,
+    minRequired,
+    targetCount,
     orphanedHeaders: [],
     missingVisuals: [],
     printIssues: [],
@@ -78,11 +134,11 @@ function validateReport(htmlPath: string): ValidationResult {
     }
   });
 
-  // Check minimum visualization count
-  if (results.visualCount < MINIMUM_VISUAL_COUNT) {
+  // Check minimum visualization count (using per-report type minimum)
+  if (results.visualCount < minRequired) {
     results.passed = false;
     results.missingVisuals.push(
-      `Only ${results.visualCount} visuals found, minimum is ${MINIMUM_VISUAL_COUNT}`
+      `Only ${results.visualCount} visuals found, minimum is ${minRequired} (target: ${targetCount})`
     );
   }
 
@@ -156,12 +212,14 @@ function formatResult(result: ValidationResult): string {
   const fileName = path.basename(result.path);
 
   lines.push(`\n${'='.repeat(60)}`);
-  lines.push(`Report: ${fileName}`);
+  lines.push(`Report: ${fileName} (type: ${result.reportType})`);
   lines.push(`${'='.repeat(60)}`);
 
-  // Visual count
-  const visualStatus = result.visualCount >= MINIMUM_VISUAL_COUNT ? '✅' : '❌';
-  lines.push(`Visualizations: ${result.visualCount} ${visualStatus} (min: ${MINIMUM_VISUAL_COUNT})`);
+  // Visual count - use per-report minimum
+  const meetsMin = result.visualCount >= result.minRequired;
+  const meetsTarget = result.visualCount >= result.targetCount;
+  const visualStatus = meetsMin ? (meetsTarget ? '✅' : '⚠️') : '❌';
+  lines.push(`Visualizations: ${result.visualCount} ${visualStatus} (min: ${result.minRequired}, target: ${result.targetCount})`);
 
   // Orphaned headers
   if (result.orphanedHeaders.length === 0) {

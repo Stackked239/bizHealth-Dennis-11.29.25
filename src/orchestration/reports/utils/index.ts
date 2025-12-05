@@ -107,6 +107,7 @@ export type { SanitizationResult } from './content-sanitizer.js';
 export {
   mapDimensionToGauge,
   mapRisksToHeatmap,
+  mapTopRisksToHeatmap,
   mapRisksToRiskMatrix,
   mapRoadmapToTimeline,
   mapRoadmapToRoadmapPhases,
