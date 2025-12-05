@@ -25,3 +25,19 @@ export {
   getBandIcon,
   getTrajectoryIconEmoji,
 } from './dimension-icons.js';
+
+// Brand Standards
+export {
+  BIZHEALTH_COLORS,
+  BIZHEALTH_TYPOGRAPHY,
+  BIZHEALTH_BRAND,
+  SCORE_BAND_THRESHOLDS,
+  GAUGE_SIZES,
+  CHART_SERIES_COLORS,
+  getScoreBandColor,
+  getScoreBandName,
+  getScoreBandLabel,
+  getChartColor,
+  getRiskLevelColor,
+} from './brand.js';
+export type { ScoreBandType, GaugeSizeType } from './brand.js';

@@ -21,3 +21,14 @@ export {
   formatCurrencyRange,
   formatCurrency,
 } from './owner-report-constraints.js';
+
+// Report Visual Configuration
+export {
+  REPORT_VISUAL_CONFIGS,
+  getReportVisualConfig,
+  getAllReportTypes,
+  getTotalTargetVisualCount,
+  getTotalMinVisualCount,
+  validateReportVisuals,
+} from './report-visuals.config.js';
+export type { VisualDefinition, ReportVisualConfig } from './report-visuals.config.js';
