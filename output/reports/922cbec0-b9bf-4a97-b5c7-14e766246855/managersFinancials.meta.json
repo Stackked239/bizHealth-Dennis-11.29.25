@@ -1,0 +1,52 @@
+{
+  "reportType": "managersFinancials",
+  "reportName": "Finance Manager Report",
+  "generatedAt": "2025-12-05T23:10:31.877Z",
+  "companyName": "Summit Build Group",
+  "runId": "922cbec0-b9bf-4a97-b5c7-14e766246855",
+  "healthScore": 44,
+  "healthBand": "Attention",
+  "pageSuggestionEstimate": 12,
+  "sections": [
+    {
+      "id": "department_overview",
+      "title": "Financial Health Overview"
+    },
+    {
+      "id": "financials_deep_dive",
+      "title": "Financial Assessment"
+    },
+    {
+      "id": "sub_indicator_breakdown",
+      "title": "Financial Sub-Indicators"
+    },
+    {
+      "id": "findings",
+      "title": "Financial Findings"
+    },
+    {
+      "id": "risk_exposure",
+      "title": "Financial Risk Exposure"
+    },
+    {
+      "id": "recommendations",
+      "title": "Financial Recommendations"
+    },
+    {
+      "id": "quick_wins",
+      "title": "Quick Wins for Finance"
+    },
+    {
+      "id": "compliance_alignment",
+      "title": "Compliance Alignment"
+    },
+    {
+      "id": "kpis",
+      "title": "Financial KPIs"
+    }
+  ],
+  "brand": {
+    "primaryColor": "#212653",
+    "accentColor": "#969423"
+  }
+}

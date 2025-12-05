@@ -1,0 +1,106 @@
+{
+  "runId": "922cbec0-b9bf-4a97-b5c7-14e766246855",
+  "companyName": "Summit Build Group",
+  "generatedAt": "2025-12-05T23:10:31.879Z",
+  "healthScore": 44,
+  "healthStatus": "Critical Condition",
+  "pipelineVersion": "1.0.0",
+  "reports": [
+    {
+      "type": "comprehensive",
+      "name": "Comprehensive Assessment Report",
+      "html": "comprehensive.html",
+      "meta": "comprehensive.meta.json"
+    },
+    {
+      "type": "owner",
+      "name": "Business Owner Report",
+      "html": "owner.html",
+      "meta": "owner.meta.json"
+    },
+    {
+      "type": "executiveBrief",
+      "name": "Executive Brief",
+      "html": "executiveBrief.html",
+      "meta": "executiveBrief.meta.json"
+    },
+    {
+      "type": "quickWins",
+      "name": "Quick Wins Action Plan",
+      "html": "quickWins.html",
+      "meta": "quickWins.meta.json"
+    },
+    {
+      "type": "risk",
+      "name": "Risk Assessment Report",
+      "html": "risk.html",
+      "meta": "risk.meta.json"
+    },
+    {
+      "type": "roadmap",
+      "name": "Implementation Roadmap",
+      "html": "roadmap.html",
+      "meta": "roadmap.meta.json"
+    },
+    {
+      "type": "financial",
+      "name": "Financial Impact Analysis",
+      "html": "financial.html",
+      "meta": "financial.meta.json"
+    },
+    {
+      "type": "deepDive:growthEngine",
+      "name": "Growth Engine Deep Dive",
+      "html": "deep-dive-ge.html",
+      "meta": "deep-dive-ge.meta.json"
+    },
+    {
+      "type": "deepDive:performanceHealth",
+      "name": "Performance & Health Deep Dive",
+      "html": "deep-dive-ph.html",
+      "meta": "deep-dive-ph.meta.json"
+    },
+    {
+      "type": "deepDive:peopleLeadership",
+      "name": "People & Leadership Deep Dive",
+      "html": "deep-dive-pl.html",
+      "meta": "deep-dive-pl.meta.json"
+    },
+    {
+      "type": "deepDive:resilienceSafeguards",
+      "name": "Resilience & Safeguards Deep Dive",
+      "html": "deep-dive-rs.html",
+      "meta": "deep-dive-rs.meta.json"
+    },
+    {
+      "type": "managersOperations",
+      "name": "Operations Manager Report",
+      "html": "managersOperations.html",
+      "meta": "managersOperations.meta.json"
+    },
+    {
+      "type": "managersSalesMarketing",
+      "name": "Sales & Marketing Manager Report",
+      "html": "managersSalesMarketing.html",
+      "meta": "managersSalesMarketing.meta.json"
+    },
+    {
+      "type": "managersFinancials",
+      "name": "Finance Manager Report",
+      "html": "managersFinancials.html",
+      "meta": "managersFinancials.meta.json"
+    },
+    {
+      "type": "managersStrategy",
+      "name": "Strategy & Planning Manager Report",
+      "html": "managersStrategy.html",
+      "meta": "managersStrategy.meta.json"
+    },
+    {
+      "type": "managersItTechnology",
+      "name": "IT & Technology Manager Report",
+      "html": "managersItTechnology.html",
+      "meta": "managersItTechnology.meta.json"
+    }
+  ]
+}

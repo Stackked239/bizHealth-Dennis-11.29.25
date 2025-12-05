@@ -1,0 +1,10 @@
+{
+  "timestamp": "2025-12-03T03:45:48.552Z",
+  "operation": "create",
+  "file_path": "data/raw/ewm-global-478cbd43/2250d590-bc70-4630-a6e6-f7e6ce0028d5.json",
+  "assessment_run_id": "2250d590-bc70-4630-a6e6-f7e6ce0028d5",
+  "company_profile_id": "ewm-global-478cbd43",
+  "content_hash": "c69261991ae0365b099067977e2863715759a14b2321c870cad113b6330847fb",
+  "actor": "phase0-storage-service",
+  "size_bytes": 6959
+}

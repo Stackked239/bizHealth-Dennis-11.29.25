@@ -1,0 +1,131 @@
+{
+  "metadata": {
+    "profile_id": "10dddac8-2ff1-44bf-ba31-2da7ad014e15",
+    "snapshot_id": "e5b7f2d8-de44-466e-95aa-cf69d2e7e4c1",
+    "assessment_run_id": "6462cab4-6da2-439c-a8c9-286ffe07ce3e",
+    "created_at": "2025-12-02T14:36:19.835Z",
+    "last_updated": "2025-12-02T14:36:19.835Z",
+    "cp_version": "v2025-09-16",
+    "cp_transformation_version": "v1.0.0",
+    "assessment_version": "1.0"
+  },
+  "basic_information": {
+    "company_name": "EWM Global",
+    "location": {
+      "city": "Stamford",
+      "state_province": "CT",
+      "country": "United States",
+      "multiple_locations": true,
+      "number_of_locations": 3
+    },
+    "industry": {
+      "primary_industry": "information",
+      "industry_details": "Fintech company that provides technology to financial services companies.  It is most like Computershare for comparison.",
+      "naics_code": "51",
+      "industry_vertical": "Information Technology"
+    },
+    "corporate_structure": "c_corporation",
+    "website": "https://ewmglobal.com",
+    "year_founded": 2001
+  },
+  "size_metrics": {
+    "workforce": {
+      "executive_leadership": 4,
+      "support_administrative": 81,
+      "full_time_employees": 85,
+      "part_time_employees": 0,
+      "contractors_1099": 0,
+      "seasonal_employees": 0,
+      "total_workforce": 170
+    },
+    "revenue": {
+      "last_year_total": 24000000,
+      "projected_this_year": 26000000,
+      "highest_year": 2024,
+      "highest_annual_revenue": 24000000,
+      "yoy_growth_rate": 0.08333333333333333
+    },
+    "size_classification": {
+      "revenue_band": "$25M-$50M",
+      "employee_band": "101-250",
+      "sba_designation": "Mid-Market"
+    }
+  },
+  "business_focus": {
+    "products_services": [
+      {
+        "name": "Deferred Cash Plan Administration",
+        "type": "service",
+        "percent_of_revenue": 69
+      },
+      {
+        "name": "Share Plan Administration",
+        "type": "service",
+        "percent_of_revenue": 1
+      },
+      {
+        "name": "Carry/Coinvestment Plan Administration",
+        "type": "service",
+        "percent_of_revenue": 30
+      }
+    ],
+    "customer_mix": {
+      "b2b_percent": 100,
+      "b2c_percent": 0,
+      "wholesale_percent": 0,
+      "retail_percent": 0,
+      "online_percent": 0
+    }
+  },
+  "growth_context": {
+    "growth_phase": "Growth",
+    "growth_stage_indicators": {
+      "years_in_operation": 24,
+      "revenue_trajectory": "Growing",
+      "market_position": "Growing Competitor"
+    },
+    "strategic_intent": "Strategic Growth"
+  },
+  "pain_points": {
+    "current_challenges": [
+      "sales",
+      "marketing",
+      "financials",
+      "leadership",
+      "strategy",
+      "technology",
+      "operations",
+      "human_resources"
+    ],
+    "other_challenges_detail": ""
+  },
+  "competitive_context": {
+    "competitors": [
+      {
+        "name": "Computershare",
+        "website": "https://www-us.computershare.com/",
+        "is_direct_competitor": false
+      },
+      {
+        "name": "GPx",
+        "website": "https://www.gppowerx.com/",
+        "is_direct_competitor": true
+      },
+      {
+        "name": "HRSoft",
+        "website": "https://hrsoft.com/",
+        "is_direct_competitor": true
+      }
+    ],
+    "competitive_differentiators": "Market share: 10%, Understanding: 3/5",
+    "estimated_market_share": 10
+  },
+  "benchmark_selectors": {
+    "primary_industry_code": "51",
+    "revenue_cohort": "$25M-$50M",
+    "employee_cohort": "101-250",
+    "growth_phase": "Growth",
+    "geographic_market": "CT, United States",
+    "business_model": "B2B"
+  }
+}

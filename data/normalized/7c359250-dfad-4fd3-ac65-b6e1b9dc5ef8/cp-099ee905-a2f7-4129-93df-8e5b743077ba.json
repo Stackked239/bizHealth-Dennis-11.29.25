@@ -1,0 +1,122 @@
+{
+  "metadata": {
+    "profile_id": "7c359250-dfad-4fd3-ac65-b6e1b9dc5ef8",
+    "snapshot_id": "099ee905-a2f7-4129-93df-8e5b743077ba",
+    "assessment_run_id": "922cbec0-b9bf-4a97-b5c7-14e766246855",
+    "created_at": "2025-12-05T22:37:10.299Z",
+    "last_updated": "2025-12-05T22:37:10.299Z",
+    "cp_version": "v2025-09-16",
+    "cp_transformation_version": "v1.0.0",
+    "assessment_version": "1.0"
+  },
+  "basic_information": {
+    "company_name": "Summit Build Group",
+    "location": {
+      "city": "Denver",
+      "state_province": "CO",
+      "country": "United States",
+      "multiple_locations": true,
+      "number_of_locations": 2
+    },
+    "industry": {
+      "primary_industry": "construction",
+      "industry_details": "Commercial and residential construction, specializing in sustainable building practices",
+      "naics_code": "23",
+      "industry_vertical": "Construction"
+    },
+    "corporate_structure": "s_corporation",
+    "website": "https://summitbuildgroup.com",
+    "year_founded": 2008
+  },
+  "size_metrics": {
+    "workforce": {
+      "executive_leadership": 3,
+      "support_administrative": 15,
+      "full_time_employees": 48,
+      "part_time_employees": 8,
+      "contractors_1099": 65,
+      "seasonal_employees": 20,
+      "total_workforce": 159
+    },
+    "revenue": {
+      "last_year_total": 18500000,
+      "projected_this_year": 21000000,
+      "highest_year": 2022,
+      "highest_annual_revenue": 19200000,
+      "yoy_growth_rate": 0.13513513513513514
+    },
+    "size_classification": {
+      "revenue_band": "$10M-$25M",
+      "employee_band": "101-250",
+      "sba_designation": "Mid-Market"
+    }
+  },
+  "business_focus": {
+    "products_services": [
+      {
+        "name": "Commercial Construction",
+        "type": "service",
+        "percent_of_revenue": 55
+      },
+      {
+        "name": "Residential Construction",
+        "type": "service",
+        "percent_of_revenue": 30
+      },
+      {
+        "name": "Renovation & Remodeling",
+        "type": "service",
+        "percent_of_revenue": 15
+      }
+    ],
+    "customer_mix": {
+      "b2b_percent": 75,
+      "b2c_percent": 25,
+      "wholesale_percent": 0,
+      "retail_percent": 0,
+      "online_percent": 5
+    }
+  },
+  "growth_context": {
+    "growth_phase": "Growth",
+    "growth_stage_indicators": {
+      "years_in_operation": 17,
+      "revenue_trajectory": "Growing",
+      "market_position": "Growing Competitor"
+    },
+    "strategic_intent": "Maintaining Current Position"
+  },
+  "pain_points": {
+    "current_challenges": [
+      "human_resources",
+      "operations",
+      "sales",
+      "financials"
+    ],
+    "other_challenges_detail": ""
+  },
+  "competitive_context": {
+    "competitors": [
+      {
+        "name": "Turner Construction",
+        "website": "https://turnerconstruction.com",
+        "is_direct_competitor": true
+      },
+      {
+        "name": "Saunders Construction",
+        "website": "https://saundersinc.com",
+        "is_direct_competitor": true
+      }
+    ],
+    "competitive_differentiators": "Market share: 7%, Understanding: 4/5",
+    "estimated_market_share": 7
+  },
+  "benchmark_selectors": {
+    "primary_industry_code": "23",
+    "revenue_cohort": "$10M-$25M",
+    "employee_cohort": "101-250",
+    "growth_phase": "Growth",
+    "geographic_market": "CO, United States",
+    "business_model": "B2B"
+  }
+}
