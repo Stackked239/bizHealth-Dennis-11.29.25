@@ -1,0 +1,23 @@
+{
+  "version": "v1.0.0",
+  "last_updated": "2025-12-05T03:29:50.780Z",
+  "entries": {
+    "86a66ed1-6c1a-4733-b862-350680f45471": {
+      "assessment_run_id": "86a66ed1-6c1a-4733-b862-350680f45471",
+      "company_profile_id": "ewm-global-478cbd43",
+      "cp_snapshot_id": "76a5a329-205d-4c10-9bd3-56c57c67ee4f",
+      "created_at": "2025-12-05T03:29:50.779Z",
+      "questionnaire_version": "v2025-09-16",
+      "cp_version": "v2025-09-16",
+      "cp_transformation_version": "v1.0.0",
+      "qr_transformation_version": "v1.0.0",
+      "paths": {
+        "raw_assessment": "data/raw/ewm-global-478cbd43/86a66ed1-6c1a-4733-b862-350680f45471.json",
+        "normalized_company_profile": "data/normalized/a09f21a0-021a-480d-bbf1-c138e83500df/cp-76a5a329-205d-4c10-9bd3-56c57c67ee4f.json",
+        "normalized_questionnaire_responses": "data/normalized/ewm-global-478cbd43/qr-86a66ed1-6c1a-4733-b862-350680f45471.json",
+        "benchmark_data": "data/normalized/ewm-global-478cbd43/benchmark-86a66ed1-6c1a-4733-b862-350680f45471.json"
+      },
+      "status": "ready_for_analysis"
+    }
+  }
+}

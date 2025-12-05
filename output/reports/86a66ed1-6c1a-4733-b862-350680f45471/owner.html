@@ -1,0 +1,4101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="BizHealth.ai Report Generator v2.0">
+  <title>Business Owner Report - EWM Global</title>
+  <style>
+    /* Base Styles */
+    
+    /* Base Reset and Typography */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      font-family: 'Open Sans', Arial, sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #333;
+      background: #fff;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+      color: #212653;
+      margin-bottom: 0.5em;
+      line-height: 1.3;
+    }
+
+    h1 { font-size: 2.5rem; font-weight: 700; }
+    h2 { font-size: 2rem; font-weight: 600; page-break-before: always; }
+    h2:first-of-type { page-break-before: auto; }
+    h3 { font-size: 1.5rem; font-weight: 600; }
+    h4 { font-size: 1.25rem; font-weight: 500; }
+    h5 { font-size: 1.1rem; font-weight: 500; }
+
+    p {
+      margin-bottom: 1em;
+    }
+
+    /* Links */
+    a {
+      color: #969423;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Lists */
+    ul, ol {
+      margin-left: 1.5em;
+      margin-bottom: 1em;
+    }
+
+    li {
+      margin-bottom: 0.5em;
+    }
+
+    /* Page Layout */
+    .report-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .page {
+      padding: 2rem 0;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    /* Header */
+    .report-header {
+      text-align: center;
+      padding: 2rem 0;
+      border-bottom: 4px solid #212653;
+      margin-bottom: 2rem;
+    }
+
+    .report-header .logo {
+      max-height: 60px;
+      margin-bottom: 1rem;
+    }
+
+    .report-header h1 {
+      margin-bottom: 0.5rem;
+    }
+
+    .report-header .subtitle {
+      font-size: 1.25rem;
+      color: #666;
+    }
+
+    .report-header .company-name {
+      font-size: 1.5rem;
+      color: #969423;
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+
+    .report-header .date {
+      font-size: 0.9rem;
+      color: #888;
+      margin-top: 0.5rem;
+    }
+
+    /* Footer */
+    .report-footer {
+      text-align: center;
+      padding: 1rem 0;
+      border-top: 2px solid #eee;
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    @media print {
+      .report-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    }
+
+    /* Section Styles */
+    .section {
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #969423;
+    }
+
+    .section-icon {
+      font-size: 1.5rem;
+      margin-right: 0.75rem;
+    }
+
+    /* Score Cards */
+    .score-card {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #212653 0%, #212653dd 100%);
+      color: #fff;
+      min-width: 150px;
+    }
+
+    .score-card .score-value {
+      font-size: 3rem;
+      font-weight: 700;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    .score-card .score-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .score-card.small {
+      padding: 0.75rem;
+      min-width: 100px;
+    }
+
+    .score-card.small .score-value {
+      font-size: 1.75rem;
+    }
+
+    /* Health Score Display */
+    .health-score-display {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+    }
+
+    .health-score-circle {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #212653 0%, #212653cc 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    .health-score-circle .score {
+      font-size: 3.5rem;
+      font-weight: 700;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+      line-height: 1;
+    }
+
+    .health-score-circle .out-of {
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    .health-score-details {
+      text-align: left;
+    }
+
+    .health-score-details .status {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .health-score-details .trajectory {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      color: #666;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    th {
+      background: #212653;
+      color: #fff;
+      font-weight: 600;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    tr:hover {
+      background: #f0f0f0;
+    }
+
+    /* Score Table */
+    .score-table th:first-child {
+      width: 40%;
+    }
+
+    .score-table td.score {
+      font-weight: 600;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    /* Band Badge */
+    .band-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .band-badge.Excellence { background: #d4edda; color: #155724; }
+    .band-badge.Proficiency { background: #fff3cd; color: #856404; }
+    .band-badge.Attention { background: #ffeeba; color: #856404; }
+    .band-badge.Critical { background: #f8d7da; color: #721c24; }
+
+    /* Priority Badge */
+    .priority-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .priority-badge.high { background: #dc3545; color: #fff; }
+    .priority-badge.medium { background: #ffc107; color: #333; }
+    .priority-badge.low { background: #28a745; color: #fff; }
+
+    /* Cards */
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #212653;
+      margin: 0;
+    }
+
+    .card-body {
+      font-size: 0.95rem;
+    }
+
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+    @media (max-width: 768px) {
+      .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Flex Layout */
+    .flex { display: flex; }
+    .flex-wrap { flex-wrap: wrap; }
+    .flex-center { align-items: center; justify-content: center; }
+    .flex-between { justify-content: space-between; }
+    .gap-1 { gap: 0.5rem; }
+    .gap-2 { gap: 1rem; }
+    .gap-3 { gap: 1.5rem; }
+
+    /* Utility Classes */
+    .text-center { text-align: center; }
+    .text-right { text-align: right; }
+    .mt-1 { margin-top: 0.5rem; }
+    .mt-2 { margin-top: 1rem; }
+    .mt-3 { margin-top: 1.5rem; }
+    .mb-1 { margin-bottom: 0.5rem; }
+    .mb-2 { margin-bottom: 1rem; }
+    .mb-3 { margin-bottom: 1.5rem; }
+    .p-1 { padding: 0.5rem; }
+    .p-2 { padding: 1rem; }
+    .p-3 { padding: 1.5rem; }
+
+    /* Quick Win Card */
+    .quick-win-card {
+      background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+      border-left: 4px solid #969423;
+      padding: 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+    }
+
+    .quick-win-card .title {
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .quick-win-card .metrics {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.75rem;
+    }
+
+    .quick-win-card .metrics span {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* Risk Card */
+    .risk-card {
+      border-left: 4px solid #dc3545;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .risk-card.high { border-left-color: #dc3545; }
+    .risk-card.medium { border-left-color: #ffc107; }
+    .risk-card.low { border-left-color: #28a745; }
+
+    .risk-card .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .risk-card .category {
+      font-weight: 600;
+      color: #212653;
+    }
+
+    /* Finding Card */
+    .finding-card {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+    }
+
+    .finding-card.strength { background: #d4edda; border-left: 4px solid #28a745; }
+    .finding-card.gap { background: #f8d7da; border-left: 4px solid #dc3545; }
+    .finding-card.risk { background: #ffeeba; border-left: 4px solid #ffc107; }
+    .finding-card.opportunity { background: #cce5ff; border-left: 4px solid #0d6efd; }
+
+    .finding-card .label {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .finding-card .dimension {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Roadmap Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.5rem;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: #212653;
+      border-radius: 3px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 1.5rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -1.75rem;
+      top: 0.5rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #969423;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 3px #212653;
+    }
+
+    .timeline-item .phase-name {
+      font-weight: 600;
+      color: #212653;
+      font-size: 1.1rem;
+    }
+
+    .timeline-item .time-horizon {
+      font-size: 0.9rem;
+      color: #969423;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Callout Box */
+    .callout {
+      padding: 1.25rem;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+    }
+
+    .callout.info {
+      background: #e7f3ff;
+      border-left: 4px solid #0d6efd;
+    }
+
+    .callout.success {
+      background: #d4edda;
+      border-left: 4px solid #28a745;
+    }
+
+    .callout.warning {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+    }
+
+    .callout.danger {
+      background: #f8d7da;
+      border-left: 4px solid #dc3545;
+    }
+
+    .callout .title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      height: 24px;
+      background: #e9ecef;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .progress-bar .fill {
+      height: 100%;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: width 0.3s ease;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        font-size: 11pt;
+      }
+
+      .report-container {
+        max-width: none;
+        padding: 0;
+      }
+
+      .page-break {
+        page-break-before: always;
+      }
+
+      h2 {
+        page-break-before: always;
+      }
+
+      h2:first-of-type {
+        page-break-before: auto;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+    }
+  
+
+    /* Unified CSS Framework (Phase 4/5 Consolidation) */
+    
+/* ============================================================
+   BIZHEALTH.AI UNIFIED CSS FRAMEWORK
+   Phase 4 Styling Patterns for Phase 5 Report Generation
+   Generated: 2025-12-05
+   ============================================================ */
+
+/* ===== BRAND COLOR VARIABLES ===== */
+:root {
+  --biz-navy: #212653;
+  --biz-green: #969423;
+  --biz-grey: #7C7C7C;
+  --biz-white: #FFFFFF;
+  --biz-light-bg: #f8f9fa;
+  --biz-border: #e9ecef;
+
+  /* Score Band Colors */
+  --band-excellence: #28a745;
+  --band-proficiency: #0d6efd;
+  --band-attention: #ffc107;
+  --band-critical: #dc3545;
+
+  /* Spacing Scale (8px base) */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-xxl: 48px;
+}
+
+/* ===== CRITICAL FIX 1: Cover Page Background Override ===== */
+/* Issue: .page class white background overrides .cover-page BizNavy */
+.cover-page {
+  background: #212653 !important;
+  background-color: #212653 !important;
+}
+
+.page.cover-page {
+  background: #212653 !important;
+  background-color: #212653 !important;
+}
+
+/* ===== CRITICAL FIX 2: Dark Section Text Visibility ===== */
+/* Issue: Only strong/em styled in Phase 5; regular p text inherits dark color */
+.dark-section,
+.dark-section p,
+.dark-section span,
+.dark-section li,
+.dark-section strong,
+.dark-section em,
+.dark-section a,
+.dark-section h1,
+.dark-section h2,
+.dark-section h3,
+.dark-section h4,
+.dark-section h5,
+.dark-section h6,
+.dark-section label,
+.dark-section td,
+.dark-section th {
+  color: #FFFFFF !important;
+}
+
+.cover-page,
+.cover-page p,
+.cover-page span,
+.cover-page h1,
+.cover-page h2,
+.cover-page h3,
+.cover-page .subtitle,
+.cover-page .tagline {
+  color: #FFFFFF !important;
+}
+
+/* ===== CRITICAL FIX 3: Remove Problematic Overlays ===== */
+/* Issue: Light gradient overlays (5-8% opacity) reducing legibility */
+.cover-page::before,
+.cover-page::after,
+.dark-section::before,
+.dark-section::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* ===== FIX 4: Typography Hierarchy ===== */
+body {
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+  color: #212653;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+h1 { font-size: 2.5rem; font-weight: 700; }
+h2 { font-size: 2rem; font-weight: 600; border-bottom: 2px solid #969423; padding-bottom: 0.5rem; }
+h3 { font-size: 1.5rem; font-weight: 600; }
+h4 { font-size: 1.25rem; font-weight: 500; }
+
+/* ===== FIX 5: Score Display Contrast ===== */
+.score-value {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 3.5rem;
+  color: inherit;
+}
+
+.score-denominator,
+.score-out-of {
+  color: #CCCCCC; /* Intentional subtle hierarchy - not a bug */
+  font-size: 1.5rem;
+}
+
+.health-score-circle {
+  width: 180px;
+  height: 180px;
+  background: linear-gradient(135deg, #212653 0%, #212653cc 100%);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  color: #FFFFFF;
+}
+
+.health-score-circle .score {
+  font-size: 3.5rem;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+  line-height: 1;
+  color: #FFFFFF;
+}
+
+.health-score-circle .out-of {
+  font-size: 1rem;
+  opacity: 0.8;
+  color: #FFFFFF;
+}
+
+/* ===== FIX 6: Information Box Consistency ===== */
+.strength-box,
+.box-strength {
+  background: rgba(150, 148, 35, 0.1);
+  border-left: 4px solid #969423;
+  padding: 15px 20px;
+  margin: 15px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.gap-box,
+.risk-box,
+.box-gap,
+.box-risk {
+  background: rgba(211, 47, 47, 0.1);
+  border-left: 4px solid #D32F2F;
+  padding: 15px 20px;
+  margin: 15px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.action-box,
+.box-action,
+.recommendation-box {
+  background: rgba(33, 38, 83, 0.05);
+  border-left: 4px solid #212653;
+  padding: 15px 20px;
+  margin: 15px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.opportunity-box,
+.box-opportunity {
+  background: rgba(13, 110, 253, 0.1);
+  border-left: 4px solid #0d6efd;
+  padding: 15px 20px;
+  margin: 15px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+/* ===== FIX 7: Score Tile Cards ===== */
+.score-tile,
+.score-card {
+  background: #FFFFFF;
+  border-left: 4px solid #969423;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 16px;
+}
+
+.score-card .score-value {
+  font-size: 3rem;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.score-card .score-label {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== FIX 8: Score Band Badges ===== */
+.band-badge,
+.score-band {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.band-badge.Excellence,
+.score-band.excellence {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.band-badge.Proficiency,
+.score-band.proficiency {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.band-badge.Attention,
+.score-band.attention {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.band-badge.Critical,
+.score-band.critical {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* ===== FIX 9: Key Takeaways Box (Dark Section) ===== */
+.key-takeaways {
+  background: #212653 !important;
+  color: #FFFFFF !important;
+  padding: 24px;
+  border-radius: 8px;
+  margin: 24px 0;
+}
+
+.key-takeaways h3,
+.key-takeaways h4,
+.key-takeaways p,
+.key-takeaways li,
+.key-takeaways span,
+.key-takeaways .takeaway-title,
+.key-takeaways .takeaway-text {
+  color: #FFFFFF !important;
+}
+
+.key-takeaways .takeaway-icon {
+  color: #969423 !important;
+}
+
+/* ===== FIX 10: Table Styling ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+}
+
+th {
+  background-color: #212653;
+  color: #FFFFFF;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+}
+
+td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+/* ===== FIX 11: Interactive Table of Contents ===== */
+.table-of-contents {
+  background: #f8f9fa;
+  padding: 24px;
+  border-radius: 8px;
+  margin: 24px 0;
+}
+
+.table-of-contents h3 {
+  color: #212653;
+  margin-bottom: 1rem;
+}
+
+.table-of-contents ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.table-of-contents li {
+  margin: 8px 0;
+}
+
+.table-of-contents a {
+  color: #212653;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.table-of-contents a:hover {
+  background-color: #e9ecef;
+  color: #969423;
+}
+
+.table-of-contents .section-icon {
+  margin-right: 12px;
+  color: #969423;
+}
+
+/* Nested TOC items */
+.table-of-contents ul ul {
+  padding-left: 24px;
+  margin-top: 4px;
+}
+
+.table-of-contents ul ul a {
+  font-size: 0.9rem;
+  padding: 6px 12px;
+}
+
+/* ===== FIX 12: Cross-Reference Links ===== */
+.cross-reference,
+.see-comprehensive,
+.comprehensive-reference {
+  background: rgba(150, 148, 35, 0.1);
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin: 16px 0;
+  font-style: italic;
+  border-left: 3px solid #969423;
+}
+
+.cross-reference a,
+.see-comprehensive a,
+.comprehensive-reference a {
+  color: #969423;
+  font-weight: 600;
+}
+
+/* ===== FIX 13: Print Optimization ===== */
+@media print {
+  body {
+    font-size: 12pt;
+    line-height: 1.4;
+    max-width: none;
+    padding: 0;
+  }
+
+  .cover-page {
+    background: #212653 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .key-takeaways {
+    background: #212653 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .key-takeaways,
+  .key-takeaways * {
+    color: #FFFFFF !important;
+  }
+
+  h2 {
+    page-break-before: always;
+  }
+
+  h2:first-of-type {
+    page-break-before: auto;
+  }
+
+  .score-card,
+  .score-tile,
+  .insight-card,
+  .recommendation-box,
+  .risk-box,
+  .strength-box,
+  .gap-box {
+    page-break-inside: avoid;
+  }
+
+  .svg-chart-container,
+  .chart-container {
+    page-break-inside: avoid;
+  }
+
+  .table-of-contents {
+    page-break-after: always;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  th {
+    background-color: #212653 !important;
+    color: #FFFFFF !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .band-badge.Excellence { background-color: #d4edda !important; color: #155724 !important; }
+  .band-badge.Proficiency { background-color: #cce5ff !important; color: #004085 !important; }
+  .band-badge.Attention { background-color: #fff3cd !important; color: #856404 !important; }
+  .band-badge.Critical { background-color: #f8d7da !important; color: #721c24 !important; }
+}
+
+/* ===== FIX 14: Responsive Design ===== */
+@media (max-width: 768px) {
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+
+  .executive-highlights,
+  .insight-cards-container,
+  .owner-implications-grid,
+  .financial-summary-grid,
+  .bundle-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .health-score-circle {
+    width: 140px;
+    height: 140px;
+  }
+
+  .score-value {
+    font-size: 2.5rem;
+  }
+
+  .dashboard-row,
+  .chart-grid {
+    flex-direction: column;
+  }
+
+  table {
+    font-size: 0.875rem;
+  }
+
+  th, td {
+    padding: 8px 12px;
+  }
+}
+
+/* ===== FIX 15: Accessibility Enhancements ===== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus states for keyboard navigation */
+a:focus,
+button:focus {
+  outline: 3px solid #969423;
+  outline-offset: 2px;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ===== ADDITIONAL COMPONENT STYLES ===== */
+
+/* Finding Cards */
+.finding-card {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  border-left: 4px solid;
+}
+
+.finding-card.strength { background: #d4edda; border-left-color: #28a745; }
+.finding-card.gap { background: #f8d7da; border-left-color: #dc3545; }
+.finding-card.risk { background: #ffeeba; border-left-color: #ffc107; }
+.finding-card.opportunity { background: #cce5ff; border-left-color: #0d6efd; }
+
+.finding-card .label {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.finding-card .dimension {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+/* Quick Win Cards */
+.quick-win-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+  border-left: 4px solid #969423;
+  padding: 1.25rem;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 1rem;
+}
+
+.quick-win-card .title {
+  font-weight: 600;
+  color: #212653;
+  margin-bottom: 0.5rem;
+}
+
+.quick-win-card .metrics {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.75rem;
+}
+
+.quick-win-card .metrics span {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Risk Cards */
+.risk-card {
+  border-left: 4px solid #dc3545;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.risk-card.high { border-left-color: #dc3545; }
+.risk-card.medium { border-left-color: #ffc107; }
+.risk-card.low { border-left-color: #28a745; }
+
+.risk-card .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.risk-card .category {
+  font-weight: 600;
+  color: #212653;
+}
+
+/* Timeline/Roadmap */
+.timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0.5rem;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #212653;
+  border-radius: 3px;
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 1.5rem;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -1.75rem;
+  top: 0.5rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #969423;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 3px #212653;
+}
+
+.timeline-item .phase-name {
+  font-weight: 600;
+  color: #212653;
+  font-size: 1.1rem;
+}
+
+.timeline-item .time-horizon {
+  font-size: 0.9rem;
+  color: #969423;
+  margin-bottom: 0.5rem;
+}
+
+/* Callout Boxes */
+.callout {
+  padding: 1.25rem;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+.callout.info {
+  background: #e7f3ff;
+  border-left: 4px solid #0d6efd;
+}
+
+.callout.success {
+  background: #d4edda;
+  border-left: 4px solid #28a745;
+}
+
+.callout.warning {
+  background: #fff3cd;
+  border-left: 4px solid #ffc107;
+}
+
+.callout.danger {
+  background: #f8d7da;
+  border-left: 4px solid #dc3545;
+}
+
+.callout .title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* Insight Cards */
+.insight-card {
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0.75rem 0;
+  border-left: 4px solid;
+}
+
+.insight-card.strength { background: #d4edda; border-left-color: #28a745; }
+.insight-card.strength .insight-label { color: #155724; }
+
+.insight-card.weakness,
+.insight-card.gap { background: #f8d7da; border-left-color: #dc3545; }
+.insight-card.weakness .insight-label,
+.insight-card.gap .insight-label { color: #721c24; }
+
+.insight-card.opportunity { background: #cce5ff; border-left-color: #0d6efd; }
+.insight-card.opportunity .insight-label { color: #004085; }
+
+.insight-card.warning,
+.insight-card.risk { background: #fff3cd; border-left-color: #ffc107; }
+.insight-card.warning .insight-label,
+.insight-card.risk .insight-label { color: #856404; }
+
+.insight-card .insight-label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
+}
+
+.insight-card .insight-title {
+  font-weight: 600;
+  color: #212653;
+  margin-bottom: 0.5rem;
+}
+
+.insight-card .insight-detail {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+/* Grid Layouts */
+.insight-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.insight-cards-container .insight-card {
+  margin: 0;
+}
+
+/* Progress Bar */
+.progress-bar {
+  height: 24px;
+  background: #e9ecef;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.progress-bar .fill {
+  height: 100%;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: width 0.3s ease;
+}
+
+/* Benchmark Callouts */
+.benchmark-callout {
+  background: #e7f3ff;
+  border: 1px solid #b8daff;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.benchmark-callout .benchmark-icon {
+  font-size: 2rem;
+  color: #212653;
+}
+
+.benchmark-callout .benchmark-content { flex: 1; }
+
+.benchmark-callout .benchmark-label {
+  font-size: 0.85rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.benchmark-callout .benchmark-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #212653;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.benchmark-callout .benchmark-context {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Evidence Citations */
+.evidence-citation {
+  background: #f8f9fa;
+  border-left: 4px solid #969423;
+  border-radius: 0 8px 8px 0;
+  padding: 0.75rem 1rem;
+  margin: 0.75rem 0 1.25rem 0;
+  font-size: 0.9rem;
+}
+
+.evidence-citation .citation-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #212653;
+  margin-bottom: 0.5rem;
+}
+
+.evidence-citation .citation-icon {
+  color: #969423;
+}
+
+.evidence-citation .question-ref {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.evidence-citation .response-text {
+  color: #333;
+  font-style: italic;
+  margin: 0.5rem 0;
+  padding-left: 1rem;
+  border-left: 2px solid #ddd;
+}
+
+.evidence-citation .benchmark-comparison {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e0e0e0;
+  font-size: 0.85rem;
+}
+
+.evidence-citation .benchmark-comparison.above { color: #28a745; }
+.evidence-citation .benchmark-comparison.below { color: #dc3545; }
+.evidence-citation .benchmark-comparison.at { color: #6c757d; }
+
+/* Bundle Grid (Owner Report) */
+.bundle-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.bundle-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+}
+
+.bundle-item.primary {
+  border-left: 3px solid #212653;
+}
+
+.bundle-item a {
+  color: #212653;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.bundle-item a:hover {
+  color: #969423;
+}
+
+.bundle-item p {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0.25rem 0 0 0;
+}
+
+
+    /* Report-Specific Custom Styles */
+    
+    /* Narrative Content Styles */
+    .narrative-content {
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      border-left: 4px solid #969423;
+    }
+
+    .narrative-content .bh-h2 {
+      font-size: 1.4rem;
+      color: #212653;
+      margin-top: 1.25em;
+      margin-bottom: 0.5em;
+      border-bottom: 2px solid #969423;
+      padding-bottom: 0.5rem;
+    }
+
+    .narrative-content .bh-h3 {
+      font-size: 1.2rem;
+      color: #212653;
+      margin-top: 1em;
+      margin-bottom: 0.5em;
+    }
+
+    .narrative-content .bh-h4 {
+      font-size: 1.05rem;
+      color: #555;
+      margin-top: 1em;
+      margin-bottom: 0.5em;
+    }
+
+    .narrative-content .bh-p {
+      margin: 1em 0;
+      line-height: 1.7;
+    }
+
+    .narrative-content .bh-ul,
+    .narrative-content .bh-ol {
+      margin: 1em 0;
+      padding-left: 1.5em;
+    }
+
+    .narrative-content .bh-li,
+    .narrative-content .bh-li-num {
+      margin: 0.5em 0;
+      line-height: 1.6;
+    }
+
+    .narrative-content .bh-empty {
+      color: #999;
+      font-style: italic;
+    }
+
+    .narrative-content strong {
+      color: #212653;
+    }
+
+    /* ============================================
+       VISUAL ENHANCEMENT STYLES
+       ============================================ */
+
+    /* KEY TAKEAWAYS BOX */
+    .key-takeaways {
+      background: linear-gradient(135deg, #212653 0%, #2a3366 100%);
+      color: #fff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      box-shadow: 0 4px 12px rgba(33, 38, 83, 0.3);
+    }
+
+    .key-takeaways .takeaway-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 2px solid rgba(150, 148, 35, 0.5);
+      padding-bottom: 0.75rem;
+    }
+
+    .key-takeaways .takeaway-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin: 0.75rem 0;
+      padding: 0.5rem;
+      background: rgba(255,255,255,0.1);
+      border-radius: 6px;
+    }
+
+    .key-takeaways .takeaway-icon {
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .key-takeaways .takeaway-text {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* BENCHMARK CALLOUT BOXES */
+    .benchmark-callout {
+      background: #e7f3ff;
+      border: 1px solid #b8daff;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .benchmark-callout .benchmark-icon {
+      font-size: 2rem;
+      color: #212653;
+    }
+
+    .benchmark-callout .benchmark-content { flex: 1; }
+
+    .benchmark-callout .benchmark-label {
+      font-size: 0.85rem;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .benchmark-callout .benchmark-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #212653;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .benchmark-callout .benchmark-context {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    /* EXECUTIVE HIGHLIGHTS */
+    .executive-highlights {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .highlight-card {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      border-top: 4px solid #212653;
+    }
+
+    .highlight-card .highlight-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .highlight-card .highlight-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #212653;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .highlight-card .highlight-label {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 0.25rem;
+    }
+
+    /* EVIDENCE CITATION BLOCKS */
+    .evidence-citation {
+      background: #f8f9fa;
+      border-left: 4px solid #969423;
+      border-radius: 0 8px 8px 0;
+      padding: 0.75rem 1rem;
+      margin: 0.75rem 0 1.25rem 0;
+      font-size: 0.9rem;
+    }
+
+    .evidence-citation .citation-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .evidence-citation .citation-icon {
+      color: #969423;
+    }
+
+    .evidence-citation .question-ref {
+      color: #666;
+      font-size: 0.85rem;
+    }
+
+    .evidence-citation .response-text {
+      color: #333;
+      font-style: italic;
+      margin: 0.5rem 0;
+      padding-left: 1rem;
+      border-left: 2px solid #ddd;
+    }
+
+    .evidence-citation .benchmark-comparison {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid #e0e0e0;
+      font-size: 0.85rem;
+    }
+
+    .evidence-citation .benchmark-comparison.above { color: #28a745; }
+    .evidence-citation .benchmark-comparison.below { color: #dc3545; }
+    .evidence-citation .benchmark-comparison.at { color: #6c757d; }
+
+    /* COLOR-CODED INSIGHT CARDS */
+    .insight-card {
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 0.75rem 0;
+      border-left: 4px solid;
+    }
+
+    .insight-card.strength { background: #d4edda; border-left-color: #28a745; }
+    .insight-card.strength .insight-label { color: #155724; }
+
+    .insight-card.weakness { background: #f8d7da; border-left-color: #dc3545; }
+    .insight-card.weakness .insight-label { color: #721c24; }
+
+    .insight-card.opportunity { background: #cce5ff; border-left-color: #0d6efd; }
+    .insight-card.opportunity .insight-label { color: #004085; }
+
+    .insight-card.warning { background: #fff3cd; border-left-color: #ffc107; }
+    .insight-card.warning .insight-label { color: #856404; }
+
+    .insight-card .insight-label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.25rem;
+    }
+
+    .insight-card .insight-title {
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .insight-card .insight-detail {
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    /* INSIGHT CARDS GRID LAYOUT */
+    .insight-cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .insight-cards-container .insight-card {
+      margin: 0;
+    }
+
+    /* BENCHMARK SUMMARY TABLE */
+    .benchmark-summary {
+      margin: 1.5rem 0;
+    }
+
+    .benchmark-summary h4 {
+      color: #212653;
+      margin-bottom: 1rem;
+    }
+
+    .score-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .score-table th,
+    .score-table td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    .score-table th {
+      background: #f8f9fa;
+      font-weight: 600;
+      color: #212653;
+    }
+
+    .score-table .score {
+      font-weight: 600;
+      color: #212653;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .executive-highlights { grid-template-columns: repeat(2, 1fr); }
+      .benchmark-callout { flex-direction: column; text-align: center; }
+      .key-takeaways .takeaway-item { flex-direction: column; align-items: flex-start; }
+      .insight-cards-container { grid-template-columns: 1fr; }
+    }
+
+    /* PRINT OPTIMIZATIONS */
+    @media print {
+      .key-takeaways {
+        background: #212653 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .evidence-citation {
+        border-left-color: #969423 !important;
+        background: #f8f9fa !important;
+      }
+
+      .insight-card { page-break-inside: avoid; }
+      .benchmark-callout { page-break-inside: avoid; }
+      .executive-highlights { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    /* ================================================================
+       OPUS 4.5 MARKDOWN ELEMENT STYLING
+       Added 2025-12-02 to support rich markdown output
+       ================================================================ */
+
+    /* Responsive Table Container */
+    .table-responsive {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 1.5rem 0;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .bh-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+      min-width: 400px;
+      background: #fff;
+    }
+
+    .bh-table th {
+      background: #212653;
+      color: #fff;
+      font-weight: 600;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    .bh-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #e0e0e0;
+      vertical-align: top;
+      color: #333;
+    }
+
+    .bh-table tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    .bh-table td:first-child {
+      font-weight: 500;
+      color: #212653;
+    }
+
+    /* ASCII Visualization Container */
+    .visual-framework {
+      background: #212653;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      overflow-x: auto;
+      box-shadow: 0 2px 8px rgba(33, 38, 83, 0.2);
+    }
+
+    .ascii-viz {
+      color: #e8e8e8;
+      font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+      font-size: 0.75rem;
+      line-height: 1.3;
+      white-space: pre;
+      margin: 0;
+    }
+
+    /* Code Block */
+    .bh-code {
+      background: #f8f9fa;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 1rem;
+      overflow-x: auto;
+      font-size: 0.9rem;
+      margin: 1rem 0;
+      font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+    }
+
+    /* Blockquote/Callout */
+    .bh-callout {
+      background: #f8f9fa;
+      border-left: 4px solid #969423;
+      padding: 1rem 1.5rem;
+      margin: 1.5rem 0;
+      font-style: italic;
+      color: #555;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .bh-callout p { margin: 0; }
+    .bh-callout strong { color: #212653; }
+
+    /* Section Divider */
+    .bh-section-divider {
+      border: none;
+      height: 2px;
+      background: linear-gradient(to right, #212653, #969423, #212653);
+      margin: 2rem 0;
+    }
+
+    .bh-h1 {
+      font-size: 2rem;
+      color: #212653;
+      border-bottom: 3px solid #969423;
+      padding-bottom: 0.5rem;
+    }
+
+    .bh-strong { color: #212653; font-weight: 600; }
+
+    /* Print styles for markdown elements */
+    @media print {
+      .visual-framework {
+        background: #212653 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .ascii-viz { color: #e8e8e8 !important; font-size: 0.65rem; }
+      .bh-table th { background: #212653 !important; color: #fff !important; }
+      .table-responsive { overflow: visible; box-shadow: none; }
+      .bh-callout { page-break-inside: avoid; }
+    }
+
+    /* ================================================================
+       OWNER REPORT ENHANCEMENT STYLES
+       Added for owner-focused executive guide with cross-references
+       ================================================================ */
+
+    /* OWNER SECTION HEADERS */
+    .owner-section-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .owner-section-header h2 {
+      margin-bottom: 0.5rem;
+      color: #212653;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .owner-question {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      color: #666;
+      margin: 0;
+      padding-left: 0.5rem;
+      border-left: 3px solid #969423;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .owner-question .question-icon {
+      font-size: 1.1rem;
+    }
+
+    .owner-question em {
+      font-style: italic;
+    }
+
+    /* OWNER IMPLICATIONS GRID */
+    .owner-implications-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .implication-card {
+      background: #fff;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 1.25rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .implication-card .card-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .implication-card .card-title {
+      font-weight: 600;
+      color: #212653;
+      font-family: 'Montserrat', sans-serif;
+      margin-bottom: 0.5rem;
+    }
+
+    .implication-card p {
+      font-size: 0.9rem;
+      color: #555;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .implication-card.growth { border-top: 3px solid #28a745; }
+    .implication-card.risk { border-top: 3px solid #dc3545; }
+    .implication-card.value { border-top: 3px solid #969423; }
+
+    /* FINANCIAL SUMMARY GRID */
+    .financial-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .financial-card {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .financial-card.highlight {
+      background: linear-gradient(135deg, #212653 0%, #2d3a7a 100%);
+      color: #fff;
+      border: none;
+    }
+
+    .financial-card .card-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    .financial-card.highlight .card-label {
+      color: rgba(255,255,255,0.8);
+    }
+
+    .financial-card .card-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #212653;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .financial-card.highlight .card-value {
+      color: #fff;
+    }
+
+    .financial-card .card-sublabel {
+      font-size: 0.8rem;
+      color: #888;
+      margin-top: 0.25rem;
+    }
+
+    .financial-card.highlight .card-sublabel {
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* SECTION INTRO TEXT */
+    .section-intro {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    /* COMPREHENSIVE REPORT REFERENCE CALLOUTS */
+    .comprehensive-reference {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #f8f9fa;
+      border-left: 3px solid #969423;
+      padding: 0.75rem 1rem;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .comprehensive-reference .ref-icon {
+      flex-shrink: 0;
+      font-size: 1rem;
+    }
+
+    .comprehensive-reference .ref-text {
+      color: #555;
+    }
+
+    .comprehensive-reference .ref-text strong {
+      color: #212653;
+    }
+
+    .comprehensive-reference .ref-text em {
+      color: #969423;
+      font-style: normal;
+      font-weight: 500;
+    }
+
+    .comprehensive-reference.reference-missing {
+      border-left-color: #dc3545;
+      background: #fff5f5;
+    }
+
+    .comprehensive-reference.reference-missing .ref-text {
+      color: #dc3545;
+    }
+
+    /* REPORT RELATIONSHIP NOTICE (for Comprehensive Report) */
+    .report-relationship-notice {
+      display: flex;
+      gap: 1rem;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border: 1px solid #dee2e6;
+      border-left: 4px solid #212653;
+      border-radius: 0 8px 8px 0;
+      padding: 1.25rem;
+      margin: 1.5rem 0 2rem 0;
+    }
+
+    .report-relationship-notice .notice-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+
+    .report-relationship-notice .notice-content {
+      flex: 1;
+    }
+
+    .report-relationship-notice h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.1rem;
+      color: #212653;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .report-relationship-notice p {
+      margin: 0.5rem 0 0 0;
+      font-size: 0.95rem;
+      color: #555;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .report-relationship-notice strong {
+      color: #212653;
+    }
+
+    /* BUNDLE CONTENTS */
+    .bundle-contents {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+
+    .bundle-contents h3 {
+      margin: 0 0 1rem 0;
+      color: #212653;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .bundle-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .bundle-item {
+      display: flex;
+      flex-direction: column;
+      padding: 0.75rem;
+      background: #fff;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+    }
+
+    .bundle-item.primary {
+      border-left: 3px solid #212653;
+    }
+
+    .bundle-item strong {
+      color: #212653;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .bundle-item span {
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    /* REFERENCE TABLE */
+    .reference-table td:first-child {
+      font-weight: 500;
+    }
+
+    .reference-table em {
+      color: #969423;
+      font-style: normal;
+    }
+
+    /* RESPONSIVE ADJUSTMENTS FOR OWNER ENHANCEMENTS */
+    @media (max-width: 768px) {
+      .owner-implications-grid,
+      .financial-summary-grid,
+      .bundle-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      .owner-implications-grid,
+      .financial-summary-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .bundle-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .financial-card.highlight {
+        background: #212653 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .comprehensive-reference {
+        background: #f8f9fa !important;
+        border-left-color: #969423 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .report-relationship-notice {
+        background: #f8f9fa !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+
+    /* ================================================================
+       OWNER REPORT CHART STYLES
+       Added for visual performance charts
+       ================================================================ */
+
+    .owner-charts-section {
+      margin: 1.5rem 0;
+      padding: 1.25rem;
+      background: #fafbfc;
+      border-radius: 12px;
+      border: 1px solid #e9ecef;
+    }
+
+    .owner-charts-grid {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .owner-charts-grid .chart-item {
+      flex: 1;
+      min-width: 300px;
+      max-width: 550px;
+    }
+
+    /* Import chart component styles */
+    
+    
+    .svg-chart-container {
+      display: flex;
+      justify-content: center;
+      margin: 1rem 0;
+      page-break-inside: avoid;
+    }
+
+    .svg-chart-container svg {
+      max-width: 100%;
+      height: auto;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+    }
+
+    @media print {
+      .svg-chart-container {
+        page-break-inside: avoid;
+      }
+
+      .svg-chart-container svg {
+        box-shadow: none;
+        border: 1px solid #e0e0e0;
+      }
+    }
+  
+
+    /* Executive Dashboard Styles */
+    .executive-dashboard {
+      margin: 2rem 0;
+    }
+
+    .dashboard-row {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .dashboard-main {
+      flex: 2;
+      min-width: 350px;
+    }
+
+    .dashboard-side {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .dashboard-full {
+      width: 100%;
+    }
+
+    /* Chart grid layout */
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .chart-cell {
+      background: #FFFFFF;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Chart error fallback */
+    .chart-error,
+    .chart-fallback {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: #f8f9fa;
+      border: 2px dashed #dee2e6;
+      border-radius: 8px;
+      color: #6c757d;
+      min-height: 200px;
+      text-align: center;
+    }
+
+    .chart-fallback-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    @media print {
+      .executive-dashboard,
+      .chart-grid,
+      .svg-chart-container {
+        page-break-inside: avoid;
+      }
+
+      .chart-cell {
+        box-shadow: none;
+        border: 1px solid #dee2e6;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-row {
+        flex-direction: column;
+      }
+
+      .dashboard-main,
+      .dashboard-side {
+        min-width: 100%;
+      }
+
+      .chart-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  
+
+    @media (max-width: 768px) {
+      .owner-charts-grid {
+        flex-direction: column;
+      }
+
+      .owner-charts-grid .chart-item {
+        min-width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    @media print {
+      .owner-charts-section {
+        background: #fafbfc !important;
+        page-break-inside: avoid;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  
+  </style>
+</head>
+<body>
+  <div class="report-container">
+    
+    
+    <header class="report-header">
+      <h1>Business Owner Report</h1>
+      <p class="subtitle">Your Executive Decision Guide</p>
+      <p class="company-name">EWM Global</p>
+      <p class="date">Assessment Date: December 4, 2025</p>
+    </header>
+  
+
+    <!-- Legal Terms & Disclaimers (Page 2) -->
+    
+    
+    <style>
+      
+    /* LEGAL TERMS PAGE - PRINT STYLING */
+    @media print {
+      .legal-terms-page {
+        page-break-before: always;
+        page-break-after: always;
+      }
+
+      .legal-content h2 {
+        page-break-after: avoid;
+      }
+
+      .legal-section {
+        page-break-inside: avoid;
+      }
+
+      .legal-acknowledgment {
+        page-break-inside: avoid;
+      }
+    }
+
+    /* HEADER BLOCK */
+    .legal-terms-header {
+      background-color: #212653; /* BizNavy */
+      color: #FFFFFF;
+      padding: 24px 40px;
+      text-align: center;
+      border-bottom: 4px solid #969423; /* BizGreen accent */
+    }
+
+    .legal-terms-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.5rem; /* 24px */
+      font-weight: 700;
+      margin: 0 0 8px 0;
+    }
+
+    .legal-terms-subtitle {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 1rem; /* 16px */
+      font-style: italic;
+      color: #E5E7EB;
+      margin: 0;
+    }
+
+    /* EMPATHETIC INTRODUCTION */
+    .legal-intro {
+      background-color: #F3F4F6;
+      padding: 16px 24px;
+      border-left: 4px solid #969423;
+      margin: 24px 0;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: #374151;
+    }
+
+    .legal-intro p {
+      margin: 0;
+    }
+
+    /* DOCUMENT METADATA BLOCK */
+    .legal-metadata {
+      background-color: #F9FAFB;
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      padding: 16px 24px;
+      margin: 24px 0;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 0.875rem;
+      color: #374151;
+    }
+
+    .legal-metadata p {
+      margin: 4px 0;
+    }
+
+    .legal-metadata strong {
+      color: #212653;
+    }
+
+    /* BODY TEXT STYLING */
+    .legal-content {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 0.875rem; /* ~14px, equivalent to 11pt */
+      line-height: 1.6;
+      color: #374151;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px;
+    }
+
+    .legal-content h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.125rem; /* 18px */
+      font-weight: 600;
+      color: #212653;
+      margin-top: 32px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #E5E7EB;
+      padding-bottom: 8px;
+    }
+
+    .legal-content h3 {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #374151;
+      margin-top: 24px;
+      margin-bottom: 12px;
+    }
+
+    .legal-content p {
+      margin: 12px 0;
+      text-align: justify;
+    }
+
+    .legal-intro-text {
+      background-color: #FEF3C7;
+      border: 1px solid #FCD34D;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+
+    .legal-section {
+      margin-bottom: 24px;
+    }
+
+    /* CONTACT BLOCK */
+    .contact-block {
+      font-style: normal;
+      background-color: #F3F4F6;
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 16px;
+    }
+
+    .contact-block a {
+      color: #212653;
+      text-decoration: underline;
+    }
+
+    .contact-block a:hover {
+      color: #969423;
+    }
+
+    /* ACKNOWLEDGMENT BLOCK */
+    .legal-acknowledgment {
+      background-color: #F3F4F6;
+      border-left: 4px solid #212653;
+      padding: 24px;
+      margin-top: 40px;
+      margin-bottom: 24px;
+    }
+
+    .acknowledgment-text {
+      font-size: 0.875rem;
+      color: #1F2937;
+      margin: 0;
+      text-transform: none;
+    }
+
+    .acknowledgment-text strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #212653;
+    }
+
+    /* FOOTER */
+    .legal-footer {
+      border-top: 2px solid #E5E7EB;
+      padding-top: 24px;
+      margin-top: 40px;
+      text-align: center;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 0.8125rem;
+      color: #6B7280;
+    }
+
+    .legal-footer p {
+      margin: 4px 0;
+    }
+
+    .legal-footer a {
+      color: #212653;
+      text-decoration: underline;
+    }
+
+    .legal-footer a:hover {
+      color: #969423;
+    }
+  
+      
+        /* OWNERS VARIANT STYLES */
+        .legal-content {
+          font-size: 0.875rem;
+          line-height: 1.5; /* Slightly condensed */
+        }
+
+        .legal-content h2 {
+          font-size: 1rem; /* Slightly smaller */
+        }
+
+        .legal-content h3 {
+          font-size: 0.9375rem;
+        }
+      
+    </style>
+  
+    <div class="legal-terms-page">
+      <!-- HEADER -->
+      <header class="legal-terms-header">
+        <h1 class="legal-terms-title">Legal Terms & Disclaimers</h1>
+        <p class="legal-terms-subtitle">Important Information About Your BizHealth.ai Report</p>
+      </header>
+
+      <div class="legal-content">
+        <!-- EMPATHETIC INTRODUCTION -->
+        <div class="legal-intro">
+          <p>We want you to get maximum value from your BizHealth.ai report. To protect both you and us, the following terms clarify that this is AI-powered informational content only—not professional advice—and outline important limitations and privacy practices.</p>
+        </div>
+
+        <!-- DOCUMENT IDENTIFICATION -->
+        <div class="legal-metadata">
+          <p><strong>BizHealth.ai Client Report</strong></p>
+          <p>Effective Date: December 4, 2025</p>
+          <p>Report ID: 86a66ed1-6c1a-4733-b862-350680f45471</p>
+          <p>Client Entity: EWM Global</p>
+        </div>
+
+        <!-- LEGAL CONTENT -->
+        
+    <!-- ACCEPTANCE OF TERMS -->
+    <p class="legal-intro-text">
+      <strong>ACCEPTANCE OF TERMS:</strong> By accessing, receiving, or using this BizHealth.ai report (the "Report"), you ("Client," "you," or "your") acknowledge that you have read, understood, and agree to be bound by these Legal Terms & Disclaimers in their entirety. If you do not agree to these terms, do not access or use this Report.
+    </p>
+
+    <!-- SECTION 1: NATURE OF SERVICE & SCOPE LIMITATIONS -->
+    <section class="legal-section">
+      <h2>1. NATURE OF SERVICE & SCOPE LIMITATIONS</h2>
+
+      <h3>1.1 Informational Purposes Only</h3>
+      <p>This Report is provided for general informational and educational purposes only. It is designed to offer insights into your business operations based on the data you have provided. The Report does not constitute professional advice of any kind, including but not limited to legal, financial, tax, accounting, investment, or business consulting advice.</p>
+
+      <h3>1.2 Not Professional Advice</h3>
+      <p>BizHealth.ai is not a law firm, accounting firm, financial advisory firm, or professional consulting practice. The information contained in this Report should not be relied upon as a substitute for consultation with qualified professionals who can provide advice tailored to your specific circumstances. You are strongly encouraged to seek the advice of qualified professionals regarding any matters addressed in this Report.</p>
+
+      <h3>1.3 Scope of Analysis</h3>
+      <p>This Report is based solely on the information you provided through our assessment questionnaire and any supplemental data submitted to BizHealth.ai. We have not independently verified, audited, or investigated the accuracy, completeness, or reliability of this information. The analysis contained herein reflects only the data available to us at the time of assessment and may not capture all relevant factors affecting your business.</p>
+    </section>
+
+    <!-- SECTION 2: COMPREHENSIVE LIABILITY LIMITATIONS -->
+    <section class="legal-section">
+      <h2>2. COMPREHENSIVE LIABILITY LIMITATIONS</h2>
+
+      <h3>2.1 No Warranties</h3>
+      <p>THIS REPORT IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, WHETHER EXPRESS, IMPLIED, OR STATUTORY. TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, BIZHEALTH.AI EXPRESSLY DISCLAIMS ALL WARRANTIES, INCLUDING BUT NOT LIMITED TO: (A) IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT; (B) WARRANTIES ARISING FROM COURSE OF DEALING, USAGE, OR TRADE PRACTICE; (C) WARRANTIES THAT THE REPORT WILL MEET YOUR REQUIREMENTS OR EXPECTATIONS; (D) WARRANTIES THAT THE REPORT WILL BE ERROR-FREE, ACCURATE, RELIABLE, OR COMPLETE; AND (E) WARRANTIES REGARDING THE RESULTS YOU MAY OBTAIN FROM USING THIS REPORT.</p>
+
+      <h3>2.2 Limitation of Liability</h3>
+      <p>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL BIZHEALTH.AI, ITS AFFILIATES, OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, LICENSORS, OR SERVICE PROVIDERS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, PUNITIVE, OR EXEMPLARY DAMAGES, INCLUDING BUT NOT LIMITED TO DAMAGES FOR LOSS OF PROFITS, GOODWILL, USE, DATA, OR OTHER INTANGIBLE LOSSES, ARISING OUT OF OR IN CONNECTION WITH: (A) YOUR USE OF OR INABILITY TO USE THIS REPORT; (B) ANY DECISIONS MADE OR ACTIONS TAKEN BASED ON THIS REPORT; (C) ANY ERRORS, OMISSIONS, OR INACCURACIES IN THE REPORT; (D) UNAUTHORIZED ACCESS TO OR ALTERATION OF YOUR DATA; OR (E) ANY OTHER MATTER RELATING TO THIS REPORT, REGARDLESS OF THE THEORY OF LIABILITY (CONTRACT, TORT, NEGLIGENCE, STRICT LIABILITY, OR OTHERWISE) AND EVEN IF BIZHEALTH.AI HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.</p>
+
+      <h3>2.3 Cap on Liability</h3>
+      <p>IF, NOTWITHSTANDING THE FOREGOING, BIZHEALTH.AI IS FOUND LIABLE FOR ANY LOSS OR DAMAGE ARISING OUT OF OR IN CONNECTION WITH THIS REPORT, OUR TOTAL AGGREGATE LIABILITY SHALL NOT EXCEED THE LESSER OF: (A) THE AMOUNT YOU PAID TO BIZHEALTH.AI FOR THIS SPECIFIC REPORT; OR (B) ONE HUNDRED UNITED STATES DOLLARS (USD $100.00).</p>
+
+      <h3>2.4 Essential Basis of the Bargain</h3>
+      <p>You acknowledge and agree that the limitations of liability set forth in this Section 2 are fundamental elements of the agreement between you and BizHealth.ai. BizHealth.ai would not provide this Report without such limitations. These limitations shall apply even if any remedy fails of its essential purpose.</p>
+
+      <h3>2.5 Specific Disclaimer of Liability</h3>
+      <p>Without limiting the foregoing, BizHealth.ai specifically disclaims any liability for: (a) Business decisions made based on this Report; (b) Financial investments or expenditures made in reliance on this Report; (c) Changes to business operations, personnel, or strategy based on this Report; (d) Third-party actions or omissions; (e) Market conditions, economic factors, or industry trends; (f) Regulatory compliance or legal matters; and (g) Any outcomes, results, or consequences of implementing recommendations contained in this Report.</p>
+    </section>
+
+    <!-- SECTION 3: DATA USAGE, PRIVACY & CONFIDENTIALITY -->
+    <section class="legal-section">
+      <h2>3. DATA USAGE, PRIVACY & CONFIDENTIALITY</h2>
+
+      <h3>3.1 Data Collection and Use</h3>
+      <p>BizHealth.ai collects and processes the data you provide through our assessment questionnaire to generate this Report. By submitting your data, you grant BizHealth.ai a non-exclusive, royalty-free license to use, process, analyze, and store such data for the purposes of: (a) generating this Report; (b) improving our services, algorithms, and analytical models; (c) developing aggregated, anonymized insights and benchmarks; and (d) complying with applicable laws and regulations.</p>
+
+      <h3>3.2 AI and Machine Learning</h3>
+      <p>This Report is generated using artificial intelligence and machine learning technologies. Your data may be used to train, validate, and improve our AI models. All such use will be conducted in accordance with our Privacy Policy and applicable data protection laws. We implement appropriate technical and organizational measures to protect your data during AI processing.</p>
+
+      <h3>3.3 Aggregated Data</h3>
+      <p>BizHealth.ai may use your data in aggregated, anonymized form for research, benchmarking, product development, and marketing purposes. Such aggregated data will not identify you or your business specifically.</p>
+
+      <h3>3.4 Confidentiality</h3>
+      <p>BizHealth.ai will treat the specific information you provide as confidential and will not disclose such information to third parties except: (a) with your express consent; (b) to service providers who assist in generating this Report, subject to appropriate confidentiality obligations; (c) in aggregated, anonymized form as described above; (d) as required by law, regulation, legal process, or governmental request; or (e) to protect the rights, property, or safety of BizHealth.ai or others.</p>
+
+      <h3>3.5 Data Retention</h3>
+      <p>BizHealth.ai retains your data in accordance with our data retention policies and applicable legal requirements. You may request deletion of your personal data by contacting us at the address provided below, subject to our legal obligations and legitimate business interests.</p>
+    </section>
+
+    <!-- SECTION 4: METHODOLOGY & ANALYTICAL LIMITATIONS -->
+    <section class="legal-section">
+      <h2>4. METHODOLOGY & ANALYTICAL LIMITATIONS</h2>
+
+      <h3>4.1 Methodology Disclaimer</h3>
+      <p>The scores, ratings, assessments, and recommendations contained in this Report are generated using proprietary algorithms and methodologies developed by BizHealth.ai. These methodologies involve subjective judgments and assumptions that may not be appropriate for all businesses, industries, or circumstances.</p>
+
+      <h3>4.2 Limitations of AI-Generated Content</h3>
+      <p>As an AI-powered service, the analysis and recommendations in this Report are generated by machine learning models that: (a) may produce outputs that are incorrect, incomplete, or inappropriate; (b) are based on patterns identified in training data that may not reflect your specific situation; (c) may not account for nuances, context, or factors not captured in your input data; (d) are subject to inherent limitations and biases in AI technology; and (e) should be independently verified and evaluated by qualified professionals.</p>
+
+      <h3>4.3 Benchmark Data</h3>
+      <p>Any benchmark comparisons, industry averages, or peer group analyses contained in this Report are based on data and methodologies that may have limitations, including but not limited to: (a) varying sample sizes and data quality; (b) different time periods or market conditions; (c) classification and categorization differences; (d) regional, size, or industry variations; and (e) potential selection bias. Such comparisons are provided for informational purposes only and should not be relied upon as definitive indicators of performance.</p>
+
+      <h3>4.4 Forward-Looking Statements</h3>
+      <p>This Report may contain projections, forecasts, estimates, or other forward-looking statements. Such statements are inherently uncertain and are based on assumptions that may prove incorrect. Actual results may differ materially from any projections or forecasts contained herein. BizHealth.ai makes no representation or warranty regarding the achievement of any projected outcomes.</p>
+
+      <h3>4.5 Temporal Limitations</h3>
+      <p>This Report reflects an assessment at a single point in time based on the data available on the assessment date. Business conditions, market dynamics, and other factors change over time. This Report should not be relied upon as an accurate representation of conditions at any other time. We recommend periodic reassessments to maintain current insights.</p>
+    </section>
+
+    <!-- SECTION 5: INTELLECTUAL PROPERTY RIGHTS -->
+    <section class="legal-section">
+      <h2>5. INTELLECTUAL PROPERTY RIGHTS</h2>
+
+      <h3>5.1 Ownership</h3>
+      <p>This Report, including all content, analyses, scores, recommendations, formatting, design, graphics, and presentation, constitutes proprietary intellectual property of BizHealth.ai. All rights, title, and interest in and to the Report, including all intellectual property rights, remain exclusively with BizHealth.ai.</p>
+
+      <h3>5.2 Limited License</h3>
+      <p>Subject to your payment of applicable fees and compliance with these terms, BizHealth.ai grants you a limited, non-exclusive, non-transferable, revocable license to: (a) access and view this Report for your internal business purposes; (b) print and store copies for your records; and (c) share this Report with your employees, advisors, and consultants who have a legitimate need to review it, provided they agree to maintain its confidentiality.</p>
+
+      <h3>5.3 Restrictions</h3>
+      <p>You may not: (a) reproduce, distribute, or publicly display this Report, in whole or in part, except as expressly permitted herein; (b) modify, adapt, translate, or create derivative works based on this Report; (c) reverse engineer, decompile, or attempt to extract the underlying methodologies, algorithms, or scoring systems; (d) use this Report for any competitive or commercial purpose, including resale or sublicensing; (e) remove, alter, or obscure any proprietary notices, trademarks, or branding from this Report; or (f) use this Report in any manner that could damage, disable, or impair BizHealth.ai's services or reputation.</p>
+
+      <h3>5.4 Trademarks</h3>
+      <p>"BizHealth.ai" and associated logos, marks, and branding are trademarks or registered trademarks of BizHealth.ai, LLC. You may not use these marks without our prior written consent.</p>
+
+      <h3>5.5 Feedback</h3>
+      <p>If you provide any feedback, suggestions, or ideas regarding this Report or our services, you grant BizHealth.ai a perpetual, irrevocable, royalty-free, worldwide license to use, modify, and incorporate such feedback into our products and services without any obligation to you.</p>
+    </section>
+
+    <!-- SECTION 6: REGULATORY COMPLIANCE & CONSUMER RIGHTS -->
+    <section class="legal-section">
+      <h2>6. REGULATORY COMPLIANCE & CONSUMER RIGHTS</h2>
+
+      <h3>6.1 Not Regulated Advice</h3>
+      <p>This Report does not constitute advice or services subject to professional licensing or regulatory oversight. BizHealth.ai is not registered, licensed, or authorized as a professional advisor in any jurisdiction. You should consult appropriately licensed professionals for advice in regulated areas.</p>
+
+      <h3>6.2 Consumer Protection</h3>
+      <p>Certain jurisdictions provide consumers with rights that cannot be waived or limited by contract. Nothing in these terms is intended to limit or exclude any rights you may have under applicable consumer protection laws that cannot be lawfully excluded or limited.</p>
+
+      <h3>6.3 State-Specific Disclosures</h3>
+      <p>Residents of certain U.S. states may have additional rights under state law. For example: (a) California residents may have rights under the California Consumer Privacy Act (CCPA); (b) Residents of other states may have rights under applicable state privacy or consumer protection laws. Please refer to our Privacy Policy for state-specific disclosures.</p>
+
+      <h3>6.4 International Users</h3>
+      <p>If you access this Report from outside the United States, you are responsible for compliance with local laws. This Report is provided from the United States and is subject to U.S. law. Some features or content may not be appropriate or available in all jurisdictions.</p>
+
+      <h3>6.5 GDPR Compliance</h3>
+      <p>For users in the European Economic Area, United Kingdom, or Switzerland, BizHealth.ai processes personal data in accordance with the General Data Protection Regulation (GDPR) and applicable local data protection laws. Our Privacy Policy provides additional information regarding your rights and our data processing practices.</p>
+
+      <h3>6.6 Accessibility</h3>
+      <p>BizHealth.ai is committed to making our services accessible to individuals with disabilities. If you experience accessibility issues with this Report, please contact us and we will endeavor to provide the information in an alternative format.</p>
+    </section>
+
+    <!-- SECTION 7: LEGAL DISPUTE RESOLUTION -->
+    <section class="legal-section">
+      <h2>7. LEGAL DISPUTE RESOLUTION</h2>
+
+      <h3>7.1 Governing Law</h3>
+      <p>These terms and any disputes arising out of or related to this Report shall be governed by and construed in accordance with the laws of the State of Delaware, United States, without regard to its conflict of law principles.</p>
+
+      <h3>7.2 Arbitration Agreement</h3>
+      <p>Any dispute, controversy, or claim arising out of or relating to this Report or these terms, including the formation, interpretation, breach, or termination thereof, shall be resolved by binding arbitration administered by the American Arbitration Association ("AAA") in accordance with its Commercial Arbitration Rules. The arbitration shall be conducted by a single arbitrator in Wilmington, Delaware, or another mutually agreed location.</p>
+
+      <h3>7.3 Class Action Waiver</h3>
+      <p>YOU AND BIZHEALTH.AI AGREE THAT EACH MAY BRING CLAIMS AGAINST THE OTHER ONLY IN YOUR OR ITS INDIVIDUAL CAPACITY AND NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY PURPORTED CLASS OR REPRESENTATIVE PROCEEDING. The arbitrator may not consolidate more than one person's claims and may not preside over any form of class or representative proceeding.</p>
+
+      <h3>7.4 Small Claims Exception</h3>
+      <p>Notwithstanding the foregoing, either party may bring an individual action in small claims court if the claim qualifies for small claims jurisdiction.</p>
+
+      <h3>7.5 Equitable Relief</h3>
+      <p>Nothing in this section shall prevent either party from seeking injunctive or other equitable relief from a court of competent jurisdiction to prevent the actual or threatened infringement, misappropriation, or violation of intellectual property rights or confidentiality obligations.</p>
+
+      <h3>7.6 Limitation Period</h3>
+      <p>Any claim or cause of action arising out of or related to this Report must be filed within one (1) year after such claim or cause of action arose, or it shall be forever barred.</p>
+    </section>
+
+    <!-- SECTION 8: INDEMNIFICATION -->
+    <section class="legal-section">
+      <h2>8. INDEMNIFICATION</h2>
+      <p>You agree to defend, indemnify, and hold harmless BizHealth.ai, its affiliates, officers, directors, employees, agents, licensors, and service providers from and against any claims, liabilities, damages, judgments, awards, losses, costs, expenses, or fees (including reasonable attorneys' fees) arising out of or relating to: (a) your use of this Report; (b) any breach of these terms by you; (c) your violation of any third-party rights; (d) any decisions made or actions taken based on this Report; (e) your provision of inaccurate, incomplete, or misleading information; or (f) your violation of any applicable law or regulation.</p>
+    </section>
+
+    <!-- SECTION 9: MODIFICATIONS & UPDATES -->
+    <section class="legal-section">
+      <h2>9. MODIFICATIONS & UPDATES</h2>
+
+      <h3>9.1 Modifications to Terms</h3>
+      <p>BizHealth.ai reserves the right to modify these Legal Terms & Disclaimers at any time. Modified terms will apply to Reports generated after the effective date of the modification. We encourage you to review the terms applicable to each Report you receive.</p>
+
+      <h3>9.2 Report Updates</h3>
+      <p>BizHealth.ai may, but is not obligated to, provide updated versions of this Report. Any updated Report will be subject to the terms in effect at the time of generation. Previous versions of this Report may not reflect current conditions or updated methodologies.</p>
+    </section>
+
+    <!-- SECTION 10: TERMINATION & SURVIVAL -->
+    <section class="legal-section">
+      <h2>10. TERMINATION & SURVIVAL</h2>
+
+      <h3>10.1 Termination</h3>
+      <p>The license granted to use this Report may be terminated by BizHealth.ai at any time if you breach these terms. Upon termination, you must cease using this Report and destroy all copies in your possession.</p>
+
+      <h3>10.2 Survival</h3>
+      <p>The following provisions shall survive termination: Section 2 (Liability Limitations), Section 5 (Intellectual Property), Section 7 (Dispute Resolution), Section 8 (Indemnification), and any other provisions that by their nature should survive.</p>
+
+      <h3>10.3 Effect of Termination</h3>
+      <p>Termination of your license does not limit any other remedies available to BizHealth.ai and does not relieve you of your obligations under these terms.</p>
+    </section>
+
+    <!-- SECTION 11: MISCELLANEOUS PROVISIONS -->
+    <section class="legal-section">
+      <h2>11. MISCELLANEOUS PROVISIONS</h2>
+
+      <h3>11.1 Entire Agreement</h3>
+      <p>These Legal Terms & Disclaimers, together with our Terms of Service and Privacy Policy (available at www.bizhealth.ai/legal), constitute the entire agreement between you and BizHealth.ai regarding this Report and supersede all prior agreements and understandings.</p>
+
+      <h3>11.2 Severability</h3>
+      <p>If any provision of these terms is found to be unenforceable or invalid, that provision shall be limited or eliminated to the minimum extent necessary, and the remaining provisions shall remain in full force and effect.</p>
+
+      <h3>11.3 Waiver</h3>
+      <p>No waiver of any term shall be deemed a further or continuing waiver of such term or any other term. BizHealth.ai's failure to enforce any provision of these terms shall not constitute a waiver of that provision.</p>
+
+      <h3>11.4 Assignment</h3>
+      <p>You may not assign or transfer your rights or obligations under these terms without BizHealth.ai's prior written consent. BizHealth.ai may assign its rights and obligations without restriction.</p>
+
+      <h3>11.5 No Third-Party Beneficiaries</h3>
+      <p>These terms do not create any third-party beneficiary rights. Nothing in these terms shall be construed to create any rights enforceable by any person or entity not a party hereto.</p>
+
+      <h3>11.6 Force Majeure</h3>
+      <p>BizHealth.ai shall not be liable for any failure or delay in performance due to circumstances beyond its reasonable control, including but not limited to acts of God, natural disasters, war, terrorism, riots, embargoes, acts of civil or military authorities, fire, floods, accidents, strikes, or shortages of transportation, facilities, fuel, energy, labor, or materials.</p>
+
+      <h3>11.7 Headings</h3>
+      <p>The section headings in these terms are for convenience only and have no legal or contractual effect.</p>
+
+      <h3>11.8 Language</h3>
+      <p>These terms are provided in English. Any translations are provided for convenience only. In the event of any conflict between the English version and a translated version, the English version shall control.</p>
+    </section>
+
+    <!-- SECTION 12: CONTACT INFORMATION -->
+    <section class="legal-section">
+      <h2>12. CONTACT INFORMATION</h2>
+      <p>If you have any questions about these Legal Terms & Disclaimers or this Report, please contact us at:</p>
+      <address class="contact-block">
+        <strong>BizHealth.ai, LLC</strong><br>
+        Email: <a href="mailto:legal@bizhealth.ai">legal@bizhealth.ai</a><br>
+        Website: <a href="https://www.bizhealth.ai/legal">www.bizhealth.ai/legal</a>
+      </address>
+    </section>
+  
+
+        <!-- ACKNOWLEDGMENT BLOCK -->
+        <div class="legal-acknowledgment">
+          <p class="acknowledgment-text">
+            <strong>ACKNOWLEDGMENT</strong>
+            BY ACCESSING OR USING THIS REPORT, YOU ACKNOWLEDGE THAT YOU HAVE READ, UNDERSTOOD, AND AGREE TO BE BOUND BY THESE LEGAL TERMS & DISCLAIMERS IN THEIR ENTIRETY.
+          </p>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="legal-footer">
+          <p>Copyright &copy; 2025 BizHealth.ai, LLC. All Rights Reserved.</p>
+          <p>Document Version: 2.0 | Last Updated: November 19, 2025</p>
+          <p>For complete Terms of Service and Privacy Policy, visit:
+            <a href="https://www.bizhealth.ai/legal">www.bizhealth.ai/legal</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  
+
+    <!-- ================================================================
+         SECTION: Your Business Health at a Glance
+         ================================================================ -->
+    <section class="section" id="health-overview">
+      
+    <div class="owner-section-header">
+      <h2>Your Business Health at a Glance</h2>
+      
+        <p class="owner-question">
+          <span class="question-icon">&#128173;</span>
+          <em>"How is my business doing?"</em>
+        </p>
+      
+    </div>
+  
+
+      <div class="health-score-display">
+        <div class="health-score-circle">
+          <span class="score">53</span>
+          <span class="out-of">/ 100</span>
+        </div>
+        <div class="health-score-details">
+          <p class="status">Needs Improvement</p>
+          <p class="trajectory">
+            <span style="color: #6c757d;">&#x25AC;</span>
+            Your Trajectory: Flat
+          </p>
+          <p class="band">
+            <span class="band-badge Attention">Attention</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Executive Highlights Summary -->
+      
+    <div class="executive-highlights">
+      <div class="highlight-card">
+        <div class="highlight-icon">🎯</div>
+        <div class="highlight-value">53</div>
+        <div class="highlight-label">Health Score</div>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon">✅</div>
+        <div class="highlight-value">8</div>
+        <div class="highlight-label">Strengths</div>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon">⚠️</div>
+        <div class="highlight-value">22</div>
+        <div class="highlight-label">Issues to Address</div>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon">🚀</div>
+        <div class="highlight-value">5</div>
+        <div class="highlight-label">Quick Wins</div>
+      </div>
+    </div>
+  
+
+      <!-- Visual Performance Charts -->
+      
+        <div class="owner-charts-section">
+          <h3 style="color: #212653; font-family: 'Montserrat', sans-serif; margin: 1.5rem 0 1rem 0; font-size: 1.1rem;">Your Performance at a Glance</h3>
+          <div class="owner-charts-grid">
+            <div class="chart-item">
+    <div class="svg-chart-container" role="figure" aria-label="Business Health Overview">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 480" style="max-width: 100%; height: auto;"><rect width="450" height="480" fill="white" rx="4"/><text x="225" y="22" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Business Health Overview</text><circle cx="225" cy="240" r="35" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="225" cy="240" r="70" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="225" cy="240" r="105" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="225" cy="240" r="140" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="225" cy="240" r="175" fill="none" stroke="#e0e0e0" stroke-width="1"/><line x1="225" y1="240" x2="225" y2="65" stroke="#e0e0e0" stroke-width="1"/><line x1="225" y1="240" x2="400" y2="240" stroke="#e0e0e0" stroke-width="1"/><line x1="225" y1="240" x2="225" y2="415" stroke="#e0e0e0" stroke-width="1"/><line x1="225" y1="240" x2="50" y2="240.00000000000003" stroke="#e0e0e0" stroke-width="1"/><polygon points="225,154.25 314.25,240 225,315.25 102.50000000000001,240.00000000000003" fill="#212653" fill-opacity="0.3" stroke="#212653" stroke-width="2"/><circle cx="225" cy="154.25" r="4" fill="#212653"/><circle cx="314.25" cy="240" r="4" fill="#212653"/><circle cx="225" cy="315.25" r="4" fill="#212653"/><circle cx="102.50000000000001" cy="240.00000000000003" r="4" fill="#212653"/><text x="225" y="40" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Growth Eng... (49)</text><text x="425" y="240" text-anchor="start" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Performanc... (51)</text><text x="225" y="440" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">People &amp; L... (43)</text><text x="25" y="240.00000000000003" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Resilience... (70)</text></svg>
+    </div>
+  </div>
+            <div class="chart-item">
+    <div class="svg-chart-container" role="figure" aria-label="Chapter Performance Overview">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 232" style="max-width: 100%; height: auto;"><rect width="550" height="232" fill="white" rx="4"/><text x="275" y="28" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Chapter Performance Overview</text><text x="132" y="70" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Growth Engine</text><rect x="140" y="50" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="50" width="171.5" height="30" fill="#e67e22" rx="4"/><text x="319.5" y="70" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">49</text><text x="132" y="108" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Performance &amp; He...</text><rect x="140" y="88" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="88" width="178.5" height="30" fill="#e67e22" rx="4"/><text x="326.5" y="108" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">51</text><text x="132" y="146" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">People &amp; Leaders...</text><rect x="140" y="126" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="126" width="150.5" height="30" fill="#e67e22" rx="4"/><text x="298.5" y="146" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">43</text><text x="132" y="184" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Resilience &amp; Saf...</text><rect x="140" y="164" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="164" width="244.99999999999997" height="30" fill="#f39c12" rx="4"/><text x="393" y="184" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">70</text></svg>
+    </div>
+  </div>
+          </div>
+        </div>
+      
+
+      <!-- Key Takeaways Box -->
+      
+    <div class="key-takeaways">
+      <div class="takeaway-title">
+        <span>📋</span> KEY TAKEAWAYS
+      </div>
+      
+        <div class="takeaway-item">
+          <span class="takeaway-icon">✅</span>
+          <span class="takeaway-text">
+            <strong>Top Strength:</strong> Strong Sales Target Alignment
+          </span>
+        </div>
+      
+        <div class="takeaway-item">
+          <span class="takeaway-icon">⚠️</span>
+          <span class="takeaway-text">
+            <strong>Critical Issue:</strong> Marketing Critical Underperformance
+          </span>
+        </div>
+      
+        <div class="takeaway-item">
+          <span class="takeaway-icon">🎯</span>
+          <span class="takeaway-text">
+            <strong>Top Priority:</strong> Marketing Improvement Initiative
+          </span>
+        </div>
+      
+    </div>
+  
+
+      <!-- Benchmark Callout -->
+      
+    </section>
+
+    <!-- ================================================================
+         SECTION: What This Means for You as the Owner
+         ================================================================ -->
+    <section class="section" id="what-this-means">
+      
+    <div class="owner-section-header">
+      <h2>What This Means for You as the Owner</h2>
+      
+        <p class="owner-question">
+          <span class="question-icon">&#128173;</span>
+          <em>"What should I understand from this?"</em>
+        </p>
+      
+    </div>
+  
+
+      <div class="owner-implications-grid">
+        <div class="implication-card growth">
+          <div class="card-icon">&#128200;</div>
+          <div class="card-title">For Your Growth</div>
+          <p>Your growth engine needs attention. Sales processes and market positioning require strategic focus to unlock revenue potential.</p>
+        </div>
+
+        <div class="implication-card risk">
+          <div class="card-icon">&#9888;&#65039;</div>
+          <div class="card-title">For Your Risk</div>
+          <p>Some operational and compliance risks need attention to protect business continuity and avoid potential issues.</p>
+        </div>
+
+        <div class="implication-card value">
+          <div class="card-icon">&#128142;</div>
+          <div class="card-title">For Your Business Value</div>
+          <p>Your business value is constrained by operational challenges. Systematic improvement will unlock hidden value.</p>
+        </div>
+      </div>
+
+      
+    <div class="comprehensive-reference">
+      <span class="ref-icon">&#128214;</span>
+      <span class="ref-text">
+        For complete business health overview, see <strong>Comprehensive Report</strong> &rarr;
+        <em>Executive Summary</em>
+      </span>
+    </div>
+  
+    </section>
+
+    <!-- ================================================================
+         SECTION: Your Critical Priorities
+         ================================================================ -->
+    <section class="section page-break" id="critical-priorities">
+      
+    <div class="owner-section-header">
+      <h2>Your Critical Priorities</h2>
+      
+        <p class="owner-question">
+          <span class="question-icon">&#128173;</span>
+          <em>"What must I focus on?"</em>
+        </p>
+      
+    </div>
+  
+
+      <!-- Visual Insight Cards -->
+      
+    <div class="insight-cards-container">
+      
+    <div class="insight-card strength">
+      <div class="insight-label">✅ Strength</div>
+      <div class="insight-title">Strong Sales Target Alignment</div>
+      <div class="insight-detail">Sales Target Alignment within Sales shows exceptional performance at 100/100.</div>
+      
+    <div class="evidence-citation">
+      <div class="citation-header">
+        <span class="citation-icon">📊</span>
+        <span>Evidence Source</span>
+      </div>
+      <div class="question-ref">
+        sales_q1: "Strong Sales Target Alignment"
+      </div>
+      <div class="response-text">
+        Your response: 3.5/5 — "Agree / Often"
+      </div>
+      
+    </div>
+  
+    </div>
+  
+
+    <div class="insight-card strength">
+      <div class="insight-label">✅ Strength</div>
+      <div class="insight-title">Strong Customer Retention</div>
+      <div class="insight-detail">Customer Retention within Sales shows exceptional performance at 98/100.</div>
+      
+    <div class="evidence-citation">
+      <div class="citation-header">
+        <span class="citation-icon">📊</span>
+        <span>Evidence Source</span>
+      </div>
+      <div class="question-ref">
+        sales_q7: "Strong Customer Retention"
+      </div>
+      <div class="response-text">
+        Your response: 3.5/5 — "Agree / Often"
+      </div>
+      
+    </div>
+  
+    </div>
+  
+
+    <div class="insight-card strength">
+      <div class="insight-label">✅ Strength</div>
+      <div class="insight-title">Strong Operational Reliability</div>
+      <div class="insight-detail">Operational Reliability within Operations shows exceptional performance at 100/100.</div>
+      
+    <div class="evidence-citation">
+      <div class="citation-header">
+        <span class="citation-icon">📊</span>
+        <span>Evidence Source</span>
+      </div>
+      <div class="question-ref">
+        operations_q4: "Strong Operational Reliability"
+      </div>
+      <div class="response-text">
+        Your response: 3.1/5 — "Neutral / Sometimes"
+      </div>
+      
+    </div>
+  
+    </div>
+  
+
+    <div class="insight-card weakness">
+      <div class="insight-label">❌ Gap</div>
+      <div class="insight-title">Strategy Performance Gap</div>
+      <div class="insight-detail">Strategy shows moderate performance at 45/100. This gap presents improvement opportunities that should be addressed within 6-12 months.</div>
+      
+    </div>
+  
+    </div>
+  
+
+      <div class="grid grid-2">
+        <div>
+          <h3 style="color: #28a745;">Your Top Strengths</h3>
+          
+            <ul>
+              
+                <li>
+                  <strong>Strong Sales Target Alignment</strong>
+                  <br><small>Sales</small>
+                </li>
+              
+                <li>
+                  <strong>Strong Customer Retention</strong>
+                  <br><small>Sales</small>
+                </li>
+              
+                <li>
+                  <strong>Strong Operational Reliability</strong>
+                  <br><small>Operations</small>
+                </li>
+              
+            </ul>
+          
+        </div>
+        <div>
+          <h3 style="color: #dc3545;">Your Priority Areas</h3>
+          
+            <ul>
+              
+                <li>
+                  <strong>Strategy Performance Gap</strong>
+                  <br><small>Strategy</small>
+                </li>
+              
+                <li>
+                  <strong>Market Position Gap</strong>
+                  <br><small>Strategy</small>
+                </li>
+              
+                <li>
+                  <strong>Sales Cycle Efficiency Gap</strong>
+                  <br><small>Sales</small>
+                </li>
+              
+                <li>
+                  <strong>Marketing Critical Underperformance</strong>
+                  <br><small>Marketing</small>
+                </li>
+              
+                <li>
+                  <strong>Marketing Economics (CAC/LTV) Gap</strong>
+                  <br><small>Marketing</small>
+                </li>
+              
+                <li>
+                  <strong>Marketing ROI Gap</strong>
+                  <br><small>Marketing</small>
+                </li>
+              
+                <li>
+                  <strong>Channel Strategy Gap</strong>
+                  <br><small>Marketing</small>
+                </li>
+              
+            </ul>
+          
+        </div>
+      </div>
+
+      
+    <div class="comprehensive-reference">
+      <span class="ref-icon">&#128214;</span>
+      <span class="ref-text">
+        For all prioritized recommendations, see <strong>Comprehensive Report</strong> &rarr;
+        <em>Strategic Recommendations</em>
+      </span>
+    </div>
+  
+    </section>
+
+    <!-- ================================================================
+         SECTION: Investment & ROI Overview
+         ================================================================ -->
+    <section class="section" id="investment-roi">
+      
+    <div class="owner-section-header">
+      <h2>Investment & ROI Overview</h2>
+      
+        <p class="owner-question">
+          <span class="question-icon">&#128173;</span>
+          <em>"How much will this cost and what will I get back?"</em>
+        </p>
+      
+    </div>
+  
+
+      <p class="section-intro">
+        Here's the high-level view of what you'll need to invest and what you can expect in return.
+        These are aggregate ranges across all recommended initiatives.
+      </p>
+
+      <div class="financial-summary-grid">
+        <div class="financial-card">
+          <div class="card-label">Your Estimated 12-18 Month Investment</div>
+          <div class="card-value">$120K - $180K</div>
+          <div class="card-sublabel">Across all initiatives</div>
+        </div>
+        <div class="financial-card">
+          <div class="card-label">Your Potential Revenue Impact</div>
+          <div class="card-value">$4.0M - $6.0M</div>
+          <div class="card-sublabel">Over 18 months</div>
+        </div>
+        <div class="financial-card highlight">
+          <div class="card-label">Your Expected ROI</div>
+          <div class="card-value">8.3x - 12.5x</div>
+          <div class="card-sublabel">Return on investment</div>
+        </div>
+      </div>
+
+      
+    <div class="comprehensive-reference">
+      <span class="ref-icon">&#128214;</span>
+      <span class="ref-text">
+        For complete ROI projections and investment models, see <strong>Comprehensive Report</strong> &rarr;
+        <em>Financial Impact Analysis</em>
+      </span>
+    </div>
+  
+    </section>
+
+    <!-- ================================================================
+         SECTION: Execution Overview
+         ================================================================ -->
+    
+      <section class="section page-break" id="execution-overview">
+        
+    <div class="owner-section-header">
+      <h2>Your Execution Overview</h2>
+      
+        <p class="owner-question">
+          <span class="question-icon">&#128173;</span>
+          <em>"What's my timeline?"</em>
+        </p>
+      
+    </div>
+  
+        <div class="narrative-content">
+          <h1 class="bh-h1">Priority Action Matrix</h1><h2 class="bh-h2">EWM Global | Strategic Implementation Prioritization</h2><hr class="bh-section-divider"><h1 class="bh-h1">Executive Summary</h1><p class="bh-p">This Priority Action Matrix synthesizes all Phase 2 analyses to create a comprehensive, prioritized action framework for EWM Global&#39;s transformation.  The matrix identifies <strong class="bh-strong">47 discrete actions</strong> organized across 4 priority tiers, with a total estimated investment of <strong class="bh-strong">$2. 1M-$2. 8M</strong> over 18 months and projected value creation of <strong class="bh-strong">$25M+</strong>. </p><hr class="bh-section-divider"><h1 class="bh-h1">Priority Matrix Visualization</h1><h2 class="bh-h2">Impact × Urgency Heat Map</h2><hr class="bh-section-divider"><h1 class="bh-h1">Section 1: Critical Path Actions</h1><p class="bh-p"><strong class="bh-strong">Definition:</strong> Actions that affect core business viability and cannot be delayed.  These form the essential sequence that all other initiatives depend upon. </p><h2 class="bh-h2">Critical Path Overview</h2><hr class="bh-section-divider"><h2 class="bh-h2">C-01: Daily Cash Position Monitoring Implementation</h2>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Attribute</th><th>Detail</th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">Action Title</strong></td><td>Implement Daily Cash Flow Visibility Dashboard</td></tr><tr><td><strong class="bh-strong">Priority Score</strong></td><td><strong class="bh-strong">10/10</strong></td></tr><tr><td><strong class="bh-strong">Category</strong></td><td>Financial &amp; Strategic</td></tr><tr><td><strong class="bh-strong">Timeframe</strong></td><td>Immediate (Days 1-7)</td></tr><tr><td><strong class="bh-strong">Impact Level</strong></td><td>Critical</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Dependencies</th><th>Status</th></tr></thead>
+          <tbody><tr><td>Finance team availability</td><td>Required</td></tr><tr><td>Banking access/API</td><td>Required</td></tr><tr><td>BI/Dashboard tool</td><td>Available (existing tech)</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Resource Requirements</th><th></th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">People</strong></td><td>Controller + Finance Analyst (5 days effort)</td></tr><tr><td><strong class="bh-strong">Budget</strong></td><td>$5,000-$10,000 (tool configuration)</td></tr><tr><td><strong class="bh-strong">Time</strong></td><td>7 days to operational</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Expected Outcomes</th><th>Measurement</th></tr></thead>
+          <tbody><tr><td>Real-time cash visibility</td><td>Dashboard operational</td></tr><tr><td>Daily position tracking</td><td>Automated reporting</td></tr><tr><td>Weekly 13-week forecast foundation</td><td>Forecast template</td></tr><tr><td>Risk early warning system</td><td>Alert thresholds set</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Risk if Delayed</th><th>Severity</th></tr></thead>
+          <tbody><tr><td>Cash crisis emerges without warning</td><td><strong class="bh-strong">CRITICAL</strong></td></tr><tr><td>Inability to make informed investment decisions</td><td>High</td></tr><tr><td>Liquidity covenant violations possible</td><td>High</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Quick Win Potential</th><th><strong class="bh-strong">YES</strong> ✓</th></tr></thead>
+          <tbody><tr><td>Can be operational within 1 week with existing tools</td><td></td></tr></tbody>
+        </table>
+      </div>
+    <hr class="bh-section-divider"><h2 class="bh-h2">C-02: Credit Facility Initiation</h2>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Attribute</th><th>Detail</th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">Action Title</strong></td><td>Secure $3-5M Revolving Credit Facility</td></tr><tr><td><strong class="bh-strong">Priority Score</strong></td><td><strong class="bh-strong">10/10</strong></td></tr><tr><td><strong class="bh-strong">Category</strong></td><td>Financial &amp; Strategic</td></tr><tr><td><strong class="bh-strong">Timeframe</strong></td><td>Immediate (Days 1-45)</td></tr><tr><td><strong class="bh-strong">Impact Level</strong></td><td>Critical</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Dependencies</th><th>Status</th></tr></thead>
+          <tbody><tr><td>C-01 (Cash monitoring)</td><td>Prerequisite</td></tr><tr><td>CEO/Board authorization</td><td>Required</td></tr><tr><td>Financial statements</td><td>Required</td></tr><tr><td>Banking relationships</td><td>Existing</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Resource Requirements</th><th></th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">People</strong></td><td>CFO (20% time for 45 days), CEO (5 hours)</td></tr><tr><td><strong class="bh-strong">Budget</strong></td><td>$25,000-$40,000 (arrangement fees, legal)</td></tr><tr><td><strong class="bh-strong">Time</strong></td><td>30-45 days to commitment</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Expected Outcomes</th><th>Measurement</th></tr></thead>
+          <tbody><tr><td>$3-5M credit availability</td><td>Signed facility agreement</td></tr><tr><td>Cash ratio improvement to 0. 8+</td><td>Financial calculation</td></tr><tr><td>Growth investment capacity unlocked</td><td>Investment approvals</td></tr><tr><td>Existential risk eliminated</td><td>Risk assessment update</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Risk if Delayed</th><th>Severity</th></tr></thead>
+          <tbody><tr><td>Single customer delay could trigger crisis</td><td><strong class="bh-strong">CRITICAL</strong></td></tr><tr><td>All other initiatives blocked</td><td><strong class="bh-strong">CRITICAL</strong></td></tr><tr><td>Potential inability to fund payroll</td><td><strong class="bh-strong">CRITICAL</strong></td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Quick Win Potential</th><th><strong class="bh-strong">Partial</strong></th></tr></thead>
+          <tbody><tr><td>Commitment letter possible in 3-4 weeks; full funding in 6-8 weeks</td><td></td></tr></tbody>
+        </table>
+      </div>
+    <hr class="bh-section-divider"><h2 class="bh-h2">C-03: Receivables Acceleration Campaign</h2>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Attribute</th><th>Detail</th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">Action Title</strong></td><td>Launch Aggressive AR Collection Initiative</td></tr><tr><td><strong class="bh-strong">Priority Score</strong></td><td><strong class="bh-strong">10/10</strong></td></tr><tr><td><strong class="bh-strong">Category</strong></td><td>Financial &amp; Strategic</td></tr><tr><td><strong class="bh-strong">Timeframe</strong></td><td>Immediate (Days 1-60)</td></tr><tr><td><strong class="bh-strong">Impact Level</strong></td><td>Critical</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Dependencies</th><th>Status</th></tr></thead>
+          <tbody><tr><td>C-01 (Cash visibility)</td><td>Prerequisite</td></tr><tr><td>AR aging analysis</td><td>Required</td></tr><tr><td>Customer communication protocols</td><td>Required</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Resource Requirements</th><th></th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">People</strong></td><td>AR Manager + 1 FTE (dedicated 60 days)</td></tr><tr><td><strong class="bh-strong">Budget</strong></td><td>$15,000-$25,000 (tools, early payment incentives)</td></tr><tr><td><strong class="bh-strong">Time</strong></td><td>Ongoing with 60-day intensive push</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Expected Outcomes</th><th>Measurement</th></tr></thead>
+          <tbody><tr><td>DSO reduction by 10-15 days</td><td>AR aging report</td></tr><tr><td>Cash acceleration of $400K-$800K</td><td>Cash flow analysis</td></tr><tr><td>Payment term enforcement</td><td>Contract compliance</td></tr><tr><td>Early payment discount uptake</td><td>Discount utilization</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Risk if Delayed</th><th>Severity</th></tr></thead>
+          <tbody><tr><td>Cash position continues to deteriorate</td><td><strong class="bh-strong">CRITICAL</strong></td></tr><tr><td>Credit facility need increases</td><td>High</td></tr><tr><td>Extended payment habits become entrenched</td><td>Medium</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Quick Win Potential</th><th><strong class="bh-strong">YES</strong> ✓</th></tr></thead>
+          <tbody><tr><td>Initial cash improvement visible within 2-3 weeks</td><td></td></tr></tbody>
+        </table>
+      </div>
+    <hr class="bh-section-divider"><h2 class="bh-h2">C-04: Governance Charter Development</h2>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Attribute</th><th>Detail</th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">Action Title</strong></td><td>Define Advisory Board Charter and Operating Model</td></tr><tr><td><strong class="bh-strong">Priority Score</strong></td><td><strong class="bh-strong">10/10</strong></td></tr><tr><td><strong class="bh-strong">Category</strong></td><td>People &amp; Leadership</td></tr><tr><td><strong class="bh-strong">Timeframe</strong></td><td>Immediate (Days 1-14)</td></tr><tr><td><strong class="bh-strong">Impact Level</strong></td><td>Critical</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Dependencies</th><th>Status</th></tr></thead>
+          <tbody><tr><td>CEO commitment</td><td>Required</td></tr><tr><td>Board/founder alignment</td><td>Required</td></tr><tr><td>Compensation framework</td><td>Required</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Resource Requirements</th><th></th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">People</strong></td><td>CEO (8 hours), Legal (4 hours)</td></tr><tr><td><strong class="bh-strong">Budget</strong></td><td>$5,000 (legal review)</td></tr><tr><td><strong class="bh-strong">Time</strong></td><td>14 days to approved charter</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Expected Outcomes</th><th>Measurement</th></tr></thead>
+          <tbody><tr><td>Formal advisory board charter</td><td>Approved document</td></tr><tr><td>Operating procedures defined</td><td>Procedures manual</td></tr><tr><td>Compensation structure established</td><td>Compensation policy</td></tr><tr><td>Candidate criteria documented</td><td>Profile specifications</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Risk if Delayed</th><th>Severity</th></tr></thead>
+          <tbody><tr><td>Advisory recruitment slows</td><td>High</td></tr><tr><td>Governance vacuum persists</td><td><strong class="bh-strong">CRITICAL</strong></td></tr><tr><td>Accountability structure absent</td><td>High</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Quick Win Potential</th><th><strong class="bh-strong">YES</strong> ✓</th></tr></thead>
+          <tbody><tr><td>Document completion possible within 2 weeks</td><td></td></tr></tbody>
+        </table>
+      </div>
+    <hr class="bh-section-divider"><h2 class="bh-h2">C-05: Credit Facility Execution</h2>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Attribute</th><th>Detail</th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">Action Title</strong></td><td>Complete Credit Facility Due Diligence and Funding</td></tr><tr><td><strong class="bh-strong">Priority Score</strong></td><td><strong class="bh-strong">10/10</strong></td></tr><tr><td><strong class="bh-strong">Category</strong></td><td>Financial &amp; Strategic</td></tr><tr><td><strong class="bh-strong">Timeframe</strong></td><td>Immediate (Days 30-60)</td></tr><tr><td><strong class="bh-strong">Impact Level</strong></td><td>Critical</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Dependencies</th><th>Status</th></tr></thead>
+          <tbody><tr><td>C-02 (Facility initiation)</td><td>Prerequisite</td></tr><tr><td>Due diligence package</td><td>Required</td></tr><tr><td>Board approval</td><td>Required</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Resource Requirements</th><th></th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">People</strong></td><td>CFO (30% for 30 days), Controller, Legal</td></tr><tr><td><strong class="bh-strong">Budget</strong></td><td>Included in C-02</td></tr><tr><td><strong class="bh-strong">Time</strong></td><td>30 days from term sheet</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Expected Outcomes</th><th>Measurement</th></tr></thead>
+          <tbody><tr><td>Credit facility fully operational</td><td>Funds available</td></tr><tr><td>Cash ratio ≥0. 70</td><td>Financial calculation</td></tr><tr><td>Covenant compliance established</td><td>Compliance tracking</td></tr><tr><td>Growth investment green light</td><td>Investment approvals</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Risk if Delayed</th><th>Severity</th></tr></thead>
+          <tbody><tr><td>Extended financial vulnerability</td><td><strong class="bh-strong">CRITICAL</strong></td></tr><tr><td>Q2 initiatives cannot launch</td><td><strong class="bh-strong">CRITICAL</strong></td></tr><tr><td>Competitor opportunity window</td><td>High</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Quick Win Potential</th><th><strong class="bh-strong">NO</strong></th></tr></thead>
+          <tbody><tr><td>Requires full banking process timeline</td><td></td></tr></tbody>
+        </table>
+      </div>
+    <hr class="bh-section-divider"><h2 class="bh-h2">C-06: Advisory Board Member Recruitment</h2>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Attribute</th><th>Detail</th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">Action Title</strong></td><td>Identify, Interview, and Extend Offers to 3 Advisory Board Members</td></tr><tr><td><strong class="bh-strong">Priority Score</strong></td><td><strong class="bh-strong">9/10</strong></td></tr><tr><td><strong class="bh-strong">Category</strong></td><td>People &amp; Leadership, Strategic</td></tr><tr><td><strong class="bh-strong">Timeframe</strong></td><td>Immediate (Days 14-90)</td></tr><tr><td><strong class="bh-strong">Impact Level</strong></td><td>Critical</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Dependencies</th><th>Status</th></tr></thead>
+          <tbody><tr><td>C-04 (Charter)</td><td>Prerequisite</td></tr><tr><td>Candidate pipeline</td><td>Required</td></tr><tr><td>Interview process</td><td>Required</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Resource Requirements</th><th></th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">People</strong></td><td>CEO (25% time for 60 days)</td></tr><tr><td><strong class="bh-strong">Budget</strong></td><td>$15,000-$25,000 (search support, background checks)</td></tr><tr><td><strong class="bh-strong">Time</strong></td><td>60-75 days from charter to offers</td></tr></tbody>
+        </table>
+      </div>
+    <p class="bh-p"><strong class="bh-strong">Target Profiles:</strong></p>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Seat</th><th>Expertise</th><th>Value Contribution</th></tr></thead>
+          <tbody><tr><td>1</td><td>Fintech M&amp;A</td><td>Exit readiness, valuation optimization</td></tr><tr><td>2</td><td>HR/OD</td><td>Culture transformation, talent strategy</td></tr><tr><td>3</td><td>Enterprise Sales</td><td>Sales velocity, GTM optimization</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Expected Outcomes</th><th>Measurement</th></tr></thead>
+          <tbody><tr><td>3 advisory offers extended</td><td>Offer letters</td></tr><tr><td>Diverse expertise secured</td><td>Profile alignment</td></tr><tr><td>External accountability established</td><td>Meeting scheduled</td></tr><tr><td>Strategic counsel access</td><td>Engagement plan</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Risk if Delayed</th><th>Severity</th></tr></thead>
+          <tbody><tr><td>Governance vacuum continues</td><td><strong class="bh-strong">CRITICAL</strong></td></tr><tr><td>Culture/sales transformation delayed</td><td>High</td></tr><tr><td>Financial discipline absent</td><td>High</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Quick Win Potential</th><th><strong class="bh-strong">Partial</strong></th></tr></thead>
+          <tbody><tr><td>First advisor could be engaged within 45 days</td><td></td></tr></tbody>
+        </table>
+      </div>
+    <hr class="bh-section-divider"><h2 class="bh-h2">C-07: Culture Diagnostic Completion</h2>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Attribute</th><th>Detail</th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">Action Title</strong></td><td>Complete Comprehensive Culture Assessment with Blueprint</td></tr><tr><td><strong class="bh-strong">Priority Score</strong></td><td><strong class="bh-strong">9/10</strong></td></tr><tr><td><strong class="bh-strong">Category</strong></td><td>People &amp; Leadership</td></tr><tr><td><strong class="bh-strong">Timeframe</strong></td><td>Immediate (Days 14-75)</td></tr><tr><td><strong class="bh-strong">Impact Level</strong></td><td>Critical</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Dependencies</th><th>Status</th></tr></thead>
+          <tbody><tr><td>Diagnostic partner selection</td><td>Required</td></tr><tr><td>Employee participation</td><td>Required</td></tr><tr><td>Leadership commitment</td><td>Required</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Resource Requirements</th><th></th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">People</strong></td><td>HR Lead (30% time), CEO (10% time), All employees (survey)</td></tr><tr><td><strong class="bh-strong">Budget</strong></td><td>$35,000-$50,000 (diagnostic partner, platform)</td></tr><tr><td><strong class="bh-strong">Time</strong></td><td>60 days to blueprint</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Expected Outcomes</th><th>Measurement</th></tr></thead>
+          <tbody><tr><td>Current culture state documented</td><td>Assessment report</td></tr><tr><td>Root causes of 2/5 score identified</td><td>Analysis findings</td></tr><tr><td>Transformation roadmap created</td><td>Blueprint document</td></tr><tr><td>Leadership alignment achieved</td><td>Alignment workshop</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Risk if Delayed</th><th>Severity</th></tr></thead>
+          <tbody><tr><td>Culture decline continues unchecked</td><td><strong class="bh-strong">CRITICAL</strong></td></tr><tr><td>Turnover risk increases</td><td>High</td></tr><tr><td>Technology adoption continues to fail</td><td>High</td></tr><tr><td>Decision dysfunction persists</td><td>High</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Quick Win Potential</th><th><strong class="bh-strong">NO</strong></th></tr></thead>
+          <tbody><tr><td>Requires full diagnostic process</td><td></td></tr></tbody>
+        </table>
+      </div>
+    <hr class="bh-section-divider"><h2 class="bh-h2">C-08: Sales Process Audit Completion</h2>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Attribute</th><th>Detail</th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">Action Title</strong></td><td>Complete End-to-End Sales Process Audit with Bottleneck Analysis</td></tr><tr><td><strong class="bh-strong">Priority Score</strong></td><td><strong class="bh-strong">9/10</strong></td></tr><tr><td><strong class="bh-strong">Category</strong></td><td>Revenue Engine</td></tr><tr><td><strong class="bh-strong">Timeframe</strong></td><td>Immediate (Days 14-75)</td></tr><tr><td><strong class="bh-strong">Impact Level</strong></td><td>Critical</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Dependencies</th><th>Status</th></tr></thead>
+          <tbody><tr><td>CRM data availability</td><td>Required</td></tr><tr><td>Sales team cooperation</td><td>Required</td></tr><tr><td>Win/loss historical data</td><td>Required</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Resource Requirements</th><th></th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">People</strong></td><td>VP Sales (25% time), Sales Ops, External consultant</td></tr><tr><td><strong class="bh-strong">Budget</strong></td><td>$30,000-$45,000 (consulting, analysis tools)</td></tr><tr><td><strong class="bh-strong">Time</strong></td><td>60 days to roadmap</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Expected Outcomes</th><th>Measurement</th></tr></thead>
+          <tbody><tr><td>Complete process map with timing</td><td>Process documentation</td></tr><tr><td>Top 5 bottlenecks identified</td><td>Bottleneck analysis</td></tr><tr><td>Win/loss patterns documented</td><td>Pattern report</td></tr><tr><td>Sales acceleration roadmap</td><td>Roadmap document</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Risk if Delayed</th><th>Severity</th></tr></thead>
+          <tbody><tr><td>270-day cycle persists</td><td><strong class="bh-strong">CRITICAL</strong></td></tr><tr><td>10% close rate unchanged</td><td><strong class="bh-strong">CRITICAL</strong></td></tr><tr><td>20% growth target unreachable</td><td><strong class="bh-strong">CRITICAL</strong></td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Quick Win Potential</th><th><strong class="bh-strong">Partial</strong></th></tr></thead>
+          <tbody><tr><td>Quick win opportunities identified by Day 30</td><td></td></tr></tbody>
+        </table>
+      </div>
+    <hr class="bh-section-divider"><h2 class="bh-h2">C-09: Sales Enablement Foundation Deployment</h2>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Attribute</th><th>Detail</th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">Action Title</strong></td><td>Deploy Core Sales Enablement Tools and Frameworks</td></tr><tr><td><strong class="bh-strong">Priority Score</strong></td><td><strong class="bh-strong">9/10</strong></td></tr><tr><td><strong class="bh-strong">Category</strong></td><td>Revenue Engine</td></tr><tr><td><strong class="bh-strong">Timeframe</strong></td><td>Short-term (Days 60-120)</td></tr><tr><td><strong class="bh-strong">Impact Level</strong></td><td>Critical</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Dependencies</th><th>Status</th></tr></thead>
+          <tbody><tr><td>C-08 (Sales audit)</td><td>Prerequisite</td></tr><tr><td>C-05 (Credit facility - funding)</td><td>Prerequisite</td></tr><tr><td>Sales team training capacity</td><td>Required</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Resource Requirements</th><th></th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">People</strong></td><td>VP Sales, Sales Enablement (hire/assign), Marketing</td></tr><tr><td><strong class="bh-strong">Budget</strong></td><td>$75,000-$100,000 (tools, training, content)</td></tr><tr><td><strong class="bh-strong">Time</strong></td><td>60 days to operational</td></tr></tbody>
+        </table>
+      </div>
+    <p class="bh-p"><strong class="bh-strong">Enablement Toolkit Components:</strong></p>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Component</th><th>Purpose</th><th>Expected Impact</th></tr></thead>
+          <tbody><tr><td>BANT Qualification</td><td>Focus on qualified opportunities</td><td>+3-5% close rate</td></tr><tr><td>Proposal Templates</td><td>Faster proposal generation</td><td>-10-15 days cycle</td></tr><tr><td>ROI Calculator</td><td>Quantify value for prospects</td><td>Decision acceleration</td></tr><tr><td>Competitive Battle Cards</td><td>Improve competitive positioning</td><td>+2-3% close rate</td></tr><tr><td>Stage Gates</td><td>Pipeline hygiene</td><td>Bottleneck visibility</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Expected Outcomes</th><th>Measurement</th></tr></thead>
+          <tbody><tr><td>Qualification framework operational</td><td>Framework deployed</td></tr><tr><td>Proposal cycle reduced 50%</td><td>Time tracking</td></tr><tr><td>Competitive win rate improved</td><td>Win/loss analysis</td></tr><tr><td>Pipeline visibility enhanced</td><td>Dashboard metrics</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Risk if Delayed</th><th>Severity</th></tr></thead>
+          <tbody><tr><td>Sales velocity improvement stalls</td><td><strong class="bh-strong">CRITICAL</strong></td></tr><tr><td>H1 revenue targets missed</td><td>High</td></tr><tr><td>Expansion program underfunded</td><td>High</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Quick Win Potential</th><th><strong class="bh-strong">YES</strong> ✓</th></tr></thead>
+          <tbody><tr><td>Individual tools can show impact within 2-4 weeks of deployment</td><td></td></tr></tbody>
+        </table>
+      </div>
+    <hr class="bh-section-divider"><h2 class="bh-h2">C-10: Culture Values Definition and Launch</h2>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Attribute</th><th>Detail</th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">Action Title</strong></td><td>Define Core Values, Launch Culture Transformation Program</td></tr><tr><td><strong class="bh-strong">Priority Score</strong></td><td><strong class="bh-strong">9/10</strong></td></tr><tr><td><strong class="bh-strong">Category</strong></td><td>People &amp; Leadership</td></tr><tr><td><strong class="bh-strong">Timeframe</strong></td><td>Short-term (Days 75-120)</td></tr><tr><td><strong class="bh-strong">Impact Level</strong></td><td>Critical</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Dependencies</th><th>Status</th></tr></thead>
+          <tbody><tr><td>C-07 (Culture diagnostic)</td><td>Prerequisite</td></tr><tr><td>C-06 (Advisory - HR expertise)</td><td>Recommended</td></tr><tr><td>Leadership alignment</td><td>Required</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Resource Requirements</th><th></th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">People</strong></td><td>CEO (20% time), HR Lead (40% time), Leadership team</td></tr><tr><td><strong class="bh-strong">Budget</strong></td><td>$40,000-$60,000 (facilitation, communication, launch)</td></tr><tr><td><strong class="bh-strong">Time</strong></td><td>45 days from diagnostic to launch</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Expected Outcomes</th><th>Measurement</th></tr></thead>
+          <tbody><tr><td>3-5 core values defined</td><td>Values document</td></tr><tr><td>Behavioral anchors documented</td><td>Behavioral rubric</td></tr><tr><td>Organization-wide launch completed</td><td>Launch event</td></tr><tr><td>80%+ employee awareness</td><td>Pulse survey</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Risk if Delayed</th><th>Severity</th></tr></thead>
+          <tbody><tr><td>Culture deterioration accelerates</td><td><strong class="bh-strong">CRITICAL</strong></td></tr><tr><td>Other transformation initiatives fail</td><td>High</td></tr><tr><td>Talent retention at risk</td><td>High</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Quick Win Potential</th><th><strong class="bh-strong">Partial</strong></th></tr></thead>
+          <tbody><tr><td>Values launch is a visible milestone; full transformation takes 12-18 months</td><td></td></tr></tbody>
+        </table>
+      </div>
+    <hr class="bh-section-divider"><h2 class="bh-h2">C-11: Decision Rights Framework Implementation</h2>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Attribute</th><th>Detail</th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">Action Title</strong></td><td>Deploy RACI Decision Framework Across Organization</td></tr><tr><td><strong class="bh-strong">Priority Score</strong></td><td><strong class="bh-strong">9/10</strong></td></tr><tr><td><strong class="bh-strong">Category</strong></td><td>People &amp; Leadership, Operations</td></tr><tr><td><strong class="bh-strong">Timeframe</strong></td><td>Short-term (Days 60-105)</td></tr><tr><td><strong class="bh-strong">Impact Level</strong></td><td>Critical</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Dependencies</th><th>Status</th></tr></thead>
+          <tbody><tr><td>C-04 (Governance charter)</td><td>Partial prerequisite</td></tr><tr><td>Leadership team alignment</td><td>Required</td></tr><tr><td>Manager training capacity</td><td>Required</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Resource Requirements</th><th></th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">People</strong></td><td>COO (20% time), All managers (training)</td></tr><tr><td><strong class="bh-strong">Budget</strong></td><td>$20,000-$35,000 (consulting, training)</td></tr><tr><td><strong class="bh-strong">Time</strong></td><td>45 days to operational</td></tr></tbody>
+        </table>
+      </div>
+    <p class="bh-p"><strong class="bh-strong">Decision Authority Matrix:</strong></p>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Category</th><th>&lt;$10K</th><th>$10K-$50K</th><th>$50K-$250K</th><th>&gt;$250K</th></tr></thead>
+          <tbody><tr><td>Operating</td><td>Manager</td><td>Director</td><td>VP</td><td>CEO</td></tr><tr><td>Capital</td><td>Director</td><td>VP</td><td>CEO</td><td>CEO+Board</td></tr><tr><td>Hiring</td><td>Manager</td><td>Director</td><td>VP</td><td>CEO</td></tr><tr><td>Customer</td><td>Sales Rep</td><td>Manager</td><td>VP Sales</td><td>CEO</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Expected Outcomes</th><th>Measurement</th></tr></thead>
+          <tbody><tr><td>Decision rights clearly defined</td><td>Framework document</td></tr><tr><td>Authority thresholds established</td><td>Threshold matrix</td></tr><tr><td>Decision velocity improved 30%+</td><td>Sample tracking</td></tr><tr><td>Executive bottleneck reduced</td><td>Escalation metrics</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Risk if Delayed</th><th>Severity</th></tr></thead>
+          <tbody><tr><td>Decision dysfunction continues</td><td><strong class="bh-strong">CRITICAL</strong></td></tr><tr><td>Strategic initiatives stall</td><td>High</td></tr><tr><td>Employee frustration increases</td><td>Medium</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Quick Win Potential</th><th><strong class="bh-strong">YES</strong> ✓</th></tr></thead>
+          <tbody><tr><td>Visible improvement in decision speed within 2-3 weeks of launch</td><td></td></tr></tbody>
+        </table>
+      </div>
+    <hr class="bh-section-divider"><h2 class="bh-h2">C-12: Customer Expansion Pipeline Development</h2>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Attribute</th><th>Detail</th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">Action Title</strong></td><td>Build $1. 5M+ Customer Expansion Revenue Pipeline</td></tr><tr><td><strong class="bh-strong">Priority Score</strong></td><td><strong class="bh-strong">9/10</strong></td></tr><tr><td><strong class="bh-strong">Category</strong></td><td>Revenue Engine</td></tr><tr><td><strong class="bh-strong">Timeframe</strong></td><td>Short-term (Days 45-105)</td></tr><tr><td><strong class="bh-strong">Impact Level</strong></td><td>Critical</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Dependencies</th><th>Status</th></tr></thead>
+          <tbody><tr><td>Customer data analysis</td><td>Required</td></tr><tr><td>Expansion pricing/packaging</td><td>Required</td></tr><tr><td>Account management capacity</td><td>Required</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Resource Requirements</th><th></th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">People</strong></td><td>VP Sales, Account Management team, Product Marketing</td></tr><tr><td><strong class="bh-strong">Budget</strong></td><td>$50,000-$75,000 (tools, materials, incentives)</td></tr><tr><td><strong class="bh-strong">Time</strong></td><td>60 days to $1M+ pipeline</td></tr></tbody>
+        </table>
+      </div>
+    <p class="bh-p"><strong class="bh-strong">Expansion Revenue Targets:</strong></p>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Type</th><th>Target</th><th>Approach</th></tr></thead>
+          <tbody><tr><td>Service Expansion</td><td>$600K</td><td>Additional plan types</td></tr><tr><td>Volume Growth</td><td>$400K</td><td>Participant increases</td></tr><tr><td>Premium Tier</td><td>$300K</td><td>Enhanced service levels</td></tr><tr><td>Cross-sell</td><td>$200K</td><td>Share Plan, new modules</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Expected Outcomes</th><th>Measurement</th></tr></thead>
+          <tbody><tr><td>Top 25 expansion accounts identified</td><td>Account list</td></tr><tr><td>$1. 5M+ expansion pipeline created</td><td>Pipeline report</td></tr><tr><td>Expansion playbook operational</td><td>Playbook document</td></tr><tr><td>First expansion revenue closed</td><td>Revenue tracking</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Risk if Delayed</th><th>Severity</th></tr></thead>
+          <tbody><tr><td>Growth target relies entirely on new acquisition</td><td><strong class="bh-strong">CRITICAL</strong></td></tr><tr><td>Fastest path to revenue growth blocked</td><td>High</td></tr><tr><td>Customer relationships underleveraged</td><td>Medium</td></tr></tbody>
+        </table>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Quick Win Potential</th><th><strong class="bh-strong">YES</strong> ✓</th></tr></thead>
+          <tbody><tr><td>First expansion deals closable within 60-90 days</td><td></td></tr></tbody>
+        </table>
+      </div>
+    <hr class="bh-section-divider"><h2 class="bh-h2">Critical Path Summary</h2>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>ID</th><th>Action</th><th>Score</th><th>Investment</th><th>Owner</th><th>Days</th></tr></thead>
+          <tbody><tr><td>C-01</td><td>Cash Monitoring</td><td>10</td><td>$5-10K</td><td>CFO</td><td>1-7</td></tr><tr><td>C-02</td><td>Credit Facility Init</td><td>10</td><td>$25-40K</td><td>CFO</td><td>1-45</td></tr><tr><td>C-03</td><td>AR Acceleration</td><td>10</td><td>$15-25K</td><td>Finance</td><td>1-60</td></tr><tr><td>C-04</td><td>Governance Charter</td><td>10</td><td>$5K</td><td>CEO</td><td>1-14</td></tr><tr><td>C-05</td><td>Credit Facility Exec</td><td>10</td><td>(incl. )</td><td>CFO</td><td>30-60</td></tr><tr><td>C-06</td><td>Advisory Recruitment</td><td>9</td><td>$15-25K</td><td>CEO</td><td>14-90</td></tr><tr><td>C-07</td><td>Culture Diagnostic</td><td>9</td><td>$35-50K</td><td>CEO/HR</td><td>14-75</td></tr><tr><td>C-08</td><td>Sales Audit</td><td>9</td><td>$30-45K</td><td>VP Sales</td><td>14-75</td></tr><tr><td>C-09</td><td>Sales Enablement</td><td>9</td><td>$75-100K</td><td>VP Sales</td><td>60-120</td></tr><tr><td>C-10</td><td>Culture Launch</td><td>9</td><td>$40-60K</td><td>CEO/HR</td><td>75-120</td></tr><tr><td>C-11</td><td>Decision Framework</td><td>9</td><td>$20-35K</td><td>COO</td><td>60-105</td></tr><tr><td>C-12</td><td>Expansion Pipeline</td><td>9</td><td>$50-75K</td><td>VP Sales</td><td>45-105</td></tr><tr><td><strong class="bh-strong">TOTAL</strong></td><td></td><td></td><td><strong class="bh-strong">$315K-$470K</strong></td><td></td><td></td></tr></tbody>
+        </table>
+      </div>
+    <hr class="bh-section-divider"><h1 class="bh-h1">Section 2: Quick Wins</h1><p class="bh-p"><strong class="bh-strong">Definition:</strong> High-impact actions that can be implemented with relatively low complexity and deliver visible results quickly, building organizational momentum for larger transformation initiatives.</p>
+        </div>
+        
+    <div class="comprehensive-reference">
+      <span class="ref-icon">&#128214;</span>
+      <span class="ref-text">
+        For detailed phased plan with dependencies, see <strong>Comprehensive Report</strong> &rarr;
+        <em>18-Month Implementation Roadmap</em>
+      </span>
+    </div>
+  
+      </section>
+    
+
+    <!-- ================================================================
+         SECTION: Quick Wins - Start Today
+         ================================================================ -->
+    
+      <section class="section" id="quick-wins">
+        
+    <div class="owner-section-header">
+      <h2>Quick Wins - Start Today</h2>
+      
+        <p class="owner-question">
+          <span class="question-icon">&#128173;</span>
+          <em>"What can I do right now?"</em>
+        </p>
+      
+    </div>
+  
+        <p class="section-intro">These high-impact, low-effort improvements can be implemented within 90 days:</p>
+        
+          <div class="quick-win-card">
+            <div class="title">Leadership &amp; Governance Improvement Initiative</div>
+            <p>Improve Leadership &amp; Governance score from 40 to 60 within the target horizon.</p>
+            <div class="metrics">
+              <span>Impact: 60/100</span>
+              <span>Effort: 50/100</span>
+              <span>ROI: 1.2x</span>
+            </div>
+          </div>
+        
+          <div class="quick-win-card">
+            <div class="title">Strategy Improvement Initiative</div>
+            <p>Improve Strategy score from 45 to 65 within the target horizon.</p>
+            <div class="metrics">
+              <span>Impact: 55/100</span>
+              <span>Effort: 50/100</span>
+              <span>ROI: 1.1x</span>
+            </div>
+          </div>
+        
+          <div class="quick-win-card">
+            <div class="title">Human Resources Improvement Initiative</div>
+            <p>Improve Human Resources score from 46 to 66 within the target horizon.</p>
+            <div class="metrics">
+              <span>Impact: 54/100</span>
+              <span>Effort: 50/100</span>
+              <span>ROI: 1.08x</span>
+            </div>
+          </div>
+        
+          <div class="quick-win-card">
+            <div class="title">Customer Experience Improvement Initiative</div>
+            <p>Improve Customer Experience score from 50 to 70 within the target horizon.</p>
+            <div class="metrics">
+              <span>Impact: 50/100</span>
+              <span>Effort: 50/100</span>
+              <span>ROI: 1x</span>
+            </div>
+          </div>
+        
+          <div class="quick-win-card">
+            <div class="title">Marketing Improvement Initiative</div>
+            <p>Improve Marketing score from 31 to 51 within the target horizon.</p>
+            <div class="metrics">
+              <span>Impact: 69/100</span>
+              <span>Effort: 70/100</span>
+              <span>ROI: 0.99x</span>
+            </div>
+          </div>
+        
+      </section>
+    
+
+    <!-- ================================================================
+         SECTION: Key Risks to Your Business
+         ================================================================ -->
+    
+      <section class="section" id="key-risks">
+        
+    <div class="owner-section-header">
+      <h2>Key Risks to Your Business</h2>
+      
+        <p class="owner-question">
+          <span class="question-icon">&#128173;</span>
+          <em>"What could hurt my business?"</em>
+        </p>
+      
+    </div>
+  
+        <div class="narrative-content">
+          <h1 class="bh-h1">Comprehensive Risk Assessment: EWM Global</h1><h2 class="bh-h2">Executive Risk Summary</h2><p class="bh-p">Based on synthesis of all 10 Phase 1 analyses, EWM Global faces <strong class="bh-strong">23 significant risks</strong> across 7 categories, with <strong class="bh-strong">5 critical risks</strong> requiring immediate intervention.  The company operates as a &quot;Fragile Performer&quot;—achieving exceptional outcomes through unsustainable means while accumulating structural vulnerabilities that threaten both growth ambitions and business continuity. </p><hr class="bh-section-divider"><h2 class="bh-h2">Risk Heat Map</h2><hr class="bh-section-divider"><h2 class="bh-h2">Critical Risks (Severity: CRITICAL)</h2><h3 class="bh-h3">R1: Liquidity Crisis Risk</h3>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr><th>Attribute</th><th>Details</th></tr></thead>
+          <tbody><tr><td><strong class="bh-strong">Risk Category</strong></td><td>Financial</td></tr><tr><td><strong class="bh-strong">Description</strong></td><td>Cash ratio of 0. 43 positions EWM Global below the 10th percentile of comparable companies, with less than one month of operating expenses covered.  Any revenue disruption, delayed payment, or unexpected expense could trigger immediate financial crisis.</td></tr><tr><td><strong class="bh-strong">Severity</strong></td><td>🔴 CRITICAL</td></tr><tr><td><strong class="bh-strong">Likelihood</strong></td><td>HIGH</td></tr><tr><td><strong class="bh-strong">Impact Areas</strong></td><td>All business dimensions - Financial stability, Operations continuity, Growth capacity, Talent retention, Compliance investment, Customer service</td></tr><tr><td><strong class="bh-strong">Current Status</strong></td><td>UNADDRESSED - Self-assessed financial resilience at 2/5 confirms awareness but no mitigating actions evident</td></tr></tbody>
+        </table>
+      </div>
+    <p class="bh-p"><strong class="bh-strong">Quantified Exposure:</strong></p><ul class="bh-ul"><li class="bh-li">Cash available: $1.</li></ul>
+        </div>
+        
+    <div class="comprehensive-reference">
+      <span class="ref-icon">&#128214;</span>
+      <span class="ref-text">
+        For complete risk inventory and mitigation strategies, see <strong>Comprehensive Report</strong> &rarr;
+        <em>Comprehensive Risk Assessment</em>
+      </span>
+    </div>
+  
+      </section>
+    
+
+    <!-- ================================================================
+         SECTION: Where to Go for Detail
+         ================================================================ -->
+    
+    <section class="section" id="where-to-go">
+      <div class="owner-section-header">
+        <h2>Where to Go for Detail</h2>
+        <p class="owner-question">
+          <span class="question-icon">&#128173;</span>
+          <em>"Where can I learn more?"</em>
+        </p>
+      </div>
+
+      <p class="section-intro">
+        This Owner's Report is your executive summary. For complete analysis,
+        evidence, and implementation details, use this guide to navigate your
+        <strong>Comprehensive Report</strong>.
+      </p>
+
+      <div class="table-responsive">
+        <table class="bh-table reference-table">
+          <thead>
+            <tr>
+              <th>To learn more about...</th>
+              <th>See Comprehensive Report Section</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td>Business Health Overview</td>
+                <td><em>Executive Summary</em></td>
+              </tr>
+            
+              <tr>
+                <td>Growth & Revenue Strategy</td>
+                <td><em>Chapter 1: Growth Engine Deep Dive</em></td>
+              </tr>
+            
+              <tr>
+                <td>Operations & Financial Health</td>
+                <td><em>Chapter 2: Performance & Health Deep Dive</em></td>
+              </tr>
+            
+              <tr>
+                <td>People & Leadership</td>
+                <td><em>Chapter 3: People & Leadership Deep Dive</em></td>
+              </tr>
+            
+              <tr>
+                <td>Risk & Compliance</td>
+                <td><em>Chapter 4: Resilience & Safeguards Deep Dive</em></td>
+              </tr>
+            
+              <tr>
+                <td>Strategic Priorities</td>
+                <td><em>Strategic Recommendations</em></td>
+              </tr>
+            
+              <tr>
+                <td>Risk Overview</td>
+                <td><em>Comprehensive Risk Assessment</em></td>
+              </tr>
+            
+              <tr>
+                <td>Execution Timeline</td>
+                <td><em>18-Month Implementation Roadmap</em></td>
+              </tr>
+            
+              <tr>
+                <td>Investment & ROI</td>
+                <td><em>Financial Impact Analysis</em></td>
+              </tr>
+            
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bundle-contents">
+        <h3>Your Complete Report Bundle</h3>
+        <div class="bundle-grid">
+          <div class="bundle-item primary">
+            <strong>Owner's Report</strong>
+            <span>Executive decision guide (this document)</span>
+          </div>
+          <div class="bundle-item primary">
+            <strong>Comprehensive Report</strong>
+            <span>Full encyclopedia of analysis</span>
+          </div>
+          <div class="bundle-item">
+            <strong>Executive Brief</strong>
+            <span>One-page summary</span>
+          </div>
+          <div class="bundle-item">
+            <strong>Quick Wins Plan</strong>
+            <span>Immediate opportunities</span>
+          </div>
+          <div class="bundle-item">
+            <strong>Implementation Roadmap</strong>
+            <span>Detailed project plan</span>
+          </div>
+          <div class="bundle-item">
+            <strong>Financial Impact</strong>
+            <span>Investment & ROI details</span>
+          </div>
+          <div class="bundle-item">
+            <strong>Risk Assessment</strong>
+            <span>Complete risk inventory</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+
+    <!-- ================================================================
+         SECTION: Your Next Steps
+         ================================================================ -->
+    <section class="section" id="next-steps">
+      
+    <div class="owner-section-header">
+      <h2>Your Next Steps</h2>
+      
+        <p class="owner-question">
+          <span class="question-icon">&#128173;</span>
+          <em>"What do I do now?"</em>
+        </p>
+      
+    </div>
+  
+      <div class="callout success">
+        <div class="title">Your Recommended Actions</div>
+        <ol>
+          <li><strong>This Week:</strong> Review the Quick Wins section above and select 1-2 initiatives to begin immediately</li>
+          <li><strong>This Month:</strong> Schedule a strategic planning session with your leadership team to address your priority areas</li>
+          <li><strong>For Detail:</strong> Use the "Where to Go for Detail" section above to navigate to the Comprehensive Report for full analysis</li>
+          <li><strong>For Support:</strong> Consider engaging with BizHealth.ai for implementation support and ongoing monitoring</li>
+        </ol>
+      </div>
+    </section>
+
+    
+    <footer class="report-footer">
+      <p>&copy; 2025 BizHealth.ai - Confidential Business Assessment Report</p>
+      <p>Assessment ID: 86a66ed1-6c1a-4733-b862-350680f45471</p>
+      <p>Narrative Content: 119,683 words</p>
+    </footer>
+  
+  
+  </div>
+</body>
+</html>

@@ -1,8 +1,8 @@
 {
   "meta": {
-    "assessment_run_id": "143ce1b8-3fa1-429a-b159-6235716c697f",
-    "company_profile_id": "796898ac-319a-4f9b-834b-e2199dfd48f2",
-    "created_at": "2025-12-04T05:41:21.309Z",
+    "assessment_run_id": "86a66ed1-6c1a-4733-b862-350680f45471",
+    "company_profile_id": "a09f21a0-021a-480d-bbf1-c138e83500df",
+    "created_at": "2025-12-05T03:59:09.255Z",
     "methodology_version": "1.0.0",
     "scoring_version": "1.0.0",
     "idm_schema_version": "1.0.0"
@@ -2267,5 +2267,11 @@
       "peer_group_size": 987,
       "benchmark_narrative": "Your organization's overall health score of 53 is 7 points below the Technology Consulting industry benchmark of 60. There is significant opportunity to improve relative to the 987 peer companies analyzed."
     }
+  },
+  "visualizations": {
+    "phase1": [],
+    "phase2": [],
+    "phase3": [],
+    "totalCount": 0
   }
 }

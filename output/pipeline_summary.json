@@ -1,6 +1,6 @@
 {
   "config": {
-    "webhookPath": "sample_webhook.json",
+    "webhookPath": "./sample_webhook.json",
     "outputDir": "./output",
     "startPhase": 0,
     "endPhase": 5,
@@ -17,10 +17,10 @@
     {
       "phase": 0,
       "status": "success",
-      "duration_ms": 23,
+      "duration_ms": 22,
       "output_path": "output/phase0_output.json",
       "details": {
-        "assessment_run_id": "143ce1b8-3fa1-429a-b159-6235716c697f",
+        "assessment_run_id": "86a66ed1-6c1a-4733-b862-350680f45471",
         "company_profile_id": "ewm-global-478cbd43",
         "phases_completed": {
           "raw_capture": true,
@@ -47,7 +47,7 @@
     {
       "phase": 1,
       "status": "success",
-      "duration_ms": 606644,
+      "duration_ms": 638410,
       "output_path": "output/phase1_output.json",
       "details": {
         "status": "complete",
@@ -59,7 +59,7 @@
     {
       "phase": 2,
       "status": "success",
-      "duration_ms": 786887,
+      "duration_ms": 484476,
       "output_path": "output/phase2_output.json",
       "details": {
         "status": "complete",
@@ -70,7 +70,7 @@
     {
       "phase": 3,
       "status": "success",
-      "duration_ms": 756758,
+      "duration_ms": 635574,
       "output_path": "output/phase3_output.json",
       "details": {
         "status": "complete",
@@ -81,7 +81,7 @@
     {
       "phase": 4,
       "status": "success",
-      "duration_ms": 245082,
+      "duration_ms": 255005,
       "output_path": "output/phase4_output.json",
       "details": {
         "status": "complete",
@@ -95,23 +95,23 @@
         ],
         "report_tokens": {
           "input": 5518,
-          "output": 20692
+          "output": 21253
         }
       }
     },
     {
       "phase": 5,
       "status": "success",
-      "duration_ms": 144,
+      "duration_ms": 126,
       "output_path": "output/phase5_output.json",
       "details": {
         "status": "partial",
         "reports_generated": 16,
-        "output_dir": "output/reports/143ce1b8-3fa1-429a-b159-6235716c697f",
-        "manifest": "output/reports/143ce1b8-3fa1-429a-b159-6235716c697f/manifest.json"
+        "output_dir": "output/reports/86a66ed1-6c1a-4733-b862-350680f45471",
+        "manifest": "output/reports/86a66ed1-6c1a-4733-b862-350680f45471/manifest.json"
       }
     }
   ],
-  "total_duration_ms": 2395540,
-  "completed_at": "2025-12-04T05:45:26.523Z"
+  "total_duration_ms": 2013614,
+  "completed_at": "2025-12-05T04:03:24.372Z"
 }

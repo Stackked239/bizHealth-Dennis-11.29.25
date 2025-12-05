@@ -1,0 +1,1947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="BizHealth.ai Report Generator v2.0">
+  <title>Operations Manager Report - EWM Global</title>
+  <style>
+    /* Base Styles */
+    
+    /* Base Reset and Typography */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      font-family: 'Open Sans', Arial, sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #333;
+      background: #fff;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+      color: #212653;
+      margin-bottom: 0.5em;
+      line-height: 1.3;
+    }
+
+    h1 { font-size: 2.5rem; font-weight: 700; }
+    h2 { font-size: 2rem; font-weight: 600; page-break-before: always; }
+    h2:first-of-type { page-break-before: auto; }
+    h3 { font-size: 1.5rem; font-weight: 600; }
+    h4 { font-size: 1.25rem; font-weight: 500; }
+    h5 { font-size: 1.1rem; font-weight: 500; }
+
+    p {
+      margin-bottom: 1em;
+    }
+
+    /* Links */
+    a {
+      color: #969423;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Lists */
+    ul, ol {
+      margin-left: 1.5em;
+      margin-bottom: 1em;
+    }
+
+    li {
+      margin-bottom: 0.5em;
+    }
+
+    /* Page Layout */
+    .report-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .page {
+      padding: 2rem 0;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    /* Header */
+    .report-header {
+      text-align: center;
+      padding: 2rem 0;
+      border-bottom: 4px solid #212653;
+      margin-bottom: 2rem;
+    }
+
+    .report-header .logo {
+      max-height: 60px;
+      margin-bottom: 1rem;
+    }
+
+    .report-header h1 {
+      margin-bottom: 0.5rem;
+    }
+
+    .report-header .subtitle {
+      font-size: 1.25rem;
+      color: #666;
+    }
+
+    .report-header .company-name {
+      font-size: 1.5rem;
+      color: #969423;
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+
+    .report-header .date {
+      font-size: 0.9rem;
+      color: #888;
+      margin-top: 0.5rem;
+    }
+
+    /* Footer */
+    .report-footer {
+      text-align: center;
+      padding: 1rem 0;
+      border-top: 2px solid #eee;
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    @media print {
+      .report-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    }
+
+    /* Section Styles */
+    .section {
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #969423;
+    }
+
+    .section-icon {
+      font-size: 1.5rem;
+      margin-right: 0.75rem;
+    }
+
+    /* Score Cards */
+    .score-card {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #212653 0%, #212653dd 100%);
+      color: #fff;
+      min-width: 150px;
+    }
+
+    .score-card .score-value {
+      font-size: 3rem;
+      font-weight: 700;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    .score-card .score-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .score-card.small {
+      padding: 0.75rem;
+      min-width: 100px;
+    }
+
+    .score-card.small .score-value {
+      font-size: 1.75rem;
+    }
+
+    /* Health Score Display */
+    .health-score-display {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+    }
+
+    .health-score-circle {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #212653 0%, #212653cc 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    .health-score-circle .score {
+      font-size: 3.5rem;
+      font-weight: 700;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+      line-height: 1;
+    }
+
+    .health-score-circle .out-of {
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    .health-score-details {
+      text-align: left;
+    }
+
+    .health-score-details .status {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .health-score-details .trajectory {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      color: #666;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    th {
+      background: #212653;
+      color: #fff;
+      font-weight: 600;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    tr:hover {
+      background: #f0f0f0;
+    }
+
+    /* Score Table */
+    .score-table th:first-child {
+      width: 40%;
+    }
+
+    .score-table td.score {
+      font-weight: 600;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    /* Band Badge */
+    .band-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .band-badge.Excellence { background: #d4edda; color: #155724; }
+    .band-badge.Proficiency { background: #fff3cd; color: #856404; }
+    .band-badge.Attention { background: #ffeeba; color: #856404; }
+    .band-badge.Critical { background: #f8d7da; color: #721c24; }
+
+    /* Priority Badge */
+    .priority-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .priority-badge.high { background: #dc3545; color: #fff; }
+    .priority-badge.medium { background: #ffc107; color: #333; }
+    .priority-badge.low { background: #28a745; color: #fff; }
+
+    /* Cards */
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #212653;
+      margin: 0;
+    }
+
+    .card-body {
+      font-size: 0.95rem;
+    }
+
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+    @media (max-width: 768px) {
+      .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Flex Layout */
+    .flex { display: flex; }
+    .flex-wrap { flex-wrap: wrap; }
+    .flex-center { align-items: center; justify-content: center; }
+    .flex-between { justify-content: space-between; }
+    .gap-1 { gap: 0.5rem; }
+    .gap-2 { gap: 1rem; }
+    .gap-3 { gap: 1.5rem; }
+
+    /* Utility Classes */
+    .text-center { text-align: center; }
+    .text-right { text-align: right; }
+    .mt-1 { margin-top: 0.5rem; }
+    .mt-2 { margin-top: 1rem; }
+    .mt-3 { margin-top: 1.5rem; }
+    .mb-1 { margin-bottom: 0.5rem; }
+    .mb-2 { margin-bottom: 1rem; }
+    .mb-3 { margin-bottom: 1.5rem; }
+    .p-1 { padding: 0.5rem; }
+    .p-2 { padding: 1rem; }
+    .p-3 { padding: 1.5rem; }
+
+    /* Quick Win Card */
+    .quick-win-card {
+      background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+      border-left: 4px solid #969423;
+      padding: 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+    }
+
+    .quick-win-card .title {
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .quick-win-card .metrics {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.75rem;
+    }
+
+    .quick-win-card .metrics span {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* Risk Card */
+    .risk-card {
+      border-left: 4px solid #dc3545;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .risk-card.high { border-left-color: #dc3545; }
+    .risk-card.medium { border-left-color: #ffc107; }
+    .risk-card.low { border-left-color: #28a745; }
+
+    .risk-card .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .risk-card .category {
+      font-weight: 600;
+      color: #212653;
+    }
+
+    /* Finding Card */
+    .finding-card {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+    }
+
+    .finding-card.strength { background: #d4edda; border-left: 4px solid #28a745; }
+    .finding-card.gap { background: #f8d7da; border-left: 4px solid #dc3545; }
+    .finding-card.risk { background: #ffeeba; border-left: 4px solid #ffc107; }
+    .finding-card.opportunity { background: #cce5ff; border-left: 4px solid #0d6efd; }
+
+    .finding-card .label {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .finding-card .dimension {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Roadmap Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.5rem;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: #212653;
+      border-radius: 3px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 1.5rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -1.75rem;
+      top: 0.5rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #969423;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 3px #212653;
+    }
+
+    .timeline-item .phase-name {
+      font-weight: 600;
+      color: #212653;
+      font-size: 1.1rem;
+    }
+
+    .timeline-item .time-horizon {
+      font-size: 0.9rem;
+      color: #969423;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Callout Box */
+    .callout {
+      padding: 1.25rem;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+    }
+
+    .callout.info {
+      background: #e7f3ff;
+      border-left: 4px solid #0d6efd;
+    }
+
+    .callout.success {
+      background: #d4edda;
+      border-left: 4px solid #28a745;
+    }
+
+    .callout.warning {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+    }
+
+    .callout.danger {
+      background: #f8d7da;
+      border-left: 4px solid #dc3545;
+    }
+
+    .callout .title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      height: 24px;
+      background: #e9ecef;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .progress-bar .fill {
+      height: 100%;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: width 0.3s ease;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        font-size: 11pt;
+      }
+
+      .report-container {
+        max-width: none;
+        padding: 0;
+      }
+
+      .page-break {
+        page-break-before: always;
+      }
+
+      h2 {
+        page-break-before: always;
+      }
+
+      h2:first-of-type {
+        page-break-before: auto;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+    }
+  
+
+    /* Unified CSS Framework (Phase 4/5 Consolidation) */
+    
+/* ============================================================
+   BIZHEALTH.AI UNIFIED CSS FRAMEWORK
+   Phase 4 Styling Patterns for Phase 5 Report Generation
+   Generated: 2025-12-05
+   ============================================================ */
+
+/* ===== BRAND COLOR VARIABLES ===== */
+:root {
+  --biz-navy: #212653;
+  --biz-green: #969423;
+  --biz-grey: #7C7C7C;
+  --biz-white: #FFFFFF;
+  --biz-light-bg: #f8f9fa;
+  --biz-border: #e9ecef;
+
+  /* Score Band Colors */
+  --band-excellence: #28a745;
+  --band-proficiency: #0d6efd;
+  --band-attention: #ffc107;
+  --band-critical: #dc3545;
+
+  /* Spacing Scale (8px base) */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-xxl: 48px;
+}
+
+/* ===== CRITICAL FIX 1: Cover Page Background Override ===== */
+/* Issue: .page class white background overrides .cover-page BizNavy */
+.cover-page {
+  background: #212653 !important;
+  background-color: #212653 !important;
+}
+
+.page.cover-page {
+  background: #212653 !important;
+  background-color: #212653 !important;
+}
+
+/* ===== CRITICAL FIX 2: Dark Section Text Visibility ===== */
+/* Issue: Only strong/em styled in Phase 5; regular p text inherits dark color */
+.dark-section,
+.dark-section p,
+.dark-section span,
+.dark-section li,
+.dark-section strong,
+.dark-section em,
+.dark-section a,
+.dark-section h1,
+.dark-section h2,
+.dark-section h3,
+.dark-section h4,
+.dark-section h5,
+.dark-section h6,
+.dark-section label,
+.dark-section td,
+.dark-section th {
+  color: #FFFFFF !important;
+}
+
+.cover-page,
+.cover-page p,
+.cover-page span,
+.cover-page h1,
+.cover-page h2,
+.cover-page h3,
+.cover-page .subtitle,
+.cover-page .tagline {
+  color: #FFFFFF !important;
+}
+
+/* ===== CRITICAL FIX 3: Remove Problematic Overlays ===== */
+/* Issue: Light gradient overlays (5-8% opacity) reducing legibility */
+.cover-page::before,
+.cover-page::after,
+.dark-section::before,
+.dark-section::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* ===== FIX 4: Typography Hierarchy ===== */
+body {
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+  color: #212653;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+h1 { font-size: 2.5rem; font-weight: 700; }
+h2 { font-size: 2rem; font-weight: 600; border-bottom: 2px solid #969423; padding-bottom: 0.5rem; }
+h3 { font-size: 1.5rem; font-weight: 600; }
+h4 { font-size: 1.25rem; font-weight: 500; }
+
+/* ===== FIX 5: Score Display Contrast ===== */
+.score-value {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 3.5rem;
+  color: inherit;
+}
+
+.score-denominator,
+.score-out-of {
+  color: #CCCCCC; /* Intentional subtle hierarchy - not a bug */
+  font-size: 1.5rem;
+}
+
+.health-score-circle {
+  width: 180px;
+  height: 180px;
+  background: linear-gradient(135deg, #212653 0%, #212653cc 100%);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  color: #FFFFFF;
+}
+
+.health-score-circle .score {
+  font-size: 3.5rem;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+  line-height: 1;
+  color: #FFFFFF;
+}
+
+.health-score-circle .out-of {
+  font-size: 1rem;
+  opacity: 0.8;
+  color: #FFFFFF;
+}
+
+/* ===== FIX 6: Information Box Consistency ===== */
+.strength-box,
+.box-strength {
+  background: rgba(150, 148, 35, 0.1);
+  border-left: 4px solid #969423;
+  padding: 15px 20px;
+  margin: 15px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.gap-box,
+.risk-box,
+.box-gap,
+.box-risk {
+  background: rgba(211, 47, 47, 0.1);
+  border-left: 4px solid #D32F2F;
+  padding: 15px 20px;
+  margin: 15px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.action-box,
+.box-action,
+.recommendation-box {
+  background: rgba(33, 38, 83, 0.05);
+  border-left: 4px solid #212653;
+  padding: 15px 20px;
+  margin: 15px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.opportunity-box,
+.box-opportunity {
+  background: rgba(13, 110, 253, 0.1);
+  border-left: 4px solid #0d6efd;
+  padding: 15px 20px;
+  margin: 15px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+/* ===== FIX 7: Score Tile Cards ===== */
+.score-tile,
+.score-card {
+  background: #FFFFFF;
+  border-left: 4px solid #969423;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 16px;
+}
+
+.score-card .score-value {
+  font-size: 3rem;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.score-card .score-label {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== FIX 8: Score Band Badges ===== */
+.band-badge,
+.score-band {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.band-badge.Excellence,
+.score-band.excellence {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.band-badge.Proficiency,
+.score-band.proficiency {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.band-badge.Attention,
+.score-band.attention {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.band-badge.Critical,
+.score-band.critical {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* ===== FIX 9: Key Takeaways Box (Dark Section) ===== */
+.key-takeaways {
+  background: #212653 !important;
+  color: #FFFFFF !important;
+  padding: 24px;
+  border-radius: 8px;
+  margin: 24px 0;
+}
+
+.key-takeaways h3,
+.key-takeaways h4,
+.key-takeaways p,
+.key-takeaways li,
+.key-takeaways span,
+.key-takeaways .takeaway-title,
+.key-takeaways .takeaway-text {
+  color: #FFFFFF !important;
+}
+
+.key-takeaways .takeaway-icon {
+  color: #969423 !important;
+}
+
+/* ===== FIX 10: Table Styling ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+}
+
+th {
+  background-color: #212653;
+  color: #FFFFFF;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+}
+
+td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+/* ===== FIX 11: Interactive Table of Contents ===== */
+.table-of-contents {
+  background: #f8f9fa;
+  padding: 24px;
+  border-radius: 8px;
+  margin: 24px 0;
+}
+
+.table-of-contents h3 {
+  color: #212653;
+  margin-bottom: 1rem;
+}
+
+.table-of-contents ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.table-of-contents li {
+  margin: 8px 0;
+}
+
+.table-of-contents a {
+  color: #212653;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.table-of-contents a:hover {
+  background-color: #e9ecef;
+  color: #969423;
+}
+
+.table-of-contents .section-icon {
+  margin-right: 12px;
+  color: #969423;
+}
+
+/* Nested TOC items */
+.table-of-contents ul ul {
+  padding-left: 24px;
+  margin-top: 4px;
+}
+
+.table-of-contents ul ul a {
+  font-size: 0.9rem;
+  padding: 6px 12px;
+}
+
+/* ===== FIX 12: Cross-Reference Links ===== */
+.cross-reference,
+.see-comprehensive,
+.comprehensive-reference {
+  background: rgba(150, 148, 35, 0.1);
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin: 16px 0;
+  font-style: italic;
+  border-left: 3px solid #969423;
+}
+
+.cross-reference a,
+.see-comprehensive a,
+.comprehensive-reference a {
+  color: #969423;
+  font-weight: 600;
+}
+
+/* ===== FIX 13: Print Optimization ===== */
+@media print {
+  body {
+    font-size: 12pt;
+    line-height: 1.4;
+    max-width: none;
+    padding: 0;
+  }
+
+  .cover-page {
+    background: #212653 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .key-takeaways {
+    background: #212653 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .key-takeaways,
+  .key-takeaways * {
+    color: #FFFFFF !important;
+  }
+
+  h2 {
+    page-break-before: always;
+  }
+
+  h2:first-of-type {
+    page-break-before: auto;
+  }
+
+  .score-card,
+  .score-tile,
+  .insight-card,
+  .recommendation-box,
+  .risk-box,
+  .strength-box,
+  .gap-box {
+    page-break-inside: avoid;
+  }
+
+  .svg-chart-container,
+  .chart-container {
+    page-break-inside: avoid;
+  }
+
+  .table-of-contents {
+    page-break-after: always;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  th {
+    background-color: #212653 !important;
+    color: #FFFFFF !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .band-badge.Excellence { background-color: #d4edda !important; color: #155724 !important; }
+  .band-badge.Proficiency { background-color: #cce5ff !important; color: #004085 !important; }
+  .band-badge.Attention { background-color: #fff3cd !important; color: #856404 !important; }
+  .band-badge.Critical { background-color: #f8d7da !important; color: #721c24 !important; }
+}
+
+/* ===== FIX 14: Responsive Design ===== */
+@media (max-width: 768px) {
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+
+  .executive-highlights,
+  .insight-cards-container,
+  .owner-implications-grid,
+  .financial-summary-grid,
+  .bundle-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .health-score-circle {
+    width: 140px;
+    height: 140px;
+  }
+
+  .score-value {
+    font-size: 2.5rem;
+  }
+
+  .dashboard-row,
+  .chart-grid {
+    flex-direction: column;
+  }
+
+  table {
+    font-size: 0.875rem;
+  }
+
+  th, td {
+    padding: 8px 12px;
+  }
+}
+
+/* ===== FIX 15: Accessibility Enhancements ===== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus states for keyboard navigation */
+a:focus,
+button:focus {
+  outline: 3px solid #969423;
+  outline-offset: 2px;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ===== ADDITIONAL COMPONENT STYLES ===== */
+
+/* Finding Cards */
+.finding-card {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  border-left: 4px solid;
+}
+
+.finding-card.strength { background: #d4edda; border-left-color: #28a745; }
+.finding-card.gap { background: #f8d7da; border-left-color: #dc3545; }
+.finding-card.risk { background: #ffeeba; border-left-color: #ffc107; }
+.finding-card.opportunity { background: #cce5ff; border-left-color: #0d6efd; }
+
+.finding-card .label {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.finding-card .dimension {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+/* Quick Win Cards */
+.quick-win-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+  border-left: 4px solid #969423;
+  padding: 1.25rem;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 1rem;
+}
+
+.quick-win-card .title {
+  font-weight: 600;
+  color: #212653;
+  margin-bottom: 0.5rem;
+}
+
+.quick-win-card .metrics {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.75rem;
+}
+
+.quick-win-card .metrics span {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Risk Cards */
+.risk-card {
+  border-left: 4px solid #dc3545;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.risk-card.high { border-left-color: #dc3545; }
+.risk-card.medium { border-left-color: #ffc107; }
+.risk-card.low { border-left-color: #28a745; }
+
+.risk-card .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.risk-card .category {
+  font-weight: 600;
+  color: #212653;
+}
+
+/* Timeline/Roadmap */
+.timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0.5rem;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #212653;
+  border-radius: 3px;
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 1.5rem;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -1.75rem;
+  top: 0.5rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #969423;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 3px #212653;
+}
+
+.timeline-item .phase-name {
+  font-weight: 600;
+  color: #212653;
+  font-size: 1.1rem;
+}
+
+.timeline-item .time-horizon {
+  font-size: 0.9rem;
+  color: #969423;
+  margin-bottom: 0.5rem;
+}
+
+/* Callout Boxes */
+.callout {
+  padding: 1.25rem;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+.callout.info {
+  background: #e7f3ff;
+  border-left: 4px solid #0d6efd;
+}
+
+.callout.success {
+  background: #d4edda;
+  border-left: 4px solid #28a745;
+}
+
+.callout.warning {
+  background: #fff3cd;
+  border-left: 4px solid #ffc107;
+}
+
+.callout.danger {
+  background: #f8d7da;
+  border-left: 4px solid #dc3545;
+}
+
+.callout .title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* Insight Cards */
+.insight-card {
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0.75rem 0;
+  border-left: 4px solid;
+}
+
+.insight-card.strength { background: #d4edda; border-left-color: #28a745; }
+.insight-card.strength .insight-label { color: #155724; }
+
+.insight-card.weakness,
+.insight-card.gap { background: #f8d7da; border-left-color: #dc3545; }
+.insight-card.weakness .insight-label,
+.insight-card.gap .insight-label { color: #721c24; }
+
+.insight-card.opportunity { background: #cce5ff; border-left-color: #0d6efd; }
+.insight-card.opportunity .insight-label { color: #004085; }
+
+.insight-card.warning,
+.insight-card.risk { background: #fff3cd; border-left-color: #ffc107; }
+.insight-card.warning .insight-label,
+.insight-card.risk .insight-label { color: #856404; }
+
+.insight-card .insight-label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
+}
+
+.insight-card .insight-title {
+  font-weight: 600;
+  color: #212653;
+  margin-bottom: 0.5rem;
+}
+
+.insight-card .insight-detail {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+/* Grid Layouts */
+.insight-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.insight-cards-container .insight-card {
+  margin: 0;
+}
+
+/* Progress Bar */
+.progress-bar {
+  height: 24px;
+  background: #e9ecef;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.progress-bar .fill {
+  height: 100%;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: width 0.3s ease;
+}
+
+/* Benchmark Callouts */
+.benchmark-callout {
+  background: #e7f3ff;
+  border: 1px solid #b8daff;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.benchmark-callout .benchmark-icon {
+  font-size: 2rem;
+  color: #212653;
+}
+
+.benchmark-callout .benchmark-content { flex: 1; }
+
+.benchmark-callout .benchmark-label {
+  font-size: 0.85rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.benchmark-callout .benchmark-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #212653;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.benchmark-callout .benchmark-context {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Evidence Citations */
+.evidence-citation {
+  background: #f8f9fa;
+  border-left: 4px solid #969423;
+  border-radius: 0 8px 8px 0;
+  padding: 0.75rem 1rem;
+  margin: 0.75rem 0 1.25rem 0;
+  font-size: 0.9rem;
+}
+
+.evidence-citation .citation-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #212653;
+  margin-bottom: 0.5rem;
+}
+
+.evidence-citation .citation-icon {
+  color: #969423;
+}
+
+.evidence-citation .question-ref {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.evidence-citation .response-text {
+  color: #333;
+  font-style: italic;
+  margin: 0.5rem 0;
+  padding-left: 1rem;
+  border-left: 2px solid #ddd;
+}
+
+.evidence-citation .benchmark-comparison {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e0e0e0;
+  font-size: 0.85rem;
+}
+
+.evidence-citation .benchmark-comparison.above { color: #28a745; }
+.evidence-citation .benchmark-comparison.below { color: #dc3545; }
+.evidence-citation .benchmark-comparison.at { color: #6c757d; }
+
+/* Bundle Grid (Owner Report) */
+.bundle-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.bundle-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+}
+
+.bundle-item.primary {
+  border-left: 3px solid #212653;
+}
+
+.bundle-item a {
+  color: #212653;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.bundle-item a:hover {
+  color: #969423;
+}
+
+.bundle-item p {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0.25rem 0 0 0;
+}
+
+
+    /* Report-Specific Custom Styles */
+    
+    .recipe-section {
+      margin-bottom: 2rem;
+    }
+
+    .section-description {
+      color: #666;
+      font-style: italic;
+      margin-bottom: 1rem;
+    }
+
+    .styled-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .styled-list li {
+      padding: 0.5rem 0;
+      padding-left: 1.5rem;
+      position: relative;
+      border-bottom: 1px solid #eee;
+    }
+
+    .styled-list li:before {
+      content: "▸";
+      position: absolute;
+      left: 0;
+      color: #969423;
+    }
+
+    .checklist {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border-left: 3px solid #969423;
+    }
+
+    .check-icon {
+      font-size: 1.25rem;
+    }
+
+    .bar-chart-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .bar-label {
+      width: 150px;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .bar-track {
+      flex: 1;
+      height: 24px;
+      background: #e9ecef;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 0.5rem;
+      border-radius: 12px;
+      transition: width 0.3s ease;
+    }
+
+    .bar-value {
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .narrative-item {
+      padding: 1rem;
+    }
+
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #212653;
+    }
+
+    /* Enhanced radar placeholder */
+    .radar-placeholder {
+      padding: 1.5rem;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .radar-placeholder .radar-title {
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 1rem;
+    }
+
+    .radar-scores {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+    }
+
+    .radar-score-item {
+      background: #fff;
+      padding: 0.75rem;
+      border-radius: 8px;
+      border-left: 3px solid #969423;
+    }
+
+    .radar-score-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #212653;
+    }
+
+    .radar-score-label {
+      font-size: 0.75rem;
+      color: #666;
+    }
+
+    /* Import chart component styles for any embedded charts */
+    
+    
+    .svg-chart-container {
+      display: flex;
+      justify-content: center;
+      margin: 1rem 0;
+      page-break-inside: avoid;
+    }
+
+    .svg-chart-container svg {
+      max-width: 100%;
+      height: auto;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+    }
+
+    @media print {
+      .svg-chart-container {
+        page-break-inside: avoid;
+      }
+
+      .svg-chart-container svg {
+        box-shadow: none;
+        border: 1px solid #e0e0e0;
+      }
+    }
+  
+
+    /* Executive Dashboard Styles */
+    .executive-dashboard {
+      margin: 2rem 0;
+    }
+
+    .dashboard-row {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .dashboard-main {
+      flex: 2;
+      min-width: 350px;
+    }
+
+    .dashboard-side {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .dashboard-full {
+      width: 100%;
+    }
+
+    /* Chart grid layout */
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .chart-cell {
+      background: #FFFFFF;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Chart error fallback */
+    .chart-error,
+    .chart-fallback {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: #f8f9fa;
+      border: 2px dashed #dee2e6;
+      border-radius: 8px;
+      color: #6c757d;
+      min-height: 200px;
+      text-align: center;
+    }
+
+    .chart-fallback-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    @media print {
+      .executive-dashboard,
+      .chart-grid,
+      .svg-chart-container {
+        page-break-inside: avoid;
+      }
+
+      .chart-cell {
+        box-shadow: none;
+        border: 1px solid #dee2e6;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-row {
+        flex-direction: column;
+      }
+
+      .dashboard-main,
+      .dashboard-side {
+        min-width: 100%;
+      }
+
+      .chart-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  
+
+    @media print {
+      .bar-chart-container,
+      .radar-placeholder {
+        page-break-inside: avoid;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .radar-scores {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  
+  </style>
+</head>
+<body>
+  <div class="report-container">
+    
+    
+    <header class="report-header">
+      <h1>Operations Manager Report</h1>
+      <p class="subtitle">Detailed report for Operations managers with focus on Operations efficiency, process optimization, and resource utilization.</p>
+      <p class="company-name">EWM Global</p>
+      <p class="date">Assessment Date: December 4, 2025</p>
+    </header>
+  
+    
+    <section class="section recipe-section" id="department_overview">
+      <div class="section-header">
+        <h2>Operations Overview</h2>
+      </div>
+      <p class="section-description">Performance summary for Operations dimension</p>
+      
+    <div class="grid grid-4">
+      
+        <div class="score-card small">
+          <div class="score-value">62</div>
+          <div class="score-label">Operations</div>
+        </div>
+      
+        <div class="score-card small">
+          <div class="score-value">51</div>
+          <div class="score-label">Performance &amp; Health</div>
+        </div>
+      
+    </div>
+  
+    </section>
+  
+
+    <section class="section recipe-section" id="operations_deep_dive">
+      <div class="section-header">
+        <h2>Operational Efficiency Assessment</h2>
+      </div>
+      <p class="section-description">Detailed analysis of operational performance and processes</p>
+      
+    <div class="bar-chart-container">
+      
+          <div class="bar-row">
+            <div class="bar-label">Operations</div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width: 62%; background: #969423;">
+                <span class="bar-value">62</span>
+              </div>
+            </div>
+          </div>
+        
+          <div class="bar-row">
+            <div class="bar-label">Operations</div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width: 62%; background: #969423;">
+                <span class="bar-value">62</span>
+              </div>
+            </div>
+          </div>
+        
+    </div>
+  
+    </section>
+  
+
+    <section class="section recipe-section" id="sub_indicator_breakdown">
+      <div class="section-header">
+        <h2>Sub-Indicator Analysis</h2>
+      </div>
+      <p class="section-description">Performance across operational sub-indicators</p>
+      
+    <table class="score-table">
+      <thead>
+        <tr>
+          <th>Name</th><th>Score</th><th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+          <tr>
+            <td>Operations</td><td><strong>62</strong></td><td><span class="band-badge Proficiency">Proficiency</span></td>
+          </tr>
+        
+      </tbody>
+    </table>
+  
+    </section>
+  
+
+    <section class="section recipe-section" id="findings">
+      <div class="section-header">
+        <h2>Operational Findings</h2>
+      </div>
+      <p class="section-description">Key insights from the operations assessment</p>
+      
+    <ul class="styled-list">
+      <li>Strong Operational Reliability</li><li>Resource Utilization Gap</li>
+    </ul>
+  
+    </section>
+  
+
+    <section class="section recipe-section" id="technology_alignment">
+      <div class="section-header">
+        <h2>Technology &amp; Systems Alignment</h2>
+      </div>
+      <p class="section-description">How technology supports operational efficiency</p>
+      
+    <table class="score-table">
+      <thead>
+        <tr>
+          <th>Name</th><th>Score</th><th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+          <tr>
+            <td>Technology &amp; Innovation</td><td><strong>55</strong></td><td><span class="band-badge Attention">Attention</span></td>
+          </tr>
+        
+          <tr>
+            <td>IT, Data &amp; Systems</td><td><strong>88</strong></td><td><span class="band-badge Excellence">Excellence</span></td>
+          </tr>
+        
+      </tbody>
+    </table>
+  
+    </section>
+  
+
+    <section class="section recipe-section" id="recommendations">
+      <div class="section-header">
+        <h2>Operations Recommendations</h2>
+      </div>
+      <p class="section-description">Prioritized actions for operational improvement</p>
+      
+    <ol class="styled-list">
+      <li>Operations Improvement Initiative</li>
+    </ol>
+  
+    </section>
+  
+
+    <section class="section recipe-section" id="quick_wins">
+      <div class="section-header">
+        <h2>Quick Wins for Operations</h2>
+      </div>
+      <p class="section-description">Immediate actions for operational improvement</p>
+      
+    <div class="checklist">
+      
+          <div class="checklist-item">
+            <span class="check-icon">☐</span>
+            <span>Operations Improvement Initiative</span>
+          </div>
+        
+    </div>
+  
+    </section>
+  
+
+    <section class="section recipe-section" id="risks">
+      <div class="section-header">
+        <h2>Operational Risks</h2>
+      </div>
+      <p class="section-description">Risks affecting operations</p>
+      <p>No data available.</p>
+    </section>
+  
+
+    <section class="section recipe-section" id="kpis">
+      <div class="section-header">
+        <h2>Operations KPIs</h2>
+      </div>
+      <p class="section-description">Key metrics to track</p>
+      
+    <div class="kpi-dashboard">
+      <div class="grid grid-4">
+        <div class="score-card">
+          <div class="score-value">53</div>
+          <div class="score-label">Health Score</div>
+        </div>
+        <div class="score-card small">
+          <div class="score-value">8</div>
+          <div class="score-label">Strengths</div>
+        </div>
+        <div class="score-card small">
+          <div class="score-value">22</div>
+          <div class="score-label">Focus Areas</div>
+        </div>
+        <div class="score-card small">
+          <div class="score-value">10</div>
+          <div class="score-label">Actions</div>
+        </div>
+      </div>
+    </div>
+  
+    </section>
+  
+    
+    <footer class="report-footer">
+      <p>&copy; 2025 BizHealth.ai - Confidential Business Assessment Report</p>
+      <p>Assessment ID: 86a66ed1-6c1a-4733-b862-350680f45471</p>
+    </footer>
+  
+  
+  </div>
+</body>
+</html>
