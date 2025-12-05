@@ -153,7 +153,7 @@ export function renderBarChart(props: BarChartProps): string {
         </div>
         ${showValues ? `
           <div class="biz-bar-chart__value">
-            ${item.value}${showBenchmark && item.benchmark !== undefined ? ` <span style="color: #6B7280; font-size: 10px;">│${item.benchmark}</span>` : ''}
+            ${item.value}${showBenchmark && item.benchmark !== undefined ? ` <span style="color: #6B7280; font-size: 10px;">(${item.benchmark})</span>` : ''}
           </div>
         ` : ''}
       </div>
@@ -168,8 +168,8 @@ export function renderBarChart(props: BarChartProps): string {
       </div>
       ${showBenchmark ? `
         <div class="biz-bar-chart__legend" style="display: flex; gap: 16px; margin-top: 12px; font-size: 11px; color: #6B7280;">
-          <span>█ Client Score</span>
-          <span>│ Industry Benchmark</span>
+          <span><span style="display: inline-block; width: 12px; height: 12px; background: linear-gradient(90deg, #212653, #2D3466); border-radius: 2px; vertical-align: middle; margin-right: 4px;"></span>Client Score</span>
+          <span><span style="display: inline-block; width: 2px; height: 12px; background: #6B7280; vertical-align: middle; margin-right: 4px;"></span>Industry Benchmark</span>
         </div>
       ` : ''}
     </div>

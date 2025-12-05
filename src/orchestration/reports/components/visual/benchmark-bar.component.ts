@@ -60,7 +60,7 @@ function getDeltaInfo(delta: number): { class: string; color: string; bgColor: s
       class: 'positive',
       color: '#166534',
       bgColor: '#DCFCE7',
-      symbol: '▲',
+      symbol: '+',
     };
   }
   if (delta < -5) {
@@ -68,14 +68,14 @@ function getDeltaInfo(delta: number): { class: string; color: string; bgColor: s
       class: 'negative',
       color: '#991B1B',
       bgColor: '#FEE2E2',
-      symbol: '▼',
+      symbol: '-',
     };
   }
   return {
     class: 'neutral',
     color: '#374151',
     bgColor: '#F3F4F6',
-    symbol: '▬',
+    symbol: '=',
   };
 }
 
@@ -272,9 +272,9 @@ export function renderComparisonBar(
       </div>
 
       <div style="display: flex; gap: 16px; margin-top: 8px; font-size: 10px; color: #6B7280;">
-        <span>█ Client</span>
-        <span>│ Industry Benchmark</span>
-        ${safeTopQuartile ? '<span style="color: #22C55E;">│ Top Quartile</span>' : ''}
+        <span><span style="display: inline-block; width: 12px; height: 12px; background: linear-gradient(90deg, #212653, #2D3466); border-radius: 2px; vertical-align: middle; margin-right: 4px;"></span>Client</span>
+        <span><span style="display: inline-block; width: 2px; height: 12px; background: #6B7280; vertical-align: middle; margin-right: 4px;"></span>Industry Benchmark</span>
+        ${safeTopQuartile ? '<span><span style="display: inline-block; width: 2px; height: 12px; background: #22C55E; vertical-align: middle; margin-right: 4px;"></span><span style="color: #22C55E;">Top Quartile</span></span>' : ''}
       </div>
     </div>
   `;

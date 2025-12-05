@@ -8,6 +8,7 @@
     "dev": "tsx src/index.ts",
     "build": "tsc --noEmit false || true",
     "start": "tsx src/index.ts",
+    "pipeline": "tsx src/run-pipeline.ts",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
     "test:transform": "tsx tests/test-transformation.ts",

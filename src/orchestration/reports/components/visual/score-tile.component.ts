@@ -116,7 +116,7 @@ export function renderScoreTile(props: ScoreTileProps): string {
         <div class="biz-score-tile__benchmark">
           ${delta !== undefined ? `
             <span class="biz-score-tile__delta ${delta >= 0 ? 'biz-score-tile__delta--positive' : 'biz-score-tile__delta--negative'}">
-              ${delta >= 0 ? '▲' : '▼'} ${delta >= 0 ? '+' : ''}${delta} vs industry
+              ${delta >= 0 ? '+' : '-'} ${delta >= 0 ? '+' : ''}${delta} vs industry
             </span>
           ` : ''}
           ${trend ? `

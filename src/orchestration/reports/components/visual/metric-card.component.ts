@@ -236,7 +236,7 @@ export function renderFinancialMetricCard(
           class="biz-metric-card__trend biz-metric-card__trend--${trend >= 0 ? 'up' : 'down'}"
           style="color: ${trend >= 0 ? '#22C55E' : '#EF4444'};"
         >
-          ${trend >= 0 ? '▲' : '▼'} ${trend >= 0 ? '+' : ''}${formattedTrend}
+          ${trend >= 0 ? '+' : '-'} ${trend >= 0 ? '+' : ''}${formattedTrend}
         </div>
       ` : ''}
     </div>

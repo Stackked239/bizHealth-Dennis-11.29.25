@@ -302,7 +302,7 @@ export function renderOverallHealthGauge(
           options.trajectory === 'Improving' ? '#22C55E' :
           options.trajectory === 'Declining' ? '#EF4444' : '#6B7280'
         };">
-          ${options.trajectory === 'Improving' ? '▲' : options.trajectory === 'Declining' ? '▼' : '▬'}
+          ${options.trajectory === 'Improving' ? '+' : options.trajectory === 'Declining' ? '-' : '='}
           ${options.trajectory}
         </span>
       </div>

@@ -169,7 +169,7 @@ export function renderDimensionScoresTable(
     const row: Array<string | number> = [dim.name, dim.score];
     if (hasBenchmark) row.push(dim.benchmark !== undefined ? dim.benchmark : '-');
     if (hasTrajectory) {
-      const trendSymbol = dim.trajectory === 'improving' ? '▲' : dim.trajectory === 'declining' ? '▼' : '▬';
+      const trendSymbol = dim.trajectory === 'improving' ? '+' : dim.trajectory === 'declining' ? '-' : '=';
       row.push(dim.trajectory ? `${trendSymbol} ${dim.trajectory}` : '-');
     }
     return row;

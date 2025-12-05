@@ -209,7 +209,7 @@ export function renderRiskMatrix(props: RiskMatrixProps): string {
       <div class="biz-risk-matrix__container">
         <!-- Y-axis label -->
         <div class="biz-risk-matrix__y-axis">
-          <div class="biz-risk-matrix__y-label">IMPACT →</div>
+          <div class="biz-risk-matrix__y-label">IMPACT</div>
         </div>
 
         <!-- Y-axis numbers and grid -->
@@ -234,7 +234,7 @@ export function renderRiskMatrix(props: RiskMatrixProps): string {
 
       <!-- X-axis label -->
       <div class="biz-risk-matrix__x-axis">
-        <div class="biz-risk-matrix__x-label">LIKELIHOOD →</div>
+        <div class="biz-risk-matrix__x-label">LIKELIHOOD</div>
       </div>
 
       ${showLegend ? `
