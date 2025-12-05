@@ -395,6 +395,95 @@ export const ScoresSummarySchema = z.object({
 export type ScoresSummary = z.infer<typeof ScoresSummarySchema>;
 
 // ============================================================================
+// VISUALIZATION SPEC SCHEMA (for IDM integration)
+// ============================================================================
+
+/**
+ * Visualization types supported by the rendering engine
+ */
+export const VisualizationTypeSchema = z.enum([
+  'gauge',
+  'bar_chart',
+  'horizontal_bar',
+  'comparison_matrix',
+  'score_tiles',
+  'timeline',
+  'risk_matrix',
+  'heatmap',
+  'radar_chart',
+  'priority_table',
+  'progress_indicator',
+  'trend_sparkline',
+  'kpi_card'
+]);
+export type VisualizationType = z.infer<typeof VisualizationTypeSchema>;
+
+/**
+ * Data point for visualization
+ */
+export const VisualizationDataPointSchema = z.object({
+  label: z.string(),
+  value: z.number(),
+  unit: z.enum(['%', '$', 'count', 'score', 'days', 'ratio', 'none']).optional(),
+  category: z.enum([
+    'strength',
+    'gap',
+    'risk',
+    'opportunity',
+    'neutral',
+    'excellence',
+    'proficiency',
+    'attention',
+    'critical'
+  ]).optional(),
+  secondaryValue: z.number().optional(),
+  trend: z.enum(['up', 'down', 'stable']).optional(),
+  benchmark: z.number().optional()
+});
+export type VisualizationDataPoint = z.infer<typeof VisualizationDataPointSchema>;
+
+/**
+ * Visualization specification extracted from AI output
+ */
+export const VisualizationSpecSchema = z.object({
+  vizId: z.string().optional(),
+  vizType: VisualizationTypeSchema,
+  title: z.string(),
+  subtitle: z.string().optional(),
+  data: z.array(VisualizationDataPointSchema),
+  metadata: z.object({
+    source: z.string().optional(),
+    assessmentSection: z.string().optional(),
+    dimensionCode: z.string().optional(),
+    chapterCode: z.string().optional(),
+    generatedBy: z.enum(['phase1', 'phase2', 'phase3']).optional(),
+    confidenceScore: z.number().min(0).max(1).optional()
+  }).optional(),
+  renderOptions: z.object({
+    showLegend: z.boolean().optional(),
+    showValues: z.boolean().optional(),
+    colorScheme: z.enum(['default', 'monochrome', 'score_bands']).optional(),
+    height: z.enum(['compact', 'standard', 'expanded']).optional()
+  }).optional()
+});
+export type VisualizationSpecIDM = z.infer<typeof VisualizationSpecSchema>;
+
+/**
+ * Collection of visualizations from all phases
+ */
+export const IDMVisualizationsSchema = z.object({
+  /** Visualizations from Phase 1 analyses */
+  phase1: z.array(VisualizationSpecSchema).default([]),
+  /** Visualizations from Phase 2 syntheses */
+  phase2: z.array(VisualizationSpecSchema).default([]),
+  /** Visualizations from Phase 3 executive synthesis */
+  phase3: z.array(VisualizationSpecSchema).default([]),
+  /** Total count of all visualizations */
+  totalCount: z.number().int().nonnegative().default(0)
+}).optional();
+export type IDMVisualizations = z.infer<typeof IDMVisualizationsSchema>;
+
+// ============================================================================
 // IDM ROOT SCHEMA
 // ============================================================================
 
@@ -411,7 +500,13 @@ export const IDMSchema = z.object({
   quick_wins: z.array(QuickWinSchema),
   risks: z.array(RiskSchema),
   roadmap: RoadmapSchema,
-  scores_summary: ScoresSummarySchema
+  scores_summary: ScoresSummarySchema,
+  /**
+   * Extracted visualization specifications from all phases.
+   * These are the ONLY source for chart rendering in Phase 5.
+   * ASCII visualizations are prohibited and will not appear here.
+   */
+  visualizations: IDMVisualizationsSchema
 });
 export type IDM = z.infer<typeof IDMSchema>;
 
