@@ -89,3 +89,55 @@ export {
 } from './conditional-renderer.js';
 
 export type { ConditionalConfig, ConditionalRenderResult } from './conditional-renderer.js';
+
+// ============================================================================
+// PHASE 5 VISUALIZATION UTILITIES
+// ============================================================================
+
+// Content sanitizer for orphaned visualization headers
+export {
+  sanitizeOrphanedVisualizationHeaders,
+  validateNoOrphanedHeaders,
+  processNarrativeForVisualization,
+  checkVisualizationIssues,
+} from './content-sanitizer.js';
+export type { SanitizationResult } from './content-sanitizer.js';
+
+// Visualization data mappers (IDM to component props)
+export {
+  mapDimensionToGauge,
+  mapRisksToHeatmap,
+  mapRisksToRiskMatrix,
+  mapRoadmapToTimeline,
+  mapRoadmapToRoadmapPhases,
+  mapCriticalMetrics,
+  mapToKPIMetrics,
+  mapRecommendationsToTimeline,
+  mapDimensionsToGauges,
+  mapChaptersToGauges,
+} from './visualization-mappers.js';
+export type {
+  RiskHeatmapDataPoint,
+  TimelinePhaseData,
+  RoadmapTimelineData,
+  CriticalMetricData,
+} from './visualization-mappers.js';
+
+// Visualization renderers (generate all visualizations)
+export {
+  renderExecutiveDashboard,
+  renderRiskHeatmapSection,
+  renderRiskSummarySection,
+  renderRoadmapTimelineSection,
+  renderSimplifiedRoadmapSection,
+  renderQuickWinsTimelineSection,
+  renderOverallHealthGaugeSection,
+  renderChapterGaugesSection,
+  renderDimensionGauge,
+  renderKeyStatsRowSection,
+  renderBenchmarkBarsSection,
+  renderBenchmarkComparison,
+  generateAllVisualizations,
+  countVisualizations,
+} from './render-visualizations.js';
+export type { VisualizationBundle } from './render-visualizations.js';

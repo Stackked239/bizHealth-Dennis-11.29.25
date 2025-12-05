@@ -166,3 +166,15 @@ export {
   renderCompactActionItem,
 } from './action-card.component.js';
 export type { ActionCardProps } from './action-card.component.js';
+
+// ============================================================================
+// PHASE 5 VISUALIZATION COMPONENTS
+// ============================================================================
+
+// 17. Risk Heatmap Component - 4x4 severity × likelihood grid (Phase 5)
+export {
+  renderRiskHeatmap,
+  renderRiskHeatmapFromRisks,
+  renderCompactRiskHeatmap,
+} from './risk-heatmap.component.js';
+export type { RiskHeatmapOptions, RiskDataPoint } from './risk-heatmap.component.js';
