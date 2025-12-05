@@ -339,3 +339,91 @@ export function isLightColor(hex: string): boolean {
 export function getContrastingTextColor(backgroundHex: string): string {
   return isLightColor(backgroundHex) ? '#111827' : '#FFFFFF';
 }
+
+// ============================================================================
+// ADDITIONAL EXPORTS FOR PHASE 5 COMPATIBILITY
+// ============================================================================
+
+/**
+ * RGB type for color manipulation
+ */
+export interface RGB {
+  r: number;
+  g: number;
+  b: number;
+}
+
+/**
+ * Score thresholds for band classification
+ */
+export const SCORE_THRESHOLDS = {
+  excellence: 80,
+  proficiency: 60,
+  attention: 40,
+  critical: 0,
+} as const;
+
+/**
+ * Simple score colors for quick access
+ */
+export const SCORE_COLORS = {
+  excellence: '#22C55E',
+  proficiency: '#22C55E',
+  attention: '#EAB308',
+  critical: '#EF4444',
+} as const;
+
+/**
+ * Get score color as RGB object
+ */
+export function getScoreColorRGB(score: number): RGB {
+  const rgb = hexToRgb(getScoreColor(score));
+  return rgb || { r: 107, g: 114, b: 128 }; // Default gray
+}
+
+/**
+ * Interpolate between two colors
+ */
+export function interpolateColor(color1: string, color2: string, factor: number): string {
+  const rgb1 = hexToRgb(color1);
+  const rgb2 = hexToRgb(color2);
+
+  if (!rgb1 || !rgb2) return color1;
+
+  const r = Math.round(rgb1.r + (rgb2.r - rgb1.r) * factor);
+  const g = Math.round(rgb1.g + (rgb2.g - rgb1.g) * factor);
+  const b = Math.round(rgb1.b + (rgb2.b - rgb1.b) * factor);
+
+  return rgbToHex(r, g, b);
+}
+
+/**
+ * Get risk color based on severity string or number
+ */
+export function getRiskColor(severity: string | number): string {
+  const sev = typeof severity === 'string' ? severity.toLowerCase() : '';
+  const num = typeof severity === 'number' ? severity : 0;
+
+  if (sev === 'high' || sev === 'critical' || num >= 4) {
+    return SCORE_COLORS.critical;
+  }
+  if (sev === 'medium' || sev === 'moderate' || num >= 2) {
+    return SCORE_COLORS.attention;
+  }
+  return SCORE_COLORS.excellence;
+}
+
+/**
+ * Get chapter color (cycles through brand colors)
+ */
+export function getChapterColor(index: number): string {
+  const colors = [
+    BRAND_COLORS.navy,
+    BRAND_COLORS.green,
+    '#3B82F6', // Blue
+    '#8B5CF6', // Purple
+    '#EC4899', // Pink
+    '#F59E0B', // Amber
+  ];
+  return colors[index % colors.length];
+}

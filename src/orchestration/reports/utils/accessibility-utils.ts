@@ -97,15 +97,7 @@ export function getTrendSymbol(
   return asciiOnly ? TREND_SYMBOLS_ASCII[trend] : TREND_SYMBOLS[trend];
 }
 
-/**
- * Get score band from numeric score (local helper)
- */
-function getScoreBandFromScore(score: number): ScoreBand {
-  if (score >= 80) return 'excellence';
-  if (score >= 60) return 'proficiency';
-  if (score >= 40) return 'attention';
-  return 'critical';
-}
+// getScoreBandFromScore is defined at the end of this file
 
 /**
  * Generate ARIA label for a score display
@@ -403,4 +395,101 @@ export function getAllAccessibilityStyles(): string {
     ${generateSROnlyStyles()}
     ${generateSkipLinkStyles()}
   `;
+}
+
+// ============================================================================
+// ADDITIONAL EXPORTS FOR PHASE 5 COMPATIBILITY
+// ============================================================================
+
+/**
+ * Alias for generateScreenReaderOnly
+ */
+export function createScreenReaderOnlyText(text: string): string {
+  return generateScreenReaderOnly(text);
+}
+
+/**
+ * Get colorblind-safe indicator for score band
+ */
+export function getColorblindSafeIndicator(band: ScoreBand): { symbol: string; pattern: string; label: string } {
+  const indicators: Record<ScoreBand, { symbol: string; pattern: string; label: string }> = {
+    excellence: { symbol: '●', pattern: 'solid', label: 'Excellent' },
+    proficiency: { symbol: '◐', pattern: 'half-filled', label: 'Good' },
+    attention: { symbol: '◯', pattern: 'outline', label: 'Needs Attention' },
+    critical: { symbol: '✕', pattern: 'crossed', label: 'Critical' },
+  };
+  return indicators[band];
+}
+
+/**
+ * Generate ARIA label for score tile component
+ */
+export function getScoreTileAriaLabel(
+  name: string,
+  score: number,
+  description?: string
+): string {
+  const band = getScoreBandFromScore(score);
+  const status = STATUS_LABELS[band];
+  let label = `${name}: ${score} out of 100, ${status}`;
+  if (description) {
+    label += `. ${description}`;
+  }
+  return label;
+}
+
+/**
+ * Generate ARIA label for bar chart
+ */
+export function getBarChartAriaLabel(
+  title: string,
+  itemCount: number,
+  description?: string
+): string {
+  let label = `Bar chart: ${title} with ${itemCount} items`;
+  if (description) {
+    label += `. ${description}`;
+  }
+  return label;
+}
+
+/**
+ * Generate ARIA label for radar chart
+ */
+export function getRadarChartAriaLabel(
+  title: string,
+  dimensionCount: number,
+  averageScore?: number
+): string {
+  let label = `Radar chart: ${title} showing ${dimensionCount} dimensions`;
+  if (averageScore !== undefined) {
+    label += `. Average score: ${averageScore}`;
+  }
+  return label;
+}
+
+/**
+ * Generate ARIA label for data table
+ */
+export function getTableAriaLabel(
+  title: string,
+  rowCount: number,
+  columnCount: number,
+  description?: string
+): string {
+  let label = `Data table: ${title} with ${rowCount} rows and ${columnCount} columns`;
+  if (description) {
+    label += `. ${description}`;
+  }
+  return label;
+}
+
+/**
+ * Helper for getScoreTileAriaLabel etc.
+ */
+function getScoreBandFromScore(score: number): ScoreBand {
+  if (score >= 80) return 'excellence';
+  if (score >= 60) return 'proficiency';
+  if (score >= 40) return 'attention';
+  return 'critical';
 }
