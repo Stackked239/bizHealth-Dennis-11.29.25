@@ -195,12 +195,18 @@ export class Phase4Orchestrator {
 
   constructor(config: Phase4OrchestratorConfig = {}) {
     this.logger = config.logger || pino({ level: 'info' });
+
+    // Check environment variable for Phase 4 report generation
+    // Default is false (Phase 5 handles all reports as of 2025-12-05)
+    const envGenerateReports = process.env.GENERATE_PHASE4_REPORTS === 'true';
+
     this.config = {
       compilationMethod: config.compilationMethod || 'typescript',
       pythonScriptPath: config.pythonScriptPath || 'scripts/phase4-idm-compiler.py',
       logger: this.logger,
-      // UPDATED 2025-12-04: Report generation disabled by default (now handled by Phase 5)
-      generateReports: config.generateReports ?? false,
+      // UPDATED 2025-12-05: Report generation controlled by env var or config
+      // Phase 5 handles all reports by default
+      generateReports: config.generateReports ?? envGenerateReports ?? false,
       anthropicApiKey: config.anthropicApiKey,
       anthropicClient: config.anthropicClient,
       reportTypes: config.reportTypes || [

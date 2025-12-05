@@ -21,11 +21,14 @@
  * 13. Print optimization
  * 14. Responsive design
  * 15. Accessibility enhancements
+ * 16. Phase 4 Visual Patterns Integration (2025-12-05)
  *
  * @module unified-bizhealth-styles
- * @version 1.0.0
- * @date 2025-12-04
+ * @version 2.0.0
+ * @date 2025-12-05
  */
+
+import { getAllPhase4Styles } from './phase4-visual-patterns.js';
 
 // ============================================================================
 // BRAND COLOR CONSTANTS
@@ -925,6 +928,11 @@ button:focus {
   color: #666;
   margin: 0.25rem 0 0 0;
 }
+
+/* ========================================================================
+   PHASE 4 VISUAL PATTERNS (Integrated 2025-12-05)
+   ======================================================================== */
+${getAllPhase4Styles()}
 `;
 }
 

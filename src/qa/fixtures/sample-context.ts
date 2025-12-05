@@ -1,489 +1,447 @@
 /**
- * Sample Report Context for Testing
+ * Sample Report Context for QA Testing
  *
- * Creates a complete ReportContext with realistic test data
- * for use in QA testing and fixture generation.
+ * Provides a complete sample ReportContext for testing report generation
+ * without needing a full pipeline execution.
+ *
+ * @module sample-context
+ * @version 1.0.0
+ * @date 2025-12-05
  */
 
-import type { ReportContext } from '../../types/report.types.js';
+import type { ReportContext, ScoreBand, Finding, Recommendation, QuickWin, Dimension, Chapter } from '../../types/report.types.js';
 
 /**
- * Create a sample ReportContext for testing
+ * Create a sample report context for testing
  */
 export function createSampleReportContext(): ReportContext {
-  return {
-    runId: 'test-run-qa-001',
+  const runId = `qa-test-${Date.now()}`;
+  const generatedAt = new Date().toISOString();
 
-    companyProfile: {
-      name: 'Acme Test Corporation',
-      industry: 'Technology',
-      industrySector: 'Software Development',
-      companySize: 'Medium',
-      employeeCount: 150,
-      annualRevenue: '$15M - $25M',
-      yearsInBusiness: 12,
-      lifecycleStage: 'Growth',
-      location: 'San Francisco, CA',
+  // Sample dimensions
+  const dimensions: Dimension[] = [
+    // Growth Engine (GE)
+    { code: 'STR', name: 'Strategy', score: 52, band: 'Attention' as ScoreBand, chapterCode: 'GE', weight: 1.0 },
+    { code: 'SAL', name: 'Sales', score: 48, band: 'Attention' as ScoreBand, chapterCode: 'GE', weight: 1.0 },
+    { code: 'MKT', name: 'Marketing', score: 45, band: 'Attention' as ScoreBand, chapterCode: 'GE', weight: 1.0 },
+    // Performance & Health (PH)
+    { code: 'CXP', name: 'Customer Experience', score: 58, band: 'Attention' as ScoreBand, chapterCode: 'PH', weight: 1.0 },
+    { code: 'OPS', name: 'Operations', score: 55, band: 'Attention' as ScoreBand, chapterCode: 'PH', weight: 1.0 },
+    { code: 'FIN', name: 'Financials', score: 42, band: 'Attention' as ScoreBand, chapterCode: 'PH', weight: 1.0 },
+    // People & Leadership (PL)
+    { code: 'HRC', name: 'Human Resources', score: 38, band: 'Critical' as ScoreBand, chapterCode: 'PL', weight: 1.0 },
+    { code: 'LED', name: 'Leadership', score: 50, band: 'Attention' as ScoreBand, chapterCode: 'PL', weight: 1.0 },
+    { code: 'TEC', name: 'Technology', score: 42, band: 'Attention' as ScoreBand, chapterCode: 'PL', weight: 1.0 },
+    // Resilience & Safeguards (RS)
+    { code: 'ITS', name: 'IT & Security', score: 75, band: 'Proficiency' as ScoreBand, chapterCode: 'RS', weight: 1.0 },
+    { code: 'RSK', name: 'Risk Management', score: 68, band: 'Proficiency' as ScoreBand, chapterCode: 'RS', weight: 1.0 },
+    { code: 'COM', name: 'Compliance', score: 72, band: 'Proficiency' as ScoreBand, chapterCode: 'RS', weight: 1.0 },
+  ];
+
+  // Sample chapters
+  const chapters: Chapter[] = [
+    { code: 'GE', name: 'Growth Engine', score: 49, band: 'Attention' as ScoreBand },
+    { code: 'PH', name: 'Performance & Health', score: 51, band: 'Attention' as ScoreBand },
+    { code: 'PL', name: 'People & Leadership', score: 43, band: 'Attention' as ScoreBand },
+    { code: 'RS', name: 'Resilience & Safeguards', score: 72, band: 'Proficiency' as ScoreBand },
+  ];
+
+  // Sample findings
+  const findings: Finding[] = [
+    // Strengths
+    {
+      id: 'F001',
+      type: 'strength',
+      dimensionCode: 'ITS',
+      dimensionName: 'IT & Security',
+      shortLabel: 'Strong cybersecurity practices',
+      description: 'The company has implemented robust cybersecurity measures that exceed industry standards.',
+      chapterCode: 'RS',
     },
+    {
+      id: 'F002',
+      type: 'strength',
+      dimensionCode: 'COM',
+      dimensionName: 'Compliance',
+      shortLabel: 'Excellent regulatory compliance',
+      description: 'All regulatory requirements are met with comprehensive documentation and regular audits.',
+      chapterCode: 'RS',
+    },
+    {
+      id: 'F003',
+      type: 'strength',
+      dimensionCode: 'RSK',
+      dimensionName: 'Risk Management',
+      shortLabel: 'Proactive risk identification',
+      description: 'The organization has established effective risk identification and mitigation processes.',
+      chapterCode: 'RS',
+    },
+    // Gaps
+    {
+      id: 'F004',
+      type: 'gap',
+      dimensionCode: 'HRC',
+      dimensionName: 'Human Resources',
+      shortLabel: 'Talent development gaps',
+      description: 'Training programs and career development paths need significant improvement.',
+      chapterCode: 'PL',
+    },
+    {
+      id: 'F005',
+      type: 'gap',
+      dimensionCode: 'MKT',
+      dimensionName: 'Marketing',
+      shortLabel: 'Limited digital marketing presence',
+      description: 'Digital marketing channels are underutilized, limiting brand awareness and lead generation.',
+      chapterCode: 'GE',
+    },
+    {
+      id: 'F006',
+      type: 'gap',
+      dimensionCode: 'FIN',
+      dimensionName: 'Financials',
+      shortLabel: 'Cash flow forecasting needs improvement',
+      description: 'Current forecasting methods lack precision, creating financial planning challenges.',
+      chapterCode: 'PH',
+    },
+    // Risks
+    {
+      id: 'F007',
+      type: 'risk',
+      dimensionCode: 'SAL',
+      dimensionName: 'Sales',
+      shortLabel: 'Revenue concentration risk',
+      description: 'Top 3 customers represent over 50% of revenue, creating dependency risk.',
+      chapterCode: 'GE',
+    },
+    {
+      id: 'F008',
+      type: 'risk',
+      dimensionCode: 'HRC',
+      dimensionName: 'Human Resources',
+      shortLabel: 'Key person dependency',
+      description: 'Critical knowledge is concentrated in a few individuals without succession plans.',
+      chapterCode: 'PL',
+    },
+    {
+      id: 'F009',
+      type: 'risk',
+      dimensionCode: 'TEC',
+      dimensionName: 'Technology',
+      shortLabel: 'Technical debt accumulation',
+      description: 'Legacy systems require modernization to support future growth.',
+      chapterCode: 'PL',
+    },
+  ];
 
-    overallHealth: {
-      score: 72,
-      band: 'Proficiency',
-      status: 'Your business shows solid fundamentals with opportunities for strategic improvement',
-      trajectory: 'Improving',
-      benchmarks: {
-        industryAverage: 65,
-        topPerformer: 88,
-        percentile: 72,
+  // Sample recommendations
+  const recommendations: Recommendation[] = [
+    {
+      id: 'R001',
+      theme: 'Diversify Revenue Streams',
+      category: 'growth',
+      dimensionCode: 'SAL',
+      dimensionName: 'Sales',
+      description: 'Develop a strategic initiative to acquire new customers and reduce dependency on top accounts.',
+      expectedOutcomes: 'Reduce revenue concentration below 30% within 18 months.',
+      impactScore: 85,
+      effortScore: 65,
+      priority: 1,
+      horizonLabel: '12-month',
+      chapterCode: 'GE',
+    },
+    {
+      id: 'R002',
+      theme: 'Employee Development Program',
+      category: 'people',
+      dimensionCode: 'HRC',
+      dimensionName: 'Human Resources',
+      description: 'Implement a comprehensive training and development program for all employees.',
+      expectedOutcomes: 'Improve employee engagement scores by 20% and reduce turnover by 15%.',
+      impactScore: 78,
+      effortScore: 55,
+      priority: 2,
+      horizonLabel: '12-month',
+      chapterCode: 'PL',
+    },
+    {
+      id: 'R003',
+      theme: 'Digital Marketing Transformation',
+      category: 'growth',
+      dimensionCode: 'MKT',
+      dimensionName: 'Marketing',
+      description: 'Expand digital marketing capabilities with focus on content marketing and SEO.',
+      expectedOutcomes: 'Increase qualified leads by 40% within 12 months.',
+      impactScore: 75,
+      effortScore: 50,
+      priority: 3,
+      horizonLabel: '90-day',
+      chapterCode: 'GE',
+    },
+    {
+      id: 'R004',
+      theme: 'Financial Planning Enhancement',
+      category: 'operations',
+      dimensionCode: 'FIN',
+      dimensionName: 'Financials',
+      description: 'Implement rolling 13-week cash flow forecasting and scenario planning.',
+      expectedOutcomes: 'Improve forecast accuracy to within 5% variance.',
+      impactScore: 72,
+      effortScore: 40,
+      priority: 4,
+      horizonLabel: '90-day',
+      chapterCode: 'PH',
+    },
+    {
+      id: 'R005',
+      theme: 'Succession Planning',
+      category: 'people',
+      dimensionCode: 'HRC',
+      dimensionName: 'Human Resources',
+      description: 'Develop succession plans for all key positions and critical knowledge transfer protocols.',
+      expectedOutcomes: 'Eliminate single points of failure in critical business functions.',
+      impactScore: 70,
+      effortScore: 60,
+      priority: 5,
+      horizonLabel: '12-month',
+      chapterCode: 'PL',
+    },
+  ];
+
+  // Sample quick wins
+  const quickWins: QuickWin[] = [
+    {
+      id: 'QW001',
+      theme: 'CRM Data Cleanup',
+      dimensionCode: 'SAL',
+      dimensionName: 'Sales',
+      description: 'Clean and standardize customer data in CRM to improve pipeline accuracy.',
+      expectedOutcomes: 'Improve sales forecast accuracy by 15%.',
+      impactScore: 65,
+      effortScore: 25,
+      priority: 1,
+      chapterCode: 'GE',
+    },
+    {
+      id: 'QW002',
+      theme: 'Employee Survey Implementation',
+      dimensionCode: 'HRC',
+      dimensionName: 'Human Resources',
+      description: 'Launch quarterly employee engagement surveys to track sentiment.',
+      expectedOutcomes: 'Establish baseline metrics for employee satisfaction.',
+      impactScore: 55,
+      effortScore: 20,
+      priority: 2,
+      chapterCode: 'PL',
+    },
+    {
+      id: 'QW003',
+      theme: 'Social Media Presence',
+      dimensionCode: 'MKT',
+      dimensionName: 'Marketing',
+      description: 'Establish consistent social media posting schedule on LinkedIn.',
+      expectedOutcomes: 'Increase brand awareness and generate 10+ leads per month.',
+      impactScore: 50,
+      effortScore: 15,
+      priority: 3,
+      chapterCode: 'GE',
+    },
+  ];
+
+  // Sample risks
+  const risks = [
+    {
+      id: 'RISK001',
+      title: 'Revenue Concentration',
+      description: 'Over 50% of revenue comes from top 3 customers',
+      severity: 'high' as const,
+      likelihood: 'medium' as const,
+      impact: 'Loss of a major customer could reduce revenue by 20%+',
+      mitigation: 'Accelerate new customer acquisition and develop retention strategies',
+      category: 'Financial',
+    },
+    {
+      id: 'RISK002',
+      title: 'Key Person Dependency',
+      description: 'Critical operations depend on a few key individuals',
+      severity: 'high' as const,
+      likelihood: 'medium' as const,
+      impact: 'Departure could disrupt operations for 3-6 months',
+      mitigation: 'Implement knowledge documentation and cross-training programs',
+      category: 'Operational',
+    },
+    {
+      id: 'RISK003',
+      title: 'Technology Obsolescence',
+      description: 'Legacy systems may not scale with growth',
+      severity: 'medium' as const,
+      likelihood: 'high' as const,
+      impact: 'Could limit ability to serve growing customer base',
+      mitigation: 'Develop technology modernization roadmap',
+      category: 'Technology',
+    },
+  ];
+
+  // Sample financial projections
+  const financialProjections = {
+    totalInvestmentRequired: 250000,
+    annualValue: 500000,
+    roi90Day: 1.8,
+    roi12Month: 2.5,
+    paybackMonths: 8,
+    revenueImpact: 750000,
+    costSavings: 150000,
+    riskMitigation: 200000,
+  };
+
+  // Build the full context
+  const context: ReportContext = {
+    runId,
+    metadata: {
+      generatedAt,
+      pipelineVersion: 'v2.0.0',
+      assessmentVersion: 'v2025-09-16',
+    },
+    companyProfile: {
+      name: 'QA Test Company Inc.',
+      industry: 'Technology',
+      subIndustry: 'Software Development',
+      size: 'Mid-Market (50-200 employees)',
+      location: {
+        city: 'San Francisco',
+        state: 'CA',
+        country: 'United States',
+      },
+      yearFounded: 2015,
+      employees: {
+        total: 85,
+        fullTime: 70,
+        partTime: 10,
+        contractors: 5,
+      },
+      revenue: {
+        lastYear: 8500000,
+        projected: 10200000,
+        growth: 20,
       },
     },
-
+    overallHealth: {
+      score: 53,
+      band: 'Attention' as ScoreBand,
+      status: 'Requires Strategic Attention',
+      trajectory: 'Flat',
+    },
+    chapters,
+    dimensions,
+    findings,
+    recommendations,
+    quickWins,
+    risks,
+    financialProjections,
     executiveSummary: {
-      overview: 'Acme Test Corporation demonstrates strong performance in growth capabilities and people leadership, with opportunities to strengthen operational resilience and financial risk management.',
+      overview: 'QA Test Company demonstrates solid operational foundations in resilience and safeguards, but requires strategic attention in growth-oriented dimensions. The company scores 53/100 overall, with particular strength in IT Security and Compliance, but faces challenges in Human Resources and Marketing.',
       keyStrengths: [
-        'Strong customer acquisition engine',
-        'Effective leadership team alignment',
-        'Solid market positioning',
+        'Strong cybersecurity and compliance practices (RS: 72/100)',
+        'Effective risk management processes',
+        'Solid customer experience fundamentals',
       ],
       keyPriorities: [
-        'Enhance operational process documentation',
-        'Strengthen financial forecasting capabilities',
-        'Improve succession planning',
+        'Address talent development and succession planning gaps',
+        'Expand digital marketing capabilities',
+        'Diversify revenue streams to reduce concentration risk',
       ],
-      criticalActions: [
-        'Implement systematic sales pipeline tracking',
-        'Develop comprehensive risk mitigation plan',
-        'Establish formal knowledge transfer processes',
-      ],
-      financialHighlights: 'Estimated annual impact of $1.2M - $1.8M from recommended improvements',
     },
-
-    chapters: [
-      {
-        code: 'GE',
-        name: 'Growth Engine',
-        score: 78,
-        band: 'Proficiency',
-        benchmark: {
-          peerPercentile: 75,
-          description: 'Performing above 75% of industry peers',
-        },
-        keyFindings: ['Strong customer acquisition', 'Effective marketing'],
-        keyRisks: ['Market concentration risk'],
-        keyOpportunities: ['Expand into adjacent markets'],
-      },
-      {
-        code: 'PH',
-        name: 'Performance & Health',
-        score: 70,
-        band: 'Proficiency',
-        benchmark: {
-          peerPercentile: 68,
-          description: 'Performing above 68% of industry peers',
-        },
-        keyFindings: ['Solid operational metrics', 'Good quality management'],
-        keyRisks: ['Process documentation gaps'],
-        keyOpportunities: ['Automation opportunities'],
-      },
-      {
-        code: 'PL',
-        name: 'People & Leadership',
-        score: 75,
-        band: 'Proficiency',
-        benchmark: {
-          peerPercentile: 72,
-          description: 'Performing above 72% of industry peers',
-        },
-        keyFindings: ['Strong leadership alignment', 'Good talent acquisition'],
-        keyRisks: ['Succession planning gaps'],
-        keyOpportunities: ['Leadership development programs'],
-      },
-      {
-        code: 'RS',
-        name: 'Resilience & Safeguards',
-        score: 65,
-        band: 'Proficiency',
-        benchmark: {
-          peerPercentile: 60,
-          description: 'Performing above 60% of industry peers',
-        },
-        keyFindings: ['Basic compliance in place', 'Disaster recovery exists'],
-        keyRisks: ['Cybersecurity vulnerabilities', 'Key person dependency'],
-        keyOpportunities: ['Business continuity planning', 'Insurance review'],
-      },
-    ],
-
-    dimensions: [
-      {
-        id: 'dim-sales',
-        code: 'SALES',
-        chapterCode: 'GE',
-        name: 'Sales Effectiveness',
-        description: 'Measures the effectiveness of sales processes and revenue generation',
-        score: 82,
-        band: 'Excellence',
-        benchmark: {
-          peerPercentile: 80,
-          description: 'Top quartile performer',
-        },
-        subIndicators: [
-          { id: 'sub-1', name: 'Pipeline Management', score: 85, band: 'Excellence' },
-          { id: 'sub-2', name: 'Conversion Rates', score: 80, band: 'Excellence' },
-        ],
-        keyFindings: ['Strong sales conversion', 'Effective pipeline'],
-        keyRisks: ['Sales concentration'],
-        keyOpportunities: ['CRM optimization'],
-      },
-      {
-        id: 'dim-marketing',
-        code: 'MARKETING',
-        chapterCode: 'GE',
-        name: 'Marketing Effectiveness',
-        description: 'Measures the effectiveness of marketing strategies and campaigns',
-        score: 74,
-        band: 'Proficiency',
-        benchmark: {
-          peerPercentile: 70,
-          description: 'Above average performer',
-        },
-        subIndicators: [
-          { id: 'sub-3', name: 'Brand Awareness', score: 76, band: 'Proficiency' },
-          { id: 'sub-4', name: 'Lead Generation', score: 72, band: 'Proficiency' },
-        ],
-        keyFindings: ['Good brand recognition', 'Steady lead flow'],
-        keyRisks: ['Channel dependency'],
-        keyOpportunities: ['Digital marketing expansion'],
-      },
-      {
-        id: 'dim-operations',
-        code: 'OPERATIONS',
-        chapterCode: 'PH',
-        name: 'Operational Excellence',
-        description: 'Measures operational efficiency and process management',
-        score: 68,
-        band: 'Proficiency',
-        benchmark: {
-          peerPercentile: 65,
-          description: 'Average performer',
-        },
-        subIndicators: [
-          { id: 'sub-5', name: 'Process Efficiency', score: 70, band: 'Proficiency' },
-          { id: 'sub-6', name: 'Quality Management', score: 66, band: 'Proficiency' },
-        ],
-        keyFindings: ['Stable operations', 'Good quality outcomes'],
-        keyRisks: ['Process documentation gaps'],
-        keyOpportunities: ['Process automation'],
-      },
-      {
-        id: 'dim-finance',
-        code: 'FINANCE',
-        chapterCode: 'RS',
-        name: 'Financial Management',
-        description: 'Measures financial planning, reporting, and risk management',
-        score: 62,
-        band: 'Proficiency',
-        benchmark: {
-          peerPercentile: 58,
-          description: 'Slightly below average',
-        },
-        subIndicators: [
-          { id: 'sub-7', name: 'Financial Planning', score: 65, band: 'Proficiency' },
-          { id: 'sub-8', name: 'Cash Flow Management', score: 60, band: 'Proficiency' },
-        ],
-        keyFindings: ['Basic financial controls', 'Adequate cash reserves'],
-        keyRisks: ['Forecasting accuracy'],
-        keyOpportunities: ['Financial dashboard implementation'],
-      },
-    ],
-
-    findings: [
-      {
-        id: 'find-1',
-        type: 'strength',
-        dimensionCode: 'SALES',
-        dimensionName: 'Sales Effectiveness',
-        severity: 'high',
-        confidenceLevel: 'high',
-        shortLabel: 'Strong Sales Pipeline',
-        narrative: 'Your sales team has developed an effective pipeline management process that consistently delivers qualified opportunities.',
-        evidenceRefs: {
-          questionIds: ['q-sales-1', 'q-sales-2'],
-          metrics: ['conversion_rate', 'pipeline_velocity'],
-        },
-      },
-      {
-        id: 'find-2',
-        type: 'strength',
-        dimensionCode: 'MARKETING',
-        dimensionName: 'Marketing Effectiveness',
-        severity: 'medium',
-        confidenceLevel: 'high',
-        shortLabel: 'Effective Brand Positioning',
-        narrative: 'Your brand messaging resonates well with target customers and differentiates you from competitors.',
-        evidenceRefs: {
-          questionIds: ['q-mkt-1'],
-        },
-      },
-      {
-        id: 'find-3',
-        type: 'strength',
-        dimensionCode: 'LEADERSHIP',
-        dimensionName: 'Leadership & Governance',
-        severity: 'high',
-        confidenceLevel: 'high',
-        shortLabel: 'Aligned Leadership Team',
-        narrative: 'Your leadership team demonstrates strong alignment on strategic priorities and effective communication.',
-        evidenceRefs: {
-          questionIds: ['q-lead-1', 'q-lead-2'],
-        },
-      },
-      {
-        id: 'find-4',
-        type: 'gap',
-        dimensionCode: 'OPERATIONS',
-        dimensionName: 'Operational Excellence',
-        severity: 'high',
-        confidenceLevel: 'high',
-        shortLabel: 'Process Documentation Gaps',
-        narrative: 'Critical business processes lack comprehensive documentation, creating operational risk and knowledge transfer challenges.',
-        evidenceRefs: {
-          questionIds: ['q-ops-1', 'q-ops-2'],
-        },
-      },
-      {
-        id: 'find-5',
-        type: 'risk',
-        dimensionCode: 'FINANCE',
-        dimensionName: 'Financial Management',
-        severity: 'medium',
-        confidenceLevel: 'high',
-        shortLabel: 'Financial Forecasting Accuracy',
-        narrative: 'Financial forecasts have shown significant variance from actuals, impacting strategic planning effectiveness.',
-        evidenceRefs: {
-          questionIds: ['q-fin-1'],
-          metrics: ['forecast_accuracy'],
-        },
-      },
-      {
-        id: 'find-6',
-        type: 'risk',
-        dimensionCode: 'SUCCESSION',
-        dimensionName: 'Succession Planning',
-        severity: 'high',
-        confidenceLevel: 'medium',
-        shortLabel: 'Key Person Dependency',
-        narrative: 'Several critical functions depend heavily on individual team members without documented backup processes.',
-        evidenceRefs: {
-          questionIds: ['q-succ-1', 'q-succ-2'],
-        },
-      },
-    ],
-
-    recommendations: [
-      {
-        id: 'rec-1',
-        dimensionCode: 'OPERATIONS',
-        dimensionName: 'Operational Excellence',
-        linkedFindingIds: ['find-4'],
-        theme: 'Process Documentation Initiative',
-        priorityRank: 1,
-        impactScore: 85,
-        effortScore: 45,
-        horizon: '90_days',
-        horizonLabel: '0-90 Days',
-        requiredCapabilities: ['Process mapping', 'Documentation tools'],
-        actionSteps: [
-          'Identify critical processes requiring documentation',
-          'Assign process owners',
-          'Implement documentation templates',
-          'Train team on documentation standards',
-        ],
-        expectedOutcomes: 'Reduced operational risk and improved knowledge transfer efficiency',
-        isQuickWin: true,
-      },
-      {
-        id: 'rec-2',
-        dimensionCode: 'FINANCE',
-        dimensionName: 'Financial Management',
-        linkedFindingIds: ['find-5'],
-        theme: 'Financial Forecasting Enhancement',
-        priorityRank: 2,
-        impactScore: 78,
-        effortScore: 60,
-        horizon: '12_months',
-        horizonLabel: '3-12 Months',
-        requiredCapabilities: ['Financial modeling', 'BI tools'],
-        actionSteps: [
-          'Review current forecasting methodology',
-          'Implement rolling forecast process',
-          'Deploy financial dashboard',
-          'Establish variance analysis routine',
-        ],
-        expectedOutcomes: 'Improved forecast accuracy and strategic planning capability',
-        isQuickWin: false,
-      },
-      {
-        id: 'rec-3',
-        dimensionCode: 'SUCCESSION',
-        dimensionName: 'Succession Planning',
-        linkedFindingIds: ['find-6'],
-        theme: 'Succession Planning Program',
-        priorityRank: 3,
-        impactScore: 80,
-        effortScore: 70,
-        horizon: '12_months',
-        horizonLabel: '3-12 Months',
-        requiredCapabilities: ['HR planning', 'Training programs'],
-        actionSteps: [
-          'Identify critical roles and key person dependencies',
-          'Develop cross-training program',
-          'Create succession plans for critical roles',
-          'Implement knowledge transfer processes',
-        ],
-        expectedOutcomes: 'Reduced key person risk and improved business continuity',
-        isQuickWin: false,
-      },
-    ],
-
-    quickWins: [
-      {
-        id: 'qw-1',
-        recommendationId: 'rec-1',
-        theme: 'Process Documentation Quick Start',
-        impactScore: 85,
-        effortScore: 45,
-        actionSteps: [
-          'Document top 5 critical processes this quarter',
-          'Create simple checklist templates',
-          'Assign documentation champions',
-        ],
-        expectedOutcomes: 'Immediate reduction in operational risk and improved team efficiency',
-        timeframe: '0-90 Days',
-        estimatedInvestment: 15000,
-        estimatedROI: 2.5,
-      },
-      {
-        id: 'qw-2',
-        recommendationId: 'rec-2',
-        theme: 'Financial Dashboard Implementation',
-        impactScore: 70,
-        effortScore: 35,
-        actionSteps: [
-          'Define key financial metrics',
-          'Configure dashboard tool',
-          'Train finance team',
-        ],
-        expectedOutcomes: 'Real-time visibility into financial performance',
-        timeframe: '0-90 Days',
-        estimatedInvestment: 12000,
-        estimatedROI: 3.0,
-      },
-    ],
-
-    risks: [
-      {
-        id: 'risk-1',
-        dimensionCode: 'OPERATIONS',
-        dimensionName: 'Operational Excellence',
-        category: 'Operational',
-        severity: 'high',
-        likelihood: 'medium',
-        narrative: 'Lack of process documentation creates significant operational risk during staff transitions.',
-        linkedRecommendationIds: ['rec-1'],
-        mitigationSummary: 'Implement comprehensive process documentation initiative',
-      },
-      {
-        id: 'risk-2',
-        dimensionCode: 'SUCCESSION',
-        dimensionName: 'Succession Planning',
-        category: 'People',
-        severity: 'high',
-        likelihood: 'medium',
-        narrative: 'Key person dependencies in critical roles create business continuity risk.',
-        linkedRecommendationIds: ['rec-3'],
-        mitigationSummary: 'Develop cross-training and succession planning program',
-      },
-      {
-        id: 'risk-3',
-        dimensionCode: 'FINANCE',
-        dimensionName: 'Financial Management',
-        category: 'Financial',
-        severity: 'medium',
-        likelihood: 'high',
-        narrative: 'Inaccurate financial forecasting impacts strategic decision-making quality.',
-        linkedRecommendationIds: ['rec-2'],
-        mitigationSummary: 'Implement enhanced forecasting methodology and tools',
-      },
-    ],
-
-    roadmap: {
-      phases: [
-        {
-          id: 'phase-1',
-          name: 'Quick Wins',
-          timeHorizon: '0-90 Days',
-          linkedRecommendationIds: ['rec-1'],
-          narrative: 'Focus on immediate impact initiatives that reduce risk and improve visibility.',
-          keyMilestones: [
-            'Complete critical process documentation',
-            'Deploy financial dashboard',
-            'Establish monitoring routines',
-          ],
-        },
-        {
-          id: 'phase-2',
-          name: 'Foundation Building',
-          timeHorizon: '3-12 Months',
-          linkedRecommendationIds: ['rec-2', 'rec-3'],
-          narrative: 'Build foundational capabilities for sustained improvement.',
-          keyMilestones: [
-            'Implement rolling forecast process',
-            'Launch succession planning program',
-            'Complete cross-training for critical roles',
-          ],
-        },
-      ],
-      totalDuration: '12-18 months',
-      criticalPath: ['Process documentation', 'Financial forecasting', 'Succession planning'],
-    },
-
-    financialProjections: {
-      day90Value: 125000,
-      annualValue: 1500000,
-      roi90Day: 2.8,
-      totalInvestmentRequired: 350000,
-      paybackPeriod: '8-12 months',
-      riskAdjustedROI: 2.3,
-    },
-
-    performanceAnalysis: {
-      top3Categories: ['Sales Effectiveness', 'Brand Positioning', 'Leadership Alignment'],
-      topPerformanceAvg: 80,
-      bottom3Categories: ['Process Documentation', 'Financial Forecasting', 'Succession Planning'],
-      bottomPerformanceAvg: 62,
-      performanceGap: 18,
-    },
-
-    trendAnalysis: {
-      decliningCategories: ['Process Documentation'],
-      stableCategories: ['Financial Management', 'Operations'],
-      improvingCategories: ['Sales', 'Marketing', 'Leadership'],
-    },
-
     keyImperatives: [
-      'Address process documentation gaps within 90 days',
-      'Strengthen financial forecasting capabilities',
-      'Develop comprehensive succession plans',
-      'Continue investment in sales and marketing capabilities',
+      'Reduce revenue concentration risk by diversifying customer base',
+      'Implement comprehensive employee development program',
+      'Modernize digital marketing capabilities',
     ],
+    narrativeContent: null,
+  };
 
+  return context;
+}
+
+/**
+ * Create a minimal context for quick tests
+ */
+export function createMinimalReportContext(): Partial<ReportContext> {
+  return {
+    runId: 'qa-minimal-test',
     metadata: {
       generatedAt: new Date().toISOString(),
-      pipelineVersion: '5.0.0-qa',
-      assessmentRunId: 'test-run-qa-001',
-      companyProfileId: 'acme-test-corp',
-      reportType: 'comprehensive',
-      pageEstimate: 25,
+      pipelineVersion: 'v2.0.0',
+      assessmentVersion: 'v2025-09-16',
     },
+    companyProfile: {
+      name: 'Minimal Test Company',
+      industry: 'Technology',
+    },
+    overallHealth: {
+      score: 60,
+      band: 'Proficiency' as ScoreBand,
+      status: 'Proficient Operations',
+      trajectory: 'Flat',
+    },
+    chapters: [
+      { code: 'GE', name: 'Growth Engine', score: 55, band: 'Attention' as ScoreBand },
+      { code: 'PH', name: 'Performance & Health', score: 60, band: 'Proficiency' as ScoreBand },
+      { code: 'PL', name: 'People & Leadership', score: 58, band: 'Attention' as ScoreBand },
+      { code: 'RS', name: 'Resilience & Safeguards', score: 67, band: 'Proficiency' as ScoreBand },
+    ],
+    dimensions: [],
+    findings: [],
+    recommendations: [],
+    quickWins: [],
+    risks: [],
+    keyImperatives: [],
+  };
+}
+
+/**
+ * Create a context with high scores (Excellence band)
+ */
+export function createHighPerformingContext(): ReportContext {
+  const base = createSampleReportContext();
+
+  return {
+    ...base,
+    runId: 'qa-high-performer',
+    overallHealth: {
+      score: 85,
+      band: 'Excellence' as ScoreBand,
+      status: 'Industry Leader',
+      trajectory: 'Improving',
+    },
+    chapters: [
+      { code: 'GE', name: 'Growth Engine', score: 82, band: 'Excellence' as ScoreBand },
+      { code: 'PH', name: 'Performance & Health', score: 88, band: 'Excellence' as ScoreBand },
+      { code: 'PL', name: 'People & Leadership', score: 84, band: 'Excellence' as ScoreBand },
+      { code: 'RS', name: 'Resilience & Safeguards', score: 86, band: 'Excellence' as ScoreBand },
+    ],
+  };
+}
+
+/**
+ * Create a context with low scores (Critical band)
+ */
+export function createLowPerformingContext(): ReportContext {
+  const base = createSampleReportContext();
+
+  return {
+    ...base,
+    runId: 'qa-low-performer',
+    overallHealth: {
+      score: 32,
+      band: 'Critical' as ScoreBand,
+      status: 'Critical Intervention Required',
+      trajectory: 'Declining',
+    },
+    chapters: [
+      { code: 'GE', name: 'Growth Engine', score: 28, band: 'Critical' as ScoreBand },
+      { code: 'PH', name: 'Performance & Health', score: 35, band: 'Critical' as ScoreBand },
+      { code: 'PL', name: 'People & Leadership', score: 30, band: 'Critical' as ScoreBand },
+      { code: 'RS', name: 'Resilience & Safeguards', score: 35, band: 'Critical' as ScoreBand },
+    ],
   };
 }
