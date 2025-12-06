@@ -116,7 +116,6 @@ export {
   generateSparklineSVG,
   // Utility functions
   wrapChartInContainer,
-  generateChartLegend,
 } from './svg-chart-generators.js';
 
 export type {
