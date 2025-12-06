@@ -1318,8 +1318,9 @@ function generatePhase5Visualizations(ctx: ReportContext): Phase5Visuals {
   const roadmapTimeline = generateRoadmapTimelineViz(ctx);
 
   // Generate recommendations list
+  const quickWinIds = new Set(ctx.quickWins?.map(qw => qw.id) || []);
   const recommendationsList = ctx.recommendations.length > 0
-    ? generateRecommendationsList(recommendationsToCardProps(ctx.recommendations))
+    ? generateRecommendationsList(recommendationsToCardProps(ctx.recommendations, quickWinIds))
     : '';
 
   // Generate quick wins summary
@@ -1422,25 +1423,12 @@ function getTakeawayIcon(type: string): string {
 function generateChapterRadarChartViz(ctx: ReportContext): string {
   if (ctx.chapters.length === 0) return '';
 
+  // Use the format expected by generateRadarChartSVG
   const data = {
     labels: ctx.chapters.map(ch => ch.name),
-    datasets: [
-      {
-        label: 'Your Score',
-        data: ctx.chapters.map(ch => ch.score),
-        backgroundColor: 'rgba(33, 38, 83, 0.2)',
-        borderColor: '#212653',
-        borderWidth: 2,
-      },
-      {
-        label: 'Industry Benchmark',
-        data: ctx.chapters.map(ch => ch.industryBenchmark || 65),
-        backgroundColor: 'rgba(150, 148, 35, 0.1)',
-        borderColor: '#969423',
-        borderWidth: 2,
-        borderDash: [5, 5],
-      },
-    ],
+    values: ctx.chapters.map(ch => ch.score),
+    benchmarkValues: ctx.chapters.map(ch => (ch as any).industryBenchmark || 65),
+    title: 'Chapter Performance',
   };
 
   const svg = generateRadarChartSVG(data, {

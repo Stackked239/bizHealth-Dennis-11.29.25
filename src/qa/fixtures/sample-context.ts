@@ -57,6 +57,7 @@ export function createSampleReportContext(): ReportContext {
       shortLabel: 'Strong cybersecurity practices',
       description: 'The company has implemented robust cybersecurity measures that exceed industry standards.',
       chapterCode: 'RS',
+      severity: 'high',
     },
     {
       id: 'F002',
@@ -66,6 +67,7 @@ export function createSampleReportContext(): ReportContext {
       shortLabel: 'Excellent regulatory compliance',
       description: 'All regulatory requirements are met with comprehensive documentation and regular audits.',
       chapterCode: 'RS',
+      severity: 'high',
     },
     {
       id: 'F003',
@@ -75,6 +77,7 @@ export function createSampleReportContext(): ReportContext {
       shortLabel: 'Proactive risk identification',
       description: 'The organization has established effective risk identification and mitigation processes.',
       chapterCode: 'RS',
+      severity: 'medium',
     },
     // Gaps
     {
@@ -85,6 +88,7 @@ export function createSampleReportContext(): ReportContext {
       shortLabel: 'Talent development gaps',
       description: 'Training programs and career development paths need significant improvement.',
       chapterCode: 'PL',
+      severity: 'high',
     },
     {
       id: 'F005',
@@ -94,6 +98,7 @@ export function createSampleReportContext(): ReportContext {
       shortLabel: 'Limited digital marketing presence',
       description: 'Digital marketing channels are underutilized, limiting brand awareness and lead generation.',
       chapterCode: 'GE',
+      severity: 'medium',
     },
     {
       id: 'F006',
@@ -103,6 +108,7 @@ export function createSampleReportContext(): ReportContext {
       shortLabel: 'Cash flow forecasting needs improvement',
       description: 'Current forecasting methods lack precision, creating financial planning challenges.',
       chapterCode: 'PH',
+      severity: 'medium',
     },
     // Risks
     {
@@ -113,6 +119,7 @@ export function createSampleReportContext(): ReportContext {
       shortLabel: 'Revenue concentration risk',
       description: 'Top 3 customers represent over 50% of revenue, creating dependency risk.',
       chapterCode: 'GE',
+      severity: 'critical',
     },
     {
       id: 'F008',
@@ -122,6 +129,7 @@ export function createSampleReportContext(): ReportContext {
       shortLabel: 'Key person dependency',
       description: 'Critical knowledge is concentrated in a few individuals without succession plans.',
       chapterCode: 'PL',
+      severity: 'high',
     },
     {
       id: 'F009',
@@ -131,6 +139,7 @@ export function createSampleReportContext(): ReportContext {
       shortLabel: 'Technical debt accumulation',
       description: 'Legacy systems require modernization to support future growth.',
       chapterCode: 'PL',
+      severity: 'medium',
     },
   ];
 

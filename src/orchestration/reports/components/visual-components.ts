@@ -70,7 +70,8 @@ function capitalizeFirst(str: string): string {
 /**
  * Truncate text with ellipsis
  */
-function truncateText(text: string, maxLength: number): string {
+function truncateText(text: string | undefined | null, maxLength: number): string {
+  if (!text) return '';
   if (text.length <= maxLength) return text;
   return text.substring(0, maxLength - 3) + '...';
 }
@@ -110,14 +111,16 @@ export function generateScorecardGrid(items: ScorecardGridItem[]): string {
 
 /**
  * Convert chapters to scorecard items
+ * Supports both IDM Chapter format (score_overall, score_band, chapter_code)
+ * and ReportChapter format (score, band, code)
  */
-export function chaptersToScorecardItems(chapters: Chapter[]): ScorecardGridItem[] {
+export function chaptersToScorecardItems(chapters: any[]): ScorecardGridItem[] {
   return chapters.map(ch => ({
     name: ch.name,
-    score: ch.score_overall,
-    band: ch.score_band,
-    benchmark: ch.benchmark?.peer_percentile,
-    code: ch.chapter_code
+    score: ch.score_overall ?? ch.score ?? 0,
+    band: (ch.score_band ?? ch.band ?? 'Attention') as ScoreBand,
+    benchmark: ch.benchmark?.peer_percentile ?? ch.benchmark?.peerPercentile,
+    code: ch.chapter_code ?? ch.code
   }));
 }
 
@@ -378,7 +381,7 @@ export function generateRecommendationCard(rec: RecommendationCardProps): string
         <strong>Effort:</strong> ${rec.effort}/100 |
         <strong>ROI:</strong> ${roi}x
       </div>
-      ${rec.actionSteps.length > 0 ? `
+      ${rec.actionSteps && rec.actionSteps.length > 0 ? `
         <div class="action-steps">
           <strong>Action Steps:</strong>
           <ul>
@@ -410,19 +413,20 @@ export function generateRecommendationsList(recommendations: RecommendationCardP
  * Convert Recommendation objects to card props
  */
 export function recommendationsToCardProps(
-  recommendations: Recommendation[],
-  quickWinIds: Set<string>
+  recommendations: any[],
+  quickWinIds?: Set<string>
 ): RecommendationCardProps[] {
+  const qwIds = quickWinIds || new Set<string>();
   return recommendations.map((rec, idx) => ({
     rank: idx + 1,
     title: rec.theme,
-    dimension: DIMENSION_METADATA[rec.dimension_code]?.name || rec.dimension_code,
-    horizon: formatHorizon(rec.horizon),
-    impact: rec.impact_score,
-    effort: rec.effort_score,
-    isQuickWin: quickWinIds.has(rec.id),
-    actionSteps: rec.action_steps,
-    expectedOutcome: rec.expected_outcomes
+    dimension: DIMENSION_METADATA[rec.dimension_code ?? rec.dimensionCode]?.name || rec.dimension_code || rec.dimensionCode || rec.dimensionName || '',
+    horizon: formatHorizon(rec.horizon ?? rec.horizonLabel ?? ''),
+    impact: rec.impact_score ?? rec.impactScore ?? 0,
+    effort: rec.effort_score ?? rec.effortScore ?? 0,
+    isQuickWin: qwIds.has(rec.id),
+    actionSteps: rec.action_steps ?? rec.actionSteps,
+    expectedOutcome: rec.expected_outcomes ?? rec.expectedOutcomes ?? rec.description ?? ''
   }));
 }
 
