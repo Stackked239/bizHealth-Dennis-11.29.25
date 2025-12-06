@@ -74,6 +74,10 @@ import {
   mapChaptersToGauges,
   mapRisksToRiskMatrix,
   mapRoadmapToRoadmapPhases,
+  // Enhanced markdown parser
+  parseMarkdownToHTML,
+  validateReportContent,
+  logValidationResults,
 } from './utils/index.js';
 
 // Import risk heatmap component
@@ -365,7 +369,7 @@ export async function buildComprehensiveReport(
 function generateExecutiveSummaryWithNarrative(ctx: ReportContext, narratives: any, phase5Visuals?: Phase5Visuals): string {
   const { overallHealth, executiveSummary, keyImperatives } = ctx;
   const rawNarrativeHtml = narratives?.phase3?.executive
-    ? NarrativeExtractionService.markdownToHtml(narratives.phase3.executive)
+    ? parseMarkdownToHTML(narratives.phase3.executive, { maxBoldPerParagraph: 3, maxListItems: 8 })
     : '';
 
   // Sanitize narrative content to remove orphaned visualization headers
@@ -495,7 +499,7 @@ function generateNarrativeSection(
   ctx?: ReportContext,
   chartHtml?: string
 ): string {
-  const narrativeHtml = NarrativeExtractionService.markdownToHtml(content);
+  const narrativeHtml = parseMarkdownToHTML(content, { maxBoldPerParagraph: 3, maxListItems: 8 });
 
   // Generate chapter header with icon if chapter code provided
   let headerHtml: string;
@@ -1591,7 +1595,7 @@ function generateRiskAssessmentWithHeatmap(
 ): string {
   const sanitizedNarrative = narrativeContent
     ? sanitizeOrphanedVisualizationHeaders(
-        NarrativeExtractionService.markdownToHtml(narrativeContent)
+        parseMarkdownToHTML(narrativeContent, { maxBoldPerParagraph: 3, maxListItems: 8 })
       ).html
     : '';
 
@@ -1649,7 +1653,7 @@ function generateImplementationRoadmapWithTimeline(
 ): string {
   const sanitizedNarrative = narrativeContent
     ? sanitizeOrphanedVisualizationHeaders(
-        NarrativeExtractionService.markdownToHtml(narrativeContent)
+        parseMarkdownToHTML(narrativeContent, { maxBoldPerParagraph: 3, maxListItems: 8 })
       ).html
     : '';
 

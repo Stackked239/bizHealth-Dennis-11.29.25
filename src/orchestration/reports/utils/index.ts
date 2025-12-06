@@ -152,3 +152,16 @@ export {
   countVisualizations,
 } from './render-visualizations.js';
 export type { VisualizationBundle } from './render-visualizations.js';
+
+// Content validation utilities
+export {
+  validateReportContent,
+  logValidationResults,
+  generateValidationReport,
+  checkQualityThresholds,
+  DEFAULT_THRESHOLDS,
+} from './content-validator.js';
+export type {
+  ContentValidationSummary,
+  QualityThresholds,
+} from './content-validator.js';
