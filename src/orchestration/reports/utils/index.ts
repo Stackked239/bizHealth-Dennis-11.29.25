@@ -2,12 +2,22 @@
  * Report Utilities
  */
 
+// Legacy markdown sanitizer (basic conversion)
 export {
   convertMarkdownToHtml,
   processNarrativeForReport,
   processNarrativeContent,
   validateNoRawMarkdown,
 } from './markdown-sanitizer.js';
+
+// Enhanced markdown parser with normalization
+export {
+  parseMarkdownToHTML,
+  parseMarkdownWithValidation,
+  processNarrativeForReport as processNarrativeWithNormalization,
+  validateParsedHTML,
+} from './markdown-parser.js';
+export type { ParseOptions, ParseResult, ValidationResult } from './markdown-parser.js';
 
 export {
   referenceLogger,

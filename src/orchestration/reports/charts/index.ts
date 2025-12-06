@@ -95,3 +95,41 @@ export type {
   ChartGenerator,
   ChartRenderer,
 } from './types/chart.types.js';
+
+// ============================================================================
+// PHASE 5 SERVER-SIDE SVG CHART GENERATORS
+// Expanded chart library for PDF-compatible visualizations
+// ============================================================================
+
+export {
+  // Radar Charts
+  generateRadarChartSVG,
+  // Horizontal Bar Charts
+  generateHorizontalBarChartSVG,
+  // Donut Charts
+  generateDonutChartSVG,
+  // Gauge Charts
+  generateGaugeChartSVG,
+  // Score Distribution Charts
+  generateScoreDistributionSVG,
+  // Sparkline Charts
+  generateSparklineSVG,
+  // Utility functions
+  wrapChartInContainer,
+  generateChartLegend,
+} from './svg-chart-generators.js';
+
+export type {
+  RadarChartData,
+  RadarChartOptions,
+  BarChartData,
+  BarChartOptions,
+  DonutChartData,
+  DonutChartOptions,
+  GaugeChartData,
+  GaugeChartOptions,
+  ScoreDistributionData,
+  SparklineData,
+  SparklineOptions,
+  ChartContainerOptions,
+} from './svg-chart-generators.js';

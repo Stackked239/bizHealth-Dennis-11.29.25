@@ -81,3 +81,55 @@ export type { LegalTermsContext } from './legal-terms-disclaimers.component.js';
 // ============================================================================
 
 export * from './visual/index.js';
+
+// ============================================================================
+// PHASE 5 VISUAL COMPONENTS LIBRARY
+// Server-side HTML generators for Phase 4 layout patterns
+// ============================================================================
+
+export {
+  // Scorecard Grid
+  generateScorecardGrid,
+  chaptersToScorecardItems,
+  // Dimension Detail
+  generateDimensionDetailCard,
+  dimensionToDetailProps,
+  // Findings Grid
+  generateFindingsGrid,
+  findingsToGridProps,
+  // Risk Matrix
+  generateRiskMatrix,
+  risksToMatrixItems,
+  // Recommendations
+  generateRecommendationCard,
+  generateRecommendationsList,
+  recommendationsToCardProps,
+  // Roadmap Timeline
+  generateRoadmapTimeline,
+  roadmapPhasesToDisplay,
+  // Executive Highlights
+  generateExecutiveHighlightsRow,
+  generateKeyTakeawaysBox,
+  // Chapter Summary
+  generateChapterSummary,
+  // Quick Wins
+  generateQuickWinsSummary,
+  // Benchmark
+  generateBenchmarkComparisonTable,
+} from './visual-components.js';
+
+export type {
+  ScorecardGridItem,
+  SubIndicatorDisplay,
+  DimensionDetailProps,
+  FindingDisplay,
+  FindingsGridProps,
+  RiskMatrixItem,
+  RecommendationCardProps,
+  RoadmapPhaseDisplay,
+  ExecutiveHighlight,
+  KeyTakeaway,
+  ChapterSummaryProps,
+  QuickWinDisplay,
+  BenchmarkComparisonItem,
+} from './visual-components.js';

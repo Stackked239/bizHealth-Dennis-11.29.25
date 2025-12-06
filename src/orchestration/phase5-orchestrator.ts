@@ -83,6 +83,32 @@ import {
 // ============================================================================
 
 /**
+ * Phase 5 report quality metrics
+ */
+export interface ReportQualityMetrics {
+  /** Total SVG visualization count */
+  svgCount: number;
+  /** Total bold element count */
+  boldCount: number;
+  /** Total section divider count */
+  dividerCount: number;
+  /** Total list item count */
+  listItemCount: number;
+  /** Total table count */
+  tableCount: number;
+  /** Estimated page count */
+  pageEstimate: number;
+  /** Word count */
+  wordCount: number;
+  /** Quality thresholds met */
+  meetsTargets: {
+    visualizations: boolean;  // Target: 50+
+    boldElements: boolean;    // Target: <200
+    dividers: boolean;        // Target: <30
+  };
+}
+
+/**
  * Phase 5 orchestrator configuration
  */
 export interface Phase5OrchestratorConfig {
@@ -94,6 +120,14 @@ export interface Phase5OrchestratorConfig {
   brand?: Partial<BrandConfig>;
   /** Report types to generate (defaults to all) */
   reportTypes?: Phase5ReportType[];
+  /** Enable quality validation (defaults to true) */
+  validateQuality?: boolean;
+  /** Quality thresholds */
+  qualityThresholds?: {
+    minVisualizations?: number;
+    maxBoldElements?: number;
+    maxDividers?: number;
+  };
 }
 
 /**
@@ -113,6 +147,16 @@ export interface Phase5Results {
     completedAt: string;
     durationMs: number;
     pipelineVersion: string;
+  };
+  /** Quality metrics for each report */
+  qualityMetrics?: Record<Phase5ReportType, ReportQualityMetrics>;
+  /** Aggregated quality summary */
+  qualitySummary?: {
+    totalVisualizations: number;
+    totalBoldElements: number;
+    totalDividers: number;
+    reportsPassingThresholds: number;
+    totalReports: number;
   };
   errors?: Array<{ reportType: Phase5ReportType; error: string }>;
 }
@@ -173,8 +217,10 @@ export class Phase5Orchestrator {
       // Generate reports
       const reports: GeneratedReport[] = [];
       const errors: Array<{ reportType: Phase5ReportType; error: string }> = [];
+      const qualityMetrics: Record<Phase5ReportType, ReportQualityMetrics> = {} as Record<Phase5ReportType, ReportQualityMetrics>;
+      const shouldValidate = this.config.validateQuality !== false;
 
-      this.logger.info({ reportTypes: reportTypesToGenerate }, `Generating ${reportTypesToGenerate.length} reports`);
+      this.logger.info({ reportTypes: reportTypesToGenerate, validateQuality: shouldValidate }, `Generating ${reportTypesToGenerate.length} reports`);
 
       // Generate reports sequentially to manage memory
       for (const type of reportTypesToGenerate) {
@@ -189,6 +235,17 @@ export class Phase5Orchestrator {
           const report = await builder.build(ctx, options);
           reports.push(report);
           this.logger.info({ type: builder.type, htmlPath: report.htmlPath }, 'Report generated successfully');
+
+          // Validate report quality if enabled
+          if (shouldValidate && report.htmlPath) {
+            try {
+              const metrics = await this.validateReportQuality(report.htmlPath);
+              qualityMetrics[builder.type] = metrics;
+              this.logQualityMetrics(builder.type, metrics);
+            } catch (validationError) {
+              this.logger.warn({ type: builder.type, error: validationError }, 'Failed to validate report quality');
+            }
+          }
         } catch (error) {
           const errorMsg = error instanceof Error ? error.message : String(error);
           this.logger.error({ type: builder.type, error: errorMsg }, 'Failed to generate report');
@@ -204,6 +261,11 @@ export class Phase5Orchestrator {
 
       const completedAt = new Date().toISOString();
       const durationMs = Date.now() - startTime;
+
+      // Generate quality summary if validation was performed
+      const qualitySummary = shouldValidate && Object.keys(qualityMetrics).length > 0
+        ? this.generateQualitySummary(qualityMetrics)
+        : undefined;
 
       const results: Phase5Results = {
         phase: 'phase_5',
@@ -222,14 +284,31 @@ export class Phase5Orchestrator {
         },
       };
 
+      // Add quality metrics to results
+      if (shouldValidate && Object.keys(qualityMetrics).length > 0) {
+        results.qualityMetrics = qualityMetrics;
+        results.qualitySummary = qualitySummary;
+      }
+
       if (errors.length > 0) {
         results.errors = errors;
+      }
+
+      // Log quality summary
+      if (qualitySummary) {
+        this.logger.info({
+          totalVisualizations: qualitySummary.totalVisualizations,
+          totalBoldElements: qualitySummary.totalBoldElements,
+          totalDividers: qualitySummary.totalDividers,
+          reportsPassingThresholds: `${qualitySummary.reportsPassingThresholds}/${qualitySummary.totalReports}`,
+        }, 'Phase 5 Quality Summary');
       }
 
       this.logger.info({
         reportsGenerated: reports.length,
         errors: errors.length,
         durationMs,
+        qualityValidation: shouldValidate,
       }, 'Phase 5 complete');
 
       return results;
@@ -733,6 +812,139 @@ export class Phase5Orchestrator {
         pdf: r.pdfPath ? path.basename(r.pdfPath) : undefined,
         meta: path.basename(r.metaPath),
       })),
+    };
+  }
+
+  // ==========================================================================
+  // PHASE 5 QUALITY VALIDATION
+  // ==========================================================================
+
+  /**
+   * Validate report quality by analyzing HTML content
+   * Counts visual elements, bold tags, dividers, etc.
+   */
+  async validateReportQuality(htmlPath: string): Promise<ReportQualityMetrics> {
+    const html = await fs.readFile(htmlPath, 'utf-8');
+
+    // Default quality thresholds
+    const thresholds = {
+      minVisualizations: this.config.qualityThresholds?.minVisualizations ?? 50,
+      maxBoldElements: this.config.qualityThresholds?.maxBoldElements ?? 200,
+      maxDividers: this.config.qualityThresholds?.maxDividers ?? 30,
+    };
+
+    // Count SVG visualizations
+    const svgMatches = html.match(/<svg[^>]*>/gi) || [];
+    const svgCount = svgMatches.length;
+
+    // Count bold elements (strong, b, .bh-strong, font-weight: bold)
+    const strongTags = (html.match(/<strong[^>]*>/gi) || []).length;
+    const bTags = (html.match(/<b[^>]*>/gi) || []).length;
+    const bhStrong = (html.match(/class="[^"]*bh-strong[^"]*"/gi) || []).length;
+    const boldCount = strongTags + bTags + bhStrong;
+
+    // Count section dividers (hr, .bh-section-divider)
+    const hrTags = (html.match(/<hr[^>]*>/gi) || []).length;
+    const bhDividers = (html.match(/class="[^"]*bh-section-divider[^"]*"/gi) || []).length;
+    const dividerCount = hrTags + bhDividers;
+
+    // Count list items
+    const listItemCount = (html.match(/<li[^>]*>/gi) || []).length;
+
+    // Count tables
+    const tableCount = (html.match(/<table[^>]*>/gi) || []).length;
+
+    // Estimate page count (~3000 chars per page)
+    const pageEstimate = Math.ceil(html.length / 3000);
+
+    // Estimate word count (strip HTML tags, count words)
+    const textContent = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+    const wordCount = textContent.split(' ').filter(w => w.length > 0).length;
+
+    const metrics: ReportQualityMetrics = {
+      svgCount,
+      boldCount,
+      dividerCount,
+      listItemCount,
+      tableCount,
+      pageEstimate,
+      wordCount,
+      meetsTargets: {
+        visualizations: svgCount >= thresholds.minVisualizations,
+        boldElements: boldCount <= thresholds.maxBoldElements,
+        dividers: dividerCount <= thresholds.maxDividers,
+      },
+    };
+
+    return metrics;
+  }
+
+  /**
+   * Log quality metrics for a report
+   */
+  private logQualityMetrics(reportType: Phase5ReportType, metrics: ReportQualityMetrics): void {
+    const allTargetsMet = metrics.meetsTargets.visualizations &&
+                          metrics.meetsTargets.boldElements &&
+                          metrics.meetsTargets.dividers;
+
+    const logLevel = allTargetsMet ? 'info' : 'warn';
+    const statusIcon = allTargetsMet ? '✓' : '⚠';
+
+    this.logger[logLevel]({
+      reportType,
+      svgCount: metrics.svgCount,
+      boldCount: metrics.boldCount,
+      dividerCount: metrics.dividerCount,
+      tableCount: metrics.tableCount,
+      listItemCount: metrics.listItemCount,
+      pageEstimate: metrics.pageEstimate,
+      wordCount: metrics.wordCount,
+      meetsTargets: metrics.meetsTargets,
+    }, `${statusIcon} Report quality validation: ${reportType}`);
+
+    if (!metrics.meetsTargets.visualizations) {
+      this.logger.warn({ target: 50, actual: metrics.svgCount }, `[${reportType}] Below target: SVG visualizations`);
+    }
+    if (!metrics.meetsTargets.boldElements) {
+      this.logger.warn({ target: '<200', actual: metrics.boldCount }, `[${reportType}] Exceeds target: Bold elements`);
+    }
+    if (!metrics.meetsTargets.dividers) {
+      this.logger.warn({ target: '<30', actual: metrics.dividerCount }, `[${reportType}] Exceeds target: Section dividers`);
+    }
+  }
+
+  /**
+   * Generate quality summary from individual metrics
+   */
+  private generateQualitySummary(
+    qualityMetrics: Record<Phase5ReportType, ReportQualityMetrics>
+  ): Phase5Results['qualitySummary'] {
+    const entries = Object.entries(qualityMetrics) as [Phase5ReportType, ReportQualityMetrics][];
+
+    let totalVisualizations = 0;
+    let totalBoldElements = 0;
+    let totalDividers = 0;
+    let reportsPassingThresholds = 0;
+
+    for (const [, metrics] of entries) {
+      totalVisualizations += metrics.svgCount;
+      totalBoldElements += metrics.boldCount;
+      totalDividers += metrics.dividerCount;
+
+      const allTargetsMet = metrics.meetsTargets.visualizations &&
+                            metrics.meetsTargets.boldElements &&
+                            metrics.meetsTargets.dividers;
+      if (allTargetsMet) {
+        reportsPassingThresholds++;
+      }
+    }
+
+    return {
+      totalVisualizations,
+      totalBoldElements,
+      totalDividers,
+      reportsPassingThresholds,
+      totalReports: entries.length,
     };
   }
 }
