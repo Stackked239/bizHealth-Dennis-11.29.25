@@ -50,6 +50,15 @@ import {
 } from './config/owner-report-constraints.js';
 import { sanitizeOrphanedVisualizationHeaders } from './utils/content-sanitizer.js';
 
+// Import enhanced markdown parser for narrative sections
+import {
+  parseMarkdownToHTML,
+  parseMarkdownWithValidation,
+  validateReportContent,
+  logValidationResults,
+} from './utils/index.js';
+import type { ValidationResult } from './utils/markdown-parser.js';
+
 // Import chart integration for visual charts
 import {
   generateChapterOverviewRadar,
@@ -304,13 +313,16 @@ export async function buildOwnersReport(
     </section>
 
     <!-- ================================================================
-         SECTION: Execution Overview
+         SECTION: Execution Overview (Your First 90 Days)
          ================================================================ -->
     ${narratives?.phase3?.actionMatrix ? `
       <section class="section page-break" id="execution-overview">
         ${renderOwnerSectionHeader('Your Execution Overview', "What's my timeline?")}
         <div class="narrative-content">
-          ${NarrativeExtractionService.markdownToHtml(truncateToSentences(narratives.phase3.actionMatrix, 15))}
+          ${parseMarkdownToHTML(truncateToSentences(narratives.phase3.actionMatrix, 15), {
+            maxBoldPerParagraph: 2,
+            maxListItems: 6
+          })}
         </div>
         ${QUICK_REFS.roadmap('execution-overview')}
       </section>
@@ -344,7 +356,10 @@ export async function buildOwnersReport(
       <section class="section" id="key-risks">
         ${renderOwnerSectionHeader('Key Risks to Your Business', 'What could hurt my business?')}
         <div class="narrative-content">
-          ${NarrativeExtractionService.markdownToHtml(truncateToSentences(narratives.phase2.consolidatedRisks, 12))}
+          ${parseMarkdownToHTML(truncateToSentences(narratives.phase2.consolidatedRisks, 12), {
+            maxBoldPerParagraph: 2,
+            maxListItems: 6
+          })}
         </div>
         ${QUICK_REFS.riskAssessment('key-risks')}
       </section>

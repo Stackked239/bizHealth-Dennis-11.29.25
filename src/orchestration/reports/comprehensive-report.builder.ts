@@ -69,10 +69,49 @@ import {
   generateAllVisualizations,
   countVisualizations,
   type VisualizationBundle,
+  // New Phase 5 Visualization Mappers
+  mapDimensionsToGauges,
+  mapChaptersToGauges,
+  mapRisksToRiskMatrix,
+  mapRoadmapToRoadmapPhases,
+  // Enhanced markdown parser
+  parseMarkdownToHTML,
+  validateReportContent,
+  logValidationResults,
 } from './utils/index.js';
 
 // Import risk heatmap component
 import { renderRiskHeatmapFromRisks } from './components/visual/risk-heatmap.component.js';
+
+// Import Phase 5 Visual Components Library
+import {
+  generateScorecardGrid,
+  chaptersToScorecardItems,
+  generateDimensionDetailCard,
+  dimensionToDetailProps,
+  generateFindingsGrid,
+  findingsToGridProps,
+  generateRiskMatrix,
+  risksToMatrixItems,
+  generateRecommendationsList,
+  recommendationsToCardProps,
+  generateRoadmapTimeline as generateRoadmapTimelineComponent,
+  roadmapPhasesToDisplay,
+  generateExecutiveHighlightsRow,
+  generateKeyTakeawaysBox,
+  generateChapterSummary,
+  generateQuickWinsSummary,
+  generateBenchmarkComparisonTable,
+} from './components/index.js';
+
+// Import Phase 5 SVG Chart Generators
+import {
+  generateRadarChartSVG,
+  generateHorizontalBarChartSVG,
+  generateDonutChartSVG,
+  generateGaugeChartSVG,
+  wrapChartInContainer,
+} from './charts/index.js';
 
 // Import KPI dashboard and roadmap components
 import { renderKPIDashboard, renderQuickStatsRow } from './components/visual/kpi-dashboard.component.js';
@@ -178,6 +217,14 @@ export async function buildComprehensiveReport(
     `<section id="scorecard" class="section page-break">
       ${generateScorecardSection(ctx)}
 
+      <!-- Phase 5: Scorecard Grid -->
+      ${phase5Visuals.scorecardGrid ? `
+        <div class="phase5-scorecard-grid" style="margin: 2rem 0;">
+          <h3 style="color: ${options.brand.primaryColor}; margin: 0 0 1.5rem 0; font-family: 'Montserrat', sans-serif;">Chapter Performance Scorecard</h3>
+          ${phase5Visuals.scorecardGrid}
+        </div>
+      ` : ''}
+
       <!-- Visual Charts Dashboard -->
       <div class="scorecard-charts">
         <h3 style="color: ${options.brand.primaryColor}; margin: 2rem 0 1rem 0; font-family: 'Montserrat', sans-serif;">Visual Performance Overview</h3>
@@ -191,7 +238,12 @@ export async function buildComprehensiveReport(
         </div>
       </div>
 
-      ${generateBenchmarkSummaryTable(ctx)}
+      <!-- Phase 5: Benchmark Comparison Table -->
+      ${phase5Visuals.benchmarkTable ? `
+        <div class="phase5-benchmark-table" style="margin: 2rem 0;">
+          ${phase5Visuals.benchmarkTable}
+        </div>
+      ` : generateBenchmarkSummaryTable(ctx)}
     </section>`,
 
     // Chapter Deep Dives with proper anchor IDs matching section-mapping.ts (now with dimension charts)
@@ -206,18 +258,49 @@ export async function buildComprehensiveReport(
     narratives ? `
       <section id="cross-dimensional" class="section page-break">${generateNarrativeSection('Cross-Dimensional Strategic Synthesis', narratives.phase2.crossDimensional, null)}</section>
       <section id="strategic-recommendations" class="section page-break">${generateNarrativeSection('Strategic Recommendations', narratives.phase2.strategicRecommendations, null)}</section>
-      <section id="risk-assessment" class="section page-break">${generateRiskAssessmentWithHeatmap(ctx, narratives.phase2.consolidatedRisks, phase5Visuals.riskHeatmap)}</section>
+      <section id="risk-assessment" class="section page-break">${generateRiskAssessmentWithHeatmap(ctx, narratives.phase2.consolidatedRisks, phase5Visuals.riskHeatmap, phase5Visuals.riskMatrix)}</section>
       <section id="growth" class="section page-break">${generateNarrativeSection('Growth Opportunities', narratives.phase2.growthOpportunities, null)}</section>
       <section id="implementation-roadmap" class="section page-break">${generateImplementationRoadmapWithTimeline(ctx, narratives.phase2.implementationRoadmap, phase5Visuals.roadmapTimeline)}</section>
     ` : `
-      <section id="risk-assessment" class="section page-break">${generateRiskAssessmentWithHeatmap(ctx, '', phase5Visuals.riskHeatmap)}</section>
+      <section id="risk-assessment" class="section page-break">${generateRiskAssessmentWithHeatmap(ctx, '', phase5Visuals.riskHeatmap, phase5Visuals.riskMatrix)}</section>
       <section id="implementation-roadmap" class="section page-break">${generateImplementationRoadmapWithTimeline(ctx, '', phase5Visuals.roadmapTimeline)}</section>
     `,
 
-    // Detailed sections
-    `<section id="findings" class="section page-break">${generateFindingsSection(ctx)}</section>`,
-    `<section id="recommendations" class="section page-break">${generateRecommendationsSection(ctx)}</section>`,
-    `<section id="quick-wins" class="section page-break">${generateQuickWinsSection(ctx)}</section>`,
+    // Detailed sections with Phase 5 enhancements
+    `<section id="findings" class="section page-break">
+      <div class="section-header">
+        <h2>Detailed Findings</h2>
+      </div>
+      <!-- Phase 5: Findings Grid -->
+      ${phase5Visuals.findingsGrid ? `
+        <div class="phase5-findings-grid" style="margin: 1.5rem 0;">
+          ${phase5Visuals.findingsGrid}
+        </div>
+      ` : generateFindingsSection(ctx)}
+    </section>`,
+    `<section id="recommendations" class="section page-break">
+      <div class="section-header">
+        <h2>Strategic Recommendations</h2>
+      </div>
+      <!-- Phase 5: Recommendations List -->
+      ${phase5Visuals.recommendationsList ? `
+        <div class="phase5-recommendations" style="margin: 1.5rem 0;">
+          ${phase5Visuals.recommendationsList}
+        </div>
+      ` : generateRecommendationsSection(ctx)}
+    </section>`,
+    `<section id="quick-wins" class="section page-break">
+      <div class="section-header">
+        <h2>Quick Wins</h2>
+        <p class="section-subtitle" style="color: #666; margin-top: 0.5rem;">High-impact, low-effort actions for immediate results</p>
+      </div>
+      <!-- Phase 5: Quick Wins Summary -->
+      ${phase5Visuals.quickWinsSummary ? `
+        <div class="phase5-quick-wins" style="margin: 1.5rem 0;">
+          ${phase5Visuals.quickWinsSummary}
+        </div>
+      ` : generateQuickWinsSection(ctx)}
+    </section>`,
     `<section id="financial-impact" class="section page-break">${generateFinancialSection(ctx)}</section>`,
 
     // Footer with word count
@@ -286,7 +369,7 @@ export async function buildComprehensiveReport(
 function generateExecutiveSummaryWithNarrative(ctx: ReportContext, narratives: any, phase5Visuals?: Phase5Visuals): string {
   const { overallHealth, executiveSummary, keyImperatives } = ctx;
   const rawNarrativeHtml = narratives?.phase3?.executive
-    ? NarrativeExtractionService.markdownToHtml(narratives.phase3.executive)
+    ? parseMarkdownToHTML(narratives.phase3.executive, { maxBoldPerParagraph: 3, maxListItems: 8 })
     : '';
 
   // Sanitize narrative content to remove orphaned visualization headers
@@ -326,6 +409,29 @@ function generateExecutiveSummaryWithNarrative(ctx: ReportContext, narratives: a
         </div>
       </div>
 
+      <!-- Phase 5: Executive Highlights Row -->
+      ${phase5Visuals?.executiveHighlightsRow ? `
+        <div class="phase5-highlights-row" style="margin: 1.5rem 0;">
+          ${phase5Visuals.executiveHighlightsRow}
+        </div>
+      ` : executiveHighlightsHtml}
+
+      <!-- Phase 5: Overall Gauge + Radar Dashboard -->
+      ${phase5Visuals?.overallGaugeChart || phase5Visuals?.chapterRadarChart ? `
+        <div class="executive-charts-dashboard" style="display: flex; gap: 2rem; margin: 2rem 0; flex-wrap: wrap; align-items: flex-start;">
+          ${phase5Visuals.overallGaugeChart ? `
+            <div class="gauge-container" style="flex: 0 0 auto;">
+              ${phase5Visuals.overallGaugeChart}
+            </div>
+          ` : ''}
+          ${phase5Visuals.chapterRadarChart ? `
+            <div class="radar-container" style="flex: 1; min-width: 350px;">
+              ${phase5Visuals.chapterRadarChart}
+            </div>
+          ` : ''}
+        </div>
+      ` : ''}
+
       <!-- Phase 5: Critical Metrics Dashboard -->
       ${phase5Visuals?.executiveDashboard ? `
         <div class="executive-metrics-dashboard" style="margin: 2rem 0;">
@@ -340,11 +446,8 @@ function generateExecutiveSummaryWithNarrative(ctx: ReportContext, narratives: a
         </div>
       ` : ''}
 
-      <!-- Executive Highlights Summary -->
-      ${executiveHighlightsHtml}
-
-      <!-- Key Takeaways Box -->
-      ${keyTakeawaysHtml}
+      <!-- Phase 5: Key Takeaways Box -->
+      ${phase5Visuals?.keyTakeawaysBox || keyTakeawaysHtml}
 
       <!-- Overall Benchmark Callout -->
       ${overallBenchmarkHtml}
@@ -396,7 +499,7 @@ function generateNarrativeSection(
   ctx?: ReportContext,
   chartHtml?: string
 ): string {
-  const narrativeHtml = NarrativeExtractionService.markdownToHtml(content);
+  const narrativeHtml = parseMarkdownToHTML(content, { maxBoldPerParagraph: 3, maxListItems: 8 });
 
   // Generate chapter header with icon if chapter code provided
   let headerHtml: string;
@@ -1159,37 +1262,215 @@ function estimatePageCount(html: string): number {
 // ============================================================================
 
 /**
- * Phase 5 Visualizations Bundle
+ * Phase 5 Visualizations Bundle (Enhanced)
  */
 interface Phase5Visuals {
+  // Core dashboards
   executiveDashboard: string;
-  riskHeatmap: string;
-  roadmapTimeline: string;
   keyStatsRow: string;
+  // Scorecard components
+  scorecardGrid: string;
+  chapterRadarChart: string;
+  overallGaugeChart: string;
+  // Risk visualizations
+  riskHeatmap: string;
+  riskMatrix: string;
+  // Roadmap & Recommendations
+  roadmapTimeline: string;
+  recommendationsList: string;
+  quickWinsSummary: string;
+  // Findings & Benchmarks
+  findingsGrid: string;
+  benchmarkTable: string;
+  // Executive highlights
+  executiveHighlightsRow: string;
+  keyTakeawaysBox: string;
 }
 
 /**
  * Generate Phase 5 enhanced visualizations from ReportContext
  */
 function generatePhase5Visualizations(ctx: ReportContext): Phase5Visuals {
+  logger.info('Generating Phase 5 enhanced visualizations bundle');
+
   // Generate executive metrics dashboard
   const executiveDashboard = generateExecutiveMetricsDashboard(ctx);
-
-  // Generate risk heatmap
-  const riskHeatmap = ctx.risks.length > 0 ? renderRiskHeatmapFromRisks(ctx.risks) : '';
-
-  // Generate roadmap timeline
-  const roadmapTimeline = generateRoadmapTimelineViz(ctx);
 
   // Generate key stats row
   const keyStatsRow = generateKeyStatsRow(ctx);
 
+  // Generate scorecard grid from chapters
+  const scorecardGrid = generateScorecardGrid(chaptersToScorecardItems(ctx.chapters, ctx.dimensions));
+
+  // Generate chapter radar chart (SVG)
+  const chapterRadarChart = generateChapterRadarChartViz(ctx);
+
+  // Generate overall health gauge chart (SVG)
+  const overallGaugeChart = generateOverallGaugeViz(ctx);
+
+  // Generate risk heatmap
+  const riskHeatmap = ctx.risks.length > 0 ? renderRiskHeatmapFromRisks(ctx.risks) : '';
+
+  // Generate risk matrix visualization
+  const riskMatrix = ctx.risks.length > 0 ? generateRiskMatrix(risksToMatrixItems(ctx.risks)) : '';
+
+  // Generate roadmap timeline
+  const roadmapTimeline = generateRoadmapTimelineViz(ctx);
+
+  // Generate recommendations list
+  const quickWinIds = new Set(ctx.quickWins?.map(qw => qw.id) || []);
+  const recommendationsList = ctx.recommendations.length > 0
+    ? generateRecommendationsList(recommendationsToCardProps(ctx.recommendations, quickWinIds))
+    : '';
+
+  // Generate quick wins summary
+  const quickWinsSummary = ctx.quickWins.length > 0
+    ? generateQuickWinsSummary(ctx.quickWins.map(qw => ({
+        title: qw.theme,
+        description: qw.description,
+        impact: qw.impact as 'High' | 'Medium' | 'Low',
+        effort: qw.effort as 'Low' | 'Medium' | 'High',
+        timeframe: qw.timeframe || '30 days',
+        dimensionCode: qw.dimensionCode,
+      })))
+    : '';
+
+  // Generate findings grid
+  const findingsGrid = ctx.findings.length > 0
+    ? generateFindingsGrid(findingsToGridProps(ctx.findings))
+    : '';
+
+  // Generate benchmark comparison table
+  const benchmarkTable = generateBenchmarkComparisonTable(
+    ctx.chapters.map(ch => ({
+      name: ch.name,
+      score: ch.score,
+      benchmark: ch.industryBenchmark || 65,
+      delta: ch.score - (ch.industryBenchmark || 65),
+    }))
+  );
+
+  // Generate executive highlights row
+  const executiveHighlightsRow = generateExecutiveHighlightsRow([
+    { icon: '📊', value: ctx.overallHealth.score.toString(), label: 'Health Score', color: getScoreBandColor(ctx.overallHealth.score) },
+    { icon: '📈', value: ctx.findings.filter(f => f.type === 'strength').length.toString(), label: 'Strengths', color: '#28a745' },
+    { icon: '⚠️', value: ctx.risks.length.toString(), label: 'Risks', color: '#dc3545' },
+    { icon: '🎯', value: ctx.recommendations.length.toString(), label: 'Actions', color: '#212653' },
+  ]);
+
+  // Generate key takeaways box
+  const keyTakeawaysBox = generateKeyTakeawaysBox(
+    ctx.keyTakeaways?.slice(0, 5).map(t => ({
+      icon: getTakeawayIcon(t.type),
+      text: t.text,
+      type: t.type as 'strength' | 'weakness' | 'opportunity' | 'risk',
+    })) || []
+  );
+
+  logger.info({
+    visualCount: Object.values({
+      executiveDashboard, keyStatsRow, scorecardGrid, chapterRadarChart,
+      overallGaugeChart, riskHeatmap, riskMatrix, roadmapTimeline,
+      recommendationsList, quickWinsSummary, findingsGrid, benchmarkTable,
+      executiveHighlightsRow, keyTakeawaysBox
+    }).filter(v => v).length
+  }, 'Phase 5 visualizations generated');
+
   return {
     executiveDashboard,
+    keyStatsRow,
+    scorecardGrid,
+    chapterRadarChart,
+    overallGaugeChart,
     riskHeatmap,
+    riskMatrix,
     roadmapTimeline,
-    keyStatsRow
+    recommendationsList,
+    quickWinsSummary,
+    findingsGrid,
+    benchmarkTable,
+    executiveHighlightsRow,
+    keyTakeawaysBox,
   };
+}
+
+/**
+ * Get color based on score band
+ */
+function getScoreBandColor(score: number): string {
+  if (score >= 80) return '#28a745';
+  if (score >= 60) return '#969423';
+  if (score >= 40) return '#ffc107';
+  return '#dc3545';
+}
+
+/**
+ * Get icon for takeaway type
+ */
+function getTakeawayIcon(type: string): string {
+  const icons: Record<string, string> = {
+    strength: '✓',
+    weakness: '!',
+    opportunity: '→',
+    risk: '⚠',
+  };
+  return icons[type] || '•';
+}
+
+/**
+ * Generate chapter radar chart visualization (SVG)
+ */
+function generateChapterRadarChartViz(ctx: ReportContext): string {
+  if (ctx.chapters.length === 0) return '';
+
+  // Use the format expected by generateRadarChartSVG
+  const data = {
+    labels: ctx.chapters.map(ch => ch.name),
+    values: ctx.chapters.map(ch => ch.score),
+    benchmarkValues: ctx.chapters.map(ch => (ch as any).industryBenchmark || 65),
+    title: 'Chapter Performance',
+  };
+
+  const svg = generateRadarChartSVG(data, {
+    width: 400,
+    height: 350,
+    showLegend: true,
+    showGrid: true,
+    gridLevels: 5,
+  });
+
+  return wrapChartInContainer(svg, {
+    title: 'Chapter Performance Overview',
+    caption: 'Score comparison across all business chapters',
+    width: '100%',
+  });
+}
+
+/**
+ * Generate overall health gauge visualization (SVG)
+ */
+function generateOverallGaugeViz(ctx: ReportContext): string {
+  const svg = generateGaugeChartSVG({
+    value: ctx.overallHealth.score,
+    maxValue: 100,
+    label: 'Overall Health',
+  }, {
+    width: 220,
+    height: 140,
+    showValue: true,
+    showLabel: true,
+    colorBands: [
+      { min: 0, max: 40, color: '#dc3545' },
+      { min: 40, max: 60, color: '#ffc107' },
+      { min: 60, max: 80, color: '#969423' },
+      { min: 80, max: 100, color: '#28a745' },
+    ],
+  });
+
+  return wrapChartInContainer(svg, {
+    title: 'Business Health Score',
+    width: '220px',
+  });
 }
 
 /**
@@ -1292,21 +1573,27 @@ function formatTimeHorizon(horizon: string): string {
 }
 
 /**
- * Generate Risk Assessment section with Heat Map visualization
+ * Generate Risk Assessment section with Heat Map and Risk Matrix visualizations
  */
 function generateRiskAssessmentWithHeatmap(
   ctx: ReportContext,
   narrativeContent: string,
-  heatmapHtml: string
+  heatmapHtml: string,
+  riskMatrixHtml?: string
 ): string {
   const sanitizedNarrative = narrativeContent
     ? sanitizeOrphanedVisualizationHeaders(
-        NarrativeExtractionService.markdownToHtml(narrativeContent)
+        parseMarkdownToHTML(narrativeContent, { maxBoldPerParagraph: 3, maxListItems: 8 })
       ).html
     : '';
 
   // Fallback to structured data if no narrative
   const structuredRisks = !sanitizedNarrative ? generateRisksSection(ctx) : '';
+
+  // Generate risk matrix if not provided
+  const riskMatrix = riskMatrixHtml || (ctx.risks.length > 0
+    ? generateRiskMatrix(risksToMatrixItems(ctx.risks))
+    : '');
 
   return `
     <section class="section page-break">
@@ -1314,15 +1601,26 @@ function generateRiskAssessmentWithHeatmap(
         <h2>Risk Assessment</h2>
       </div>
 
-      <!-- Risk Heat Map Visualization -->
-      ${heatmapHtml ? `
-        <div class="risk-heatmap-container" style="margin: 1.5rem 0; page-break-inside: avoid;">
-          <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">
-            ${ctx.risks.length} risks plotted by severity (vertical) and likelihood (horizontal)
-          </p>
-          ${heatmapHtml}
-        </div>
-      ` : ''}
+      <!-- Risk Visualization Dashboard -->
+      <div class="risk-viz-dashboard" style="display: flex; gap: 2rem; margin: 1.5rem 0; flex-wrap: wrap;">
+        <!-- Risk Heat Map -->
+        ${heatmapHtml ? `
+          <div class="risk-heatmap-container" style="flex: 1; min-width: 300px; page-break-inside: avoid;">
+            <h4 style="margin: 0 0 0.75rem 0; color: #212653; font-size: 1rem;">Risk Heat Map</h4>
+            <p style="color: #666; font-size: 0.85rem; margin-bottom: 1rem;">
+              ${ctx.risks.length} risks plotted by severity × likelihood
+            </p>
+            ${heatmapHtml}
+          </div>
+        ` : ''}
+
+        <!-- Risk Matrix -->
+        ${riskMatrix ? `
+          <div class="risk-matrix-container" style="flex: 1; min-width: 300px; page-break-inside: avoid;">
+            ${riskMatrix}
+          </div>
+        ` : ''}
+      </div>
 
       ${sanitizedNarrative ? `
         <div class="narrative-content">
@@ -1343,7 +1641,7 @@ function generateImplementationRoadmapWithTimeline(
 ): string {
   const sanitizedNarrative = narrativeContent
     ? sanitizeOrphanedVisualizationHeaders(
-        NarrativeExtractionService.markdownToHtml(narrativeContent)
+        parseMarkdownToHTML(narrativeContent, { maxBoldPerParagraph: 3, maxListItems: 8 })
       ).html
     : '';
 
