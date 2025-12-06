@@ -210,6 +210,41 @@ export interface FindingsGridProps {
 }
 
 /**
+ * Extract a meaningful title from description text
+ * Used as last-resort fallback when no title property exists
+ */
+function extractTitleFromDescription(description: string): string {
+  if (!description || description.length === 0) {
+    return '';
+  }
+
+  // Try to extract the subject (text before common verbs)
+  const verbPatterns = [
+    /^([A-Z][^.]*?)(?:\s+(?:demonstrates?|shows?|requires?|is at|within|has|have|needs?))/i,
+    /^([A-Z][^.]*?)(?:\s+(?:performance|score|rating|level))/i,
+  ];
+
+  for (const pattern of verbPatterns) {
+    const match = description.match(pattern);
+    if (match && match[1] && match[1].length >= 3 && match[1].length <= 60) {
+      return match[1].trim();
+    }
+  }
+
+  // Fallback: First 50 characters, break at word boundary
+  if (description.length <= 50) {
+    return description;
+  }
+
+  const truncated = description.substring(0, 50);
+  const lastSpace = truncated.lastIndexOf(' ');
+  if (lastSpace > 30) {
+    return truncated.substring(0, lastSpace) + '...';
+  }
+  return truncated + '...';
+}
+
+/**
  * Generate findings grid with categorized columns
  */
 export function generateFindingsGrid(props: FindingsGridProps): string {
@@ -219,13 +254,27 @@ export function generateFindingsGrid(props: FindingsGridProps): string {
     label: string,
     icon: string
   ) => {
-    const findingItems = items.slice(0, 5).map(item => `
-      <div class="finding-item ${category.slice(0, -1)}">
-        <strong>${escapeHtml(item.title)}</strong>
-        ${item.dimension ? `<span class="finding-dimension">[${escapeHtml(item.dimension)}]</span>` : ''}
-        <p>${escapeHtml(item.description)}</p>
-      </div>
-    `).join('');
+    const findingItems = items.slice(0, 5).map(item => {
+      // Defensive title extraction with comprehensive fallback chain
+      const findingTitle =
+        item.title ||
+        item.dimension ||
+        extractTitleFromDescription(item.description || '') ||
+        `${capitalizeFirst(category.slice(0, -1))} Finding`;
+
+      const findingDescription = item.description || '';
+
+      // Only show dimension tag if it's different from the title
+      const showDimensionTag = item.dimension && item.dimension !== findingTitle;
+
+      return `
+        <div class="finding-item ${category.slice(0, -1)}">
+          <strong>${escapeHtml(findingTitle)}</strong>
+          ${showDimensionTag ? `<span class="finding-dimension">[${escapeHtml(item.dimension)}]</span>` : ''}
+          <p>${escapeHtml(findingDescription)}</p>
+        </div>
+      `;
+    }).join('');
 
     return `
       <div class="findings-category ${category}">
@@ -247,31 +296,54 @@ export function generateFindingsGrid(props: FindingsGridProps): string {
 
 /**
  * Convert findings array to grid props
+ * Supports both IDM Finding (snake_case) and ReportFinding (camelCase) formats
  */
-export function findingsToGridProps(findings: Finding[]): FindingsGridProps {
+export function findingsToGridProps(findings: any[]): FindingsGridProps {
+  // Helper to extract title from finding with fallback chain
+  const extractTitle = (f: any): string => {
+    return f.short_label ||     // IDM Finding (snake_case)
+           f.shortLabel ||       // ReportFinding (camelCase)
+           f.title ||            // Alternative property
+           f.label ||            // Alternative property
+           '';
+  };
+
+  // Helper to extract dimension code with fallback
+  const extractDimensionCode = (f: any): string | undefined => {
+    return f.dimension_code ||   // IDM Finding (snake_case)
+           f.dimensionCode;      // ReportFinding (camelCase)
+  };
+
+  // Helper to extract dimension name with fallback
+  const extractDimensionName = (f: any): string | undefined => {
+    const code = extractDimensionCode(f);
+    return f.dimensionName ||    // ReportFinding already has name
+           (code && DIMENSION_METADATA[code as keyof typeof DIMENSION_METADATA]?.name);
+  };
+
   return {
     strengths: findings
       .filter(f => f.type === 'strength')
       .map(f => ({
-        title: f.short_label,
-        description: f.narrative,
-        dimension: DIMENSION_METADATA[f.dimension_code]?.name
+        title: extractTitle(f),
+        description: f.narrative || f.description || '',
+        dimension: extractDimensionName(f)
       })),
     gaps: findings
       .filter(f => f.type === 'gap')
       .map(f => ({
-        title: f.short_label,
-        description: f.narrative,
-        dimension: DIMENSION_METADATA[f.dimension_code]?.name,
-        severity: String(f.severity)
+        title: extractTitle(f),
+        description: f.narrative || f.description || '',
+        dimension: extractDimensionName(f),
+        severity: String(f.severity || '')
       })),
     risks: findings
       .filter(f => f.type === 'risk')
       .map(f => ({
-        title: f.short_label,
-        description: f.narrative,
-        dimension: DIMENSION_METADATA[f.dimension_code]?.name,
-        severity: String(f.severity)
+        title: extractTitle(f),
+        description: f.narrative || f.description || '',
+        dimension: extractDimensionName(f),
+        severity: String(f.severity || '')
       }))
   };
 }

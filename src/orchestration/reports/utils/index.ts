@@ -16,6 +16,7 @@ export {
   parseMarkdownWithValidation,
   processNarrativeForReport as processNarrativeWithNormalization,
   validateParsedHTML,
+  cleanupRemainingMarkdown,
 } from './markdown-parser.js';
 export type { ParseOptions, ParseResult, ValidationResult } from './markdown-parser.js';
 
