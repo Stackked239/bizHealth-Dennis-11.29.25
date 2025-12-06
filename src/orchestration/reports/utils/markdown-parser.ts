@@ -385,6 +385,9 @@ export function parseMarkdownToHTML(
     html = consolidateLongLists(html, opts.maxListItems);
     html = reduceExcessiveDividers(html, opts.maxDividersPerSection);
 
+    // Final cleanup for any escaped markdown (safety net)
+    html = cleanupRemainingMarkdown(html);
+
     return html;
   } catch (error) {
     console.error('[BizHealth] Markdown parser error:', error);
@@ -441,6 +444,31 @@ export function processNarrativeForReport(
 }
 
 // ============================================================================
+// MARKDOWN CLEANUP SAFETY NET
+// ============================================================================
+
+/**
+ * Final cleanup for any markdown syntax that escaped the parser
+ * Called as last step before returning HTML
+ */
+export function cleanupRemainingMarkdown(html: string): string {
+  if (!html) return html;
+
+  // Replace any remaining ** (bold) that weren't caught
+  // But be careful not to break existing <strong> tags
+  html = html.replace(/(?<!<[^>]*)\*\*([^*]+)\*\*(?![^<]*>)/g, '<strong class="bh-emphasis">$1</strong>');
+
+  // Replace any remaining * (italic) that weren't caught
+  // Exclude cases that look like multiplication or CSS units
+  html = html.replace(/(?<!<[^>]*)(?<![0-9px%])\*([^*\n]+)\*(?![^<]*>)/g, '<em class="bh-em">$1</em>');
+
+  // Clean up any double-escaped asterisks
+  html = html.replace(/\\\*/g, '*');
+
+  return html;
+}
+
+// ============================================================================
 // EXPORTS
 // ============================================================================
 
@@ -449,4 +477,5 @@ export default {
   parseMarkdownWithValidation,
   validateParsedHTML,
   processNarrativeForReport,
+  cleanupRemainingMarkdown,
 };

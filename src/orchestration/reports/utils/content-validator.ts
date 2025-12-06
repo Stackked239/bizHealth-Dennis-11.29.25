@@ -142,20 +142,49 @@ function validateHtmlStructure(html: string): string[] {
     errors.push('Invalid HTML structure: missing html declaration');
   }
 
-  // Check for common data issues
-  if (html.includes('undefined')) {
-    const count = (html.match(/undefined/g) || []).length;
-    errors.push(`Report contains "undefined" text: ${count} instances`);
+  // ═══════════════════════════════════════════════════════════
+  // Data Mapping Bug Detection (Enhanced for Phase 5)
+  // ═══════════════════════════════════════════════════════════
+
+  // Check for undefined text in HTML tags (template binding accessing missing property)
+  const undefinedInTagsMatches = html.match(/>undefined</g);
+  if (undefinedInTagsMatches && undefinedInTagsMatches.length > 0) {
+    errors.push(`DATA BUG: ${undefinedInTagsMatches.length} instances of ">undefined<" - template binding accessing missing property`);
   }
 
+  // Check for standalone undefined (not in HTML context - might be valid text)
+  const standaloneUndefined = html.match(/(?<![a-zA-Z])undefined(?![a-zA-Z])/g) || [];
+  const undefinedInTags = undefinedInTagsMatches?.length || 0;
+  if (standaloneUndefined.length > undefinedInTags) {
+    // Only warn if there are more undefined instances than the tag-wrapped ones
+    const extraCount = standaloneUndefined.length - undefinedInTags;
+    if (extraCount > 0) {
+      errors.push(`DATA BUG: ${extraCount} additional standalone "undefined" values detected`);
+    }
+  }
+
+  // Check for null text in HTML tags
+  const nullMatches = html.match(/>null</g);
+  if (nullMatches && nullMatches.length > 0) {
+    errors.push(`DATA WARNING: ${nullMatches.length} instances of ">null<" - possible missing data`);
+  }
+
+  // Check for [object Object] (serialization bug)
   if (html.includes('[object Object]')) {
     const count = (html.match(/\[object Object\]/g) || []).length;
-    errors.push(`Report contains [object Object]: ${count} instances`);
+    errors.push(`DATA BUG: ${count} instances of "[object Object]" - object not properly serialized`);
   }
 
-  if (html.includes('NaN')) {
-    const count = (html.match(/NaN/g) || []).length;
-    errors.push(`Report contains NaN: ${count} instances`);
+  // Check for NaN in numeric contexts
+  const nanMatches = html.match(/>NaN</g);
+  if (nanMatches && nanMatches.length > 0) {
+    errors.push(`DATA WARNING: ${nanMatches.length} instances of "NaN" - numeric calculation error`);
+  }
+
+  // Check for empty strong tags (common symptom of missing title)
+  const emptyStrongMatches = html.match(/<strong[^>]*>\s*<\/strong>/g);
+  if (emptyStrongMatches && emptyStrongMatches.length > 0) {
+    errors.push(`DATA BUG: ${emptyStrongMatches.length} empty <strong> tags - missing title data`);
   }
 
   return errors;
