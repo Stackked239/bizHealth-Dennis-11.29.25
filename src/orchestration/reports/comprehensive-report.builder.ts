@@ -45,6 +45,13 @@ import {
   generateBenchmarkSummaryTable,
   renderComprehensiveRelationshipStatement,
   buildLegalTermsPage,
+  // Clickwrap Legal UX Components
+  generateClickwrapModal,
+  generateClickwrapLegalContent,
+  generateAcceptanceBanner,
+  generateLegalAccordion,
+  getDefaultLegalSections,
+  type ClickwrapConfig,
 } from './components/index.js';
 import {
   getChapterIcon,
@@ -195,17 +202,46 @@ export async function buildComprehensiveReport(
   logger.info('Generating Phase 5 enhanced visualizations');
   const phase5Visuals = generatePhase5Visualizations(ctx);
 
+  // Generate Clickwrap Legal UX Components
+  const generatedDate = new Date(ctx.metadata.generatedAt).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+
+  const clickwrapConfig: ClickwrapConfig = {
+    reportId: ctx.runId,
+    reportType: 'comprehensive',
+    companyName: ctx.companyProfile.name,
+    termsVersion: '2025.1',
+    generatedDate,
+  };
+
+  // Generate legal content for clickwrap modal
+  const clickwrapLegalContent = generateClickwrapLegalContent();
+
+  // Generate clickwrap modal (gates content until accepted)
+  const clickwrapModal = generateClickwrapModal(clickwrapConfig, clickwrapLegalContent);
+
+  // Generate acceptance banner (compact replacement for legal block)
+  const acceptanceBanner = generateAcceptanceBanner({
+    termsVersion: '2025.1',
+    showViewTermsLink: true,
+  });
+
+  // Generate legal accordion (collapsible sections at bottom)
+  const legalSections = getDefaultLegalSections();
+  const legalAccordion = generateLegalAccordion(legalSections);
+
   // Build HTML content with integrated narratives
   const contentSections = [
+    // Clickwrap Modal (rendered outside report-container, gates access)
+    clickwrapModal,
+
     generateReportHeader(ctx, reportName, 'Complete Business Health Assessment'),
 
-    // Legal Terms & Disclaimers (Page 2)
-    buildLegalTermsPage({
-      companyName: ctx.companyProfile.name,
-      reportId: ctx.runId,
-      generatedAt: new Date(ctx.metadata.generatedAt),
-      variant: 'comprehensive',
-    }),
+    // Compact Terms Acceptance Banner (replaces lengthy legal block)
+    acceptanceBanner,
 
     // Relationship statement explaining how Owner's and Comprehensive reports work together
     renderComprehensiveRelationshipStatement(),
@@ -304,6 +340,9 @@ export async function buildComprehensiveReport(
       ` : generateQuickWinsSection(ctx)}
     </section>`,
     `<section id="financial-impact" class="section page-break">${generateFinancialSection(ctx)}</section>`,
+
+    // Legal Accordion (collapsible terms at bottom, collapsed by default)
+    legalAccordion,
 
     // Footer with word count
     generateReportFooterWithStats(ctx, narratives),
