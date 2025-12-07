@@ -167,22 +167,17 @@ export type {
   QualityThresholds,
 } from './content-validator.js';
 
-// ============================================================================
-// DATA SANITIZER (Template sanitization utilities)
-// ============================================================================
-
+// Data sanitization utilities (prevents undefined in templates)
 export {
-  resolveDimensionName,
-  getDimensionCode,
-  getScoreBand as getScoreBandFromSanitizer,
-  getBandColor as getBandColorFromSanitizer,
   sanitizeForTemplate,
-  sanitizeValue,
-  sanitizeScore,
-  sanitizeText,
-  sanitizeDate,
-  safeArray,
-  safeSlice,
-  DIMENSION_NAMES,
-  SCORE_BANDS,
+  resolveDimensionName,
+  validateNoUndefined,
+  sanitizeQuickWins,
+  sanitizeRecommendations,
+  safeGet,
+  formatImpactEffort,
+} from './data-sanitizer.js';
+export type {
+  SanitizedQuickWin,
+  SanitizedRecommendation,
 } from './data-sanitizer.js';

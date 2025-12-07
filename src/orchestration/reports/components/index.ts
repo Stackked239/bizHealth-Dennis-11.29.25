@@ -74,6 +74,33 @@ export {
 export type { LegalTermsContext } from './legal-terms-disclaimers.component.js';
 
 // ============================================================================
+// CLICKWRAP LEGAL UX COMPONENTS
+// ============================================================================
+
+export {
+  // Clickwrap Modal
+  generateClickwrapModal,
+  generateClickwrapLegalContent,
+  // Acceptance Banner
+  generateAcceptanceBanner,
+  // Legal Accordion
+  generateLegalAccordion,
+  parseLegalContent,
+  getDefaultLegalSections,
+  // PDF Legal Handler
+  generatePdfAcceptanceStamp,
+  generatePdfLegalAppendix,
+  generateFullLegalContentForPdf,
+} from './legal/index.js';
+
+export type {
+  ClickwrapConfig,
+  AcceptanceBannerConfig,
+  LegalSection,
+  PdfLegalConfig,
+} from './legal/index.js';
+
+// ============================================================================
 // NEW VISUAL COMPONENTS (16 Components)
 // Tier 1: Core (gauge, score-tile, heatmap, bar-chart, metric-card, table)
 // Tier 2: Action (radar-chart, timeline, roadmap-timeline, kpi-dashboard, risk-matrix)

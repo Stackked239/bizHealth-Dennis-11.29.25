@@ -45,6 +45,13 @@ import {
   generateBenchmarkSummaryTable,
   renderComprehensiveRelationshipStatement,
   buildLegalTermsPage,
+  // Clickwrap Legal UX Components
+  generateClickwrapModal,
+  generateClickwrapLegalContent,
+  generateAcceptanceBanner,
+  generateLegalAccordion,
+  getDefaultLegalSections,
+  type ClickwrapConfig,
 } from './components/index.js';
 import {
   getChapterIcon,
@@ -78,6 +85,8 @@ import {
   parseMarkdownToHTML,
   validateReportContent,
   logValidationResults,
+  // Data sanitization utilities
+  resolveDimensionName,
 } from './utils/index.js';
 
 // Import risk heatmap component
@@ -193,17 +202,46 @@ export async function buildComprehensiveReport(
   logger.info('Generating Phase 5 enhanced visualizations');
   const phase5Visuals = generatePhase5Visualizations(ctx);
 
+  // Generate Clickwrap Legal UX Components
+  const generatedDate = new Date(ctx.metadata.generatedAt).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+
+  const clickwrapConfig: ClickwrapConfig = {
+    reportId: ctx.runId,
+    reportType: 'comprehensive',
+    companyName: ctx.companyProfile.name,
+    termsVersion: '2025.1',
+    generatedDate,
+  };
+
+  // Generate legal content for clickwrap modal
+  const clickwrapLegalContent = generateClickwrapLegalContent();
+
+  // Generate clickwrap modal (gates content until accepted)
+  const clickwrapModal = generateClickwrapModal(clickwrapConfig, clickwrapLegalContent);
+
+  // Generate acceptance banner (compact replacement for legal block)
+  const acceptanceBanner = generateAcceptanceBanner({
+    termsVersion: '2025.1',
+    showViewTermsLink: true,
+  });
+
+  // Generate legal accordion (collapsible sections at bottom)
+  const legalSections = getDefaultLegalSections();
+  const legalAccordion = generateLegalAccordion(legalSections);
+
   // Build HTML content with integrated narratives
   const contentSections = [
+    // Clickwrap Modal (rendered outside report-container, gates access)
+    clickwrapModal,
+
     generateReportHeader(ctx, reportName, 'Complete Business Health Assessment'),
 
-    // Legal Terms & Disclaimers (Page 2)
-    buildLegalTermsPage({
-      companyName: ctx.companyProfile.name,
-      reportId: ctx.runId,
-      generatedAt: new Date(ctx.metadata.generatedAt),
-      variant: 'comprehensive',
-    }),
+    // Compact Terms Acceptance Banner (replaces lengthy legal block)
+    acceptanceBanner,
 
     // Relationship statement explaining how Owner's and Comprehensive reports work together
     renderComprehensiveRelationshipStatement(),
@@ -302,6 +340,9 @@ export async function buildComprehensiveReport(
       ` : generateQuickWinsSection(ctx)}
     </section>`,
     `<section id="financial-impact" class="section page-break">${generateFinancialSection(ctx)}</section>`,
+
+    // Legal Accordion (collapsible terms at bottom, collapsed by default)
+    legalAccordion,
 
     // Footer with word count
     generateReportFooterWithStats(ctx, narratives),
@@ -1272,16 +1313,25 @@ interface Phase5Visuals {
   scorecardGrid: string;
   chapterRadarChart: string;
   overallGaugeChart: string;
+  // Chapter gauges (individual gauges for each chapter)
+  chapterGauges: string;
   // Risk visualizations
   riskHeatmap: string;
   riskMatrix: string;
+  riskSeverityDonut: string;
   // Roadmap & Recommendations
   roadmapTimeline: string;
+  roadmapTimelineSVG: string;
   recommendationsList: string;
+  recommendationsDonut: string;
   quickWinsSummary: string;
+  // Financial & Impact
+  investmentDonut: string;
+  impactBars: string;
   // Findings & Benchmarks
   findingsGrid: string;
   benchmarkTable: string;
+  benchmarkBars: string;
   // Executive highlights
   executiveHighlightsRow: string;
   keyTakeawaysBox: string;
@@ -1323,16 +1373,20 @@ function generatePhase5Visualizations(ctx: ReportContext): Phase5Visuals {
     ? generateRecommendationsList(recommendationsToCardProps(ctx.recommendations, quickWinIds))
     : '';
 
-  // Generate quick wins summary
+  // Generate quick wins summary - fix property mapping for QuickWinDisplay interface
   const quickWinsSummary = ctx.quickWins.length > 0
-    ? generateQuickWinsSummary(ctx.quickWins.map(qw => ({
-        title: qw.theme,
-        description: qw.description,
-        impact: qw.impact as 'High' | 'Medium' | 'Low',
-        effort: qw.effort as 'Low' | 'Medium' | 'High',
-        timeframe: qw.timeframe || '30 days',
-        dimensionCode: qw.dimensionCode,
-      })))
+    ? generateQuickWinsSummary(ctx.quickWins.map(qw => {
+        // Find the linked recommendation to get dimension info
+        const linkedRec = ctx.recommendations.find(r => r.id === qw.recommendationId);
+        const dimensionCode = linkedRec?.dimensionCode || '';
+        return {
+          title: qw.theme || 'Quick Win',
+          impact: qw.impactScore ?? 50,  // Use impactScore (number), not impact
+          effort: qw.effortScore ?? 50,   // Use effortScore (number), not effort
+          dimension: resolveDimensionName(dimensionCode) || 'General',
+          timeframe: qw.timeframe || '30 days',
+        };
+      }))
     : '';
 
   // Generate findings grid
@@ -1367,12 +1421,34 @@ function generatePhase5Visualizations(ctx: ReportContext): Phase5Visuals {
     })) || []
   );
 
+  // Generate chapter gauges (one gauge per chapter)
+  const chapterGauges = generateChapterGaugesViz(ctx);
+
+  // Generate risk severity donut chart
+  const riskSeverityDonut = generateRiskSeverityDonutViz(ctx);
+
+  // Generate roadmap timeline SVG
+  const roadmapTimelineSVG = generateRoadmapTimelineSVGViz(ctx);
+
+  // Generate recommendations donut by priority/horizon
+  const recommendationsDonut = generateRecommendationsDonutViz(ctx);
+
+  // Generate investment allocation donut
+  const investmentDonut = generateInvestmentDonutViz(ctx);
+
+  // Generate impact bars chart
+  const impactBars = generateImpactBarsViz(ctx);
+
+  // Generate benchmark bars chart
+  const benchmarkBars = generateBenchmarkBarsViz(ctx);
+
   logger.info({
     visualCount: Object.values({
       executiveDashboard, keyStatsRow, scorecardGrid, chapterRadarChart,
-      overallGaugeChart, riskHeatmap, riskMatrix, roadmapTimeline,
-      recommendationsList, quickWinsSummary, findingsGrid, benchmarkTable,
-      executiveHighlightsRow, keyTakeawaysBox
+      overallGaugeChart, chapterGauges, riskHeatmap, riskMatrix, riskSeverityDonut,
+      roadmapTimeline, roadmapTimelineSVG, recommendationsList, recommendationsDonut,
+      quickWinsSummary, investmentDonut, impactBars, findingsGrid, benchmarkTable,
+      benchmarkBars, executiveHighlightsRow, keyTakeawaysBox
     }).filter(v => v).length
   }, 'Phase 5 visualizations generated');
 
@@ -1382,13 +1458,20 @@ function generatePhase5Visualizations(ctx: ReportContext): Phase5Visuals {
     scorecardGrid,
     chapterRadarChart,
     overallGaugeChart,
+    chapterGauges,
     riskHeatmap,
     riskMatrix,
+    riskSeverityDonut,
     roadmapTimeline,
+    roadmapTimelineSVG,
     recommendationsList,
+    recommendationsDonut,
     quickWinsSummary,
+    investmentDonut,
+    impactBars,
     findingsGrid,
     benchmarkTable,
+    benchmarkBars,
     executiveHighlightsRow,
     keyTakeawaysBox,
   };
@@ -1668,4 +1751,408 @@ function generateImplementationRoadmapWithTimeline(
       ` : structuredRoadmap}
     </section>
   `;
+}
+
+// ============================================================================
+// NEW PHASE 5 VISUALIZATION FUNCTIONS (B1-B4)
+// ============================================================================
+
+/**
+ * B1: Generate chapter gauges - one gauge per chapter
+ */
+function generateChapterGaugesViz(ctx: ReportContext): string {
+  if (ctx.chapters.length === 0) return '';
+
+  const gauges = ctx.chapters.map(chapter => {
+    const svg = generateGaugeChartSVG({
+      value: chapter.score,
+      maxValue: 100,
+      label: chapter.name,
+    }, {
+      width: 160,
+      height: 100,
+      showValue: true,
+      showLabel: true,
+      colorBands: [
+        { min: 0, max: 40, color: '#dc3545' },
+        { min: 40, max: 60, color: '#ffc107' },
+        { min: 60, max: 80, color: '#969423' },
+        { min: 80, max: 100, color: '#28a745' },
+      ],
+    });
+
+    return wrapChartInContainer(svg, {
+      title: chapter.name,
+      width: '160px',
+    });
+  }).join('');
+
+  return `
+    <div class="chapter-gauges-row" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin: 1.5rem 0;">
+      ${gauges}
+    </div>
+  `;
+}
+
+/**
+ * B2: Generate risk severity donut visualization
+ */
+function generateRiskSeverityDonutViz(ctx: ReportContext): string {
+  if (!ctx.risks || ctx.risks.length === 0) return '';
+
+  // Categorize risks by severity
+  const critical = ctx.risks.filter(r => {
+    const sev = String(r.severity || '').toLowerCase();
+    return sev === 'critical' || sev === '4' || sev === '5';
+  }).length;
+  const high = ctx.risks.filter(r => {
+    const sev = String(r.severity || '').toLowerCase();
+    return sev === 'high' || sev === '3';
+  }).length;
+  const medium = ctx.risks.filter(r => {
+    const sev = String(r.severity || '').toLowerCase();
+    return sev === 'medium' || sev === '2';
+  }).length;
+  const low = ctx.risks.length - critical - high - medium;
+
+  const segments = [
+    { label: 'Critical', value: critical, color: '#dc3545' },
+    { label: 'High', value: high, color: '#fd7e14' },
+    { label: 'Medium', value: medium, color: '#ffc107' },
+    { label: 'Low', value: low, color: '#28a745' },
+  ].filter(s => s.value > 0);
+
+  if (segments.length === 0) return '';
+
+  const svg = generateDonutChartSVG({
+    segments,
+    centerLabel: `${ctx.risks.length}`,
+    centerSubLabel: 'Risks',
+  }, {
+    width: 280,
+    height: 280,
+    showLegend: true,
+  });
+
+  return wrapChartInContainer(svg, {
+    title: 'Risk Severity Distribution',
+    caption: `${ctx.risks.length} risks identified across the organization`,
+  });
+}
+
+/**
+ * B2: Generate risk matrix SVG visualization
+ */
+function generateRiskMatrixSVGViz(ctx: ReportContext): string {
+  if (!ctx.risks || ctx.risks.length === 0) return '';
+
+  const width = 400;
+  const height = 350;
+  const margin = { top: 50, left: 80, right: 20, bottom: 50 };
+  const cellSize = 100;
+
+  // Categorize risks into matrix cells
+  const categorize = (risk: any) => {
+    const sev = String(risk.severity || '').toLowerCase();
+    const lik = String(risk.likelihood || '').toLowerCase();
+    const sevLevel = sev.includes('critical') || sev === '4' || sev === '5' ? 2 :
+                     sev.includes('high') || sev === '3' ? 2 :
+                     sev.includes('medium') || sev === '2' ? 1 : 0;
+    const likLevel = lik.includes('high') || lik === '3' ? 2 :
+                     lik.includes('medium') || lik === '2' ? 1 : 0;
+    return { sev: sevLevel, lik: likLevel };
+  };
+
+  // Count risks in each cell
+  const matrix = Array(3).fill(null).map(() => Array(3).fill(0));
+  ctx.risks.forEach(r => {
+    const { sev, lik } = categorize(r);
+    matrix[2 - lik][sev]++; // Flip Y for visual (high at top)
+  });
+
+  const colors = [
+    ['#28a745', '#ffc107', '#fd7e14'],  // Low likelihood
+    ['#ffc107', '#fd7e14', '#dc3545'],  // Medium likelihood
+    ['#fd7e14', '#dc3545', '#dc3545'],  // High likelihood
+  ];
+
+  let cellsHtml = '';
+  for (let row = 0; row < 3; row++) {
+    for (let col = 0; col < 3; col++) {
+      const x = margin.left + col * cellSize;
+      const y = margin.top + row * cellSize;
+      const count = matrix[row][col];
+      const color = colors[row][col];
+
+      cellsHtml += `
+        <rect x="${x}" y="${y}" width="${cellSize - 4}" height="${cellSize - 4}"
+              fill="${color}" fill-opacity="0.2" stroke="${color}"
+              stroke-width="2" rx="4"/>
+      `;
+      if (count > 0) {
+        cellsHtml += `
+          <circle cx="${x + cellSize/2}" cy="${y + cellSize/2}" r="20" fill="${color}"/>
+          <text x="${x + cellSize/2}" y="${y + cellSize/2 + 6}" text-anchor="middle"
+                font-family="'Montserrat', sans-serif" font-size="16" font-weight="700"
+                fill="white">${count}</text>
+        `;
+      }
+    }
+  }
+
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}"
+         style="max-width: 100%; height: auto;" role="figure"
+         aria-label="Risk Matrix">
+      <rect width="${width}" height="${height}" fill="white" rx="4"/>
+
+      <!-- Title -->
+      <text x="${width/2}" y="25" text-anchor="middle" font-family="'Montserrat', sans-serif"
+            font-size="14" font-weight="600" fill="#212653">Risk Matrix</text>
+
+      <!-- Y-axis label -->
+      <text x="20" y="${margin.top + cellSize * 1.5}" text-anchor="middle"
+            font-family="'Open Sans', sans-serif" font-size="11" fill="#666"
+            transform="rotate(-90, 20, ${margin.top + cellSize * 1.5})">Likelihood</text>
+
+      <!-- X-axis label -->
+      <text x="${margin.left + cellSize * 1.5}" y="${height - 10}" text-anchor="middle"
+            font-family="'Open Sans', sans-serif" font-size="11" fill="#666">Severity</text>
+
+      <!-- Y-axis markers -->
+      <text x="${margin.left - 10}" y="${margin.top + cellSize * 0.5 + 5}" text-anchor="end"
+            font-family="'Open Sans', sans-serif" font-size="10" fill="#666">High</text>
+      <text x="${margin.left - 10}" y="${margin.top + cellSize * 1.5 + 5}" text-anchor="end"
+            font-family="'Open Sans', sans-serif" font-size="10" fill="#666">Medium</text>
+      <text x="${margin.left - 10}" y="${margin.top + cellSize * 2.5 + 5}" text-anchor="end"
+            font-family="'Open Sans', sans-serif" font-size="10" fill="#666">Low</text>
+
+      <!-- X-axis markers -->
+      <text x="${margin.left + cellSize * 0.5}" y="${margin.top + cellSize * 3 + 15}" text-anchor="middle"
+            font-family="'Open Sans', sans-serif" font-size="10" fill="#666">Low</text>
+      <text x="${margin.left + cellSize * 1.5}" y="${margin.top + cellSize * 3 + 15}" text-anchor="middle"
+            font-family="'Open Sans', sans-serif" font-size="10" fill="#666">Medium</text>
+      <text x="${margin.left + cellSize * 2.5}" y="${margin.top + cellSize * 3 + 15}" text-anchor="middle"
+            font-family="'Open Sans', sans-serif" font-size="10" fill="#666">High</text>
+
+      <!-- Cells -->
+      ${cellsHtml}
+    </svg>
+  `;
+
+  return wrapChartInContainer(svg, {
+    title: 'Risk Matrix',
+    caption: 'Risk distribution by severity and likelihood',
+  });
+}
+
+/**
+ * B3: Generate investment allocation donut
+ */
+function generateInvestmentDonutViz(ctx: ReportContext): string {
+  // Group recommendations by dimension for investment allocation
+  const dimCounts: Record<string, number> = {};
+  ctx.recommendations.forEach(rec => {
+    const dim = rec.dimensionCode || 'Other';
+    dimCounts[dim] = (dimCounts[dim] || 0) + 1;
+  });
+
+  const segments = Object.entries(dimCounts).map(([code, count], idx) => {
+    const colors = ['#212653', '#969423', '#0d6efd', '#28a745', '#fd7e14', '#6c757d'];
+    return {
+      label: resolveDimensionName(code),
+      value: count,
+      color: colors[idx % colors.length],
+    };
+  }).slice(0, 6);
+
+  if (segments.length === 0) return '';
+
+  const svg = generateDonutChartSVG({
+    segments,
+    centerLabel: `${ctx.recommendations.length}`,
+    centerSubLabel: 'Initiatives',
+  }, {
+    width: 280,
+    height: 280,
+    showLegend: true,
+  });
+
+  return wrapChartInContainer(svg, {
+    title: 'Investment Allocation',
+    caption: 'Recommended investment distribution by dimension',
+  });
+}
+
+/**
+ * B3: Generate impact bars visualization
+ */
+function generateImpactBarsViz(ctx: ReportContext): string {
+  if (ctx.recommendations.length === 0) return '';
+
+  const topRecs = ctx.recommendations
+    .sort((a, b) => (b.impactScore || 0) - (a.impactScore || 0))
+    .slice(0, 6)
+    .map(r => ({
+      label: r.theme?.substring(0, 25) || 'Recommendation',
+      value: r.impactScore || 50,
+    }));
+
+  const svg = generateHorizontalBarChartSVG({
+    items: topRecs,
+    maxValue: 100,
+  }, {
+    width: 450,
+    height: 220,
+    showValues: true,
+    barHeight: 28,
+    colorByValue: true,
+  });
+
+  return wrapChartInContainer(svg, {
+    title: 'Top Recommendations by Impact',
+    caption: 'Highest impact initiatives prioritized for implementation',
+  });
+}
+
+/**
+ * B3: Generate recommendations donut by horizon
+ */
+function generateRecommendationsDonutViz(ctx: ReportContext): string {
+  if (ctx.recommendations.length === 0) return '';
+
+  // Group by horizon
+  const horizonCounts = {
+    '90 Days': 0,
+    '12 Months': 0,
+    '24+ Months': 0,
+  };
+
+  ctx.recommendations.forEach(rec => {
+    const horizon = String(rec.horizon || '').toLowerCase();
+    if (horizon.includes('90') || horizon.includes('0-90')) {
+      horizonCounts['90 Days']++;
+    } else if (horizon.includes('12') || horizon.includes('6-12')) {
+      horizonCounts['12 Months']++;
+    } else {
+      horizonCounts['24+ Months']++;
+    }
+  });
+
+  const segments = [
+    { label: '0-90 Days', value: horizonCounts['90 Days'], color: '#dc3545' },
+    { label: '3-12 Months', value: horizonCounts['12 Months'], color: '#fd7e14' },
+    { label: '12-24+ Months', value: horizonCounts['24+ Months'], color: '#28a745' },
+  ].filter(s => s.value > 0);
+
+  if (segments.length === 0) return '';
+
+  const svg = generateDonutChartSVG({
+    segments,
+    centerLabel: `${ctx.recommendations.length}`,
+    centerSubLabel: 'Actions',
+  }, {
+    width: 280,
+    height: 280,
+    showLegend: true,
+  });
+
+  return wrapChartInContainer(svg, {
+    title: 'Recommendations by Timeline',
+    caption: 'Distribution of actions across implementation phases',
+  });
+}
+
+/**
+ * B4: Generate roadmap timeline SVG visualization
+ */
+function generateRoadmapTimelineSVGViz(ctx: ReportContext): string {
+  if (!ctx.roadmap?.phases || ctx.roadmap.phases.length === 0) return '';
+
+  const width = 800;
+  const height = 200;
+  const phases = ctx.roadmap.phases.slice(0, 4);
+  const phaseWidth = (width - 100) / phases.length;
+
+  const phaseColors = ['#dc3545', '#fd7e14', '#ffc107', '#28a745'];
+  const phaseBars = phases.map((phase, idx) => {
+    const x = 50 + idx * phaseWidth;
+    const color = phaseColors[idx % phaseColors.length];
+    const initiativeCount = phase.linkedRecommendationIds?.length || 0;
+
+    return `
+      <!-- Phase ${idx + 1} -->
+      <rect x="${x}" y="80" width="${phaseWidth - 10}" height="40"
+            fill="${color}" rx="4"/>
+      <text x="${x + phaseWidth/2 - 5}" y="105" text-anchor="middle"
+            font-family="'Montserrat', sans-serif" font-size="11"
+            font-weight="600" fill="white">${phase.name || `Phase ${idx + 1}`}</text>
+      <text x="${x + phaseWidth/2 - 5}" y="145" text-anchor="middle"
+            font-family="'Open Sans', sans-serif" font-size="10" fill="#666">
+        ${initiativeCount} initiatives
+      </text>
+    `;
+  }).join('');
+
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}"
+         style="max-width: 100%; height: auto;" role="figure"
+         aria-label="Implementation Roadmap Timeline">
+      <rect width="${width}" height="${height}" fill="white" rx="4"/>
+
+      <!-- Title -->
+      <text x="${width/2}" y="30" text-anchor="middle" font-family="'Montserrat', sans-serif"
+            font-size="16" font-weight="600" fill="#212653">Implementation Phases</text>
+
+      <!-- Timeline base -->
+      <line x1="40" y1="100" x2="${width - 40}" y2="100" stroke="#e9ecef" stroke-width="4"/>
+
+      <!-- Phase blocks -->
+      ${phaseBars}
+
+      <!-- Start/End markers -->
+      <circle cx="50" cy="100" r="8" fill="#212653"/>
+      <text x="50" y="175" text-anchor="middle" font-family="'Open Sans', sans-serif"
+            font-size="10" fill="#212653">Start</text>
+
+      <circle cx="${width - 50}" cy="100" r="8" fill="#969423"/>
+      <text x="${width - 50}" y="175" text-anchor="middle" font-family="'Open Sans', sans-serif"
+            font-size="10" fill="#969423">18 Months</text>
+    </svg>
+  `;
+
+  return wrapChartInContainer(svg, {
+    title: '18-Month Implementation Timeline',
+    caption: 'Strategic phases for business transformation',
+  });
+}
+
+/**
+ * B4: Generate benchmark comparison bars
+ */
+function generateBenchmarkBarsViz(ctx: ReportContext): string {
+  if (ctx.chapters.length === 0) return '';
+
+  const items = ctx.chapters.map(ch => ({
+    label: ch.name,
+    value: ch.score,
+    benchmark: ch.industryBenchmark || 65,
+  }));
+
+  const svg = generateHorizontalBarChartSVG({
+    items,
+    maxValue: 100,
+  }, {
+    width: 500,
+    height: 200,
+    showValues: true,
+    barHeight: 32,
+    showBenchmark: true,
+    colorByValue: true,
+  });
+
+  return wrapChartInContainer(svg, {
+    title: 'Performance vs. Industry Benchmark',
+    caption: 'Chapter scores compared to industry averages',
+  });
 }

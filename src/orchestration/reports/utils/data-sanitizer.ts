@@ -1,272 +1,377 @@
 /**
- * Data Sanitizer for Report Generation
+ * Data Sanitizer for Phase 5 Report Generation
+ * Ensures all template bindings have safe fallback values
  * Prevents "undefined" from appearing in rendered HTML
  *
- * This utility ensures all data passed to template generation is properly
- * sanitized with sensible defaults, preventing rendering issues.
+ * @module data-sanitizer
+ * @since 2025-12-07
  */
 
+import { DIMENSION_METADATA } from '../../../types/idm.types.js';
+
 // ============================================================================
-// DIMENSION NAME MAPPING
+// DIMENSION NAME RESOLUTION
 // ============================================================================
 
 /**
- * Standard dimension code to name mapping
+ * Dimension code to display name mapping
  */
 const DIMENSION_NAMES: Record<string, string> = {
-  // Growth Engine Chapter
   STR: 'Strategy',
   SAL: 'Sales',
   MKT: 'Marketing',
-
-  // Performance & Operational Health Chapter
   CX: 'Customer Experience',
   OPS: 'Operations',
   FIN: 'Financials',
-
-  // People & Leadership Chapter
   HR: 'Human Resources',
   LG: 'Leadership & Governance',
   TI: 'Technology & Innovation',
-
-  // Resilience & Safeguards Chapter
   IT: 'IT, Data & Systems',
-  RM: 'Risk Management',
-  CO: 'Compliance',
+  RM: 'Risk Management & Sustainability',
+  CO: 'Compliance'
 };
 
 /**
- * Resolve dimension name from code
- * @param code - Dimension code (e.g., 'STR', 'SAL')
- * @returns Full dimension name or 'General' if not found
+ * Context-aware default values (not generic "N/A")
+ */
+const FIELD_DEFAULTS: Record<string, string | number> = {
+  label: 'Unlabeled',
+  title: 'Untitled',
+  name: 'Unknown',
+  description: 'Description pending',
+  impact: 'Impact assessment pending',
+  effort: 'Effort assessment pending',
+  impactScore: 50,
+  effortScore: 50,
+  score: 0,
+  value: 0,
+  timeframe: 'Timeline to be determined',
+  rationale: 'Rationale pending review',
+  expected_outcome: 'Outcome analysis in progress',
+  dimension: 'General',
+  dimensionName: 'General'
+};
+
+/**
+ * Resolves dimension code to human-readable name
  */
 export function resolveDimensionName(code: string | undefined | null): string {
   if (!code) return 'General';
-  const upperCode = code.toUpperCase().trim();
-  return DIMENSION_NAMES[upperCode] || code;
+  const upperCode = code.toUpperCase();
+  return DIMENSION_NAMES[upperCode] ||
+         DIMENSION_METADATA[upperCode as keyof typeof DIMENSION_METADATA]?.name ||
+         code;
 }
 
 /**
- * Get dimension code from name (reverse lookup)
- * @param name - Dimension name
- * @returns Dimension code or undefined
- */
-export function getDimensionCode(name: string): string | undefined {
-  const entry = Object.entries(DIMENSION_NAMES).find(
-    ([_, dimName]) => dimName.toLowerCase() === name.toLowerCase()
-  );
-  return entry?.[0];
-}
-
-// ============================================================================
-// SCORE BAND UTILITIES
-// ============================================================================
-
-/**
- * Score band thresholds
- */
-export const SCORE_BANDS = {
-  EXCELLENCE: { min: 80, label: 'Excellence', color: '#28a745' },
-  PROFICIENCY: { min: 60, label: 'Proficiency', color: '#0d6efd' },
-  ATTENTION: { min: 40, label: 'Attention', color: '#ffc107' },
-  CRITICAL: { min: 0, label: 'Critical', color: '#dc3545' },
-} as const;
-
-/**
- * Get score band label from numeric score
- */
-export function getScoreBand(score: number): string {
-  if (score >= 80) return 'Excellence';
-  if (score >= 60) return 'Proficiency';
-  if (score >= 40) return 'Attention';
-  return 'Critical';
-}
-
-/**
- * Get score band color from numeric score
- */
-export function getBandColor(band: string): string {
-  const colors: Record<string, string> = {
-    'Excellence': '#28a745',
-    'Proficiency': '#0d6efd',
-    'Attention': '#ffc107',
-    'Critical': '#dc3545',
-  };
-  return colors[band] || '#212653';
-}
-
-// ============================================================================
-// TEMPLATE SANITIZATION
-// ============================================================================
-
-/**
- * Deep sanitize an object for safe template rendering
- * Replaces undefined/null values with sensible defaults
- *
- * @param obj - Object to sanitize
- * @returns Sanitized copy of the object
+ * Deep sanitizes an object, replacing undefined/null with contextual defaults
  */
 export function sanitizeForTemplate<T extends object>(obj: T): T {
   if (obj === null || obj === undefined) {
     return {} as T;
   }
 
-  // Deep clone to avoid mutating original
   const sanitized = JSON.parse(JSON.stringify(obj));
 
-  function walk(node: unknown): unknown {
+  function walk(node: any, path: string = ''): any {
     if (node === null || node === undefined) {
-      return '';
+      return getDefaultForPath(path);
     }
 
     if (Array.isArray(node)) {
-      return node.map(item => walk(item));
+      return node.map((item, idx) => walk(item, `${path}[${idx}]`));
     }
 
-    if (typeof node === 'object' && node !== null) {
-      const result: Record<string, unknown> = {};
-
+    if (typeof node === 'object') {
+      const result: Record<string, any> = {};
       for (const [key, value] of Object.entries(node)) {
-        // Handle undefined/null values based on key type
+        const newPath = path ? `${path}.${key}` : key;
+
         if (value === undefined || value === null) {
-          if (key.toLowerCase().includes('score')) {
-            result[key] = 0;
-          } else if (key.toLowerCase().includes('count') || key.toLowerCase().includes('number')) {
-            result[key] = 0;
-          } else if (key.toLowerCase().includes('name') || key.toLowerCase().includes('title')) {
-            result[key] = '—';
-          } else if (key.toLowerCase().includes('date')) {
-            result[key] = new Date().toISOString();
-          } else if (key === 'dimension' || key === 'dimensionCode') {
+          // Special handling for dimension codes
+          if (key === 'dimensionCode' || key === 'dimension_code') {
             result[key] = value;
-            result['dimensionName'] = resolveDimensionName(value as string);
-          } else if (Array.isArray(value)) {
-            result[key] = [];
+            result['dimensionName'] = 'General';
           } else {
-            result[key] = '—';
+            result[key] = getDefaultForKey(key);
           }
         } else if (typeof value === 'object') {
-          result[key] = walk(value);
+          result[key] = walk(value, newPath);
         } else {
           result[key] = value;
         }
 
         // Auto-populate dimensionName if dimension code exists
-        if ((key === 'dimension' || key === 'dimensionCode') && typeof value === 'string') {
-          result['dimensionName'] = resolveDimensionName(value);
+        if ((key === 'dimensionCode' || key === 'dimension_code') && typeof value === 'string') {
+          if (!node.dimensionName && !node.dimension) {
+            result['dimensionName'] = resolveDimensionName(value);
+          }
         }
       }
-
       return result;
     }
 
     return node;
   }
 
-  return walk(sanitized) as T;
+  return walk(sanitized);
+}
+
+function getDefaultForKey(key: string): string | number {
+  // Check exact match first
+  if (key in FIELD_DEFAULTS) {
+    return FIELD_DEFAULTS[key];
+  }
+
+  // Check partial matches
+  const lowerKey = key.toLowerCase();
+  if (lowerKey.includes('score')) return 0;
+  if (lowerKey.includes('impact')) return 'Impact pending';
+  if (lowerKey.includes('effort')) return 'Effort pending';
+  if (lowerKey.includes('name') || lowerKey.includes('label')) return 'Unnamed';
+  if (lowerKey.includes('title')) return 'Untitled';
+  if (lowerKey.includes('description')) return 'No description available';
+  if (lowerKey.includes('dimension')) return 'General';
+
+  return '—'; // En-dash as elegant fallback (not "N/A" or "undefined")
+}
+
+function getDefaultForPath(path: string): string | number {
+  const key = path.split('.').pop() || '';
+  return getDefaultForKey(key);
 }
 
 /**
- * Sanitize a single value for template rendering
- * @param value - Value to sanitize
- * @param defaultValue - Default value if undefined/null
+ * Validates that no undefined values remain in output
+ * Call after sanitization as safety check
  */
-export function sanitizeValue<T>(value: T | undefined | null, defaultValue: T): T {
-  if (value === undefined || value === null) {
-    return defaultValue;
+export function validateNoUndefined(obj: any, context: string = 'root'): string[] {
+  const issues: string[] = [];
+
+  function check(node: any, path: string): void {
+    if (node === undefined) {
+      issues.push(`Undefined at ${path}`);
+      return;
+    }
+    if (node === null) {
+      // null is acceptable in some contexts
+      return;
+    }
+    if (typeof node === 'string' && node.toLowerCase() === 'undefined') {
+      issues.push(`String "undefined" at ${path}`);
+      return;
+    }
+    if (Array.isArray(node)) {
+      node.forEach((item, idx) => check(item, `${path}[${idx}]`));
+    } else if (typeof node === 'object') {
+      for (const [key, value] of Object.entries(node)) {
+        check(value, `${path}.${key}`);
+      }
+    }
   }
-  return value;
+
+  check(obj, context);
+  return issues;
+}
+
+// ============================================================================
+// QUICK WINS SANITIZATION
+// ============================================================================
+
+export interface SanitizedQuickWin {
+  title: string;
+  description: string;
+  dimension: string;
+  dimensionCode: string;
+  impact: string;
+  effort: string;
+  impactScore: number;
+  effortScore: number;
+  timeframe: string;
 }
 
 /**
- * Sanitize a numeric score value
- * Ensures value is between 0 and 100
+ * Sanitize quick wins data for template rendering
+ * Fixes the undefined dimension/impact/effort issues
  */
-export function sanitizeScore(score: number | undefined | null): number {
-  if (score === undefined || score === null || isNaN(score)) {
-    return 0;
-  }
-  return Math.max(0, Math.min(100, Math.round(score)));
+export function sanitizeQuickWins(quickWins: any[]): SanitizedQuickWin[] {
+  return quickWins.map((qw, index) => {
+    // Resolve dimension name from various possible sources
+    const dimensionCode = qw.dimensionCode || qw.dimension_code || '';
+    const dimension = qw.dimension ||
+                      qw.dimensionName ||
+                      resolveDimensionName(dimensionCode) ||
+                      'General Business';
+
+    // Normalize impact - could be string ('High'/'Medium'/'Low') or number
+    let impactScore = 0;
+    let impactLabel = 'Medium';
+    if (typeof qw.impact === 'number') {
+      impactScore = qw.impact;
+      impactLabel = formatScoreAsLabel(qw.impact);
+    } else if (typeof qw.impactScore === 'number') {
+      impactScore = qw.impactScore;
+      impactLabel = qw.impact || formatScoreAsLabel(qw.impactScore);
+    } else if (typeof qw.impact === 'string') {
+      impactLabel = qw.impact;
+      impactScore = labelToScore(qw.impact);
+    }
+
+    // Normalize effort - could be string or number
+    let effortScore = 0;
+    let effortLabel = 'Medium';
+    if (typeof qw.effort === 'number') {
+      effortScore = qw.effort;
+      effortLabel = formatScoreAsLabel(100 - qw.effort); // Lower effort = higher effort score display
+    } else if (typeof qw.effortScore === 'number') {
+      effortScore = qw.effortScore;
+      effortLabel = qw.effort || formatScoreAsLabel(100 - qw.effortScore);
+    } else if (typeof qw.effort === 'string') {
+      effortLabel = qw.effort;
+      effortScore = labelToScore(qw.effort);
+    }
+
+    return {
+      title: qw.title || qw.theme || `Quick Win ${index + 1}`,
+      description: qw.description || qw.expectedOutcomes || '',
+      dimension: dimension,
+      dimensionCode: dimensionCode,
+      impact: impactLabel,
+      effort: effortLabel,
+      impactScore: impactScore,
+      effortScore: effortScore,
+      timeframe: qw.timeframe || '30 days'
+    };
+  });
 }
 
 /**
- * Sanitize text for HTML rendering
- * Removes dangerous characters and ensures safe output
+ * Convert numeric score to High/Medium/Low label
  */
-export function sanitizeText(text: string | undefined | null): string {
-  if (!text) return '';
-
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+function formatScoreAsLabel(score: number): string {
+  if (score >= 70) return 'High';
+  if (score >= 40) return 'Medium';
+  return 'Low';
 }
 
 /**
- * Format a date value safely
+ * Convert High/Medium/Low label to approximate numeric score
  */
-export function sanitizeDate(date: Date | string | undefined | null): string {
-  if (!date) {
-    return new Date().toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  }
+function labelToScore(label: string): number {
+  const lower = (label || '').toLowerCase();
+  if (lower === 'high') return 80;
+  if (lower === 'medium') return 50;
+  if (lower === 'low') return 20;
+  return 50; // default
+}
 
-  const dateObj = typeof date === 'string' ? new Date(date) : date;
+// ============================================================================
+// RECOMMENDATIONS SANITIZATION
+// ============================================================================
 
-  if (isNaN(dateObj.getTime())) {
-    return new Date().toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  }
+export interface SanitizedRecommendation {
+  id: string;
+  title: string;
+  theme: string;
+  description: string;
+  dimension: string;
+  dimensionCode: string;
+  impactScore: number;
+  effortScore: number;
+  horizon: string;
+  actionSteps: string[];
+  expectedOutcomes: string;
+  isQuickWin: boolean;
+}
 
-  return dateObj.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+/**
+ * Sanitize recommendations data for template rendering
+ */
+export function sanitizeRecommendations(recommendations: any[]): SanitizedRecommendation[] {
+  return recommendations.map((rec, index) => {
+    const dimensionCode = rec.dimension_code || rec.dimensionCode || '';
+    const dimension = rec.dimensionName ||
+                      rec.dimension ||
+                      resolveDimensionName(dimensionCode) ||
+                      'General';
+
+    return {
+      id: rec.id || `rec-${index}`,
+      title: rec.theme || rec.title || `Recommendation ${index + 1}`,
+      theme: rec.theme || rec.title || `Recommendation ${index + 1}`,
+      description: rec.description || rec.narrative || '',
+      dimension: dimension,
+      dimensionCode: dimensionCode,
+      impactScore: rec.impact_score ?? rec.impactScore ?? 50,
+      effortScore: rec.effort_score ?? rec.effortScore ?? 50,
+      horizon: rec.horizon || rec.time_horizon || '12_months',
+      actionSteps: rec.action_steps || rec.actionSteps || [],
+      expectedOutcomes: rec.expected_outcomes || rec.expectedOutcomes || '',
+      isQuickWin: rec.is_quick_win ?? rec.isQuickWin ?? false
+    };
   });
 }
 
 // ============================================================================
-// ARRAY UTILITIES
+// GENERIC SANITIZATION HELPERS
 // ============================================================================
 
 /**
- * Safely get array items, returning empty array if undefined
+ * Safely access a nested property with default fallback
  */
-export function safeArray<T>(arr: T[] | undefined | null): T[] {
-  return arr || [];
+export function safeGet<T>(obj: any, path: string, defaultValue: T): T {
+  const keys = path.split('.');
+  let current = obj;
+
+  for (const key of keys) {
+    if (current === null || current === undefined) {
+      return defaultValue;
+    }
+    current = current[key];
+  }
+
+  return (current !== null && current !== undefined) ? current : defaultValue;
 }
 
 /**
- * Safely get first N items from array
+ * Format score with fallback for display
  */
-export function safeSlice<T>(arr: T[] | undefined | null, count: number): T[] {
-  return (arr || []).slice(0, count);
+export function formatScore(score: number | string | undefined | null, fallback: string = '—'): string {
+  if (score === null || score === undefined) return fallback;
+  if (typeof score === 'number') {
+    if (isNaN(score)) return fallback;
+    return `${Math.round(score)}/100`;
+  }
+  return String(score);
 }
 
-// ============================================================================
-// EXPORTS
-// ============================================================================
+/**
+ * Format impact/effort with intelligent fallback
+ */
+export function formatImpactEffort(
+  numericScore: number | undefined | null,
+  textScore: string | undefined | null
+): string {
+  if (typeof numericScore === 'number' && !isNaN(numericScore)) {
+    return `${Math.round(numericScore)}/100`;
+  }
+  if (textScore) {
+    const lower = textScore.toLowerCase();
+    if (lower === 'high') return 'High';
+    if (lower === 'medium') return 'Medium';
+    if (lower === 'low') return 'Low';
+    return textScore;
+  }
+  return 'Pending';
+}
 
 export default {
-  resolveDimensionName,
-  getDimensionCode,
-  getScoreBand,
-  getBandColor,
   sanitizeForTemplate,
-  sanitizeValue,
-  sanitizeScore,
-  sanitizeText,
-  sanitizeDate,
-  safeArray,
-  safeSlice,
-  DIMENSION_NAMES,
-  SCORE_BANDS,
+  resolveDimensionName,
+  validateNoUndefined,
+  sanitizeQuickWins,
+  sanitizeRecommendations,
+  safeGet,
+  formatScore,
+  formatImpactEffort
 };

@@ -37,6 +37,13 @@ import {
   renderWhereToGoForDetail,
   QUICK_REFS,
   buildLegalTermsPage,
+  // Clickwrap Legal UX Components
+  generateClickwrapModal,
+  generateClickwrapLegalContent,
+  generateAcceptanceBanner,
+  generateLegalAccordion,
+  getDefaultLegalSections,
+  type ClickwrapConfig,
 } from './components/index.js';
 import { getChapterIcon } from './constants/index.js';
 
@@ -155,16 +162,45 @@ export async function buildOwnersReport(
   const roiLow = financialProjections?.roi90Day || 1.5;
   const roiHigh = roiLow * 1.5;
 
+  // Generate Clickwrap Legal UX Components
+  const generatedDate = new Date(ctx.metadata.generatedAt).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+
+  const clickwrapConfig: ClickwrapConfig = {
+    reportId: ctx.runId,
+    reportType: 'owner',
+    companyName: ctx.companyProfile.name,
+    termsVersion: '2025.1',
+    generatedDate,
+  };
+
+  // Generate legal content for clickwrap modal
+  const clickwrapLegalContent = generateClickwrapLegalContent();
+
+  // Generate clickwrap modal (gates content until accepted)
+  const clickwrapModal = generateClickwrapModal(clickwrapConfig, clickwrapLegalContent);
+
+  // Generate acceptance banner (compact replacement for legal block)
+  const acceptanceBanner = generateAcceptanceBanner({
+    termsVersion: '2025.1',
+    showViewTermsLink: true,
+  });
+
+  // Generate legal accordion (collapsible sections at bottom)
+  const legalSections = getDefaultLegalSections();
+  const legalAccordion = generateLegalAccordion(legalSections);
+
   const html = wrapHtmlDocument(`
+    <!-- Clickwrap Modal (gates content until accepted) -->
+    ${clickwrapModal}
+
     ${generateReportHeader(ctx, reportName, 'Your Executive Decision Guide')}
 
-    <!-- Legal Terms & Disclaimers (Page 2) -->
-    ${buildLegalTermsPage({
-      companyName: ctx.companyProfile.name,
-      reportId: ctx.runId,
-      generatedAt: new Date(ctx.metadata.generatedAt),
-      variant: 'owners',
-    })}
+    <!-- Compact Terms Acceptance Banner (replaces lengthy legal block) -->
+    ${acceptanceBanner}
 
     <!-- ================================================================
          SECTION: Your Business Health at a Glance
@@ -385,6 +421,9 @@ export async function buildOwnersReport(
         </ol>
       </div>
     </section>
+
+    <!-- Legal Accordion (collapsible terms at bottom, collapsed by default) -->
+    ${legalAccordion}
 
     ${generateOwnerReportFooter(ctx, narratives)}
   `, {

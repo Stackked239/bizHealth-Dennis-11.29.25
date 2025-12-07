@@ -514,20 +514,75 @@ export function generateProgressBar(
 }
 
 // ============================================================================
-// FALLBACK / UTILITY
+// FALLBACK / PLACEHOLDER SVG
 // ============================================================================
 
 /**
- * Generate fallback SVG when chart can't be rendered
+ * Generate fallback SVG when chart can't be rendered (internal)
  */
 function generateFallbackSvg(chartType: string, message: string, size: number = 300): string {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size * 0.6}" style="max-width: 100%; height: auto;">
-    <rect width="${size}" height="${size * 0.6}" fill="${COLORS.background}" rx="8"/>
-    <text x="${size / 2}" y="${size * 0.25}" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="14" font-weight="600" fill="${COLORS.lightGray}">${escapeXml(chartType)}</text>
-    <text x="${size / 2}" y="${size * 0.4}" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="12" fill="${COLORS.lightGray}">${escapeXml(message)}</text>
-  </svg>`;
+  return generatePlaceholderSVG(chartType, message, size, size * 0.6);
+}
 
-  return wrapChart(svg, chartType);
+/**
+ * Generates a branded placeholder SVG when chart data is insufficient
+ * Maintains visual consistency even when charts can't render
+ * @export - available for external use in report builders
+ */
+export function generatePlaceholderSVG(
+  title: string = 'Visualization',
+  reason: string = 'Data being processed',
+  width: number = 400,
+  height: number = 200
+): string {
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}"
+         style="max-width: 100%; height: auto;" role="figure"
+         aria-label="${escapeXml(title)} - ${escapeXml(reason)}">
+      <rect width="${width}" height="${height}" fill="#f8f9fa" rx="4"/>
+
+      <!-- Decorative chart icon -->
+      <g transform="translate(${width/2 - 30}, ${height/2 - 40})">
+        <rect x="0" y="40" width="12" height="20" fill="${COLORS.primary}" opacity="0.3" rx="2"/>
+        <rect x="16" y="25" width="12" height="35" fill="${COLORS.primary}" opacity="0.4" rx="2"/>
+        <rect x="32" y="10" width="12" height="50" fill="${COLORS.primary}" opacity="0.5" rx="2"/>
+        <rect x="48" y="30" width="12" height="30" fill="${COLORS.accent}" opacity="0.6" rx="2"/>
+      </g>
+
+      <!-- Title -->
+      <text x="${width/2}" y="${height - 50}" text-anchor="middle"
+            font-family="'Montserrat', 'Segoe UI', sans-serif" font-size="14"
+            font-weight="600" fill="${COLORS.primary}">${escapeXml(title)}</text>
+
+      <!-- Status message -->
+      <text x="${width/2}" y="${height - 28}" text-anchor="middle"
+            font-family="'Open Sans', 'Segoe UI', sans-serif" font-size="11"
+            fill="${COLORS.lightGray}">${escapeXml(reason)}</text>
+    </svg>
+  `;
+
+  return wrapChart(svg, title);
+}
+
+/**
+ * Safe chart generator that wraps any chart generation with fallback handling
+ * Use this to ensure charts never break the report layout
+ */
+export function safeGenerateChart<T>(
+  generator: () => string,
+  chartTitle: string,
+  fallbackReason: string = 'Chart temporarily unavailable'
+): string {
+  try {
+    const result = generator();
+    if (!result || result.trim().length === 0) {
+      return generatePlaceholderSVG(chartTitle, 'No content generated');
+    }
+    return result;
+  } catch (error) {
+    console.error(`Chart generation error for ${chartTitle}:`, error);
+    return generatePlaceholderSVG(chartTitle, fallbackReason);
+  }
 }
 
 /**
