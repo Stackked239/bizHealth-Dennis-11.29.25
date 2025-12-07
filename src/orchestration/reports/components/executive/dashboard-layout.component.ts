@@ -1391,5 +1391,4 @@ export function getDashboardStyles(): string {
 
 export {
   generateExecutiveDashboard as default,
-  getDashboardStyles,
 };
