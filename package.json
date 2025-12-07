@@ -32,7 +32,10 @@
     "test:formatting:update-snapshots": "vitest run --update src/qa/__tests__/",
     "generate:test-reports": "tsx src/qa/scripts/generate-test-reports.ts",
     "generate:qa-samples": "tsx src/qa/scripts/generate-qa-samples.ts",
-    "qa:full": "npm run generate:test-reports && npm run test:formatting && npm run test:css"
+    "qa:full": "npm run generate:test-reports && npm run test:formatting && npm run test:css",
+    "test:visual": "vitest run src/__tests__/phase5-visual-validation.test.ts --reporter=verbose",
+    "report:audit": "npm run start && npm run test:visual",
+    "phase5:validate": "npm run test:visual"
   },
   "keywords": [
     "business-analysis",

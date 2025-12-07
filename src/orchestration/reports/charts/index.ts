@@ -114,6 +114,9 @@ export {
   generateScoreDistributionSVG,
   // Sparkline Charts
   generateSparklineSVG,
+  // Placeholder/Fallback
+  generatePlaceholderSVG,
+  safeGenerateChart,
   // Utility functions
   wrapChartInContainer,
 } from './svg-chart-generators.js';

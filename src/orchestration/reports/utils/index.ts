@@ -166,3 +166,18 @@ export type {
   ContentValidationSummary,
   QualityThresholds,
 } from './content-validator.js';
+
+// Data sanitization utilities (prevents undefined in templates)
+export {
+  sanitizeForTemplate,
+  resolveDimensionName,
+  validateNoUndefined,
+  sanitizeQuickWins,
+  sanitizeRecommendations,
+  safeGet,
+  formatImpactEffort,
+} from './data-sanitizer.js';
+export type {
+  SanitizedQuickWin,
+  SanitizedRecommendation,
+} from './data-sanitizer.js';
