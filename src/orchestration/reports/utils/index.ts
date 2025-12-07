@@ -166,3 +166,23 @@ export type {
   ContentValidationSummary,
   QualityThresholds,
 } from './content-validator.js';
+
+// ============================================================================
+// DATA SANITIZER (Template sanitization utilities)
+// ============================================================================
+
+export {
+  resolveDimensionName,
+  getDimensionCode,
+  getScoreBand as getScoreBandFromSanitizer,
+  getBandColor as getBandColorFromSanitizer,
+  sanitizeForTemplate,
+  sanitizeValue,
+  sanitizeScore,
+  sanitizeText,
+  sanitizeDate,
+  safeArray,
+  safeSlice,
+  DIMENSION_NAMES,
+  SCORE_BANDS,
+} from './data-sanitizer.js';
