@@ -160,3 +160,38 @@ export type {
   QuickWinDisplay,
   BenchmarkComparisonItem,
 } from './visual-components.js';
+
+// ============================================================================
+// LEGAL COMPONENTS (Acceptance Banner, Legal Accordion)
+// ============================================================================
+
+export {
+  generateAcceptanceBanner,
+  getAcceptanceBannerStyles,
+  generateLegalAccordion,
+  getLegalAccordionStyles,
+  parseLegalContent,
+  getDefaultLegalContent,
+} from './legal/index.js';
+
+export type {
+  AcceptanceBannerOptions,
+  LegalSection,
+  LegalAccordionOptions,
+} from './legal/index.js';
+
+// ============================================================================
+// EXECUTIVE DASHBOARD COMPONENTS
+// ============================================================================
+
+export {
+  generateExecutiveDashboard,
+  generateHealthGauge,
+  generateChapterKPITiles,
+  generateDimensionRadar,
+  generateDimensionHeatmap,
+  generateRoadmapTimeline as generateExecutiveRoadmapTimeline,
+  generateInvestmentDonut,
+  generateRiskTable,
+  getDashboardStyles,
+} from './executive/index.js';
