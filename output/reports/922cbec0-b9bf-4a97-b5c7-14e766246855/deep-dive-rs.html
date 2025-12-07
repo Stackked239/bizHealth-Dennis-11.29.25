@@ -604,7 +604,7 @@
 /* ============================================================
    BIZHEALTH.AI UNIFIED CSS FRAMEWORK
    Phase 4 Styling Patterns for Phase 5 Report Generation
-   Generated: 2025-12-06
+   Generated: 2025-12-07
    ============================================================ */
 
 /* ===== BRAND COLOR VARIABLES ===== */
@@ -2070,6 +2070,99 @@ button:focus {
   font-style: italic;
 }
 
+/* ===== VISUAL SAFETY NETS ===== */
+/* Ensure chart containers are always visible for debugging and graceful degradation */
+
+.svg-chart-container {
+  min-height: 150px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 1.5rem 0;
+}
+
+.svg-chart-container:empty::before {
+  content: "Chart loading...";
+  color: #6c757d;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+}
+
+/* Quick Win cards - ensure data visibility */
+.quick-win-card {
+  border-left: 4px solid #969423;
+  background: #ffffff;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0 8px 8px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.quick-win-meta {
+  font-size: 0.875rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+.quick-win-meta span {
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+
+/* Recommendation cards - consistent with Quick Wins */
+.recommendation-item {
+  border-left: 4px solid #212653;
+  background: #ffffff;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0 8px 8px 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* Finding items - visual accent */
+.finding-item {
+  border-left: 4px solid #212653;
+  padding-left: 1rem;
+  margin-bottom: 1rem;
+}
+
+.finding-item.strength {
+  border-left-color: #969423;
+}
+
+.finding-item.weakness,
+.finding-item.gap {
+  border-left-color: #dc3545;
+}
+
+/* Empty state styling */
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* Print safety - ensure backgrounds print */
+@media print {
+  .svg-chart-container {
+    background: #f8f9fa !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .quick-win-card,
+  .recommendation-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
 /* ===== PRINT OPTIMIZATIONS FOR NEW COMPONENTS ===== */
 @media print {
   .scorecard-grid,
@@ -2942,7 +3035,7 @@ button:focus {
       <h1>Resilience &amp; Safeguards Deep Dive</h1>
       <p class="subtitle">Technology, IT, Risk &amp; Compliance</p>
       <p class="company-name">Summit Build Group</p>
-      <p class="date">Assessment Date: December 6, 2025</p>
+      <p class="date">Assessment Date: December 7, 2025</p>
     </header>
   
 
