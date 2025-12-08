@@ -1480,16 +1480,73 @@ export function generateTableOfContents(sections: Array<{ id: string; title: str
 // ============================================================================
 
 /**
- * Escape HTML special characters
+ * Escape HTML special characters.
+ *
+ * This function safely handles non-string inputs by converting them to strings
+ * before escaping. This prevents "text.replace is not a function" errors when
+ * template data contains unexpected types (objects, numbers, arrays, etc.).
+ *
+ * @param text - Value to escape (accepts any type for defensive handling)
+ * @returns HTML-escaped string, empty string for falsy/invalid values
  */
-export function escapeHtml(text: string): string {
-  if (!text) return '';
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+export function escapeHtml(text: unknown): string {
+  // Handle null, undefined, and other falsy values
+  if (text === null || text === undefined) {
+    return '';
+  }
+
+  // If already a string, process directly
+  if (typeof text === 'string') {
+    if (!text) return '';
+    return text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  // Handle numbers (including 0)
+  if (typeof text === 'number') {
+    if (isNaN(text)) return '';
+    return String(text);
+  }
+
+  // Handle booleans
+  if (typeof text === 'boolean') {
+    return String(text);
+  }
+
+  // Handle arrays - join elements and escape
+  if (Array.isArray(text)) {
+    const joined = text
+      .filter((item) => item !== null && item !== undefined)
+      .map((item) => escapeHtml(item))
+      .filter((s) => s.length > 0)
+      .join(', ');
+    return joined;
+  }
+
+  // Handle objects - avoid [object Object]
+  if (typeof text === 'object') {
+    try {
+      const str = String(text);
+      if (str === '[object Object]') {
+        return '';
+      }
+      return escapeHtml(str);
+    } catch {
+      return '';
+    }
+  }
+
+  // Fallback: try to convert to string
+  try {
+    const str = String(text);
+    return escapeHtml(str);
+  } catch {
+    return '';
+  }
 }
 
 /**
