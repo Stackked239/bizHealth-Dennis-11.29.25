@@ -232,6 +232,37 @@ export interface ReportMetadata {
   companyProfileId: string;
   reportType: string;
   pageEstimate?: number;
+  /** Flag for audit trail - indicates if report was generated in Beta mode */
+  betaMode?: boolean;
+}
+
+// ============================================================================
+// LEGAL ACCESS CONFIGURATION
+// ============================================================================
+
+/**
+ * Legal and access control configuration for report rendering
+ *
+ * Controls clickwrap gating, blur overlays, and Beta mode behavior
+ */
+export interface LegalAccessConfig {
+  /**
+   * When true, bypasses clickwrap modal and content blur
+   *
+   * INTERNAL BETA ONLY - Must be false for client-facing reports
+   */
+  betaDisableBlur: boolean;
+
+  /**
+   * Display warning banner on Beta reports
+   * Helps prevent accidental client distribution
+   */
+  showBetaBanner: boolean;
+
+  /**
+   * Terms version for acceptance tracking
+   */
+  termsVersion: string;
 }
 
 /**
@@ -309,6 +340,9 @@ export interface ReportContext {
 
   /** Extracted narrative content from AI analyses */
   narrativeContent?: NarrativeContent;
+
+  /** Legal and access control configuration */
+  legalAccess?: LegalAccessConfig;
 }
 
 // ============================================================================

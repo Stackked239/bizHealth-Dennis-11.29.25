@@ -162,36 +162,51 @@ export async function buildOwnersReport(
   const roiLow = financialProjections?.roi90Day || 1.5;
   const roiHigh = roiLow * 1.5;
 
-  // Generate Clickwrap Legal UX Components
+  // Check Beta mode status from context
+  const betaDisableBlur = ctx.legalAccess?.betaDisableBlur ?? false;
+  const termsVersion = ctx.legalAccess?.termsVersion || '2025.1';
+
+  // Generate Clickwrap Legal UX Components (only when NOT in Beta mode)
   const generatedDate = new Date(ctx.metadata.generatedAt).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
   });
 
-  const clickwrapConfig: ClickwrapConfig = {
-    reportId: ctx.runId,
-    reportType: 'owner',
-    companyName: ctx.companyProfile.name,
-    termsVersion: '2025.1',
-    generatedDate,
-  };
+  let clickwrapModal = '';
+  let acceptanceBanner = '';
+  let legalAccordion = '';
 
-  // Generate legal content for clickwrap modal
-  const clickwrapLegalContent = generateClickwrapLegalContent();
+  if (!betaDisableBlur) {
+    // PRODUCTION MODE: Generate full legal protection components
+    const clickwrapConfig: ClickwrapConfig = {
+      reportId: ctx.runId,
+      reportType: 'owner',
+      companyName: ctx.companyProfile.name,
+      termsVersion,
+      generatedDate,
+    };
 
-  // Generate clickwrap modal (gates content until accepted)
-  const clickwrapModal = generateClickwrapModal(clickwrapConfig, clickwrapLegalContent);
+    // Generate legal content for clickwrap modal
+    const clickwrapLegalContent = generateClickwrapLegalContent();
 
-  // Generate acceptance banner (compact replacement for legal block)
-  const acceptanceBanner = generateAcceptanceBanner({
-    termsVersion: '2025.1',
-    showViewTermsLink: true,
-  });
+    // Generate clickwrap modal (gates content until accepted)
+    clickwrapModal = generateClickwrapModal(clickwrapConfig, clickwrapLegalContent);
 
-  // Generate legal accordion (collapsible sections at bottom)
-  const legalSections = getDefaultLegalSections();
-  const legalAccordion = generateLegalAccordion(legalSections);
+    // Generate acceptance banner (compact replacement for legal block)
+    acceptanceBanner = generateAcceptanceBanner({
+      termsVersion,
+      showViewTermsLink: true,
+    });
+
+    // Generate legal accordion (collapsible sections at bottom)
+    const legalSections = getDefaultLegalSections();
+    legalAccordion = generateLegalAccordion(legalSections);
+
+    logger.info('Production mode: Full legal protection enabled for owner report');
+  } else {
+    logger.info('Beta mode: Clickwrap/blur protection bypassed for owner report');
+  }
 
   const html = wrapHtmlDocument(`
     <!-- Clickwrap Modal (gates content until accepted) -->
@@ -430,6 +445,8 @@ export async function buildOwnersReport(
     title: `${reportName} - ${ctx.companyProfile.name}`,
     brand: options.brand,
     customCSS: narrativeStyles,
+    legalAccess: ctx.legalAccess,
+    ctx: ctx,
   });
 
   // Print reference usage summary if debug logging is enabled

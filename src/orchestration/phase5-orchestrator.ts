@@ -54,9 +54,11 @@ import type {
   ReportManifest,
   BrandConfig,
   ReportMeta,
+  LegalAccessConfig,
 } from '../types/report.types.js';
 import { DEFAULT_BRAND, formatHorizon, getScoreBand } from '../types/report.types.js';
 import { NarrativeExtractionService, NarrativeContent } from '../services/narrative-extraction.service.js';
+import { reportsConfig, getCurrentTermsVersion } from '../config/reports.config.js';
 
 // Import report builders
 import { buildComprehensiveReport } from './reports/comprehensive-report.builder.js';
@@ -616,6 +618,18 @@ export class Phase5Orchestrator {
     // Key imperatives
     const keyImperatives = idm.scores_summary.key_imperatives;
 
+    // Build LegalAccessConfig from environment configuration
+    const legalAccess: LegalAccessConfig = {
+      betaDisableBlur: reportsConfig.betaDisableBlur,
+      showBetaBanner: reportsConfig.betaDisableBlur, // Show banner when in Beta
+      termsVersion: getCurrentTermsVersion(),
+    };
+
+    // Log Beta mode status for this run
+    if (legalAccess.betaDisableBlur) {
+      this.logger.info({ runId }, '[Phase 5] Beta Mode: Clickwrap/blur DISABLED');
+    }
+
     return {
       runId,
       companyProfile: reportCompanyProfile,
@@ -637,8 +651,10 @@ export class Phase5Orchestrator {
         assessmentRunId: runId,
         companyProfileId: idm.meta.company_profile_id,
         reportType: 'all',
+        betaMode: legalAccess.betaDisableBlur, // Flag in metadata for audit trail
       },
       narrativeContent,
+      legalAccess, // Pass legal config to all report builders
     };
   }
 
