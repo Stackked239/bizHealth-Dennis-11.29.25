@@ -155,7 +155,7 @@ export type {
   RecommendationCardProps,
   RoadmapPhaseDisplay,
   ExecutiveHighlight,
-  KeyTakeaway,
+  KeyTakeaway as VisualKeyTakeaway,
   ChapterSummaryProps,
   QuickWinDisplay,
   BenchmarkComparisonItem,
@@ -181,3 +181,40 @@ export {
 } from './enhanced-recommendation.component.js';
 
 export type { EnhancedRecommendation, EnhancedActionStep } from './enhanced-recommendation.component.js';
+
+// ============================================================================
+// WORLD-CLASS CARD COMPONENTS (Phase 1.5-2)
+// Action Plan Cards and Quick Win Cards
+// ============================================================================
+
+export {
+  // Action Plan Cards
+  generateActionPlanCard,
+  generateActionPlanCardGrid,
+  generateActionPlanCardList,
+  generateActionPlanSummary,
+  // Quick Win Cards
+  generateQuickWinCard,
+  generateQuickWinsGrid,
+  generateQuickWinsList,
+  generateQuickWinRow,
+  generateQuickWinsSummary as generateQuickWinsCardSummary,
+  generateQuickWinBadge,
+  generateTransformationArrow,
+} from './cards/index.js';
+
+export type {
+  // Action Plan Card Types
+  ActionPlanCard,
+  ActionPlanCardOptions,
+  ActionPlanGridOptions,
+  CardPriority,
+  CardCategory,
+  CardHorizon,
+  CurrencyRange,
+  ActionStep,
+  // Quick Win Card Types
+  QuickWinCard,
+  QuickWinCardOptions,
+  QuickWinsGridOptions,
+} from './cards/index.js';

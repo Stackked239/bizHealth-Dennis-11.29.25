@@ -68,6 +68,8 @@ import {
   generateBenchmarkComparison,
   generateChapterDimensionBars,
   getReportChartStyles,
+  // World-class visual components (Phase 1.5-2)
+  render12DimensionExecutiveRadar,
 } from './charts/index.js';
 
 // Import Phase 5 visualization utilities
@@ -87,6 +89,12 @@ import {
   logValidationResults,
   // Data sanitization utilities
   resolveDimensionName,
+  // World-class visual components integration (Phase 1.5-2)
+  contextToExecutiveRadarData,
+  contextToFinancialImpactData,
+  contextToActionPlanCards,
+  chapterToSectionHeader,
+  dimensionToSectionHeader,
 } from './utils/index.js';
 
 // Import risk heatmap component
@@ -111,6 +119,10 @@ import {
   generateChapterSummary,
   generateQuickWinsSummary,
   generateBenchmarkComparisonTable,
+  // World-class visual components (Phase 1.5-2)
+  generateFinancialImpactDashboard,
+  generateEnhancedSectionHeader,
+  generateActionPlanCardGrid,
 } from './components/index.js';
 
 // Import Phase 5 SVG Chart Generators
@@ -362,6 +374,12 @@ export async function buildComprehensiveReport(
       ` : generateFindingsSection(ctx)}
     </section>`,
     `<section id="recommendations" class="section page-break">
+      <!-- World-Class: Action Plan Cards Overview -->
+      ${phase5Visuals.actionPlanCards ? `
+        <div class="action-plan-cards-section" style="margin-bottom: 2rem;">
+          ${phase5Visuals.actionPlanCards}
+        </div>
+      ` : ''}
       <!-- Phase 0: Enhanced Recommendations with Strategic Context -->
       ${generateEnhancedRecommendationsSection(
         ctx.recommendations,
@@ -522,6 +540,20 @@ function generateExecutiveSummaryWithNarrative(ctx: ReportContext, narratives: a
       ${phase5Visuals?.executiveDashboard ? `
         <div class="executive-metrics-dashboard" style="margin: 2rem 0;">
           ${phase5Visuals.executiveDashboard}
+        </div>
+      ` : ''}
+
+      <!-- World-Class: 12-Dimension Executive Radar (Signature Visualization) -->
+      ${phase5Visuals?.executiveRadar12Dimension ? `
+        <div class="executive-radar-section" style="margin: 2.5rem 0; padding: 1.5rem; background: #fafbfc; border-radius: 12px; border: 1px solid #e9ecef;">
+          ${phase5Visuals.executiveRadar12Dimension}
+        </div>
+      ` : ''}
+
+      <!-- World-Class: Financial Impact Dashboard -->
+      ${phase5Visuals?.financialImpactDashboard ? `
+        <div class="financial-impact-section" style="margin: 2rem 0;">
+          ${phase5Visuals.financialImpactDashboard}
         </div>
       ` : ''}
 
@@ -1511,6 +1543,10 @@ interface Phase5Visuals {
   // Executive highlights
   executiveHighlightsRow: string;
   keyTakeawaysBox: string;
+  // World-class visual components (Phase 1.5-2)
+  executiveRadar12Dimension: string;
+  financialImpactDashboard: string;
+  actionPlanCards: string;
 }
 
 /**
@@ -1618,15 +1654,30 @@ function generatePhase5Visualizations(ctx: ReportContext): Phase5Visuals {
   // Generate benchmark bars chart
   const benchmarkBars = generateBenchmarkBarsViz(ctx);
 
+  // ============================================================================
+  // WORLD-CLASS VISUAL COMPONENTS (Phase 1.5-2)
+  // ============================================================================
+
+  // Generate 12-Dimension Executive Radar
+  const executiveRadar12Dimension = generate12DimensionExecutiveRadarViz(ctx);
+
+  // Generate Financial Impact Dashboard
+  const financialImpactDashboard = generateFinancialImpactDashboardViz(ctx);
+
+  // Generate Action Plan Cards
+  const actionPlanCards = generateActionPlanCardsViz(ctx);
+
   logger.info({
     visualCount: Object.values({
       executiveDashboard, keyStatsRow, scorecardGrid, chapterRadarChart,
       overallGaugeChart, chapterGauges, riskHeatmap, riskMatrix, riskSeverityDonut,
       roadmapTimeline, roadmapTimelineSVG, recommendationsList, recommendationsDonut,
       quickWinsSummary, investmentDonut, impactBars, findingsGrid, benchmarkTable,
-      benchmarkBars, executiveHighlightsRow, keyTakeawaysBox
+      benchmarkBars, executiveHighlightsRow, keyTakeawaysBox,
+      // World-class components
+      executiveRadar12Dimension, financialImpactDashboard, actionPlanCards
     }).filter(v => v).length
-  }, 'Phase 5 visualizations generated');
+  }, 'Phase 5 visualizations generated (including world-class components)');
 
   return {
     executiveDashboard,
@@ -1650,6 +1701,10 @@ function generatePhase5Visualizations(ctx: ReportContext): Phase5Visuals {
     benchmarkBars,
     executiveHighlightsRow,
     keyTakeawaysBox,
+    // World-class visual components (Phase 1.5-2)
+    executiveRadar12Dimension,
+    financialImpactDashboard,
+    actionPlanCards,
   };
 }
 
@@ -2331,4 +2386,125 @@ function generateBenchmarkBarsViz(ctx: ReportContext): string {
     title: 'Performance vs. Industry Benchmark',
     caption: 'Chapter scores compared to industry averages',
   });
+}
+
+// ============================================================================
+// WORLD-CLASS VISUAL COMPONENTS (Phase 1.5-2) HELPER FUNCTIONS
+// ============================================================================
+
+/**
+ * Generate 12-Dimension Executive Radar visualization
+ * Signature visualization showing all 12 business dimensions in a radar chart
+ */
+function generate12DimensionExecutiveRadarViz(ctx: ReportContext): string {
+  if (ctx.dimensions.length === 0) return '';
+
+  try {
+    // Convert ReportContext to radar data format
+    const radarData = contextToExecutiveRadarData(ctx);
+
+    if (!radarData || radarData.dimensions.length === 0) {
+      logger.warn('No radar data generated from context');
+      return '';
+    }
+
+    // Render the 12-dimension executive radar
+    const radarHtml = render12DimensionExecutiveRadar(radarData, {
+      width: 600,
+      height: 500,
+      showBenchmark: true,
+      showLegend: true,
+      animated: false, // Static for PDF
+    });
+
+    return `
+      <div class="world-class-executive-radar" style="margin: 2rem 0; page-break-inside: avoid;">
+        <h3 style="color: #212653; font-family: 'Montserrat', sans-serif; margin-bottom: 1rem; text-align: center;">
+          12-Dimension Business Health Overview
+        </h3>
+        <div style="display: flex; justify-content: center;">
+          ${radarHtml}
+        </div>
+        <p style="text-align: center; color: #666; font-size: 0.85rem; margin-top: 0.75rem;">
+          ${ctx.companyProfile.name}'s performance across all 12 business dimensions vs. industry benchmark
+        </p>
+      </div>
+    `;
+  } catch (error) {
+    logger.error({ error }, 'Failed to generate 12-dimension executive radar');
+    return '';
+  }
+}
+
+/**
+ * Generate Financial Impact Dashboard visualization
+ * 4-quadrant executive financial summary with ROI projections
+ */
+function generateFinancialImpactDashboardViz(ctx: ReportContext): string {
+  try {
+    // Convert ReportContext to financial impact data
+    const financialData = contextToFinancialImpactData(ctx);
+
+    if (!financialData) {
+      logger.warn('No financial impact data generated from context');
+      return '';
+    }
+
+    // Render the financial impact dashboard
+    const dashboardHtml = generateFinancialImpactDashboard(financialData, {
+      showROI: true,
+      showTimeline: true,
+      companyName: ctx.companyProfile.name,
+    });
+
+    return `
+      <div class="world-class-financial-dashboard" style="margin: 2rem 0; page-break-inside: avoid;">
+        ${dashboardHtml}
+      </div>
+    `;
+  } catch (error) {
+    logger.error({ error }, 'Failed to generate financial impact dashboard');
+    return '';
+  }
+}
+
+/**
+ * Generate Action Plan Cards visualization
+ * Strategic action cards with expandable details and priority indicators
+ */
+function generateActionPlanCardsViz(ctx: ReportContext): string {
+  if (ctx.recommendations.length === 0) return '';
+
+  try {
+    // Convert ReportContext to action plan card data
+    const actionCards = contextToActionPlanCards(ctx);
+
+    if (!actionCards || actionCards.length === 0) {
+      logger.warn('No action plan cards generated from context');
+      return '';
+    }
+
+    // Render the action plan cards grid (top 6 cards)
+    const cardsHtml = generateActionPlanCardGrid(actionCards.slice(0, 6), {
+      columns: 2,
+      showExpandedDetails: false, // Collapsed for overview
+      showTimeline: true,
+      showROI: true,
+    });
+
+    return `
+      <div class="world-class-action-cards" style="margin: 2rem 0;">
+        <h3 style="color: #212653; font-family: 'Montserrat', sans-serif; margin-bottom: 1.25rem;">
+          Strategic Action Plan
+        </h3>
+        <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">
+          Top ${Math.min(actionCards.length, 6)} recommended initiatives for ${ctx.companyProfile.name}
+        </p>
+        ${cardsHtml}
+      </div>
+    `;
+  } catch (error) {
+    logger.error({ error }, 'Failed to generate action plan cards');
+    return '';
+  }
 }
