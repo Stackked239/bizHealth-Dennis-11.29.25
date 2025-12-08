@@ -1,6 +1,58 @@
 /**
  * Report Utilities
+ *
+ * Shared utility functions for all BizHealth report builders.
  */
+
+// ============================================================================
+// SHARED IDM EXTRACTION & FORMATTING UTILITIES
+// ============================================================================
+
+// IDM data extraction utilities (null-safe, with fallbacks)
+export {
+  extractNumericValue,
+  formatBenchmark,
+  getScoreBandFromValue,
+  getBandColorFromName,
+  getChapterName,
+  getChapterMeta,
+  extractChapterScores,
+  extractOverallScore,
+  extractRecommendations,
+  extractHighImpactRecommendations,
+  extractQuickWins,
+  extractRisks,
+  extractCriticalRisks,
+  extractFindings,
+  extractStrengths,
+  extractGaps,
+  extractRoadmap,
+  extractDimensions,
+  getLowestScoringDimension,
+  getHighestScoringDimension,
+} from './idm-extractors.js';
+
+// Formatting utilities (investment, dates, owners, etc.)
+export {
+  formatK,
+  formatOrdinal,
+  formatDate,
+  formatDateShort,
+  formatInvestmentRange,
+  formatReturnEstimate,
+  mapDimensionToOwner,
+  getDimensionName,
+  formatHorizon,
+  horizonToDeadline,
+  formatSeverity,
+  getSeverityColor,
+  truncateText,
+  truncateToSentences,
+} from './format-helpers.js';
+
+// ============================================================================
+// LEGACY UTILITIES
+// ============================================================================
 
 // Legacy markdown sanitizer (basic conversion)
 export {
