@@ -18,6 +18,7 @@ import type {
   ReportQuickWin,
   ReportRoadmapPhase,
   ReportChapter,
+  LegalAccessConfig,
 } from '../../types/report.types.js';
 import { DEFAULT_BRAND, getBandColor, formatHorizon, calculateROI } from '../../types/report.types.js';
 
@@ -31,6 +32,12 @@ import {
   generateChapterBenchmarkCallout,
   generateDimensionBenchmarkCallout,
 } from './components/index.js';
+
+// Import legal components for clickwrap integration
+import {
+  generateClickwrapModal,
+  generateClickwrapLegalContent,
+} from './components/legal/index.js';
 
 // ============================================================================
 // BASE STYLES
@@ -634,6 +641,146 @@ export function generateBaseStyles(brand: BrandConfig = DEFAULT_BRAND): string {
 }
 
 // ============================================================================
+// BETA MODE COMPONENTS
+// ============================================================================
+
+/**
+ * Generate Beta warning banner for internal reports
+ *
+ * Displays prominent red banner to prevent accidental client distribution
+ */
+export function generateBetaBanner(legalAccess?: LegalAccessConfig): string {
+  if (!legalAccess?.betaDisableBlur || !legalAccess?.showBetaBanner) {
+    return '';
+  }
+
+  return `
+    <!-- BizHealth Beta Mode Warning Banner -->
+    <div class="bizhealth-beta-banner" style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(90deg, #dc3545 0%, #c82333 100%);
+      color: white;
+      text-align: center;
+      padding: 12px 20px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      z-index: 99999;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      print-color-adjust: exact;
+      -webkit-print-color-adjust: exact;
+    ">
+      &#9888; INTERNAL BETA - NOT FOR CLIENT DISTRIBUTION - Legal Protection Bypassed
+    </div>
+    <div style="height: 48px;"></div> <!-- Spacer for fixed banner -->
+  `;
+}
+
+/**
+ * Generate content gate CSS with conditional blur behavior
+ */
+export function generateContentGateStyles(betaDisableBlur: boolean): string {
+  if (betaDisableBlur) {
+    // BETA MODE: Override any blur styles
+    return `
+      /* BizHealth Beta Mode: Content gate styles disabled */
+      .report-content-gated {
+        filter: none !important;
+        pointer-events: auto !important;
+        user-select: auto !important;
+        opacity: 1 !important;
+      }
+
+      .clickwrap-overlay {
+        display: none !important;
+      }
+
+      /* Print: Keep Beta banner visible */
+      @media print {
+        .bizhealth-beta-banner {
+          display: block !important;
+          position: static !important;
+          margin-bottom: 1rem;
+        }
+      }
+    `;
+  }
+
+  // PRODUCTION MODE: Full blur and gating styles
+  return `
+    /* BizHealth Production Mode: Content gating active */
+    .report-content-gated {
+      filter: blur(8px);
+      pointer-events: none;
+      user-select: none;
+      opacity: 0.7;
+      transition: all 0.4s ease;
+    }
+
+    .report-content-gated.terms-accepted {
+      filter: none;
+      pointer-events: auto;
+      user-select: auto;
+      opacity: 1;
+    }
+
+    .clickwrap-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(33, 38, 83, 0.95);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .clickwrap-overlay.hidden {
+      display: none;
+    }
+
+    @media print {
+      .clickwrap-overlay {
+        display: none !important;
+      }
+      .report-content-gated {
+        filter: none !important;
+        opacity: 1 !important;
+      }
+    }
+  `;
+}
+
+/**
+ * Generate report metadata JSON block for audit trail
+ */
+export function generateReportMetadataBlock(ctx: ReportContext): string {
+  const metadata = {
+    reportId: ctx.runId,
+    generatedAt: ctx.metadata.generatedAt,
+    pipelineVersion: ctx.metadata.pipelineVersion,
+    betaMode: ctx.metadata.betaMode || false,
+    termsVersion: ctx.legalAccess?.termsVersion || '2025.1',
+    ...(ctx.metadata.betaMode && {
+      betaWarning: 'Report generated in BETA MODE - clickwrap protection bypassed - NOT FOR CLIENT DISTRIBUTION'
+    }),
+  };
+
+  return `
+    <!-- Report Metadata (for audit trail) -->
+    <script type="application/json" id="report-metadata">
+      ${JSON.stringify(metadata, null, 2)}
+    </script>
+  `;
+}
+
+// ============================================================================
 // HTML DOCUMENT STRUCTURE
 // ============================================================================
 
@@ -642,6 +789,8 @@ export function generateBaseStyles(brand: BrandConfig = DEFAULT_BRAND): string {
  *
  * UPDATED 2025-12-04: Now includes unified CSS framework with critical fixes
  * for cover pages, dark sections, print optimization, and accessibility.
+ *
+ * UPDATED 2025-12-08: Added Beta mode support with conditional blur/banner.
  */
 export function wrapHtmlDocument(
   content: string,
@@ -651,15 +800,53 @@ export function wrapHtmlDocument(
     customCSS?: string;
     /** Include unified styles framework (default: true) */
     includeUnifiedStyles?: boolean;
+    /** Legal access configuration for Beta mode support */
+    legalAccess?: LegalAccessConfig;
+    /** Report context for metadata generation */
+    ctx?: ReportContext;
   }
 ): string {
   const brand = options.brand || DEFAULT_BRAND;
   const includeUnifiedStyles = options.includeUnifiedStyles !== false;
+  const legalAccess = options.legalAccess;
+  const betaDisableBlur = legalAccess?.betaDisableBlur ?? false;
 
   // Generate unified styles with brand colors
   const unifiedStyles = includeUnifiedStyles
     ? generateUnifiedStyles(brand.primaryColor, brand.accentColor)
     : '';
+
+  // Generate content gate styles based on Beta mode
+  const contentGateStyles = generateContentGateStyles(betaDisableBlur);
+
+  // Generate Beta banner if enabled
+  const betaBanner = generateBetaBanner(legalAccess);
+
+  // Generate clickwrap modal if NOT in Beta mode
+  let clickwrapModal = '';
+  if (!betaDisableBlur && options.ctx) {
+    const clickwrapConfig = {
+      reportId: options.ctx.runId,
+      reportType: (options.ctx.metadata.reportType || 'comprehensive') as 'comprehensive' | 'owner' | 'executive',
+      companyName: options.ctx.companyProfile.name,
+      termsVersion: legalAccess?.termsVersion || '2025.1',
+      generatedDate: new Date(options.ctx.metadata.generatedAt).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }),
+    };
+    clickwrapModal = generateClickwrapModal(clickwrapConfig, generateClickwrapLegalContent());
+  }
+
+  // Generate report metadata block for audit trail
+  const metadataBlock = options.ctx ? generateReportMetadataBlock(options.ctx) : '';
+
+  // Determine content wrapper class
+  const contentWrapperClass = betaDisableBlur
+    ? 'report-container'
+    : 'report-container report-content-gated';
+  const betaModeAttr = betaDisableBlur ? ' data-beta-mode="true"' : '';
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -675,14 +862,20 @@ export function wrapHtmlDocument(
     /* Unified CSS Framework (Phase 4/5 Consolidation) */
     ${unifiedStyles}
 
+    /* Content Gate Styles (Beta/Production Mode) */
+    ${contentGateStyles}
+
     /* Report-Specific Custom Styles */
     ${options.customCSS || ''}
   </style>
 </head>
 <body>
-  <div class="report-container">
+  ${betaBanner}
+  ${clickwrapModal}
+  <div class="${contentWrapperClass}"${betaModeAttr}>
     ${content}
   </div>
+  ${metadataBlock}
 </body>
 </html>`;
 }
@@ -1339,10 +1532,15 @@ export function generateProgressBar(value: number, max: number = 100, brand: Bra
 }
 
 // ============================================================================
-// RE-EXPORTS - Unified CSS Framework
+// RE-EXPORTS - Unified CSS Framework & Legal Components
 // ============================================================================
 
 /**
  * Re-export unified styles utilities for use in report builders
  */
 export { generateUnifiedStyles, generateCriticalFixesOnly, BRAND_COLORS } from './styles/index.js';
+
+/**
+ * Re-export legal components for use in report builders
+ */
+export { generateClickwrapModal, generateClickwrapLegalContent } from './components/legal/index.js';
