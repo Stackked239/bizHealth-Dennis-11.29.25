@@ -181,3 +181,28 @@ export type {
   SanitizedQuickWin,
   SanitizedRecommendation,
 } from './data-sanitizer.js';
+
+// ============================================================================
+// PHASE 0: PREMIUM REPORT NARRATIVE UTILITIES
+// ============================================================================
+
+// Narrative personalization utilities
+export {
+  personalizeNarrative,
+  ensureCompanyNameFrequency,
+  generateCompanySpecificCallout,
+  generateChapterOpeningNarrative,
+  generateEvidenceIntegratedParagraph,
+  generateWhyThisMatters,
+  generateRiskOfInaction,
+  createPersonalizationContext,
+  getScoreBandInterpretation,
+  describeChapterPattern,
+  getGapImpact,
+} from './narrative-personalizer.js';
+
+export type {
+  PersonalizationContext,
+  ChapterNarrativeContext,
+  EvidenceSource,
+} from './narrative-personalizer.js';

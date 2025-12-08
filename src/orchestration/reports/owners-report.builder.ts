@@ -44,6 +44,9 @@ import {
   generateLegalAccordion,
   getDefaultLegalSections,
   type ClickwrapConfig,
+  // Phase 0: Premium Report Components
+  generateCoverPage,
+  getCoverPageStyles,
 } from './components/index.js';
 import { getChapterIcon } from './constants/index.js';
 
@@ -207,7 +210,15 @@ export async function buildOwnersReport(
     logger.info('Beta mode: Clickwrap/blur protection bypassed for owner report');
   }
 
+  // Phase 0: Generate cover page for Owner's Report
+  const coverPage = generateCoverPage(ctx, {
+    reportType: 'owner',
+    showLogo: true,
+    showConfidentialBadge: true,
+  });
+
   const html = wrapHtmlDocument(`
+    ${coverPage}
 
     ${generateReportHeader(ctx, reportName, 'Your Executive Decision Guide')}
 
@@ -612,6 +623,9 @@ function generateOwnerReportFooter(ctx: ReportContext, narratives: any): string 
  */
 function generateOwnerNarrativeStyles(primaryColor: string, accentColor: string): string {
   return `
+    /* Phase 0: Cover Page Styles */
+    ${getCoverPageStyles()}
+
     /* Narrative Content Styles */
     .narrative-content {
       background: #f8f9fa;

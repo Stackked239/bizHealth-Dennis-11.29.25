@@ -127,6 +127,20 @@ import { renderKPIDashboard, renderQuickStatsRow } from './components/visual/kpi
 import { renderRoadmapTimeline, type RoadmapPhase } from './components/visual/roadmap-timeline.component.js';
 import { getScoreBand, type ScoreBand } from './utils/color-utils.js';
 
+// Phase 0: Premium Report Quality Enhancement imports
+import {
+  generateCoverPage,
+  getCoverPageStyles,
+  generateEnhancedRecommendationsSection,
+} from './components/index.js';
+import {
+  generateChapterOpeningNarrative,
+  createPersonalizationContext,
+  personalizeNarrative,
+  type ChapterNarrativeContext,
+  type PersonalizationContext,
+} from './utils/index.js';
+
 /**
  * Build comprehensive assessment report with integrated narrative content
  */
@@ -246,8 +260,28 @@ export async function buildComprehensiveReport(
     logger.info('Beta mode: Clickwrap/blur protection bypassed');
   }
 
+  // Phase 0: Create personalization context for company-specific language
+  const personalizationCtx: PersonalizationContext = createPersonalizationContext({
+    name: ctx.companyProfile.name,
+    industry: ctx.companyProfile.industry,
+    companySize: ctx.companyProfile.companySize,
+    employeeCount: ctx.companyProfile.employeeCount,
+    yearsInBusiness: ctx.companyProfile.yearsInBusiness,
+    location: ctx.companyProfile.location,
+    lifecycleStage: ctx.companyProfile.lifecycleStage,
+  });
+
+  // Phase 0: Generate cover page
+  const coverPage = generateCoverPage(ctx, {
+    reportType: 'comprehensive',
+    showLogo: true,
+    showConfidentialBadge: true,
+  });
+
   // Build HTML content with integrated narratives
   const contentSections = [
+    // Phase 0: Cover page appears first
+    coverPage,
 
     generateReportHeader(ctx, reportName, 'Complete Business Health Assessment'),
 
@@ -328,15 +362,13 @@ export async function buildComprehensiveReport(
       ` : generateFindingsSection(ctx)}
     </section>`,
     `<section id="recommendations" class="section page-break">
-      <div class="section-header">
-        <h2>Strategic Recommendations</h2>
-      </div>
-      <!-- Phase 5: Recommendations List -->
-      ${phase5Visuals.recommendationsList ? `
-        <div class="phase5-recommendations" style="margin: 1.5rem 0;">
-          ${phase5Visuals.recommendationsList}
-        </div>
-      ` : generateRecommendationsSection(ctx)}
+      <!-- Phase 0: Enhanced Recommendations with Strategic Context -->
+      ${generateEnhancedRecommendationsSection(
+        ctx.recommendations,
+        ctx.findings,
+        ctx.companyProfile.name,
+        'Strategic Recommendations'
+      )}
     </section>`,
     `<section id="quick-wins" class="section page-break">
       <div class="section-header">
@@ -543,7 +575,7 @@ function generateExecutiveSummaryWithNarrative(ctx: ReportContext, narratives: a
 }
 
 /**
- * Generate a narrative section with optional score badge, benchmark callout, and chart
+ * Generate a narrative section with optional score badge, benchmark callout, chart, and Phase 0 chapter opening narrative
  */
 function generateNarrativeSection(
   title: string,
@@ -582,10 +614,38 @@ function generateNarrativeSection(
     }
   }
 
+  // Phase 0: Generate chapter opening narrative for strategic context
+  let chapterOpeningNarrativeHtml = '';
+  if (chapterCode && ctx) {
+    const chapter = ctx.chapters.find(ch => ch.code === chapterCode);
+    if (chapter) {
+      // Get findings for this chapter
+      const chapterDimensions = ctx.dimensions.filter(d => d.chapterCode === chapterCode);
+      const chapterFindings = ctx.findings.filter(f =>
+        chapterDimensions.some(d => d.code === f.dimensionCode)
+      );
+
+      const chapterNarrativeCtx: ChapterNarrativeContext = {
+        chapterCode: chapter.code,
+        chapterName: chapter.name,
+        chapterScore: chapter.score,
+        benchmarkPercentile: chapter.benchmark?.peerPercentile || 50,
+        topStrengths: chapterFindings.filter(f => f.type === 'strength').slice(0, 2),
+        topGaps: chapterFindings.filter(f => f.type === 'gap').slice(0, 2),
+        companyName: ctx.companyProfile.name,
+        industryContext: ctx.companyProfile.industry,
+        overallHealthScore: ctx.overallHealth.score,
+      };
+
+      chapterOpeningNarrativeHtml = generateChapterOpeningNarrative(chapterNarrativeCtx);
+    }
+  }
+
   return `
     <section class="section page-break">
       ${headerHtml}
       ${benchmarkHtml}
+      ${chapterOpeningNarrativeHtml}
       ${chartHtml ? `
         <div class="chapter-dimension-chart">
           <h4 style="font-size: 0.95rem; color: #666; margin: 1.5rem 0 1rem 0;">Dimension Score Breakdown</h4>
@@ -628,6 +688,109 @@ function generateReportFooterWithStats(ctx: ReportContext, narratives: any): str
  */
 function generateNarrativeStyles(primaryColor: string, accentColor: string): string {
   return `
+    /* Phase 0: Cover Page Styles */
+    ${getCoverPageStyles()}
+
+    /* Phase 0: Chapter Strategic Context Styles */
+    .chapter-strategic-context {
+      background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+      border-left: 4px solid ${accentColor};
+      border-radius: 0 8px 8px 0;
+      padding: 1.5rem;
+      margin: 1.5rem 0 2rem 0;
+      page-break-inside: avoid;
+    }
+
+    .chapter-strategic-context p.lead-paragraph {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: #333;
+      margin-bottom: 1rem;
+    }
+
+    .chapter-strategic-context p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: #444;
+      margin-bottom: 1rem;
+    }
+
+    .chapter-strategic-context p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Phase 0: Enhanced Recommendation Styles */
+    .recommendation-block {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      page-break-inside: avoid;
+    }
+
+    .recommendation-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .context-block {
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .context-block.why-matters {
+      background: #e7f3ff;
+      border-left: 4px solid #0d6efd;
+    }
+
+    .context-block.what-we-found {
+      background: #f8f9fa;
+      border-left: 4px solid ${accentColor};
+    }
+
+    .risk-of-inaction {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .action-steps-visual {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .action-step {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+    }
+
+    .action-step:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    .success-criteria {
+      margin: 1rem 0;
+    }
+
+    .success-criteria-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.5rem;
+    }
+
     /* Narrative Content Styles */
     .narrative-content {
       background: #f8f9fa;
