@@ -2935,6 +2935,143 @@ button:focus {
 
     /* Report-Specific Custom Styles */
     
+    /* Phase 0: Cover Page Styles */
+    
+    /* Cover Page Print Optimization */
+    @media print {
+      .cover-page {
+        min-height: 100vh !important;
+        page-break-after: always !important;
+        background: linear-gradient(135deg, #212653 0%, #1a1f42 100%) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+      }
+
+      .cover-page-simple {
+        min-height: 50vh !important;
+        page-break-after: always !important;
+        background: linear-gradient(135deg, #212653 0%, #1a1f42 100%) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+      }
+
+      .cover-page svg rect,
+      .cover-page svg text {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+    }
+
+    /* Screen-specific cover page adjustments */
+    @media screen {
+      .cover-page {
+        min-height: 100vh;
+      }
+    }
+  
+
+    /* Phase 0: Chapter Strategic Context Styles */
+    .chapter-strategic-context {
+      background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+      border-left: 4px solid #969423;
+      border-radius: 0 8px 8px 0;
+      padding: 1.5rem;
+      margin: 1.5rem 0 2rem 0;
+      page-break-inside: avoid;
+    }
+
+    .chapter-strategic-context p.lead-paragraph {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: #333;
+      margin-bottom: 1rem;
+    }
+
+    .chapter-strategic-context p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: #444;
+      margin-bottom: 1rem;
+    }
+
+    .chapter-strategic-context p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Phase 0: Enhanced Recommendation Styles */
+    .recommendation-block {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      page-break-inside: avoid;
+    }
+
+    .recommendation-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .context-block {
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .context-block.why-matters {
+      background: #e7f3ff;
+      border-left: 4px solid #0d6efd;
+    }
+
+    .context-block.what-we-found {
+      background: #f8f9fa;
+      border-left: 4px solid #969423;
+    }
+
+    .risk-of-inaction {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .action-steps-visual {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .action-step {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+    }
+
+    .action-step:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    .success-criteria {
+      margin: 1rem 0;
+    }
+
+    .success-criteria-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.5rem;
+    }
+
     /* Narrative Content Styles */
     .narrative-content {
       background: #f8f9fa;
@@ -3805,7 +3942,7 @@ button:focus {
 
           <p class="clickwrap-footer-note">
             Terms Version: 2025.1 |
-            Report Generated: December 7, 2025
+            Report Generated: December 8, 2025
           </p>
         </div>
       </div>
@@ -4192,11 +4329,194 @@ button:focus {
   
   <div class="report-container report-content-gated">
     
+    <div class="cover-page" style="
+      min-height: 100vh;
+      background: linear-gradient(135deg, #212653 0%, #1a1f42 50%, #212653 100%);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      page-break-after: always;
+      position: relative;
+      overflow: hidden;
+    ">
+      <!-- Decorative background pattern -->
+      <div style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image:
+          radial-gradient(circle at 20% 30%, rgba(150, 148, 35, 0.08) 0%, transparent 50%),
+          radial-gradient(circle at 80% 70%, rgba(150, 148, 35, 0.08) 0%, transparent 50%);
+        pointer-events: none;
+      "></div>
+
+      <!-- BizHealth.ai Logo -->
+      
+        <div class="cover-logo" style="margin-bottom: 3rem; position: relative; z-index: 1;">
+          <svg width="140" height="140" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:rgba(255,255,255,0.15);stop-opacity:1" />
+                <stop offset="100%" style="stop-color:rgba(255,255,255,0.05);stop-opacity:1" />
+              </linearGradient>
+            </defs>
+            <rect width="140" height="140" rx="20" fill="url(#logoGradient)"/>
+            <rect x="10" y="10" width="120" height="120" rx="16" fill="#212653"
+                  stroke="rgba(150,148,35,0.5)" stroke-width="2"/>
+            <text x="70" y="75" text-anchor="middle" font-family="'Montserrat', sans-serif"
+                  font-size="42" font-weight="700" fill="white">BH</text>
+            <text x="70" y="100" text-anchor="middle" font-family="'Montserrat', sans-serif"
+                  font-size="14" font-weight="400" fill="rgba(255,255,255,0.7)">.ai</text>
+          </svg>
+        </div>
+      
+
+      <!-- Report Title -->
+      <h1 style="
+        font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 0 0 0.5rem 0;
+        letter-spacing: -0.5px;
+        position: relative;
+        z-index: 1;
+      ">Comprehensive Assessment Report</h1>
+
+      <p style="
+        font-family: 'Open Sans', Arial, sans-serif;
+        font-size: 1.15rem;
+        opacity: 0.85;
+        margin: 0 0 2.5rem 0;
+        position: relative;
+        z-index: 1;
+      ">Complete Business Health Analysis</p>
+
+      <!-- Company Name -->
+      <div style="
+        margin: 0 0 1rem 0;
+        position: relative;
+        z-index: 1;
+      ">
+        <h2 style="
+          font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+          font-size: 2rem;
+          font-weight: 600;
+          color: #969423;
+          margin: 0;
+        ">Summit Build Group</h2>
+        <p style="
+          font-family: 'Open Sans', Arial, sans-serif;
+          font-size: 1.1rem;
+          opacity: 0.8;
+          margin: 0.5rem 0 0 0;
+        ">General</p>
+      </div>
+
+      <!-- Report Details Box -->
+      <div style="
+        background: rgba(255,255,255,0.08);
+        backdrop-filter: blur(10px);
+        padding: 1.5rem 3rem;
+        border-radius: 12px;
+        margin: 2rem 0;
+        border: 1px solid rgba(255,255,255,0.1);
+        position: relative;
+        z-index: 1;
+      ">
+        <div style="
+          display: flex;
+          gap: 3rem;
+          justify-content: center;
+          flex-wrap: wrap;
+        ">
+          <div style="text-align: center;">
+            <p style="
+              font-size: 0.8rem;
+              text-transform: uppercase;
+              letter-spacing: 1px;
+              opacity: 0.7;
+              margin: 0 0 0.25rem 0;
+            ">Assessment Date</p>
+            <p style="
+              font-family: 'Montserrat', sans-serif;
+              font-weight: 600;
+              margin: 0;
+            ">December 8, 2025</p>
+          </div>
+          <div style="text-align: center;">
+            <p style="
+              font-size: 0.8rem;
+              text-transform: uppercase;
+              letter-spacing: 1px;
+              opacity: 0.7;
+              margin: 0 0 0.25rem 0;
+            ">Report ID</p>
+            <p style="
+              font-family: 'Montserrat', monospace;
+              font-weight: 600;
+              margin: 0;
+            ">922CBEC0</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confidentiality Badge -->
+      
+        <div style="
+          margin-top: 2rem;
+          padding: 0.75rem 1.5rem;
+          border: 2px solid rgba(150,148,35,0.5);
+          border-radius: 8px;
+          position: relative;
+          z-index: 1;
+        ">
+          <p style="
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 1.5px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+          ">
+            <span style="color: #ffc107;">&#9888;</span>
+            CONFIDENTIAL
+          </p>
+          <p style="
+            font-size: 0.8rem;
+            opacity: 0.75;
+            margin: 0.5rem 0 0 0;
+          ">Prepared exclusively for Summit Build Group</p>
+        </div>
+      
+
+      <!-- Footer -->
+      <div style="
+        position: absolute;
+        bottom: 2rem;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 0.8rem;
+        opacity: 0.5;
+      ">
+        <p style="margin: 0;">&copy; 2025 BizHealth.ai | All Rights Reserved</p>
+      </div>
+    </div>
+  
+
     <header class="report-header">
       <h1>Comprehensive Assessment Report</h1>
       <p class="subtitle">Complete Business Health Assessment</p>
       <p class="company-name">Summit Build Group</p>
-      <p class="date">Assessment Date: December 7, 2025</p>
+      <p class="date">Assessment Date: December 8, 2025</p>
     </header>
   
 
@@ -5050,6 +5370,50 @@ button:focus {
     </div>
   
       
+    <div class="chapter-strategic-context" style="
+      background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+      border-left: 4px solid #969423;
+      border-radius: 0 8px 8px 0;
+      padding: 1.5rem;
+      margin: 1.5rem 0 2rem 0;
+      page-break-inside: avoid;
+    ">
+      <p class="lead-paragraph" style="
+        font-size: 1.05rem;
+        line-height: 1.7;
+        color: #333;
+        margin-bottom: 1rem;
+      ">
+        <strong>Summit Build Group's Growth Engine</strong> performance, scoring
+        <strong style="color: #212653;">41/100</strong>, places the company in the
+        <strong style="color: #212653;">21th percentile</strong>—trailing 21% of
+        General peers. This <span style="color: #212653;">attention</span> rating signals
+        areas requiring review.
+      </p>
+
+      <p style="
+        font-size: 1rem;
+        line-height: 1.7;
+        color: #444;
+        margin-bottom: 1rem;
+      ">
+        This chapter's assessment reveals a pattern of systemic underperformance requiring comprehensive intervention.
+         However, Market Position Gap requires immediate attention—this gap directly constrains Summit Build Group's ability to compete effectively in the market.
+      </p>
+
+      <p style="
+        font-size: 1rem;
+        line-height: 1.7;
+        color: #444;
+        margin: 0;
+      ">
+        This chapter's underperformance is dragging down Summit Build Group's overall health score. The following analysis examines each dimension within
+        Growth Engine, providing evidence-based findings and actionable
+        recommendations prioritized by impact and feasibility for Summit Build Group.
+      </p>
+    </div>
+  
+      
         <div class="chapter-dimension-chart">
           <h4 style="font-size: 0.95rem; color: #666; margin: 1.5rem 0 1rem 0;">Dimension Score Breakdown</h4>
           
@@ -5415,6 +5779,50 @@ High loyalty creates:
     </div>
   
       
+    <div class="chapter-strategic-context" style="
+      background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+      border-left: 4px solid #969423;
+      border-radius: 0 8px 8px 0;
+      padding: 1.5rem;
+      margin: 1.5rem 0 2rem 0;
+      page-break-inside: avoid;
+    ">
+      <p class="lead-paragraph" style="
+        font-size: 1.05rem;
+        line-height: 1.7;
+        color: #333;
+        margin-bottom: 1rem;
+      ">
+        <strong>Summit Build Group's Performance & Health</strong> performance, scoring
+        <strong style="color: #212653;">39/100</strong>, places the company in the
+        <strong style="color: #212653;">9th percentile</strong>—trailing 9% of
+        General peers. This <span style="color: #212653;">critical</span> rating signals
+        areas requiring review.
+      </p>
+
+      <p style="
+        font-size: 1rem;
+        line-height: 1.7;
+        color: #444;
+        margin-bottom: 1rem;
+      ">
+        This chapter's assessment reveals a pattern of systemic underperformance requiring comprehensive intervention.
+         However, Operations Performance Gap requires immediate attention—this gap directly constrains Summit Build Group's ability to operate efficiently at scale.
+      </p>
+
+      <p style="
+        font-size: 1rem;
+        line-height: 1.7;
+        color: #444;
+        margin: 0;
+      ">
+        This chapter's underperformance is dragging down Summit Build Group's overall health score. The following analysis examines each dimension within
+        Performance & Health, providing evidence-based findings and actionable
+        recommendations prioritized by impact and feasibility for Summit Build Group.
+      </p>
+    </div>
+  
+      
         <div class="chapter-dimension-chart">
           <h4 style="font-size: 0.95rem; color: #666; margin: 1.5rem 0 1rem 0;">Dimension Score Breakdown</h4>
           
@@ -5740,6 +6148,50 @@ High loyalty creates:
           the General industry median (28th percentile).
         </div>
       </div>
+    </div>
+  
+      
+    <div class="chapter-strategic-context" style="
+      background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+      border-left: 4px solid #969423;
+      border-radius: 0 8px 8px 0;
+      padding: 1.5rem;
+      margin: 1.5rem 0 2rem 0;
+      page-break-inside: avoid;
+    ">
+      <p class="lead-paragraph" style="
+        font-size: 1.05rem;
+        line-height: 1.7;
+        color: #333;
+        margin-bottom: 1rem;
+      ">
+        <strong>Summit Build Group's People & Leadership</strong> performance, scoring
+        <strong style="color: #212653;">41/100</strong>, places the company in the
+        <strong style="color: #212653;">28th percentile</strong>—trailing 28% of
+        General peers. This <span style="color: #212653;">attention</span> rating signals
+        areas requiring review.
+      </p>
+
+      <p style="
+        font-size: 1rem;
+        line-height: 1.7;
+        color: #444;
+        margin-bottom: 1rem;
+      ">
+        This chapter's assessment reveals a pattern of systemic underperformance requiring comprehensive intervention.
+         However, Human Resources Performance Gap requires immediate attention—this gap directly constrains Summit Build Group's ability to attract and retain top talent.
+      </p>
+
+      <p style="
+        font-size: 1rem;
+        line-height: 1.7;
+        color: #444;
+        margin: 0;
+      ">
+        This chapter's underperformance is dragging down Summit Build Group's overall health score. The following analysis examines each dimension within
+        People & Leadership, providing evidence-based findings and actionable
+        recommendations prioritized by impact and feasibility for Summit Build Group.
+      </p>
     </div>
   
       
@@ -6093,6 +6545,50 @@ High loyalty creates:
     </div>
   
       
+    <div class="chapter-strategic-context" style="
+      background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+      border-left: 4px solid #969423;
+      border-radius: 0 8px 8px 0;
+      padding: 1.5rem;
+      margin: 1.5rem 0 2rem 0;
+      page-break-inside: avoid;
+    ">
+      <p class="lead-paragraph" style="
+        font-size: 1.05rem;
+        line-height: 1.7;
+        color: #333;
+        margin-bottom: 1rem;
+      ">
+        <strong>Summit Build Group's Resilience & Safeguards</strong> performance, scoring
+        <strong style="color: #212653;">54/100</strong>, places the company in the
+        <strong style="color: #212653;">44th percentile</strong>—trailing 44% of
+        General peers. This <span style="color: #212653;">attention</span> rating signals
+        areas requiring review.
+      </p>
+
+      <p style="
+        font-size: 1rem;
+        line-height: 1.7;
+        color: #444;
+        margin-bottom: 1rem;
+      ">
+        This chapter's assessment reveals a pattern of mixed performance—clear strengths coexisting with addressable weaknesses.
+        Notably, Compliance Excellence represents a genuine competitive advantage that Summit Build Group can leverage for growth. However, Technology Investment Gap requires immediate attention—this gap directly constrains Summit Build Group's ability to innovate and adapt to market changes.
+      </p>
+
+      <p style="
+        font-size: 1rem;
+        line-height: 1.7;
+        color: #444;
+        margin: 0;
+      ">
+        This chapter is contributing positively to Summit Build Group's overall health trajectory. The following analysis examines each dimension within
+        Resilience & Safeguards, providing evidence-based findings and actionable
+        recommendations prioritized by impact and feasibility for Summit Build Group.
+      </p>
+    </div>
+  
+      
         <div class="chapter-dimension-chart">
           <h4 style="font-size: 0.95rem; color: #666; margin: 1.5rem 0 1rem 0;">Dimension Score Breakdown</h4>
           
@@ -6342,6 +6838,7 @@ High turnover + seasonal workers + large contractor base
     
       
       
+      
       <div class="narrative-content">
         <h1 class="bh-section-heading bh-h1" id="cross-dimensional-strategic-synthesis">Cross-Dimensional Strategic Synthesis</h1>
 <h2 class="bh-section-heading bh-h2" id="summit-build-group">Summit Build Group</h2>
@@ -6518,6 +7015,7 @@ High turnover + seasonal workers + large contractor base
         
       </div>
     
+      
       
       
       <div class="narrative-content">
@@ -7756,6 +8254,7 @@ High turnover + seasonal workers + large contractor base
         
       </div>
     
+      
       
       
       <div class="narrative-content">
@@ -9906,338 +10405,4230 @@ ROI:                          23-54x</code></pre>
       
     </section>
 <section id="recommendations" class="section page-break">
-      <div class="section-header">
-        <h2>Strategic Recommendations</h2>
-      </div>
-      <!-- Phase 5: Recommendations List -->
+      <!-- Phase 0: Enhanced Recommendations with Strategic Context -->
       
-        <div class="phase5-recommendations" style="margin: 1.5rem 0;">
+    <section class="enhanced-recommendations-section page-break">
+      <div class="section-header" style="
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 3px solid #969423;
+      ">
+        <h2 style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.75rem;
+          font-weight: 700;
+          color: #212653;
+          margin: 0;
+        ">Strategic Recommendations</h2>
+        <span style="
+          font-size: 0.9rem;
+          color: #666;
+        ">11 recommendations prioritized for Summit Build Group</span>
+      </div>
+
+      
+    <section class="recommendation-block" id="recommendation-rec-MKT-1" style="
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      page-break-inside: avoid;
+      border-top: 4px solid #dc3545;
+    ">
+      <!-- Header with priority and horizon badges -->
+      <div class="recommendation-header" style="
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      ">
+        <div style="flex: 1; min-width: 250px;">
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+            <span style="
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              width: 32px;
+              height: 32px;
+              border-radius: 50%;
+              background: #dc3545;
+              color: white;
+              font-family: 'Montserrat', sans-serif;
+              font-weight: 700;
+              font-size: 0.9rem;
+            ">1</span>
+            <h3 style="
+              font-family: 'Montserrat', sans-serif;
+              font-size: 1.25rem;
+              font-weight: 600;
+              color: #212653;
+              margin: 0;
+              line-height: 1.3;
+            ">Marketing Improvement Initiative</h3>
+          </div>
+          <p style="
+            font-size: 0.9rem;
+            color: #666;
+            margin: 0;
+          ">Marketing</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <span style="
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            background: #dc3545;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+          ">Critical Priority</span>
+          <span style="
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            background: #dc3545;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+          ">0-90 Days</span>
           
-    <div class="recommendations-list">
-      
-    <div class="recommendation-item">
-      <div class="recommendation-header">
-        <div class="recommendation-title">
-          1. Marketing Improvement Initiative
-          <span class="quick-win-badge">Quick Win</span>
-        </div>
-        <span class="horizon-badge horizon-90">0-90 Days</span>
-      </div>
-      <div class="recommendation-meta">
-        <strong>Dimension:</strong> Marketing |
-        <strong>Impact:</strong> 73/100 |
-        <strong>Effort:</strong> 70/100 |
-        <strong>ROI:</strong> 1.04x
-      </div>
-      
-        <div class="action-steps">
-          <strong>Action Steps:</strong>
-          <ul>
-            <li>Conduct detailed marketing assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
-          </ul>
-        </div>
-      
-      
-        <div class="expected-outcome">
-          <strong>Expected Outcome:</strong> Improve Marketing score from 27 to 47 within the target horizon.
-        </div>
-      
-    </div>
-  
-    <div class="recommendation-item">
-      <div class="recommendation-header">
-        <div class="recommendation-title">
-          2. Financials Improvement Initiative
-          
-        </div>
-        <span class="horizon-badge horizon-90">0-90 Days</span>
-      </div>
-      <div class="recommendation-meta">
-        <strong>Dimension:</strong> Financials |
-        <strong>Impact:</strong> 70/100 |
-        <strong>Effort:</strong> 70/100 |
-        <strong>ROI:</strong> 1.00x
-      </div>
-      
-        <div class="action-steps">
-          <strong>Action Steps:</strong>
-          <ul>
-            <li>Conduct detailed financials assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
-          </ul>
-        </div>
-      
-      
-        <div class="expected-outcome">
-          <strong>Expected Outcome:</strong> Improve Financials score from 30 to 50 within the target horizon.
-        </div>
-      
-    </div>
-  
-    <div class="recommendation-item">
-      <div class="recommendation-header">
-        <div class="recommendation-title">
-          3. Technology &amp; Innovation Improvement Initiative
-          
-        </div>
-        <span class="horizon-badge horizon-90">0-90 Days</span>
-      </div>
-      <div class="recommendation-meta">
-        <strong>Dimension:</strong> Technology &amp; Innovation |
-        <strong>Impact:</strong> 66/100 |
-        <strong>Effort:</strong> 70/100 |
-        <strong>ROI:</strong> 0.94x
-      </div>
-      
-        <div class="action-steps">
-          <strong>Action Steps:</strong>
-          <ul>
-            <li>Conduct detailed technology &amp; innovation assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
-          </ul>
-        </div>
-      
-      
-        <div class="expected-outcome">
-          <strong>Expected Outcome:</strong> Improve Technology &amp; Innovation score from 34 to 54 within the target horizon.
-        </div>
-      
-    </div>
-  
-    <div class="recommendation-item">
-      <div class="recommendation-header">
-        <div class="recommendation-title">
-          4. Strategy Improvement Initiative
-          
-        </div>
-        <span class="horizon-badge horizon-90">0-90 Days</span>
-      </div>
-      <div class="recommendation-meta">
-        <strong>Dimension:</strong> Strategy |
-        <strong>Impact:</strong> 63/100 |
-        <strong>Effort:</strong> 70/100 |
-        <strong>ROI:</strong> 0.90x
-      </div>
-      
-        <div class="action-steps">
-          <strong>Action Steps:</strong>
-          <ul>
-            <li>Conduct detailed strategy assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
-          </ul>
-        </div>
-      
-      
-        <div class="expected-outcome">
-          <strong>Expected Outcome:</strong> Improve Strategy score from 37 to 57 within the target horizon.
-        </div>
-      
-    </div>
-  
-    <div class="recommendation-item">
-      <div class="recommendation-header">
-        <div class="recommendation-title">
-          5. Leadership &amp; Governance Improvement Initiative
+            <span style="
+              display: inline-block;
+              padding: 0.35rem 0.75rem;
+              border-radius: 4px;
+              background: #28a745;
+              color: white;
+              font-size: 0.75rem;
+              font-weight: 600;
+            ">&#9889; Quick Win</span>
           
         </div>
-        <span class="horizon-badge horizon-90">0-90 Days</span>
       </div>
-      <div class="recommendation-meta">
-        <strong>Dimension:</strong> Leadership &amp; Governance |
-        <strong>Impact:</strong> 62/100 |
-        <strong>Effort:</strong> 70/100 |
-        <strong>ROI:</strong> 0.89x
-      </div>
+
+      <!-- Strategic Context Sections -->
       
-        <div class="action-steps">
-          <strong>Action Steps:</strong>
-          <ul>
-            <li>Conduct detailed leadership &amp; governance assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
-          </ul>
+    <div class="context-block why-matters" style="
+      background: #e7f3ff;
+      border-left: 4px solid #0d6efd;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    ">
+      <h4 style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #212653;
+        margin: 0 0 0.5rem 0;
+      ">Why This Matters for Summit Build Group</h4>
+      <p style="margin: 0; line-height: 1.6; color: #333;">
+        This is a significant initiative with meaningful potential returns for Summit Build Group's Marketing performance.
+        With an impact score of 73 and effort requirement of 70,
+        this recommendation offers a 1.04x return on investment.
+        As a Quick Win, Summit Build Group can achieve results within 90 days.
+      </p>
+    </div>
+  
+      
+
+      <!-- Action Steps -->
+      <div class="recommendation-actions" style="margin: 1.5rem 0;">
+        <h4 style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: #212653;
+          margin: 0 0 1rem 0;
+        ">Recommended Actions</h4>
+        
+    <div class="action-steps-visual" style="
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    ">
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">1</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Conduct detailed marketing assessment</p>
+            
+          </div>
         </div>
       
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #fff;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">2</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Develop improvement plan with measurable KPIs</p>
+            
+          </div>
+        </div>
       
-        <div class="expected-outcome">
-          <strong>Expected Outcome:</strong> Improve Leadership &amp; Governance score from 38 to 58 within the target horizon.
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">3</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Implement quick wins within first 30 days</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #fff;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">4</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Monitor progress and adjust approach</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">5</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Document and share best practices</p>
+            
+          </div>
         </div>
       
     </div>
   
-    <div class="recommendation-item">
-      <div class="recommendation-header">
-        <div class="recommendation-title">
-          6. Human Resources Improvement Initiative
-          <span class="quick-win-badge">Quick Win</span>
-        </div>
-        <span class="horizon-badge horizon-12">3-12 Months</span>
       </div>
-      <div class="recommendation-meta">
-        <strong>Dimension:</strong> Human Resources |
-        <strong>Impact:</strong> 56/100 |
-        <strong>Effort:</strong> 50/100 |
-        <strong>ROI:</strong> 1.12x
+
+      <!-- Investment & ROI Metrics -->
+      <div class="recommendation-metrics" style="
+        display: flex;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        flex-wrap: wrap;
+      ">
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #28a745;
+            font-family: 'Montserrat', sans-serif;
+          ">73</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Impact</div>
+        </div>
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffc107;
+            font-family: 'Montserrat', sans-serif;
+          ">70</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Effort</div>
+        </div>
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #212653;
+            font-family: 'Montserrat', sans-serif;
+          ">1.04x</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">ROI</div>
+        </div>
       </div>
+
+      <!-- Expected Outcome -->
+      <div class="expected-outcome" style="
+        background: #d4edda;
+        border-left: 4px solid #28a745;
+        border-radius: 0 8px 8px 0;
+        padding: 1rem 1.25rem;
+        margin: 1rem 0;
+      ">
+        <h4 style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1rem;
+          font-weight: 600;
+          color: #155724;
+          margin: 0 0 0.5rem 0;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        ">
+          <span>&#128200;</span> Expected Outcome
+        </h4>
+        <p style="margin: 0; line-height: 1.6; color: #333;">Improve Marketing score from 27 to 47 within the target horizon.</p>
+      </div>
+
+      <!-- Success Criteria -->
       
-        <div class="action-steps">
-          <strong>Action Steps:</strong>
-          <ul>
-            <li>Conduct detailed human resources assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
-          </ul>
-        </div>
+
+      <!-- Risk of Inaction -->
       
-      
-        <div class="expected-outcome">
-          <strong>Expected Outcome:</strong> Improve Human Resources score from 44 to 64 within the target horizon.
-        </div>
-      
+    <div class="risk-of-inaction" style="
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    ">
+      <h4 style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #856404;
+        margin: 0 0 0.5rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      ">
+        <span>&#9888;</span> Risk of Inaction
+      </h4>
+      <p style="margin: 0; line-height: 1.6; color: #333;">Without action, Summit Build Group faces escalating exposure that could result in operational disruption, financial impact, or competitive disadvantage within 6-12 months.</p>
     </div>
   
-    <div class="recommendation-item">
-      <div class="recommendation-header">
-        <div class="recommendation-title">
-          7. Sales Improvement Initiative
-          <span class="quick-win-badge">Quick Win</span>
-        </div>
-        <span class="horizon-badge horizon-12">3-12 Months</span>
-      </div>
-      <div class="recommendation-meta">
-        <strong>Dimension:</strong> Sales |
-        <strong>Impact:</strong> 53/100 |
-        <strong>Effort:</strong> 50/100 |
-        <strong>ROI:</strong> 1.06x
-      </div>
+
+      <!-- Interdependencies -->
       
-        <div class="action-steps">
-          <strong>Action Steps:</strong>
-          <ul>
-            <li>Conduct detailed sales assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
-          </ul>
-        </div>
-      
-      
-        <div class="expected-outcome">
-          <strong>Expected Outcome:</strong> Improve Sales score from 47 to 67 within the target horizon.
-        </div>
-      
-    </div>
+    </section>
   
-    <div class="recommendation-item">
-      <div class="recommendation-header">
-        <div class="recommendation-title">
-          8. Operations Improvement Initiative
-          <span class="quick-win-badge">Quick Win</span>
+    <section class="recommendation-block" id="recommendation-rec-FIN-2" style="
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      page-break-inside: avoid;
+      border-top: 4px solid #dc3545;
+    ">
+      <!-- Header with priority and horizon badges -->
+      <div class="recommendation-header" style="
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      ">
+        <div style="flex: 1; min-width: 250px;">
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+            <span style="
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              width: 32px;
+              height: 32px;
+              border-radius: 50%;
+              background: #dc3545;
+              color: white;
+              font-family: 'Montserrat', sans-serif;
+              font-weight: 700;
+              font-size: 0.9rem;
+            ">2</span>
+            <h3 style="
+              font-family: 'Montserrat', sans-serif;
+              font-size: 1.25rem;
+              font-weight: 600;
+              color: #212653;
+              margin: 0;
+              line-height: 1.3;
+            ">Financials Improvement Initiative</h3>
+          </div>
+          <p style="
+            font-size: 0.9rem;
+            color: #666;
+            margin: 0;
+          ">Financials</p>
         </div>
-        <span class="horizon-badge horizon-12">3-12 Months</span>
-      </div>
-      <div class="recommendation-meta">
-        <strong>Dimension:</strong> Operations |
-        <strong>Impact:</strong> 53/100 |
-        <strong>Effort:</strong> 50/100 |
-        <strong>ROI:</strong> 1.06x
-      </div>
-      
-        <div class="action-steps">
-          <strong>Action Steps:</strong>
-          <ul>
-            <li>Conduct detailed operations assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
-          </ul>
-        </div>
-      
-      
-        <div class="expected-outcome">
-          <strong>Expected Outcome:</strong> Improve Operations score from 47 to 67 within the target horizon.
-        </div>
-      
-    </div>
-  
-    <div class="recommendation-item">
-      <div class="recommendation-header">
-        <div class="recommendation-title">
-          9. IT, Data &amp; Systems Improvement Initiative
-          <span class="quick-win-badge">Quick Win</span>
-        </div>
-        <span class="horizon-badge horizon-12">3-12 Months</span>
-      </div>
-      <div class="recommendation-meta">
-        <strong>Dimension:</strong> IT, Data &amp; Systems |
-        <strong>Impact:</strong> 52/100 |
-        <strong>Effort:</strong> 50/100 |
-        <strong>ROI:</strong> 1.04x
-      </div>
-      
-        <div class="action-steps">
-          <strong>Action Steps:</strong>
-          <ul>
-            <li>Conduct detailed it, data &amp; systems assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
-          </ul>
-        </div>
-      
-      
-        <div class="expected-outcome">
-          <strong>Expected Outcome:</strong> Improve IT, Data &amp; Systems score from 48 to 68 within the target horizon.
-        </div>
-      
-    </div>
-  
-    <div class="recommendation-item">
-      <div class="recommendation-header">
-        <div class="recommendation-title">
-          10. Customer Experience Improvement Initiative
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <span style="
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            background: #dc3545;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+          ">Critical Priority</span>
+          <span style="
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            background: #dc3545;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+          ">0-90 Days</span>
           
         </div>
-        <span class="horizon-badge horizon-12">3-12 Months</span>
       </div>
-      <div class="recommendation-meta">
-        <strong>Dimension:</strong> Customer Experience |
-        <strong>Impact:</strong> 46/100 |
-        <strong>Effort:</strong> 50/100 |
-        <strong>ROI:</strong> 0.92x
-      </div>
+
+      <!-- Strategic Context Sections -->
       
-        <div class="action-steps">
-          <strong>Action Steps:</strong>
-          <ul>
-            <li>Conduct detailed customer experience assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
-          </ul>
+    <div class="context-block why-matters" style="
+      background: #e7f3ff;
+      border-left: 4px solid #0d6efd;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    ">
+      <h4 style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #212653;
+        margin: 0 0 0.5rem 0;
+      ">Why This Matters for Summit Build Group</h4>
+      <p style="margin: 0; line-height: 1.6; color: #333;">
+        This is a significant initiative with meaningful potential returns for Summit Build Group's Financials performance.
+        With an impact score of 70 and effort requirement of 70,
+        this recommendation offers a 1x return on investment.
+        
+      </p>
+    </div>
+  
+      
+
+      <!-- Action Steps -->
+      <div class="recommendation-actions" style="margin: 1.5rem 0;">
+        <h4 style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: #212653;
+          margin: 0 0 1rem 0;
+        ">Recommended Actions</h4>
+        
+    <div class="action-steps-visual" style="
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    ">
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">1</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Conduct detailed financials assessment</p>
+            
+          </div>
         </div>
       
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #fff;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">2</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Develop improvement plan with measurable KPIs</p>
+            
+          </div>
+        </div>
       
-        <div class="expected-outcome">
-          <strong>Expected Outcome:</strong> Improve Customer Experience score from 54 to 74 within the target horizon.
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">3</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Implement quick wins within first 30 days</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #fff;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">4</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Monitor progress and adjust approach</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">5</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Document and share best practices</p>
+            
+          </div>
         </div>
       
     </div>
   
-    <div class="recommendation-item">
-      <div class="recommendation-header">
-        <div class="recommendation-title">
-          11. Risk Management &amp; Sustainability Improvement Initiative
+      </div>
+
+      <!-- Investment & ROI Metrics -->
+      <div class="recommendation-metrics" style="
+        display: flex;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        flex-wrap: wrap;
+      ">
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #28a745;
+            font-family: 'Montserrat', sans-serif;
+          ">70</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Impact</div>
+        </div>
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffc107;
+            font-family: 'Montserrat', sans-serif;
+          ">70</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Effort</div>
+        </div>
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #212653;
+            font-family: 'Montserrat', sans-serif;
+          ">1x</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">ROI</div>
+        </div>
+      </div>
+
+      <!-- Expected Outcome -->
+      <div class="expected-outcome" style="
+        background: #d4edda;
+        border-left: 4px solid #28a745;
+        border-radius: 0 8px 8px 0;
+        padding: 1rem 1.25rem;
+        margin: 1rem 0;
+      ">
+        <h4 style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1rem;
+          font-weight: 600;
+          color: #155724;
+          margin: 0 0 0.5rem 0;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        ">
+          <span>&#128200;</span> Expected Outcome
+        </h4>
+        <p style="margin: 0; line-height: 1.6; color: #333;">Improve Financials score from 30 to 50 within the target horizon.</p>
+      </div>
+
+      <!-- Success Criteria -->
+      
+
+      <!-- Risk of Inaction -->
+      
+    <div class="risk-of-inaction" style="
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    ">
+      <h4 style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #856404;
+        margin: 0 0 0.5rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      ">
+        <span>&#9888;</span> Risk of Inaction
+      </h4>
+      <p style="margin: 0; line-height: 1.6; color: #333;">Without action, Summit Build Group faces escalating exposure that could result in operational disruption, financial impact, or competitive disadvantage within 6-12 months.</p>
+    </div>
+  
+
+      <!-- Interdependencies -->
+      
+    </section>
+  
+    <section class="recommendation-block" id="recommendation-rec-TIN-3" style="
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      page-break-inside: avoid;
+      border-top: 4px solid #dc3545;
+    ">
+      <!-- Header with priority and horizon badges -->
+      <div class="recommendation-header" style="
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      ">
+        <div style="flex: 1; min-width: 250px;">
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+            <span style="
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              width: 32px;
+              height: 32px;
+              border-radius: 50%;
+              background: #dc3545;
+              color: white;
+              font-family: 'Montserrat', sans-serif;
+              font-weight: 700;
+              font-size: 0.9rem;
+            ">3</span>
+            <h3 style="
+              font-family: 'Montserrat', sans-serif;
+              font-size: 1.25rem;
+              font-weight: 600;
+              color: #212653;
+              margin: 0;
+              line-height: 1.3;
+            ">Technology & Innovation Improvement Initiative</h3>
+          </div>
+          <p style="
+            font-size: 0.9rem;
+            color: #666;
+            margin: 0;
+          ">Technology & Innovation</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <span style="
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            background: #dc3545;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+          ">Critical Priority</span>
+          <span style="
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            background: #dc3545;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+          ">0-90 Days</span>
           
         </div>
-        <span class="horizon-badge horizon-12">3-12 Months</span>
       </div>
-      <div class="recommendation-meta">
-        <strong>Dimension:</strong> Risk Management &amp; Sustainability |
-        <strong>Impact:</strong> 46/100 |
-        <strong>Effort:</strong> 50/100 |
-        <strong>ROI:</strong> 0.92x
-      </div>
+
+      <!-- Strategic Context Sections -->
       
-        <div class="action-steps">
-          <strong>Action Steps:</strong>
-          <ul>
-            <li>Conduct detailed risk management &amp; sustainability assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
-          </ul>
+    <div class="context-block why-matters" style="
+      background: #e7f3ff;
+      border-left: 4px solid #0d6efd;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    ">
+      <h4 style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #212653;
+        margin: 0 0 0.5rem 0;
+      ">Why This Matters for Summit Build Group</h4>
+      <p style="margin: 0; line-height: 1.6; color: #333;">
+        This is a significant initiative with meaningful potential returns for Summit Build Group's Technology & Innovation performance.
+        With an impact score of 66 and effort requirement of 70,
+        this recommendation offers a 0.94x return on investment.
+        
+      </p>
+    </div>
+  
+      
+
+      <!-- Action Steps -->
+      <div class="recommendation-actions" style="margin: 1.5rem 0;">
+        <h4 style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: #212653;
+          margin: 0 0 1rem 0;
+        ">Recommended Actions</h4>
+        
+    <div class="action-steps-visual" style="
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    ">
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">1</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Conduct detailed technology & innovation assessment</p>
+            
+          </div>
         </div>
       
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #fff;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">2</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Develop improvement plan with measurable KPIs</p>
+            
+          </div>
+        </div>
       
-        <div class="expected-outcome">
-          <strong>Expected Outcome:</strong> Improve Risk Management &amp; Sustainability score from 54 to 74 within the target horizon.
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">3</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Implement quick wins within first 30 days</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #fff;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">4</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Monitor progress and adjust approach</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">5</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Document and share best practices</p>
+            
+          </div>
         </div>
       
     </div>
   
+      </div>
+
+      <!-- Investment & ROI Metrics -->
+      <div class="recommendation-metrics" style="
+        display: flex;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        flex-wrap: wrap;
+      ">
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #28a745;
+            font-family: 'Montserrat', sans-serif;
+          ">66</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Impact</div>
+        </div>
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffc107;
+            font-family: 'Montserrat', sans-serif;
+          ">70</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Effort</div>
+        </div>
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #212653;
+            font-family: 'Montserrat', sans-serif;
+          ">0.94x</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">ROI</div>
+        </div>
+      </div>
+
+      <!-- Expected Outcome -->
+      <div class="expected-outcome" style="
+        background: #d4edda;
+        border-left: 4px solid #28a745;
+        border-radius: 0 8px 8px 0;
+        padding: 1rem 1.25rem;
+        margin: 1rem 0;
+      ">
+        <h4 style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1rem;
+          font-weight: 600;
+          color: #155724;
+          margin: 0 0 0.5rem 0;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        ">
+          <span>&#128200;</span> Expected Outcome
+        </h4>
+        <p style="margin: 0; line-height: 1.6; color: #333;">Improve Technology & Innovation score from 34 to 54 within the target horizon.</p>
+      </div>
+
+      <!-- Success Criteria -->
+      
+
+      <!-- Risk of Inaction -->
+      
+    <div class="risk-of-inaction" style="
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    ">
+      <h4 style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #856404;
+        margin: 0 0 0.5rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      ">
+        <span>&#9888;</span> Risk of Inaction
+      </h4>
+      <p style="margin: 0; line-height: 1.6; color: #333;">Without action, Summit Build Group faces escalating exposure that could result in operational disruption, financial impact, or competitive disadvantage within 6-12 months.</p>
     </div>
   
+
+      <!-- Interdependencies -->
+      
+    </section>
+  
+    <section class="recommendation-block" id="recommendation-rec-STR-4" style="
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      page-break-inside: avoid;
+      border-top: 4px solid #fd7e14;
+    ">
+      <!-- Header with priority and horizon badges -->
+      <div class="recommendation-header" style="
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      ">
+        <div style="flex: 1; min-width: 250px;">
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+            <span style="
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              width: 32px;
+              height: 32px;
+              border-radius: 50%;
+              background: #fd7e14;
+              color: white;
+              font-family: 'Montserrat', sans-serif;
+              font-weight: 700;
+              font-size: 0.9rem;
+            ">4</span>
+            <h3 style="
+              font-family: 'Montserrat', sans-serif;
+              font-size: 1.25rem;
+              font-weight: 600;
+              color: #212653;
+              margin: 0;
+              line-height: 1.3;
+            ">Strategy Improvement Initiative</h3>
+          </div>
+          <p style="
+            font-size: 0.9rem;
+            color: #666;
+            margin: 0;
+          ">Strategy</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <span style="
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            background: #fd7e14;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+          ">High Priority</span>
+          <span style="
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            background: #dc3545;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+          ">0-90 Days</span>
+          
+        </div>
+      </div>
+
+      <!-- Strategic Context Sections -->
+      
+    <div class="context-block why-matters" style="
+      background: #e7f3ff;
+      border-left: 4px solid #0d6efd;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    ">
+      <h4 style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #212653;
+        margin: 0 0 0.5rem 0;
+      ">Why This Matters for Summit Build Group</h4>
+      <p style="margin: 0; line-height: 1.6; color: #333;">
+        This is a significant initiative with meaningful potential returns for Summit Build Group's Strategy performance.
+        With an impact score of 63 and effort requirement of 70,
+        this recommendation offers a 0.9x return on investment.
+        
+      </p>
+    </div>
+  
+      
+
+      <!-- Action Steps -->
+      <div class="recommendation-actions" style="margin: 1.5rem 0;">
+        <h4 style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: #212653;
+          margin: 0 0 1rem 0;
+        ">Recommended Actions</h4>
+        
+    <div class="action-steps-visual" style="
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    ">
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">1</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Conduct detailed strategy assessment</p>
+            
+          </div>
         </div>
       
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #fff;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">2</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Develop improvement plan with measurable KPIs</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">3</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Implement quick wins within first 30 days</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #fff;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">4</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Monitor progress and adjust approach</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">5</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Document and share best practices</p>
+            
+          </div>
+        </div>
+      
+    </div>
+  
+      </div>
+
+      <!-- Investment & ROI Metrics -->
+      <div class="recommendation-metrics" style="
+        display: flex;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        flex-wrap: wrap;
+      ">
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #28a745;
+            font-family: 'Montserrat', sans-serif;
+          ">63</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Impact</div>
+        </div>
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffc107;
+            font-family: 'Montserrat', sans-serif;
+          ">70</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Effort</div>
+        </div>
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #212653;
+            font-family: 'Montserrat', sans-serif;
+          ">0.9x</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">ROI</div>
+        </div>
+      </div>
+
+      <!-- Expected Outcome -->
+      <div class="expected-outcome" style="
+        background: #d4edda;
+        border-left: 4px solid #28a745;
+        border-radius: 0 8px 8px 0;
+        padding: 1rem 1.25rem;
+        margin: 1rem 0;
+      ">
+        <h4 style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1rem;
+          font-weight: 600;
+          color: #155724;
+          margin: 0 0 0.5rem 0;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        ">
+          <span>&#128200;</span> Expected Outcome
+        </h4>
+        <p style="margin: 0; line-height: 1.6; color: #333;">Improve Strategy score from 37 to 57 within the target horizon.</p>
+      </div>
+
+      <!-- Success Criteria -->
+      
+
+      <!-- Risk of Inaction -->
+      
+    <div class="risk-of-inaction" style="
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    ">
+      <h4 style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #856404;
+        margin: 0 0 0.5rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      ">
+        <span>&#9888;</span> Risk of Inaction
+      </h4>
+      <p style="margin: 0; line-height: 1.6; color: #333;">Delaying action allows performance gaps to widen, making future remediation more costly and time-consuming for Summit Build Group.</p>
+    </div>
+  
+
+      <!-- Interdependencies -->
+      
+    </section>
+  
+    <section class="recommendation-block" id="recommendation-rec-LDG-5" style="
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      page-break-inside: avoid;
+      border-top: 4px solid #fd7e14;
+    ">
+      <!-- Header with priority and horizon badges -->
+      <div class="recommendation-header" style="
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      ">
+        <div style="flex: 1; min-width: 250px;">
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+            <span style="
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              width: 32px;
+              height: 32px;
+              border-radius: 50%;
+              background: #fd7e14;
+              color: white;
+              font-family: 'Montserrat', sans-serif;
+              font-weight: 700;
+              font-size: 0.9rem;
+            ">5</span>
+            <h3 style="
+              font-family: 'Montserrat', sans-serif;
+              font-size: 1.25rem;
+              font-weight: 600;
+              color: #212653;
+              margin: 0;
+              line-height: 1.3;
+            ">Leadership & Governance Improvement Initiative</h3>
+          </div>
+          <p style="
+            font-size: 0.9rem;
+            color: #666;
+            margin: 0;
+          ">Leadership & Governance</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <span style="
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            background: #fd7e14;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+          ">High Priority</span>
+          <span style="
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            background: #dc3545;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+          ">0-90 Days</span>
+          
+        </div>
+      </div>
+
+      <!-- Strategic Context Sections -->
+      
+    <div class="context-block why-matters" style="
+      background: #e7f3ff;
+      border-left: 4px solid #0d6efd;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    ">
+      <h4 style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #212653;
+        margin: 0 0 0.5rem 0;
+      ">Why This Matters for Summit Build Group</h4>
+      <p style="margin: 0; line-height: 1.6; color: #333;">
+        This is a significant initiative with meaningful potential returns for Summit Build Group's Leadership & Governance performance.
+        With an impact score of 62 and effort requirement of 70,
+        this recommendation offers a 0.89x return on investment.
+        
+      </p>
+    </div>
+  
+      
+
+      <!-- Action Steps -->
+      <div class="recommendation-actions" style="margin: 1.5rem 0;">
+        <h4 style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: #212653;
+          margin: 0 0 1rem 0;
+        ">Recommended Actions</h4>
+        
+    <div class="action-steps-visual" style="
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    ">
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">1</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Conduct detailed leadership & governance assessment</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #fff;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">2</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Develop improvement plan with measurable KPIs</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">3</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Implement quick wins within first 30 days</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #fff;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">4</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Monitor progress and adjust approach</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">5</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Document and share best practices</p>
+            
+          </div>
+        </div>
+      
+    </div>
+  
+      </div>
+
+      <!-- Investment & ROI Metrics -->
+      <div class="recommendation-metrics" style="
+        display: flex;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        flex-wrap: wrap;
+      ">
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #28a745;
+            font-family: 'Montserrat', sans-serif;
+          ">62</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Impact</div>
+        </div>
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffc107;
+            font-family: 'Montserrat', sans-serif;
+          ">70</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Effort</div>
+        </div>
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #212653;
+            font-family: 'Montserrat', sans-serif;
+          ">0.89x</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">ROI</div>
+        </div>
+      </div>
+
+      <!-- Expected Outcome -->
+      <div class="expected-outcome" style="
+        background: #d4edda;
+        border-left: 4px solid #28a745;
+        border-radius: 0 8px 8px 0;
+        padding: 1rem 1.25rem;
+        margin: 1rem 0;
+      ">
+        <h4 style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1rem;
+          font-weight: 600;
+          color: #155724;
+          margin: 0 0 0.5rem 0;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        ">
+          <span>&#128200;</span> Expected Outcome
+        </h4>
+        <p style="margin: 0; line-height: 1.6; color: #333;">Improve Leadership & Governance score from 38 to 58 within the target horizon.</p>
+      </div>
+
+      <!-- Success Criteria -->
+      
+
+      <!-- Risk of Inaction -->
+      
+    <div class="risk-of-inaction" style="
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    ">
+      <h4 style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #856404;
+        margin: 0 0 0.5rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      ">
+        <span>&#9888;</span> Risk of Inaction
+      </h4>
+      <p style="margin: 0; line-height: 1.6; color: #333;">Delaying action allows performance gaps to widen, making future remediation more costly and time-consuming for Summit Build Group.</p>
+    </div>
+  
+
+      <!-- Interdependencies -->
+      
+    </section>
+  
+    <section class="recommendation-block" id="recommendation-rec-HRS-6" style="
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      page-break-inside: avoid;
+      border-top: 4px solid #fd7e14;
+    ">
+      <!-- Header with priority and horizon badges -->
+      <div class="recommendation-header" style="
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      ">
+        <div style="flex: 1; min-width: 250px;">
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+            <span style="
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              width: 32px;
+              height: 32px;
+              border-radius: 50%;
+              background: #fd7e14;
+              color: white;
+              font-family: 'Montserrat', sans-serif;
+              font-weight: 700;
+              font-size: 0.9rem;
+            ">6</span>
+            <h3 style="
+              font-family: 'Montserrat', sans-serif;
+              font-size: 1.25rem;
+              font-weight: 600;
+              color: #212653;
+              margin: 0;
+              line-height: 1.3;
+            ">Human Resources Improvement Initiative</h3>
+          </div>
+          <p style="
+            font-size: 0.9rem;
+            color: #666;
+            margin: 0;
+          ">Human Resources</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <span style="
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            background: #fd7e14;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+          ">High Priority</span>
+          <span style="
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            background: #fd7e14;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+          ">3-12 Months</span>
+          
+            <span style="
+              display: inline-block;
+              padding: 0.35rem 0.75rem;
+              border-radius: 4px;
+              background: #28a745;
+              color: white;
+              font-size: 0.75rem;
+              font-weight: 600;
+            ">&#9889; Quick Win</span>
+          
+        </div>
+      </div>
+
+      <!-- Strategic Context Sections -->
+      
+    <div class="context-block why-matters" style="
+      background: #e7f3ff;
+      border-left: 4px solid #0d6efd;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    ">
+      <h4 style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #212653;
+        margin: 0 0 0.5rem 0;
+      ">Why This Matters for Summit Build Group</h4>
+      <p style="margin: 0; line-height: 1.6; color: #333;">
+        This is a foundational improvement that supports broader strategic goals for Summit Build Group's Human Resources performance.
+        With an impact score of 56 and effort requirement of 50,
+        this recommendation offers a 1.12x return on investment.
+        As a Quick Win, Summit Build Group can achieve results within 90 days.
+      </p>
+    </div>
+  
+      
+
+      <!-- Action Steps -->
+      <div class="recommendation-actions" style="margin: 1.5rem 0;">
+        <h4 style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: #212653;
+          margin: 0 0 1rem 0;
+        ">Recommended Actions</h4>
+        
+    <div class="action-steps-visual" style="
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    ">
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">1</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Conduct detailed human resources assessment</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #fff;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">2</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Develop improvement plan with measurable KPIs</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">3</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Implement quick wins within first 30 days</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #fff;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">4</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Monitor progress and adjust approach</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">5</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Document and share best practices</p>
+            
+          </div>
+        </div>
+      
+    </div>
+  
+      </div>
+
+      <!-- Investment & ROI Metrics -->
+      <div class="recommendation-metrics" style="
+        display: flex;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        flex-wrap: wrap;
+      ">
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #28a745;
+            font-family: 'Montserrat', sans-serif;
+          ">56</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Impact</div>
+        </div>
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffc107;
+            font-family: 'Montserrat', sans-serif;
+          ">50</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Effort</div>
+        </div>
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #212653;
+            font-family: 'Montserrat', sans-serif;
+          ">1.12x</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">ROI</div>
+        </div>
+      </div>
+
+      <!-- Expected Outcome -->
+      <div class="expected-outcome" style="
+        background: #d4edda;
+        border-left: 4px solid #28a745;
+        border-radius: 0 8px 8px 0;
+        padding: 1rem 1.25rem;
+        margin: 1rem 0;
+      ">
+        <h4 style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1rem;
+          font-weight: 600;
+          color: #155724;
+          margin: 0 0 0.5rem 0;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        ">
+          <span>&#128200;</span> Expected Outcome
+        </h4>
+        <p style="margin: 0; line-height: 1.6; color: #333;">Improve Human Resources score from 44 to 64 within the target horizon.</p>
+      </div>
+
+      <!-- Success Criteria -->
+      
+
+      <!-- Risk of Inaction -->
+      
+    <div class="risk-of-inaction" style="
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    ">
+      <h4 style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #856404;
+        margin: 0 0 0.5rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      ">
+        <span>&#9888;</span> Risk of Inaction
+      </h4>
+      <p style="margin: 0; line-height: 1.6; color: #333;">Delaying action allows performance gaps to widen, making future remediation more costly and time-consuming for Summit Build Group.</p>
+    </div>
+  
+
+      <!-- Interdependencies -->
+      
+    </section>
+  
+    <section class="recommendation-block" id="recommendation-rec-SAL-7" style="
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      page-break-inside: avoid;
+      border-top: 4px solid #ffc107;
+    ">
+      <!-- Header with priority and horizon badges -->
+      <div class="recommendation-header" style="
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      ">
+        <div style="flex: 1; min-width: 250px;">
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+            <span style="
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              width: 32px;
+              height: 32px;
+              border-radius: 50%;
+              background: #ffc107;
+              color: white;
+              font-family: 'Montserrat', sans-serif;
+              font-weight: 700;
+              font-size: 0.9rem;
+            ">7</span>
+            <h3 style="
+              font-family: 'Montserrat', sans-serif;
+              font-size: 1.25rem;
+              font-weight: 600;
+              color: #212653;
+              margin: 0;
+              line-height: 1.3;
+            ">Sales Improvement Initiative</h3>
+          </div>
+          <p style="
+            font-size: 0.9rem;
+            color: #666;
+            margin: 0;
+          ">Sales</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <span style="
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            background: #ffc107;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+          ">Medium Priority</span>
+          <span style="
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            background: #fd7e14;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+          ">3-12 Months</span>
+          
+            <span style="
+              display: inline-block;
+              padding: 0.35rem 0.75rem;
+              border-radius: 4px;
+              background: #28a745;
+              color: white;
+              font-size: 0.75rem;
+              font-weight: 600;
+            ">&#9889; Quick Win</span>
+          
+        </div>
+      </div>
+
+      <!-- Strategic Context Sections -->
+      
+    <div class="context-block why-matters" style="
+      background: #e7f3ff;
+      border-left: 4px solid #0d6efd;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    ">
+      <h4 style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #212653;
+        margin: 0 0 0.5rem 0;
+      ">Why This Matters for Summit Build Group</h4>
+      <p style="margin: 0; line-height: 1.6; color: #333;">
+        This is a foundational improvement that supports broader strategic goals for Summit Build Group's Sales performance.
+        With an impact score of 53 and effort requirement of 50,
+        this recommendation offers a 1.06x return on investment.
+        As a Quick Win, Summit Build Group can achieve results within 90 days.
+      </p>
+    </div>
+  
+      
+
+      <!-- Action Steps -->
+      <div class="recommendation-actions" style="margin: 1.5rem 0;">
+        <h4 style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: #212653;
+          margin: 0 0 1rem 0;
+        ">Recommended Actions</h4>
+        
+    <div class="action-steps-visual" style="
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    ">
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">1</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Conduct detailed sales assessment</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #fff;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">2</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Develop improvement plan with measurable KPIs</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">3</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Implement quick wins within first 30 days</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #fff;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">4</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Monitor progress and adjust approach</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">5</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Document and share best practices</p>
+            
+          </div>
+        </div>
+      
+    </div>
+  
+      </div>
+
+      <!-- Investment & ROI Metrics -->
+      <div class="recommendation-metrics" style="
+        display: flex;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        flex-wrap: wrap;
+      ">
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #28a745;
+            font-family: 'Montserrat', sans-serif;
+          ">53</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Impact</div>
+        </div>
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffc107;
+            font-family: 'Montserrat', sans-serif;
+          ">50</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Effort</div>
+        </div>
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #212653;
+            font-family: 'Montserrat', sans-serif;
+          ">1.06x</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">ROI</div>
+        </div>
+      </div>
+
+      <!-- Expected Outcome -->
+      <div class="expected-outcome" style="
+        background: #d4edda;
+        border-left: 4px solid #28a745;
+        border-radius: 0 8px 8px 0;
+        padding: 1rem 1.25rem;
+        margin: 1rem 0;
+      ">
+        <h4 style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1rem;
+          font-weight: 600;
+          color: #155724;
+          margin: 0 0 0.5rem 0;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        ">
+          <span>&#128200;</span> Expected Outcome
+        </h4>
+        <p style="margin: 0; line-height: 1.6; color: #333;">Improve Sales score from 47 to 67 within the target horizon.</p>
+      </div>
+
+      <!-- Success Criteria -->
+      
+
+      <!-- Risk of Inaction -->
+      
+    <div class="risk-of-inaction" style="
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    ">
+      <h4 style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #856404;
+        margin: 0 0 0.5rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      ">
+        <span>&#9888;</span> Risk of Inaction
+      </h4>
+      <p style="margin: 0; line-height: 1.6; color: #333;">While not immediately critical, inaction means Summit Build Group misses an opportunity to strengthen its competitive position in Sales.</p>
+    </div>
+  
+
+      <!-- Interdependencies -->
+      
+    </section>
+  
+    <section class="recommendation-block" id="recommendation-rec-OPS-8" style="
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      page-break-inside: avoid;
+      border-top: 4px solid #ffc107;
+    ">
+      <!-- Header with priority and horizon badges -->
+      <div class="recommendation-header" style="
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      ">
+        <div style="flex: 1; min-width: 250px;">
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+            <span style="
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              width: 32px;
+              height: 32px;
+              border-radius: 50%;
+              background: #ffc107;
+              color: white;
+              font-family: 'Montserrat', sans-serif;
+              font-weight: 700;
+              font-size: 0.9rem;
+            ">8</span>
+            <h3 style="
+              font-family: 'Montserrat', sans-serif;
+              font-size: 1.25rem;
+              font-weight: 600;
+              color: #212653;
+              margin: 0;
+              line-height: 1.3;
+            ">Operations Improvement Initiative</h3>
+          </div>
+          <p style="
+            font-size: 0.9rem;
+            color: #666;
+            margin: 0;
+          ">Operations</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <span style="
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            background: #ffc107;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+          ">Medium Priority</span>
+          <span style="
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            background: #fd7e14;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+          ">3-12 Months</span>
+          
+            <span style="
+              display: inline-block;
+              padding: 0.35rem 0.75rem;
+              border-radius: 4px;
+              background: #28a745;
+              color: white;
+              font-size: 0.75rem;
+              font-weight: 600;
+            ">&#9889; Quick Win</span>
+          
+        </div>
+      </div>
+
+      <!-- Strategic Context Sections -->
+      
+    <div class="context-block why-matters" style="
+      background: #e7f3ff;
+      border-left: 4px solid #0d6efd;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    ">
+      <h4 style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #212653;
+        margin: 0 0 0.5rem 0;
+      ">Why This Matters for Summit Build Group</h4>
+      <p style="margin: 0; line-height: 1.6; color: #333;">
+        This is a foundational improvement that supports broader strategic goals for Summit Build Group's Operations performance.
+        With an impact score of 53 and effort requirement of 50,
+        this recommendation offers a 1.06x return on investment.
+        As a Quick Win, Summit Build Group can achieve results within 90 days.
+      </p>
+    </div>
+  
+      
+
+      <!-- Action Steps -->
+      <div class="recommendation-actions" style="margin: 1.5rem 0;">
+        <h4 style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: #212653;
+          margin: 0 0 1rem 0;
+        ">Recommended Actions</h4>
+        
+    <div class="action-steps-visual" style="
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    ">
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">1</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Conduct detailed operations assessment</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #fff;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">2</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Develop improvement plan with measurable KPIs</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">3</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Implement quick wins within first 30 days</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #fff;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">4</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Monitor progress and adjust approach</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">5</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Document and share best practices</p>
+            
+          </div>
+        </div>
+      
+    </div>
+  
+      </div>
+
+      <!-- Investment & ROI Metrics -->
+      <div class="recommendation-metrics" style="
+        display: flex;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        flex-wrap: wrap;
+      ">
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #28a745;
+            font-family: 'Montserrat', sans-serif;
+          ">53</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Impact</div>
+        </div>
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffc107;
+            font-family: 'Montserrat', sans-serif;
+          ">50</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Effort</div>
+        </div>
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #212653;
+            font-family: 'Montserrat', sans-serif;
+          ">1.06x</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">ROI</div>
+        </div>
+      </div>
+
+      <!-- Expected Outcome -->
+      <div class="expected-outcome" style="
+        background: #d4edda;
+        border-left: 4px solid #28a745;
+        border-radius: 0 8px 8px 0;
+        padding: 1rem 1.25rem;
+        margin: 1rem 0;
+      ">
+        <h4 style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1rem;
+          font-weight: 600;
+          color: #155724;
+          margin: 0 0 0.5rem 0;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        ">
+          <span>&#128200;</span> Expected Outcome
+        </h4>
+        <p style="margin: 0; line-height: 1.6; color: #333;">Improve Operations score from 47 to 67 within the target horizon.</p>
+      </div>
+
+      <!-- Success Criteria -->
+      
+
+      <!-- Risk of Inaction -->
+      
+    <div class="risk-of-inaction" style="
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    ">
+      <h4 style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #856404;
+        margin: 0 0 0.5rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      ">
+        <span>&#9888;</span> Risk of Inaction
+      </h4>
+      <p style="margin: 0; line-height: 1.6; color: #333;">While not immediately critical, inaction means Summit Build Group misses an opportunity to strengthen its competitive position in Operations.</p>
+    </div>
+  
+
+      <!-- Interdependencies -->
+      
+    </section>
+  
+    <section class="recommendation-block" id="recommendation-rec-IDS-9" style="
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      page-break-inside: avoid;
+      border-top: 4px solid #ffc107;
+    ">
+      <!-- Header with priority and horizon badges -->
+      <div class="recommendation-header" style="
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      ">
+        <div style="flex: 1; min-width: 250px;">
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+            <span style="
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              width: 32px;
+              height: 32px;
+              border-radius: 50%;
+              background: #ffc107;
+              color: white;
+              font-family: 'Montserrat', sans-serif;
+              font-weight: 700;
+              font-size: 0.9rem;
+            ">9</span>
+            <h3 style="
+              font-family: 'Montserrat', sans-serif;
+              font-size: 1.25rem;
+              font-weight: 600;
+              color: #212653;
+              margin: 0;
+              line-height: 1.3;
+            ">IT, Data & Systems Improvement Initiative</h3>
+          </div>
+          <p style="
+            font-size: 0.9rem;
+            color: #666;
+            margin: 0;
+          ">IT, Data & Systems</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <span style="
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            background: #ffc107;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+          ">Medium Priority</span>
+          <span style="
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            background: #fd7e14;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+          ">3-12 Months</span>
+          
+            <span style="
+              display: inline-block;
+              padding: 0.35rem 0.75rem;
+              border-radius: 4px;
+              background: #28a745;
+              color: white;
+              font-size: 0.75rem;
+              font-weight: 600;
+            ">&#9889; Quick Win</span>
+          
+        </div>
+      </div>
+
+      <!-- Strategic Context Sections -->
+      
+    <div class="context-block why-matters" style="
+      background: #e7f3ff;
+      border-left: 4px solid #0d6efd;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    ">
+      <h4 style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #212653;
+        margin: 0 0 0.5rem 0;
+      ">Why This Matters for Summit Build Group</h4>
+      <p style="margin: 0; line-height: 1.6; color: #333;">
+        This is a foundational improvement that supports broader strategic goals for Summit Build Group's IT, Data & Systems performance.
+        With an impact score of 52 and effort requirement of 50,
+        this recommendation offers a 1.04x return on investment.
+        As a Quick Win, Summit Build Group can achieve results within 90 days.
+      </p>
+    </div>
+  
+      
+
+      <!-- Action Steps -->
+      <div class="recommendation-actions" style="margin: 1.5rem 0;">
+        <h4 style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: #212653;
+          margin: 0 0 1rem 0;
+        ">Recommended Actions</h4>
+        
+    <div class="action-steps-visual" style="
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    ">
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">1</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Conduct detailed it, data & systems assessment</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #fff;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">2</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Develop improvement plan with measurable KPIs</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">3</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Implement quick wins within first 30 days</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #fff;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">4</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Monitor progress and adjust approach</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">5</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Document and share best practices</p>
+            
+          </div>
+        </div>
+      
+    </div>
+  
+      </div>
+
+      <!-- Investment & ROI Metrics -->
+      <div class="recommendation-metrics" style="
+        display: flex;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        flex-wrap: wrap;
+      ">
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #28a745;
+            font-family: 'Montserrat', sans-serif;
+          ">52</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Impact</div>
+        </div>
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffc107;
+            font-family: 'Montserrat', sans-serif;
+          ">50</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Effort</div>
+        </div>
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #212653;
+            font-family: 'Montserrat', sans-serif;
+          ">1.04x</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">ROI</div>
+        </div>
+      </div>
+
+      <!-- Expected Outcome -->
+      <div class="expected-outcome" style="
+        background: #d4edda;
+        border-left: 4px solid #28a745;
+        border-radius: 0 8px 8px 0;
+        padding: 1rem 1.25rem;
+        margin: 1rem 0;
+      ">
+        <h4 style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1rem;
+          font-weight: 600;
+          color: #155724;
+          margin: 0 0 0.5rem 0;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        ">
+          <span>&#128200;</span> Expected Outcome
+        </h4>
+        <p style="margin: 0; line-height: 1.6; color: #333;">Improve IT, Data & Systems score from 48 to 68 within the target horizon.</p>
+      </div>
+
+      <!-- Success Criteria -->
+      
+
+      <!-- Risk of Inaction -->
+      
+    <div class="risk-of-inaction" style="
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    ">
+      <h4 style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #856404;
+        margin: 0 0 0.5rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      ">
+        <span>&#9888;</span> Risk of Inaction
+      </h4>
+      <p style="margin: 0; line-height: 1.6; color: #333;">While not immediately critical, inaction means Summit Build Group misses an opportunity to strengthen its competitive position in IT, Data & Systems.</p>
+    </div>
+  
+
+      <!-- Interdependencies -->
+      
+    </section>
+  
+    <section class="recommendation-block" id="recommendation-rec-CXP-10" style="
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      page-break-inside: avoid;
+      border-top: 4px solid #ffc107;
+    ">
+      <!-- Header with priority and horizon badges -->
+      <div class="recommendation-header" style="
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      ">
+        <div style="flex: 1; min-width: 250px;">
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+            <span style="
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              width: 32px;
+              height: 32px;
+              border-radius: 50%;
+              background: #ffc107;
+              color: white;
+              font-family: 'Montserrat', sans-serif;
+              font-weight: 700;
+              font-size: 0.9rem;
+            ">10</span>
+            <h3 style="
+              font-family: 'Montserrat', sans-serif;
+              font-size: 1.25rem;
+              font-weight: 600;
+              color: #212653;
+              margin: 0;
+              line-height: 1.3;
+            ">Customer Experience Improvement Initiative</h3>
+          </div>
+          <p style="
+            font-size: 0.9rem;
+            color: #666;
+            margin: 0;
+          ">Customer Experience</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <span style="
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            background: #ffc107;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+          ">Medium Priority</span>
+          <span style="
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            background: #fd7e14;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+          ">3-12 Months</span>
+          
+        </div>
+      </div>
+
+      <!-- Strategic Context Sections -->
+      
+    <div class="context-block why-matters" style="
+      background: #e7f3ff;
+      border-left: 4px solid #0d6efd;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    ">
+      <h4 style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #212653;
+        margin: 0 0 0.5rem 0;
+      ">Why This Matters for Summit Build Group</h4>
+      <p style="margin: 0; line-height: 1.6; color: #333;">
+        This is a foundational improvement that supports broader strategic goals for Summit Build Group's Customer Experience performance.
+        With an impact score of 46 and effort requirement of 50,
+        this recommendation offers a 0.92x return on investment.
+        
+      </p>
+    </div>
+  
+      
+
+      <!-- Action Steps -->
+      <div class="recommendation-actions" style="margin: 1.5rem 0;">
+        <h4 style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: #212653;
+          margin: 0 0 1rem 0;
+        ">Recommended Actions</h4>
+        
+    <div class="action-steps-visual" style="
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    ">
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">1</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Conduct detailed customer experience assessment</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #fff;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">2</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Develop improvement plan with measurable KPIs</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">3</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Implement quick wins within first 30 days</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #fff;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">4</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Monitor progress and adjust approach</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">5</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Document and share best practices</p>
+            
+          </div>
+        </div>
+      
+    </div>
+  
+      </div>
+
+      <!-- Investment & ROI Metrics -->
+      <div class="recommendation-metrics" style="
+        display: flex;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        flex-wrap: wrap;
+      ">
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #28a745;
+            font-family: 'Montserrat', sans-serif;
+          ">46</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Impact</div>
+        </div>
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffc107;
+            font-family: 'Montserrat', sans-serif;
+          ">50</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Effort</div>
+        </div>
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #212653;
+            font-family: 'Montserrat', sans-serif;
+          ">0.92x</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">ROI</div>
+        </div>
+      </div>
+
+      <!-- Expected Outcome -->
+      <div class="expected-outcome" style="
+        background: #d4edda;
+        border-left: 4px solid #28a745;
+        border-radius: 0 8px 8px 0;
+        padding: 1rem 1.25rem;
+        margin: 1rem 0;
+      ">
+        <h4 style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1rem;
+          font-weight: 600;
+          color: #155724;
+          margin: 0 0 0.5rem 0;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        ">
+          <span>&#128200;</span> Expected Outcome
+        </h4>
+        <p style="margin: 0; line-height: 1.6; color: #333;">Improve Customer Experience score from 54 to 74 within the target horizon.</p>
+      </div>
+
+      <!-- Success Criteria -->
+      
+
+      <!-- Risk of Inaction -->
+      
+    <div class="risk-of-inaction" style="
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    ">
+      <h4 style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #856404;
+        margin: 0 0 0.5rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      ">
+        <span>&#9888;</span> Risk of Inaction
+      </h4>
+      <p style="margin: 0; line-height: 1.6; color: #333;">While not immediately critical, inaction means Summit Build Group misses an opportunity to strengthen its competitive position in Customer Experience.</p>
+    </div>
+  
+
+      <!-- Interdependencies -->
+      
+    </section>
+  
+    <section class="recommendation-block" id="recommendation-rec-RMS-11" style="
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      page-break-inside: avoid;
+      border-top: 4px solid #28a745;
+    ">
+      <!-- Header with priority and horizon badges -->
+      <div class="recommendation-header" style="
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      ">
+        <div style="flex: 1; min-width: 250px;">
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+            <span style="
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              width: 32px;
+              height: 32px;
+              border-radius: 50%;
+              background: #28a745;
+              color: white;
+              font-family: 'Montserrat', sans-serif;
+              font-weight: 700;
+              font-size: 0.9rem;
+            ">11</span>
+            <h3 style="
+              font-family: 'Montserrat', sans-serif;
+              font-size: 1.25rem;
+              font-weight: 600;
+              color: #212653;
+              margin: 0;
+              line-height: 1.3;
+            ">Risk Management & Sustainability Improvement Initiative</h3>
+          </div>
+          <p style="
+            font-size: 0.9rem;
+            color: #666;
+            margin: 0;
+          ">Risk Management & Sustainability</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <span style="
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            background: #28a745;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+          ">Standard Priority</span>
+          <span style="
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            background: #fd7e14;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+          ">3-12 Months</span>
+          
+        </div>
+      </div>
+
+      <!-- Strategic Context Sections -->
+      
+    <div class="context-block why-matters" style="
+      background: #e7f3ff;
+      border-left: 4px solid #0d6efd;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    ">
+      <h4 style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #212653;
+        margin: 0 0 0.5rem 0;
+      ">Why This Matters for Summit Build Group</h4>
+      <p style="margin: 0; line-height: 1.6; color: #333;">
+        This is a foundational improvement that supports broader strategic goals for Summit Build Group's Risk Management & Sustainability performance.
+        With an impact score of 46 and effort requirement of 50,
+        this recommendation offers a 0.92x return on investment.
+        
+      </p>
+    </div>
+  
+      
+
+      <!-- Action Steps -->
+      <div class="recommendation-actions" style="margin: 1.5rem 0;">
+        <h4 style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: #212653;
+          margin: 0 0 1rem 0;
+        ">Recommended Actions</h4>
+        
+    <div class="action-steps-visual" style="
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    ">
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">1</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Conduct detailed risk management & sustainability assessment</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #fff;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">2</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Develop improvement plan with measurable KPIs</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">3</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Implement quick wins within first 30 days</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #fff;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">4</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Monitor progress and adjust approach</p>
+            
+          </div>
+        </div>
+      
+        <div class="action-step" style="
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        ">
+          <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: #212653;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+          ">5</span>
+          <div style="flex: 1;">
+            <p style="
+              margin: 0;
+              color: #333;
+              line-height: 1.5;
+            ">Document and share best practices</p>
+            
+          </div>
+        </div>
+      
+    </div>
+  
+      </div>
+
+      <!-- Investment & ROI Metrics -->
+      <div class="recommendation-metrics" style="
+        display: flex;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        flex-wrap: wrap;
+      ">
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #28a745;
+            font-family: 'Montserrat', sans-serif;
+          ">46</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Impact</div>
+        </div>
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffc107;
+            font-family: 'Montserrat', sans-serif;
+          ">50</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Effort</div>
+        </div>
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #212653;
+            font-family: 'Montserrat', sans-serif;
+          ">0.92x</div>
+          <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">ROI</div>
+        </div>
+      </div>
+
+      <!-- Expected Outcome -->
+      <div class="expected-outcome" style="
+        background: #d4edda;
+        border-left: 4px solid #28a745;
+        border-radius: 0 8px 8px 0;
+        padding: 1rem 1.25rem;
+        margin: 1rem 0;
+      ">
+        <h4 style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1rem;
+          font-weight: 600;
+          color: #155724;
+          margin: 0 0 0.5rem 0;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        ">
+          <span>&#128200;</span> Expected Outcome
+        </h4>
+        <p style="margin: 0; line-height: 1.6; color: #333;">Improve Risk Management & Sustainability score from 54 to 74 within the target horizon.</p>
+      </div>
+
+      <!-- Success Criteria -->
+      
+
+      <!-- Risk of Inaction -->
+      
+    <div class="risk-of-inaction" style="
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    ">
+      <h4 style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #856404;
+        margin: 0 0 0.5rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      ">
+        <span>&#9888;</span> Risk of Inaction
+      </h4>
+      <p style="margin: 0; line-height: 1.6; color: #333;">While not immediately critical, inaction means Summit Build Group misses an opportunity to strengthen its competitive position in Risk Management & Sustainability.</p>
+    </div>
+  
+
+      <!-- Interdependencies -->
+      
+    </section>
+  
+    </section>
+  
     </section>
 <section id="quick-wins" class="section page-break">
       <div class="section-header">
@@ -10813,7 +15204,7 @@ ROI:                          23-54x</code></pre>
     <script type="application/json" id="report-metadata">
       {
   "reportId": "922cbec0-b9bf-4a97-b5c7-14e766246855",
-  "generatedAt": "2025-12-08T03:03:23.995Z",
+  "generatedAt": "2025-12-08T06:28:17.357Z",
   "pipelineVersion": "1.0.0",
   "betaMode": false,
   "termsVersion": "2025.1"
