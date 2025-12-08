@@ -29,6 +29,16 @@ import {
   getReportChartStyles,
 } from './charts/index.js';
 
+// Import world-class visual components (Phase 1.5-2)
+import {
+  generateEnhancedSectionHeader,
+} from './components/index.js';
+import {
+  chapterToSectionHeader,
+  dimensionToSectionHeader,
+} from './utils/index.js';
+import { logger } from '../../utils/logger.js';
+
 /**
  * Chapter metadata
  */
@@ -126,23 +136,26 @@ export async function buildDeepDiveReport(
     ${generateReportHeader(ctx, chapterMeta.reportName, chapterMeta.subtitle)}
 
     <section class="section">
-      <h2>Chapter Overview</h2>
-
-      <div class="health-score-display" style="background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);">
-        <div class="health-score-circle" style="width: 140px; height: 140px;">
-          <span class="score" style="font-size: 2.5rem;">${chapter.score}</span>
-          <span class="out-of" style="font-size: 0.9rem;">/ 100</span>
-        </div>
-        <div class="health-score-details">
-          <p class="status" style="font-size: 1.25rem;">${escapeHtml(chapter.name)}</p>
-          <p><span class="band-badge ${chapter.band}">${chapter.band}</span></p>
-          ${chapter.benchmark ? `
-            <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
-              ${chapter.benchmark.peerPercentile}th percentile vs industry peers
-            </p>
-          ` : ''}
-        </div>
-      </div>
+      <!-- World-Class: Enhanced Chapter Header with Percentile (Phase 1.5-2) -->
+      ${generateEnhancedSectionHeader(
+        chapterToSectionHeader(
+          {
+            code: chapter.code,
+            name: chapter.name,
+            score: chapter.score,
+            benchmark: chapter.industryBenchmark || chapter.benchmark?.peerPercentile,
+            percentile: chapter.percentileRank,
+          },
+          ctx.companyProfile.industry
+        ),
+        {
+          size: 'large',
+          showPercentile: true,
+          showBand: true,
+          showBenchmark: !!chapter.industryBenchmark,
+          benchmark: chapter.industryBenchmark,
+        }
+      )}
 
       <p class="mt-3">${chapterMeta.description}</p>
 
@@ -193,18 +206,26 @@ export async function buildDeepDiveReport(
 
     ${chapterDimensions.map(dim => `
       <section class="section page-break">
-        <h2>${escapeHtml(dim.name)} Analysis</h2>
-
-        <div class="flex gap-3 mb-3">
-          <div class="score-card small">
-            <div class="score-value">${dim.score}</div>
-            <div class="score-label">Score</div>
-          </div>
-          <div>
-            <p><span class="band-badge ${dim.band}">${dim.band}</span></p>
-            ${dim.benchmark ? `<p style="margin-top: 0.5rem; font-size: 0.9rem;">${dim.benchmark.peerPercentile}th percentile</p>` : ''}
-          </div>
-        </div>
+        <!-- World-Class: Enhanced Dimension Header with Percentile (Phase 1.5-2) -->
+        ${generateEnhancedSectionHeader(
+          dimensionToSectionHeader(
+            {
+              code: dim.code,
+              name: dim.name,
+              score: dim.score,
+              benchmark: dim.industryBenchmark || dim.benchmark?.peerPercentile,
+              percentile: dim.percentileRank,
+            },
+            ctx.companyProfile.industry
+          ),
+          {
+            size: 'medium',
+            showPercentile: true,
+            showBand: true,
+            showBenchmark: !!dim.industryBenchmark,
+            benchmark: dim.industryBenchmark,
+          }
+        )}
 
         <p class="mb-3">${escapeHtml(dim.description)}</p>
 

@@ -52,6 +52,10 @@ import {
   generateLegalAccordion,
   getDefaultLegalSections,
   type ClickwrapConfig,
+  // World-class visual components (Phase 1.5-2)
+  generateEnhancedSectionHeader,
+  generateActionPlanCardGrid,
+  generateFinancialImpactDashboard,
 } from './components/index.js';
 import {
   getChapterIcon,
@@ -620,13 +624,44 @@ function generateNarrativeSection(
   const narrativeHtml = parseMarkdownToHTML(content, { maxBoldPerParagraph: 3, maxListItems: 8 });
 
   // Generate chapter header with icon if chapter code provided
+  // P0 CRITICAL: Use enhanced section headers with percentile rankings (Phase 1.5-2)
   let headerHtml: string;
-  if (chapterCode) {
+  if (chapterCode && ctx) {
+    const chapter = ctx.chapters.find(ch => ch.code === chapterCode);
+    if (chapter) {
+      // World-class enhanced section header with percentile
+      const headerConfig = chapterToSectionHeader(
+        {
+          code: chapter.code,
+          name: chapter.name,
+          score: chapter.score,
+          benchmark: chapter.industryBenchmark || chapter.benchmark?.peerPercentile,
+          percentile: chapter.percentileRank,
+        },
+        ctx.companyProfile.industry
+      );
+      headerHtml = generateEnhancedSectionHeader(headerConfig, {
+        size: 'large',
+        showPercentile: true,
+        showBand: true,
+        showBenchmark: !!chapter.industryBenchmark,
+        benchmark: chapter.industryBenchmark,
+      });
+    } else {
+      // Fallback to standard header
+      headerHtml = generateChapterHeaderHtml(
+        chapterCode,
+        title,
+        score ?? undefined,
+        ctx.companyProfile?.industry ? `${ctx.companyProfile.industry} Industry Analysis` : undefined
+      );
+    }
+  } else if (chapterCode) {
+    // Fallback when no ctx available
     headerHtml = generateChapterHeaderHtml(
       chapterCode,
       title,
-      score ?? undefined,
-      ctx?.companyProfile?.industry ? `${ctx.companyProfile.industry} Industry Analysis` : undefined
+      score ?? undefined
     );
   } else {
     headerHtml = `
