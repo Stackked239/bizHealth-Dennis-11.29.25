@@ -191,6 +191,7 @@ export async function buildOwnersReport(
     const clickwrapLegalContent = generateClickwrapLegalContent();
 
     // Generate clickwrap modal (gates content until accepted)
+    clickwrapModal = generateClickwrapModal(clickwrapConfig, clickwrapLegalContent);
 
     // Generate acceptance banner (compact replacement for legal block)
     acceptanceBanner = generateAcceptanceBanner({
@@ -208,6 +209,8 @@ export async function buildOwnersReport(
   }
 
   const html = wrapHtmlDocument(`
+    <!-- Clickwrap Modal (gates content until accepted) -->
+    ${clickwrapModal}
 
     ${generateReportHeader(ctx, reportName, 'Your Executive Decision Guide')}
 

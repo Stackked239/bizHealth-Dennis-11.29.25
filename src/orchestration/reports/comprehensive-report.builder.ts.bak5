@@ -230,6 +230,8 @@ export async function buildComprehensiveReport(
     // Generate legal content for clickwrap modal
     const clickwrapLegalContent = generateClickwrapLegalContent();
 
+    // Generate clickwrap modal (gates content until accepted)
+    clickwrapModal = generateClickwrapModal(clickwrapConfig, clickwrapLegalContent);
 
     // Generate acceptance banner (compact replacement for legal block)
     acceptanceBanner = generateAcceptanceBanner({
@@ -248,6 +250,8 @@ export async function buildComprehensiveReport(
 
   // Build HTML content with integrated narratives
   const contentSections = [
+    // Clickwrap Modal (rendered outside report-container, gates access)
+    clickwrapModal,
 
     generateReportHeader(ctx, reportName, 'Complete Business Health Assessment'),
 
