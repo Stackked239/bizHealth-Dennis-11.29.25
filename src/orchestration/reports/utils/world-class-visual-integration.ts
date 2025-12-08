@@ -502,8 +502,12 @@ export function contextToActionPlanCards(
 
 /**
  * Convert quick wins from ReportContext to QuickWinCard format
+ * ENHANCED: Uses buildQuickWinCardData for better data extraction
  */
 export function contextToQuickWinCards(ctx: ReportContext): QuickWinCard[] {
+  // Import buildQuickWinCardData dynamically to avoid circular dependency
+  const { buildQuickWinCardData } = require('./idm-extractors.js');
+
   // Get quick wins from various possible sources
   const quickWins =
     ctx.quickWins ||
@@ -511,33 +515,27 @@ export function contextToQuickWinCards(ctx: ReportContext): QuickWinCard[] {
       (r: any) =>
         r.isQuickWin ||
         r.effort === 'low' ||
-        (r.timeline && (r.timeline.includes('90') || r.timeline.includes('immediate')))
+        r.effortScore !== undefined && r.effortScore <= 40 ||
+        (r.timeline && (r.timeline.includes('90') || r.timeline.includes('immediate') || r.timeline.includes('30')))
     ) ||
     [];
 
   return quickWins.slice(0, 5).map((qw: any, index: number) => {
-    const investment = qw.investment || qw.estimatedInvestment || {};
-    const returns = qw.expectedReturn || qw.estimatedReturn || {};
-
-    const invMin = investment.min || investment.low || 0;
-    const invMax = investment.max || investment.high || invMin;
-    const retMin = returns.min || returns.low || 0;
-    const retMax = returns.max || returns.high || retMin;
-
-    const roiValue = invMin > 0 ? Math.round((retMin + retMax) / 2 / ((invMin + invMax) / 2)) : 10;
+    // Use the enhanced buildQuickWinCardData function for proper data extraction
+    const cardData = buildQuickWinCardData(qw, index);
 
     return {
-      id: qw.id || `qw-${index + 1}`,
-      title: qw.title || qw.name || `Quick Win ${index + 1}`,
-      currentState: qw.currentState || qw.problem || 'Current state',
-      targetState: qw.targetState || qw.solution || 'Improved state',
-      timeline: qw.timeline || '90 days',
-      investment: formatCurrencyRange(invMin, invMax),
-      expectedReturn: formatCurrencyRange(retMin, retMax),
-      roi: `${roiValue}x`,
-      owner: qw.owner || qw.responsibleParty || 'TBD',
-      comprehensiveReportPage: qw.pageNumber || 1,
-      icon: getQuickWinIcon(qw.category || qw.dimensionCode),
+      id: cardData.id,
+      title: cardData.title,
+      currentState: cardData.currentState,
+      targetState: cardData.targetState,
+      timeline: cardData.timeframe,
+      investment: cardData.investment,
+      expectedReturn: cardData.expectedReturn,
+      roi: cardData.roi,
+      owner: cardData.owner,
+      comprehensiveReportPage: cardData.comprehensiveReportPage,
+      icon: cardData.icon,
     };
   });
 }

@@ -228,3 +228,31 @@ export {
   // Convenience bundle generator
   generateWorldClassVisualsBundle,
 } from './world-class-visual-integration.js';
+
+// ============================================================================
+// IDM DATA EXTRACTION UTILITIES (Phase 1 Bug Fixes)
+// ============================================================================
+
+export {
+  // Numeric value extraction (fixes [object Object] bugs)
+  extractNumericValue,
+  formatBenchmark,
+  // Currency & number formatting
+  formatK,
+  formatInvestmentRange,
+  formatReturnEstimate,
+  calculateROIDisplay,
+  // Dimension & owner mapping
+  mapDimensionToOwner,
+  getDimensionName,
+  // Ordinal & date formatting
+  formatOrdinal,
+  formatDate,
+  // Score band utilities
+  getScoreBandFromScore,
+  getScoreBandColor,
+  // Quick win data extraction
+  buildQuickWinCardData,
+  // Safe polygon generation (fixes NaN bugs)
+  generateSafePolygonPoints,
+} from './idm-extractors.js';
