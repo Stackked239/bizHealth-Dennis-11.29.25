@@ -337,142 +337,95 @@ export function generateClickwrapModal(config: ClickwrapConfig, legalContent: st
 
     <!-- Clickwrap JavaScript -->
     <script>
-      // Ensure DOM is fully loaded before running
       (function() {
-        function initClickwrapModal() {
-          console.log('[Clickwrap] Starting initialization...');
-          
-          const modal = document.getElementById('${modalId}');
-          const termsContainer = document.getElementById('terms-container');
-          const scrollIndicator = document.getElementById('scroll-indicator');
-          const checkbox = document.getElementById('terms-checkbox');
-          const acceptBtn = document.getElementById('accept-terms-btn');
-          const reportContent = document.querySelector('.report-container');
+        const modal = document.getElementById('${modalId}');
+        const termsContainer = document.getElementById('terms-container');
+        const scrollIndicator = document.getElementById('scroll-indicator');
+        const checkbox = document.getElementById('terms-checkbox');
+        const acceptBtn = document.getElementById('accept-terms-btn');
+        const reportContent = document.querySelector('.report-container');
 
-          console.log('[Clickwrap] Found elements:', {
-            modal: !!modal,
-            termsContainer: !!termsContainer,
-            scrollIndicator: !!scrollIndicator,
-            checkbox: !!checkbox,
-            acceptBtn: !!acceptBtn,
-            reportContent: !!reportContent
-          });
+        // Check if already accepted (session storage)
+        const acceptanceKey = 'bizhealth_terms_accepted_${escapedReportId}';
+        const previousAcceptance = sessionStorage.getItem(acceptanceKey);
 
-          if (!modal || !checkbox || !acceptBtn) {
-            console.error('[Clickwrap] CRITICAL: Missing required elements!');
-            return;
-          }
-
-          // Check if already accepted (session storage)
-          const acceptanceKey = 'bizhealth_terms_accepted_${escapedReportId}';
-          const previousAcceptance = sessionStorage.getItem(acceptanceKey);
-
-          if (previousAcceptance) {
-            console.log('[Clickwrap] Previous acceptance found, showing report');
-            // Already accepted this session - show report immediately
-            modal.classList.add('removed');
-            if (reportContent) reportContent.classList.remove('report-content-gated');
-            if (reportContent) reportContent.classList.add('report-content-visible');
-            return; // Exit early
-          } else {
-            console.log('[Clickwrap] No previous acceptance, gating content');
-            // Gate the report content
-            if (reportContent) reportContent.classList.add('report-content-gated');
-          }
-
-          // Scroll indicator visibility
-          if (termsContainer) {
-            termsContainer.addEventListener('scroll', function() {
-              const isNearBottom = termsContainer.scrollHeight - termsContainer.scrollTop <= termsContainer.clientHeight + 50;
-              if (isNearBottom) {
-                scrollIndicator.classList.add('hidden');
-              }
-            });
-          }
-
-          // Checkbox enables button
-          if (checkbox) {
-            checkbox.addEventListener('change', function() {
-              console.log('[Clickwrap] Checkbox changed:', this.checked);
-              acceptBtn.disabled = !this.checked;
-            });
-          }
-
-          // Accept button handler
-          if (acceptBtn) {
-            console.log('[Clickwrap] Attaching click handler to accept button');
-            acceptBtn.addEventListener('click', function(event) {
-              console.log('[Clickwrap] ACCEPT BUTTON CLICKED!');
-              console.log('[Clickwrap] Checkbox state:', checkbox.checked);
-              
-              if (!checkbox.checked) {
-                console.log('[Clickwrap] Checkbox not checked, aborting');
-                return;
-              }
-
-              // Record acceptance
-              const acceptance = {
-                reportId: '${escapedReportId}',
-                reportType: '${escapedReportType}',
-                termsVersion: '${escapedTermsVersion}',
-                acceptedAt: new Date().toISOString(),
-                userAgent: navigator.userAgent
-              };
-
-              console.log('[Clickwrap] Recording acceptance:', acceptance);
-
-              // Store in session (prevents re-prompt on refresh)
-              sessionStorage.setItem(acceptanceKey, JSON.stringify(acceptance));
-
-              console.log('[Clickwrap] Revealing report content...');
-              // Reveal report content first
-              if (reportContent) {
-                reportContent.classList.remove('report-content-gated');
-                reportContent.classList.add('report-content-visible');
-                console.log('[Clickwrap] Report content revealed');
-              }
-
-              console.log('[Clickwrap] Hiding modal...');
-              // Hide modal with animation
-              modal.classList.add('hidden');
-              
-              setTimeout(function() {
-                console.log('[Clickwrap] Removing modal from DOM...');
-                modal.classList.add('removed');
-                
-                // Aggressively remove modal from DOM flow
-                if (modal && modal.style) {
-                  modal.style.display = 'none';
-                  modal.style.visibility = 'hidden';
-                  modal.style.zIndex = '-9999';
-                  modal.style.position = 'absolute';
-                  modal.style.top = '-9999px';
-                  console.log('[Clickwrap] Modal styles updated');
-                }
-                
-                // As a last resort, remove from DOM entirely
-                if (modal && modal.parentNode) {
-                  modal.parentNode.removeChild(modal);
-                  console.log('[Clickwrap] Modal removed from DOM completely');
-                }
-              }, 300);
-            });
-            console.log('[Clickwrap] Click handler attached successfully');
-          } else {
-            console.error('[Clickwrap] Accept button not found!');
-          }
+        if (previousAcceptance) {
+          // Already accepted this session - show report immediately
+          modal.classList.add('removed');
+          if (reportContent) reportContent.classList.remove('report-content-gated');
+          if (reportContent) reportContent.classList.add('report-content-visible');
+        } else {
+          // Gate the report content
+          if (reportContent) reportContent.classList.add('report-content-gated');
         }
 
-        // Run when DOM is ready
-        if (document.readyState === 'loading') {
-          console.log('[Clickwrap] Waiting for DOMContentLoaded...');
-          document.addEventListener('DOMContentLoaded', initClickwrapModal);
-        } else {
-          console.log('[Clickwrap] DOM already loaded, initializing immediately');
-          initClickwrapModal();
+        // Scroll indicator visibility
+        if (termsContainer) {
+          termsContainer.addEventListener('scroll', function() {
+            const isNearBottom = termsContainer.scrollHeight - termsContainer.scrollTop <= termsContainer.clientHeight + 50;
+            if (isNearBottom) {
+              scrollIndicator.classList.add('hidden');
+            }
+          });
+        }
+
+        // Checkbox enables button
+        if (checkbox) {
+          checkbox.addEventListener('change', function() {
+            acceptBtn.disabled = !this.checked;
+          });
+        }
+
+        // Accept button handler
+        if (acceptBtn) {
+          acceptBtn.addEventListener('click', function() {
+            if (!checkbox.checked) return;
+
+            // Record acceptance
+            const acceptance = {
+              reportId: '${escapedReportId}',
+              reportType: '${escapedReportType}',
+              termsVersion: '${escapedTermsVersion}',
+              acceptedAt: new Date().toISOString(),
+              userAgent: navigator.userAgent
+            };
+
+            // Store in session (prevents re-prompt on refresh)
+            sessionStorage.setItem(acceptanceKey, JSON.stringify(acceptance));
+
+            // Optional: Send to server for permanent record
+            // fetch('/api/terms-acceptance', {
+            //   method: 'POST',
+            //   headers: { 'Content-Type': 'application/json' },
+            //   body: JSON.stringify(acceptance)
+            // });
+
+            // Reveal report content first
+            if (reportContent) {
+              reportContent.classList.remove('report-content-gated');
+              reportContent.classList.add('report-content-visible');
+            }
+
+            // Hide modal with animation
+            modal.classList.add('hidden');
+            setTimeout(function() {
+              modal.classList.add('removed');
+              // Aggressively remove modal from DOM flow
+              if (modal && modal.style) {
+                modal.style.display = 'none';
+                modal.style.visibility = 'hidden';
+                modal.style.zIndex = '-9999';
+                modal.style.position = 'absolute';
+                modal.style.top = '-9999px';
+              }
+              // As a last resort, remove from DOM entirely
+              if (modal && modal.parentNode) {
+                modal.parentNode.removeChild(modal);
+              }
+            }, 300);
+          });
         }
       })();
-    </script>
     </script>
   `;
 }

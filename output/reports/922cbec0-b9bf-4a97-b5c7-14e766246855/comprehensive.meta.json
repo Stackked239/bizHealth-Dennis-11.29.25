@@ -1,12 +1,12 @@
 {
   "reportType": "comprehensive",
   "reportName": "Comprehensive Assessment Report",
-  "generatedAt": "2025-12-08T02:11:50.089Z",
+  "generatedAt": "2025-12-08T02:17:26.830Z",
   "companyName": "Summit Build Group",
   "runId": "922cbec0-b9bf-4a97-b5c7-14e766246855",
   "healthScore": 44,
   "healthBand": "Attention",
-  "pageSuggestionEstimate": 282,
+  "pageSuggestionEstimate": 284,
   "sections": [
     {
       "id": "executive-summary",
