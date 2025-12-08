@@ -3976,10 +3976,13 @@ button:focus {
       .clickwrap-overlay.hidden {
         opacity: 0;
         pointer-events: none;
+        visibility: hidden;
       }
 
       .clickwrap-overlay.removed {
-        display: none;
+        display: none !important;
+        visibility: hidden !important;
+        z-index: -1 !important;
       }
 
       /* Modal Container */
@@ -4266,9 +4269,17 @@ button:focus {
             modal.classList.add('hidden');
             setTimeout(function() {
               modal.classList.add('removed');
-              // Also hide by display:none to ensure it's completely gone
+              // Aggressively remove modal from DOM flow
               if (modal && modal.style) {
                 modal.style.display = 'none';
+                modal.style.visibility = 'hidden';
+                modal.style.zIndex = '-9999';
+                modal.style.position = 'absolute';
+                modal.style.top = '-9999px';
+              }
+              // As a last resort, remove from DOM entirely
+              if (modal && modal.parentNode) {
+                modal.parentNode.removeChild(modal);
               }
             }, 300);
           });
@@ -4383,10 +4394,13 @@ button:focus {
       .clickwrap-overlay.hidden {
         opacity: 0;
         pointer-events: none;
+        visibility: hidden;
       }
 
       .clickwrap-overlay.removed {
-        display: none;
+        display: none !important;
+        visibility: hidden !important;
+        z-index: -1 !important;
       }
 
       /* Modal Container */
@@ -4673,9 +4687,17 @@ button:focus {
             modal.classList.add('hidden');
             setTimeout(function() {
               modal.classList.add('removed');
-              // Also hide by display:none to ensure it's completely gone
+              // Aggressively remove modal from DOM flow
               if (modal && modal.style) {
                 modal.style.display = 'none';
+                modal.style.visibility = 'hidden';
+                modal.style.zIndex = '-9999';
+                modal.style.position = 'absolute';
+                modal.style.top = '-9999px';
+              }
+              // As a last resort, remove from DOM entirely
+              if (modal && modal.parentNode) {
+                modal.parentNode.removeChild(modal);
               }
             }, 300);
           });
@@ -5827,7 +5849,7 @@ button:focus {
     <script type="application/json" id="report-metadata">
       {
   "reportId": "922cbec0-b9bf-4a97-b5c7-14e766246855",
-  "generatedAt": "2025-12-08T02:09:25.313Z",
+  "generatedAt": "2025-12-08T02:11:49.998Z",
   "pipelineVersion": "1.0.0",
   "betaMode": false,
   "termsVersion": "2025.1"

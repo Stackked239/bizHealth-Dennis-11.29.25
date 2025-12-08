@@ -117,10 +117,13 @@ export function generateClickwrapModal(config: ClickwrapConfig, legalContent: st
       .clickwrap-overlay.hidden {
         opacity: 0;
         pointer-events: none;
+        visibility: hidden;
       }
 
       .clickwrap-overlay.removed {
-        display: none;
+        display: none !important;
+        visibility: hidden !important;
+        z-index: -1 !important;
       }
 
       /* Modal Container */
@@ -407,9 +410,17 @@ export function generateClickwrapModal(config: ClickwrapConfig, legalContent: st
             modal.classList.add('hidden');
             setTimeout(function() {
               modal.classList.add('removed');
-              // Also hide by display:none to ensure it's completely gone
+              // Aggressively remove modal from DOM flow
               if (modal && modal.style) {
                 modal.style.display = 'none';
+                modal.style.visibility = 'hidden';
+                modal.style.zIndex = '-9999';
+                modal.style.position = 'absolute';
+                modal.style.top = '-9999px';
+              }
+              // As a last resort, remove from DOM entirely
+              if (modal && modal.parentNode) {
+                modal.parentNode.removeChild(modal);
               }
             }, 300);
           });
