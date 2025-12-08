@@ -132,7 +132,6 @@ export type {
   GaugeChartOptions,
   ScoreDistributionData,
   SparklineData,
-  SparklineOptions,
   ChartContainerOptions,
 } from './svg-chart-generators.js';
 

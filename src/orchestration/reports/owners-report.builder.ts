@@ -75,7 +75,20 @@ import {
   generateAllChapterScoreBars,
   generateHealthScoreGauge,
   getReportChartStyles,
+  // World-class visual components (Phase 1.5-2)
+  render4ChapterRadar,
 } from './charts/index.js';
+
+// Import world-class visual components (Phase 1.5-2)
+import {
+  generateQuickWinsGrid,
+  generateFinancialImpactDashboard,
+} from './components/index.js';
+import {
+  contextToChapterRadarData,
+  contextToFinancialImpactData,
+  contextToQuickWinCards,
+} from './utils/index.js';
 
 /**
  * Build insight cards from findings for the owner report
@@ -147,6 +160,58 @@ export async function buildOwnersReport(
     generateChapterOverviewRadar(ctx, { width: 450, height: 350 }).catch(() => ''),
     generateAllChapterScoreBars(ctx, { width: 550, height: 220 }).catch(() => ''),
   ]);
+
+  // ============================================================================
+  // WORLD-CLASS VISUAL COMPONENTS (Phase 1.5-2)
+  // ============================================================================
+  logger.info('Generating world-class visual components for owner report');
+
+  // Generate 4-Chapter Radar (simplified for owner report)
+  let worldClassChapterRadar = '';
+  try {
+    const chapterRadarData = contextToChapterRadarData(ctx);
+    if (chapterRadarData && chapterRadarData.chapters.length > 0) {
+      worldClassChapterRadar = render4ChapterRadar(chapterRadarData, {
+        width: 400,
+        height: 350,
+        showBenchmark: true,
+        showLegend: true,
+        companyName: ctx.companyProfile.name,
+      });
+    }
+  } catch (error) {
+    logger.warn({ error }, 'Failed to generate 4-chapter radar for owner report');
+  }
+
+  // Generate Financial Impact Dashboard
+  let worldClassFinancialDashboard = '';
+  try {
+    const financialData = contextToFinancialImpactData(ctx);
+    if (financialData) {
+      worldClassFinancialDashboard = generateFinancialImpactDashboard(financialData, {
+        showROI: true,
+        showTimeline: true,
+        companyName: ctx.companyProfile.name,
+      });
+    }
+  } catch (error) {
+    logger.warn({ error }, 'Failed to generate financial impact dashboard for owner report');
+  }
+
+  // Generate Quick Wins Cards
+  let worldClassQuickWinsCards = '';
+  try {
+    const quickWinCards = contextToQuickWinCards(ctx);
+    if (quickWinCards && quickWinCards.length > 0) {
+      worldClassQuickWinsCards = generateQuickWinsGrid(quickWinCards.slice(0, 4), {
+        columns: 2,
+        showTransformation: true,
+        showTimeline: true,
+      });
+    }
+  } catch (error) {
+    logger.warn({ error }, 'Failed to generate quick wins cards for owner report');
+  }
 
   // Generate financial aggregates for overview display
   const financialProjections = ctx.financialProjections;
@@ -251,7 +316,20 @@ export async function buildOwnersReport(
       <!-- Executive Highlights Summary -->
       ${executiveHighlightsHtml}
 
-      <!-- Visual Performance Charts -->
+      <!-- World-Class: 4-Chapter Radar (Signature for Owner Report) -->
+      ${worldClassChapterRadar ? `
+        <div class="world-class-radar-section" style="margin: 2rem 0; padding: 1.5rem; background: linear-gradient(135deg, #fafbfc 0%, #fff 100%); border-radius: 12px; border: 1px solid #e9ecef;">
+          <h3 style="color: ${options.brand.primaryColor}; font-family: 'Montserrat', sans-serif; margin: 0 0 1rem 0; font-size: 1.1rem; text-align: center;">Your 4-Chapter Business Overview</h3>
+          <div style="display: flex; justify-content: center;">
+            ${worldClassChapterRadar}
+          </div>
+          <p style="text-align: center; color: #666; font-size: 0.85rem; margin-top: 0.75rem;">
+            How your business compares across the four key operational pillars
+          </p>
+        </div>
+      ` : ''}
+
+      <!-- Visual Performance Charts (Fallback/Additional) -->
       ${chapterRadar || chapterBars ? `
         <div class="owner-charts-section">
           <h3 style="color: ${options.brand.primaryColor}; font-family: 'Montserrat', sans-serif; margin: 1.5rem 0 1rem 0; font-size: 1.1rem;">Your Performance at a Glance</h3>
@@ -350,23 +428,30 @@ export async function buildOwnersReport(
         These are aggregate ranges across all recommended initiatives.
       </p>
 
-      <div class="financial-summary-grid">
-        <div class="financial-card">
-          <div class="card-label">Your Estimated 12-18 Month Investment</div>
-          <div class="card-value">${investmentLow > 0 ? formatCurrencyRange(investmentLow, investmentHigh) : '-'}</div>
-          <div class="card-sublabel">Across all initiatives</div>
+      <!-- World-Class: Financial Impact Dashboard -->
+      ${worldClassFinancialDashboard ? `
+        <div class="world-class-financial-section" style="margin: 1.5rem 0;">
+          ${worldClassFinancialDashboard}
         </div>
-        <div class="financial-card">
-          <div class="card-label">Your Potential Revenue Impact</div>
-          <div class="card-value">${returnLow > 0 ? formatCurrencyRange(returnLow, returnHigh) : '-'}</div>
-          <div class="card-sublabel">Over 18 months</div>
+      ` : `
+        <div class="financial-summary-grid">
+          <div class="financial-card">
+            <div class="card-label">Your Estimated 12-18 Month Investment</div>
+            <div class="card-value">${investmentLow > 0 ? formatCurrencyRange(investmentLow, investmentHigh) : '-'}</div>
+            <div class="card-sublabel">Across all initiatives</div>
+          </div>
+          <div class="financial-card">
+            <div class="card-label">Your Potential Revenue Impact</div>
+            <div class="card-value">${returnLow > 0 ? formatCurrencyRange(returnLow, returnHigh) : '-'}</div>
+            <div class="card-sublabel">Over 18 months</div>
+          </div>
+          <div class="financial-card highlight">
+            <div class="card-label">Your Expected ROI</div>
+            <div class="card-value">${roiLow.toFixed(1)}x - ${roiHigh.toFixed(1)}x</div>
+            <div class="card-sublabel">Return on investment</div>
+          </div>
         </div>
-        <div class="financial-card highlight">
-          <div class="card-label">Your Expected ROI</div>
-          <div class="card-value">${roiLow.toFixed(1)}x - ${roiHigh.toFixed(1)}x</div>
-          <div class="card-sublabel">Return on investment</div>
-        </div>
-      </div>
+      `}
 
       ${QUICK_REFS.financialImpact('investment-roi')}
     </section>
@@ -394,7 +479,13 @@ export async function buildOwnersReport(
       <section class="section" id="quick-wins">
         ${renderOwnerSectionHeader('Quick Wins - Start Today', 'What can I do right now?')}
         <p class="section-intro">These high-impact, low-effort improvements can be implemented within 90 days:</p>
-        ${quickWins.map(qw => `
+
+        <!-- World-Class: Quick Wins Cards -->
+        ${worldClassQuickWinsCards ? `
+          <div class="world-class-quick-wins-section" style="margin: 1.5rem 0;">
+            ${worldClassQuickWinsCards}
+          </div>
+        ` : quickWins.map(qw => `
           <div class="quick-win-card">
             <div class="title">${escapeHtml(qw.theme)}</div>
             <p>${escapeHtml(qw.expectedOutcomes)}</p>

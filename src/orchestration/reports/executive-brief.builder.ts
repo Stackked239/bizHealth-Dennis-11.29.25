@@ -23,10 +23,16 @@ import {
   generateHealthScoreGauge,
   generateAllChapterScoreBars,
   getReportChartStyles,
+  // World-class visual components (Phase 1.5-2)
+  render4ChapterRadar,
 } from './charts/index.js';
 
 // Import legal terms component
 import { buildLegalTermsPage } from './components/index.js';
+
+// Import world-class integration utilities (Phase 1.5-2)
+import { contextToChapterRadarData } from './utils/index.js';
+import { logger } from '../../utils/logger.js';
 
 /**
  * Build executive brief
@@ -48,6 +54,28 @@ export async function buildExecutiveBrief(
     generateHealthScoreGauge(ctx, { width: 200, height: 120 }).catch(() => ''),
     generateAllChapterScoreBars(ctx, { width: 600, height: 180 }).catch(() => ''),
   ]);
+
+  // ============================================================================
+  // WORLD-CLASS VISUAL COMPONENTS (Phase 1.5-2)
+  // ============================================================================
+  logger.info('Generating world-class 4-chapter radar for executive brief');
+
+  // Generate 4-Chapter Radar (compact for executive brief)
+  let worldClassChapterRadar = '';
+  try {
+    const chapterRadarData = contextToChapterRadarData(ctx);
+    if (chapterRadarData && chapterRadarData.chapters.length > 0) {
+      worldClassChapterRadar = render4ChapterRadar(chapterRadarData, {
+        width: 350,
+        height: 300,
+        showBenchmark: true,
+        showLegend: true,
+        companyName: ctx.companyProfile.name,
+      });
+    }
+  } catch (error) {
+    logger.warn({ error }, 'Failed to generate 4-chapter radar for executive brief');
+  }
 
   const html = wrapHtmlDocument(`
     <style>
@@ -280,7 +308,16 @@ export async function buildExecutiveBrief(
         `).join('')}
       </div>
 
-      ${chapterBars ? `
+      <!-- World-Class: 4-Chapter Radar Visualization -->
+      ${worldClassChapterRadar ? `
+        <div class="world-class-radar-container" style="margin: 1.5rem 0; padding: 1rem; background: linear-gradient(135deg, #fafbfc 0%, #fff 100%); border-radius: 12px; border: 1px solid #e9ecef; text-align: center;">
+          <h3 style="color: ${options.brand.primaryColor}; font-family: 'Montserrat', sans-serif; margin: 0 0 0.75rem 0; font-size: 1rem;">Business Health Overview</h3>
+          <div style="display: flex; justify-content: center;">
+            ${worldClassChapterRadar}
+          </div>
+          <p style="color: #666; font-size: 0.8rem; margin-top: 0.5rem;">Performance across all four business pillars vs. industry benchmark</p>
+        </div>
+      ` : chapterBars ? `
         <div class="executive-charts">
           <div class="chart-wrapper">
             ${chapterBars}

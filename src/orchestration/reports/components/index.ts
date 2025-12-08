@@ -155,7 +155,7 @@ export type {
   RecommendationCardProps,
   RoadmapPhaseDisplay,
   ExecutiveHighlight,
-  KeyTakeaway,
+  KeyTakeaway as VisualKeyTakeaway,
   ChapterSummaryProps,
   QuickWinDisplay,
   BenchmarkComparisonItem,
@@ -198,7 +198,7 @@ export {
   generateQuickWinsGrid,
   generateQuickWinsList,
   generateQuickWinRow,
-  generateQuickWinsSummary,
+  generateQuickWinsSummary as generateQuickWinsCardSummary,
   generateQuickWinBadge,
   generateTransformationArrow,
 } from './cards/index.js';
