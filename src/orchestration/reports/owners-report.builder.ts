@@ -83,11 +83,15 @@ import {
 import {
   generateQuickWinsGrid,
   generateFinancialImpactDashboard,
+  // Enhanced section headers with percentile rankings
+  generateEnhancedSectionHeader,
 } from './components/index.js';
 import {
   contextToChapterRadarData,
   contextToFinancialImpactData,
   contextToQuickWinCards,
+  // Section header integration utilities
+  chapterToSectionHeader,
 } from './utils/index.js';
 
 /**
@@ -211,6 +215,38 @@ export async function buildOwnersReport(
     }
   } catch (error) {
     logger.warn({ error }, 'Failed to generate quick wins cards for owner report');
+  }
+
+  // ============================================================================
+  // ENHANCED CHAPTER SUMMARIES WITH PERCENTILE RANKINGS (Phase 1.5-2)
+  // World-class section headers showing competitive positioning
+  // ============================================================================
+  logger.info('Generating enhanced chapter summaries with percentile rankings');
+
+  let enhancedChapterSummaries = '';
+  try {
+    enhancedChapterSummaries = ctx.chapters.map(chapter => {
+      const headerConfig = chapterToSectionHeader(
+        {
+          code: chapter.code,
+          name: chapter.name,
+          score: chapter.score,
+          benchmark: chapter.industryBenchmark || chapter.benchmark?.peerPercentile,
+          percentile: chapter.percentileRank,
+        },
+        ctx.companyProfile.industry
+      );
+
+      return generateEnhancedSectionHeader(headerConfig, {
+        size: 'medium',
+        showPercentile: true,
+        showBand: true,
+        showBenchmark: !!chapter.industryBenchmark,
+        benchmark: chapter.industryBenchmark,
+      });
+    }).join('');
+  } catch (error) {
+    logger.warn({ error }, 'Failed to generate enhanced chapter summaries for owner report');
   }
 
   // Generate financial aggregates for overview display
@@ -375,6 +411,25 @@ export async function buildOwnersReport(
 
       ${QUICK_REFS.executiveSummary('what-this-means')}
     </section>
+
+    <!-- ================================================================
+         SECTION: Your Chapter Performance Summary (Enhanced Headers)
+         World-class percentile ranking display for competitive context
+         ================================================================ -->
+    ${enhancedChapterSummaries ? `
+      <section class="section" id="chapter-performance">
+        ${renderOwnerSectionHeader('Your Chapter Performance Breakdown', 'How do I compare in each area?')}
+        <p class="section-intro" style="margin-bottom: 1.5rem;">
+          Below is your performance across the four key business pillars, showing your score,
+          industry percentile ranking, and performance band. This helps you understand exactly
+          where you stand competitively.
+        </p>
+        <div class="enhanced-chapter-summaries" style="display: flex; flex-direction: column; gap: 1rem;">
+          ${enhancedChapterSummaries}
+        </div>
+        ${QUICK_REFS.scorecard('chapter-performance')}
+      </section>
+    ` : ''}
 
     <!-- ================================================================
          SECTION: Your Critical Priorities
