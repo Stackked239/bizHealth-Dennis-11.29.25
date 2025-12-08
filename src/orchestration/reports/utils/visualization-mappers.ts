@@ -358,7 +358,8 @@ export function mapRoadmapToRoadmapPhases(
       timeframe: formatTimeHorizon(phase.time_horizon, index),
       focus: phase.narrative?.substring(0, 150) || 'Strategic implementation',
       keyDeliverables: linkedRecs.slice(0, 4).map(rec => rec.theme || rec.expected_outcomes),
-      successMetrics: linkedRecs.slice(0, 2).map(rec => rec.expected_outcomes?.substring(0, 60))
+      // P1 FIX: Do not truncate success metrics - let CSS handle overflow
+      successMetrics: linkedRecs.slice(0, 3).map(rec => rec.expected_outcomes || '')
     };
   });
 }

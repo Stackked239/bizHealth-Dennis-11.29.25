@@ -1439,6 +1439,7 @@ export function generateFinancialSection(ctx: ReportContext): string {
         <thead>
           <tr>
             <th>Recommendation</th>
+            <th>Timeframe</th>
             <th>Impact</th>
             <th>Effort</th>
             <th>ROI</th>
@@ -1448,6 +1449,7 @@ export function generateFinancialSection(ctx: ReportContext): string {
           ${recommendations.slice(0, 10).map(rec => `
             <tr>
               <td>${escapeHtml(rec.theme)}</td>
+              <td>${getFormattedTimeframe(rec.horizon)}</td>
               <td>${rec.impactScore}/100</td>
               <td>${rec.effortScore}/100</td>
               <td><strong>${calculateROI(rec.impactScore, rec.effortScore)}x</strong></td>
@@ -1488,6 +1490,24 @@ export function escapeHtml(text: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
+}
+
+/**
+ * Format timeframe from recommendation horizon data
+ * P3.2: Helper for Investment Summary timeframe column
+ */
+function getFormattedTimeframe(horizon?: string): string {
+  if (!horizon) return '—';
+  const h = String(horizon).toLowerCase();
+
+  if (h.includes('90') || h.includes('0-90')) return '0–3 months';
+  if (h.includes('6') && !h.includes('12')) return '3–6 months';
+  if (h.includes('12') && !h.includes('18')) return '6–12 months';
+  if (h.includes('18')) return '12–18 months';
+  if (h.includes('quick') || h.includes('immediate')) return '0–3 months';
+
+  // Return formatted original if no match
+  return escapeHtml(horizon);
 }
 
 /**
