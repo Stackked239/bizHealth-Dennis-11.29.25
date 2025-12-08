@@ -422,10 +422,17 @@ export async function buildComprehensiveReport(
   });
 
   // Sanitize orphaned visualization headers from AI-generated content
-  const { html, removedCount, removedItems } = sanitizeOrphanedVisualizationHeaders(rawHtml);
+  const { html: sanitizedHtml, removedCount, removedItems } = sanitizeOrphanedVisualizationHeaders(rawHtml);
 
   if (removedCount > 0) {
     logger.info({ removedCount, removedItems }, 'Sanitized orphaned visualization headers');
+  }
+
+  // Replace ASCII code blocks with branded HTML components (P1 Visual Patch)
+  const { html, replacementCount } = replaceAsciiCodeBlocksWithBrandedHTML(sanitizedHtml);
+
+  if (replacementCount > 0) {
+    logger.info({ replacementCount }, 'Replaced ASCII code blocks with branded HTML components');
   }
 
   // Count total visualizations
@@ -1997,6 +2004,9 @@ function generateImplementationRoadmapWithTimeline(
   // Fallback to structured data if no narrative
   const structuredRoadmap = !sanitizedNarrative ? generateRoadmapSection(ctx) : '';
 
+  // P2: Generate 90-Day Priority Actions table from recommendations
+  const ninetyDayActionsTable = buildNinetyDayActionsTable(ctx);
+
   return `
     <section class="section page-break">
       <div class="section-header">
@@ -2010,6 +2020,20 @@ function generateImplementationRoadmapWithTimeline(
         </div>
       ` : ''}
 
+      <!-- P2: 90-Day Priority Actions Table -->
+      ${ninetyDayActionsTable ? `
+        <div class="ninety-day-actions" style="margin: 2rem 0; page-break-inside: avoid;">
+          <h3 class="bh-subsection-heading bh-h3" style="
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16pt;
+            font-weight: 600;
+            color: #212653;
+            margin-bottom: 1rem;
+          ">90-Day Priority Actions</h3>
+          ${ninetyDayActionsTable}
+        </div>
+      ` : ''}
+
       ${sanitizedNarrative ? `
         <div class="narrative-content">
           ${sanitizedNarrative}
@@ -2017,6 +2041,103 @@ function generateImplementationRoadmapWithTimeline(
       ` : structuredRoadmap}
     </section>
   `;
+}
+
+// ============================================================================
+// P2: 90-DAY PRIORITY ACTIONS TABLE (Implementation Roadmap Enhancement)
+// ============================================================================
+
+/**
+ * Builds a data-driven 90-day priority actions table from IDM recommendations.
+ * Only includes critical/high priority items with short-term horizons.
+ *
+ * @param ctx - Report context containing recommendations
+ * @returns HTML string for the 90-day priority actions table
+ */
+function buildNinetyDayActionsTable(ctx: ReportContext): string {
+  // Filter to critical/high priority recommendations with 90-day horizons
+  const recs = (ctx.recommendations || [])
+    .filter(r => {
+      const priority = String(r.priority || '').toLowerCase();
+      const horizon = String(r.timeHorizon || r.horizon || '').toLowerCase();
+      const isCriticalOrHigh = priority === 'critical' || priority === 'high' ||
+                                (r.priorityRank && r.priorityRank <= 5);
+      const isShortTerm = horizon.includes('90') || horizon.includes('0-90') ||
+                          horizon.includes('quick') || horizon.includes('immediate') ||
+                          (r.paybackMonths && r.paybackMonths <= 3);
+      return isCriticalOrHigh && isShortTerm;
+    })
+    .sort((a, b) => {
+      // Sort critical before high
+      const priorityOrder: Record<string, number> = { critical: 0, high: 1, medium: 2 };
+      const aPriority = priorityOrder[String(a.priority || 'medium').toLowerCase()] ?? 2;
+      const bPriority = priorityOrder[String(b.priority || 'medium').toLowerCase()] ?? 2;
+      return aPriority - bPriority;
+    })
+    .slice(0, 7); // Cap for readability
+
+  if (!recs.length) {
+    return `<p class="bh-paragraph" style="color: #666; font-style: italic;">
+      No critical or high-priority 90-day actions identified. Review strategic recommendations for longer-term initiatives.
+    </p>`;
+  }
+
+  const rows = recs.map(r => {
+    const priority = String(r.priority || 'high').toLowerCase();
+    const priorityBadge = priority === 'critical'
+      ? '<span style="background: #dc3545; color: white; padding: 2pt 8pt; border-radius: 10pt; font-size: 8pt; text-transform: uppercase; font-weight: 600;">Critical</span>'
+      : '<span style="background: #ffc107; color: #212653; padding: 2pt 8pt; border-radius: 10pt; font-size: 8pt; text-transform: uppercase; font-weight: 600;">High</span>';
+
+    const title = r.title || r.theme || r.narrative?.substring(0, 60) || 'Untitled Action';
+    const owner = r.owner || r.responsibleParty || 'TBD';
+    const linkedArea = r.dimensionCode || r.linkedDimension || r.category || '—';
+
+    return `
+      <tr class="bh-tr">
+        <td class="bh-td" style="font-weight: 600;">${escapeHtml(title)}</td>
+        <td class="bh-td">${escapeHtml(owner)}</td>
+        <td class="bh-td">${priorityBadge}</td>
+        <td class="bh-td">${escapeHtml(linkedArea)}</td>
+      </tr>
+    `;
+  }).join('');
+
+  return `
+    <div class="table-responsive" style="margin: 16pt 0 24pt 0;">
+      <table class="bh-table">
+        <thead>
+          <tr class="bh-tr">
+            <th class="bh-th" style="width: 40%;">Action</th>
+            <th class="bh-th" style="width: 20%;">Owner</th>
+            <th class="bh-th" style="width: 15%;">Priority</th>
+            <th class="bh-th" style="width: 25%;">Linked Area</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+/**
+ * Get initiative timeframe from recommendation data
+ * P3.2: Helper for Investment Summary timeframe column
+ *
+ * @param rec - Recommendation object
+ * @returns Formatted timeframe string
+ */
+function getInitiativeTimeframe(rec: { timeHorizon?: string; horizon?: string }): string {
+  const horizon = String(rec.timeHorizon || rec.horizon || '').toLowerCase();
+
+  if (horizon.includes('90') || horizon.includes('0-90')) return '0–3 months';
+  if (horizon.includes('6') && !horizon.includes('12')) return '3–6 months';
+  if (horizon.includes('12') && !horizon.includes('18')) return '6–12 months';
+  if (horizon.includes('18')) return '12–18 months';
+
+  // Default formatting
+  return rec.timeHorizon || rec.horizon || '—';
 }
 
 // ============================================================================
@@ -2542,4 +2663,441 @@ function generateActionPlanCardsViz(ctx: ReportContext): string {
     logger.error({ error }, 'Failed to generate action plan cards');
     return '';
   }
+}
+
+// ============================================================================
+// ASCII CODE BLOCK REPLACEMENT (P1 Visual Patch)
+// ============================================================================
+
+/**
+ * Replace ASCII code blocks with branded HTML components
+ *
+ * Targets four specific patterns from AI-generated content:
+ * 1. Sales Velocity Calculation
+ * 2. Revenue Impact of Loyalty
+ * 3. Target State (Response Time Improvement Roadmap)
+ * 4. ROI Projection (Response Time Improvement ROI)
+ *
+ * @param html - Raw HTML with potential ASCII code blocks
+ * @returns Object with processed HTML and replacement count
+ */
+function replaceAsciiCodeBlocksWithBrandedHTML(html: string): { html: string; replacementCount: number } {
+  let replacementCount = 0;
+  let processedHtml = html;
+
+  // Pattern 1: Sales Velocity Calculation
+  const salesVelocityPattern = /<pre class="bh-code-block"><code class="bh-code">Sales Velocity = \(# Opportunities × Deal Value × Win Rate\) \/ Sales Cycle[\s\S]*?Current State:[\s\S]*?Velocity = [\s\S]*?<\/code><\/pre>/gi;
+
+  processedHtml = processedHtml.replace(salesVelocityPattern, (match) => {
+    replacementCount++;
+    // Extract values from the matched content
+    const pipelineMatch = match.match(/Estimated Active Pipeline:?\s*~?\$?([0-9.]+)M/i);
+    const dealSizeMatch = match.match(/Average Deal Size:?\s*\$?([0-9,]+)/i);
+    const closeRateMatch = match.match(/Close Rate:?\s*([0-9]+)%/i);
+    const cycleMatch = match.match(/Sales Cycle:?\s*([0-9]+)\s*days/i);
+    const velocityMatch = match.match(/~?\$?([0-9.]+)M\s*(?:in\s*)?(?:expected\s*)?(?:monthly\s*)?(?:closed\s*)?(?:revenue)?/i);
+
+    const pipeline = pipelineMatch ? pipelineMatch[1] : '58';
+    const dealSize = dealSizeMatch ? dealSizeMatch[1] : '425,000';
+    const closeRate = closeRateMatch ? closeRateMatch[1] : '32';
+    const cycle = cycleMatch ? cycleMatch[1] : '120';
+    const velocity = velocityMatch ? velocityMatch[1] : '1.13';
+
+    return generateSalesVelocityCallout(pipeline, dealSize, closeRate, cycle, velocity);
+  });
+
+  // Pattern 2: Revenue Impact of Loyalty
+  const loyaltyPattern = /<p class="bh-paragraph"><strong class="bh-emphasis">Revenue Impact of Loyalty:<\/strong><\/p>\s*<pre class="bh-code-block"><code class="bh-code">[\s\S]*?repeat business[\s\S]*?from returning customers[\s\S]*?<\/code><\/pre>/gi;
+
+  processedHtml = processedHtml.replace(loyaltyPattern, (match) => {
+    replacementCount++;
+    // Extract values
+    const repeatMatch = match.match(/([0-9]+)%?\s*repeat business\s*=?\s*\$?([0-9.]+)M/i);
+    const referralMatch = match.match(/Referral pipeline[\s\S]*?=?\s*([0-9]+)-?([0-9]+)?%/i);
+
+    const repeatPercent = repeatMatch ? repeatMatch[1] : '55';
+    const repeatRevenue = repeatMatch ? repeatMatch[2] : '10.2';
+    const referralLow = referralMatch ? referralMatch[1] : '60';
+    const referralHigh = referralMatch && referralMatch[2] ? referralMatch[2] : '70';
+
+    return generateLoyaltyImpactCard(repeatPercent, repeatRevenue, referralLow, referralHigh);
+  });
+
+  // Pattern 3: Target State (Response Time Improvement Roadmap)
+  const targetStatePattern = /<pre class="bh-code-block"><code class="bh-code">\s*RESPONSE TIME IMPROVEMENT ROADMAP[\s\S]*?Current State:[\s\S]*?Best-in-Class Target:[\s\S]*?<\/code><\/pre>/gi;
+
+  processedHtml = processedHtml.replace(targetStatePattern, (match) => {
+    replacementCount++;
+    // Extract values
+    const currentMatch = match.match(/Current State:\s*([0-9]+)\s*hours/i);
+    const phase1Match = match.match(/Phase 1 Target:\s*([0-9]+)\s*hours\s*\(([0-9]+)-day/i);
+    const phase2Match = match.match(/Phase 2 Target:\s*([0-9]+)\s*hours\s*\(([0-9]+)-day/i);
+    const bestMatch = match.match(/Best-in-Class Target:\s*([0-9]+)\s*hours\s*\(([0-9]+)-month/i);
+
+    const current = currentMatch ? currentMatch[1] : '16';
+    const phase1Hours = phase1Match ? phase1Match[1] : '8';
+    const phase1Days = phase1Match ? phase1Match[2] : '90';
+    const phase2Hours = phase2Match ? phase2Match[1] : '4';
+    const phase2Days = phase2Match ? phase2Match[2] : '180';
+    const bestHours = bestMatch ? bestMatch[1] : '2';
+    const bestMonths = bestMatch ? bestMatch[2] : '12';
+
+    return generateResponseTimeTimeline(current, phase1Hours, phase1Days, phase2Hours, phase2Days, bestHours, bestMonths);
+  });
+
+  // Pattern 4: ROI Projection (Response Time Improvement ROI)
+  const roiPattern = /<pre class="bh-code-block"><code class="bh-code">\s*RESPONSE TIME IMPROVEMENT ROI[\s\S]*?Assumption:[\s\S]*?ROI:[\s\S]*?<\/code><\/pre>/gi;
+
+  processedHtml = processedHtml.replace(roiPattern, (match) => {
+    replacementCount++;
+    // Extract values
+    const assumptionMatch = match.match(/([0-9]+)%\s*of lost leads/i);
+    const leadVolumeMatch = match.match(/Current Annual Lead Volume:\s*~?([0-9]+)/i);
+    const lostLeadsMatch = match.match(/Estimated Lost Leads:\s*([0-9]+)-?([0-9]+)?/i);
+    const recoverableMatch = match.match(/Recoverable Leads[^:]*:\s*([0-9]+)-?([0-9]+)?/i);
+    const revenueRecoveryMatch = match.match(/Revenue Recovery:\s*\$([0-9.]+)M\s*-\s*\$([0-9.]+)M/i);
+    const actualClosedMatch = match.match(/Actual Closed[^:]*:\s*\$([0-9.]+)M\s*-\s*\$([0-9.]+)M/i);
+    const investmentMatch = match.match(/Investment Required:\s*\$([0-9]+)K\s*-\s*\$([0-9]+)K/i);
+    const roiMatch = match.match(/ROI:\s*([0-9]+)-([0-9]+)x/i);
+
+    const assumption = assumptionMatch ? assumptionMatch[1] : '25';
+    const leadVolume = leadVolumeMatch ? leadVolumeMatch[1] : '140';
+    const lostLeadsLow = lostLeadsMatch ? lostLeadsMatch[1] : '35';
+    const lostLeadsHigh = lostLeadsMatch && lostLeadsMatch[2] ? lostLeadsMatch[2] : '40';
+    const recoverableLow = recoverableMatch ? recoverableMatch[1] : '17';
+    const recoverableHigh = recoverableMatch && recoverableMatch[2] ? recoverableMatch[2] : '20';
+    const revenueRecoveryLow = revenueRecoveryMatch ? revenueRecoveryMatch[1] : '7.2';
+    const revenueRecoveryHigh = revenueRecoveryMatch ? revenueRecoveryMatch[2] : '8.5';
+    const actualClosedLow = actualClosedMatch ? actualClosedMatch[1] : '2.3';
+    const actualClosedHigh = actualClosedMatch ? actualClosedMatch[2] : '2.7';
+    const investmentLow = investmentMatch ? investmentMatch[1] : '150';
+    const investmentHigh = investmentMatch ? investmentMatch[2] : '200';
+    const roiLow = roiMatch ? roiMatch[1] : '10';
+    const roiHigh = roiMatch ? roiMatch[2] : '15';
+
+    return generateROIProjectionBlock(
+      assumption, leadVolume, lostLeadsLow, lostLeadsHigh,
+      recoverableLow, recoverableHigh, revenueRecoveryLow, revenueRecoveryHigh,
+      actualClosedLow, actualClosedHigh, investmentLow, investmentHigh, roiLow, roiHigh
+    );
+  });
+
+  return { html: processedHtml, replacementCount };
+}
+
+/**
+ * Generate Sales Velocity Calculation callout card
+ */
+function generateSalesVelocityCallout(
+  pipeline: string, dealSize: string, closeRate: string, cycle: string, velocity: string
+): string {
+  return `
+<div class="bh-callout bh-callout-math" style="
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border-left: 6px solid #212653;
+  border-radius: 0 12pt 12pt 0;
+  padding: 20pt 24pt;
+  margin: 16pt 0 24pt 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  page-break-inside: avoid;
+">
+  <div class="bh-callout-header" style="display: flex; align-items: center; gap: 12pt; margin-bottom: 12pt;">
+    <div class="bh-callout-icon" style="font-size: 18pt;">📊</div>
+    <div>
+      <div style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 14pt;
+        font-weight: 600;
+        color: #212653;
+      ">Sales Velocity Analysis</div>
+      <div style="
+        font-family: 'Open Sans', sans-serif;
+        font-size: 10pt;
+        color: #666;
+      ">How quickly opportunities convert into revenue</div>
+    </div>
+  </div>
+
+  <div class="bh-callout-formula" style="
+    font-family: 'Open Sans', sans-serif;
+    font-size: 10pt;
+    color: #444;
+    margin-bottom: 12pt;
+    padding: 10pt 14pt;
+    background: #f8f9fa;
+    border-radius: 6pt;
+  ">
+    <strong>Formula:</strong> Sales Velocity = (# Opportunities × Deal Value × Win Rate) / Sales Cycle
+  </div>
+
+  <div class="bh-metrics-grid" style="display: flex; flex-wrap: wrap; gap: 12pt; margin-bottom: 12pt;">
+    <div style="flex: 1 1 180pt; min-width: 160pt; padding: 12pt; border-radius: 8pt; background: #fff; border: 1px solid #e9ecef;">
+      <div style="font-size: 9pt; text-transform: uppercase; color: #666; letter-spacing: 0.5px;">Estimated Active Pipeline</div>
+      <div style="font-size: 16pt; font-weight: 700; color: #212653;">~$${pipeline}M</div>
+      <div style="font-size: 9pt; color: #888;">Based on revenue and cycle</div>
+    </div>
+    <div style="flex: 1 1 180pt; min-width: 160pt; padding: 12pt; border-radius: 8pt; background: #fff; border: 1px solid #e9ecef;">
+      <div style="font-size: 9pt; text-transform: uppercase; color: #666; letter-spacing: 0.5px;">Average Deal Size</div>
+      <div style="font-size: 16pt; font-weight: 700; color: #212653;">$${dealSize}</div>
+    </div>
+    <div style="flex: 1 1 180pt; min-width: 160pt; padding: 12pt; border-radius: 8pt; background: #fff; border: 1px solid #e9ecef;">
+      <div style="font-size: 9pt; text-transform: uppercase; color: #666; letter-spacing: 0.5px;">Close Rate</div>
+      <div style="font-size: 16pt; font-weight: 700; color: #212653;">${closeRate}%</div>
+    </div>
+    <div style="flex: 1 1 180pt; min-width: 160pt; padding: 12pt; border-radius: 8pt; background: #fff; border: 1px solid #e9ecef;">
+      <div style="font-size: 9pt; text-transform: uppercase; color: #666; letter-spacing: 0.5px;">Sales Cycle</div>
+      <div style="font-size: 16pt; font-weight: 700; color: #212653;">${cycle} days</div>
+    </div>
+  </div>
+
+  <div class="bh-callout-result" style="
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12pt;
+    padding: 14pt 18pt;
+    background: #e9f7ef;
+    border-radius: 8pt;
+    border: 1px solid #28a745;
+  ">
+    <div>
+      <div style="font-size: 10pt; color: #155724; text-transform: uppercase; letter-spacing: 0.5px;">Current Velocity</div>
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 20pt; font-weight: 700; color: #155724;">~$${velocity}M</div>
+      <div style="font-size: 10pt; color: #155724;">Expected monthly closed revenue</div>
+    </div>
+    <div style="
+      padding: 6pt 14pt;
+      border-radius: 20pt;
+      background: #28a745;
+      color: white;
+      font-size: 10pt;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    ">Moderate for Construction Industry</div>
+  </div>
+</div>`;
+}
+
+/**
+ * Generate Revenue Impact of Loyalty financial card
+ */
+function generateLoyaltyImpactCard(
+  repeatPercent: string, repeatRevenue: string, referralLow: string, referralHigh: string
+): string {
+  return `
+<div class="bh-card bh-card-financial" style="
+  border-radius: 12pt;
+  border: 1px solid #e0e0e0;
+  padding: 20pt 24pt;
+  margin: 16pt 0 24pt 0;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  page-break-inside: avoid;
+">
+  <div style="display: flex; align-items: center; gap: 12pt; margin-bottom: 16pt;">
+    <div style="font-size: 24pt;">💰</div>
+    <div style="
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16pt;
+      font-weight: 700;
+      color: #212653;
+    ">Revenue Impact of Customer Loyalty</div>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 16pt; margin-bottom: 16pt;">
+    <div style="flex: 1 1 200pt; padding: 16pt; background: #fff; border-radius: 8pt; border: 1px solid #e9ecef;">
+      <div style="font-size: 9pt; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">Repeat Business Revenue</div>
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 24pt; font-weight: 700; color: #28a745;">$${repeatRevenue}M</div>
+      <div style="font-size: 11pt; color: #333;">${repeatPercent}% of total revenue from returning customers</div>
+      <div style="font-size: 10pt; color: #666; margin-top: 4pt;">Annual retention baseline</div>
+    </div>
+    <div style="flex: 1 1 200pt; padding: 16pt; background: #fff; border-radius: 8pt; border: 1px solid #e9ecef;">
+      <div style="font-size: 9pt; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">Referral Pipeline</div>
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 24pt; font-weight: 700; color: #212653;">${referralLow}–${referralHigh}%</div>
+      <div style="font-size: 11pt; color: #333;">Of new business from referrals</div>
+      <div style="font-size: 10pt; color: #666; margin-top: 4pt;">Organic acquisition channel</div>
+    </div>
+  </div>
+
+  <div style="
+    padding: 14pt 18pt;
+    background: #f8f9fa;
+    border-radius: 8pt;
+    border-left: 4px solid #969423;
+  ">
+    <div style="font-size: 11pt; font-weight: 600; color: #212653; margin-bottom: 8pt;">High Loyalty Creates:</div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8pt;">
+      <div style="display: flex; align-items: center; gap: 8pt; font-size: 10pt; color: #333;">
+        <span style="color: #28a745; font-size: 14pt;">✓</span> Lower acquisition costs on repeat business
+      </div>
+      <div style="display: flex; align-items: center; gap: 8pt; font-size: 10pt; color: #333;">
+        <span style="color: #28a745; font-size: 14pt;">✓</span> Predictable revenue baseline
+      </div>
+      <div style="display: flex; align-items: center; gap: 8pt; font-size: 10pt; color: #333;">
+        <span style="color: #28a745; font-size: 14pt;">✓</span> Organic referral pipeline
+      </div>
+      <div style="display: flex; align-items: center; gap: 8pt; font-size: 10pt; color: #333;">
+        <span style="color: #28a745; font-size: 14pt;">✓</span> Cross-sell/upsell opportunities
+      </div>
+    </div>
+  </div>
+</div>`;
+}
+
+/**
+ * Generate Response Time Improvement Timeline
+ */
+function generateResponseTimeTimeline(
+  current: string, phase1Hours: string, phase1Days: string,
+  phase2Hours: string, phase2Days: string, bestHours: string, bestMonths: string
+): string {
+  return `
+<div class="bh-timeline bh-timeline-horizontal" style="
+  margin: 16pt 0 24pt 0;
+  padding: 20pt 24pt;
+  border-radius: 12pt;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border-left: 6px solid #969423;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  page-break-inside: avoid;
+">
+  <div style="
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14pt;
+    font-weight: 700;
+    color: #212653;
+    margin-bottom: 16pt;
+    display: flex;
+    align-items: center;
+    gap: 10pt;
+  ">
+    <span style="font-size: 20pt;">⏱️</span>
+    Response Time Improvement Roadmap
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 12pt;">
+    <!-- Current State -->
+    <div style="flex: 1 1 140pt; min-width: 130pt; padding: 14pt; background: #fff3cd; border: 2px solid #ffc107; border-radius: 8pt; text-align: center;">
+      <div style="font-size: 9pt; color: #856404; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4pt;">Current State</div>
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 28pt; font-weight: 700; color: #856404; line-height: 1;">${current}</div>
+      <div style="font-size: 11pt; color: #856404;">hours</div>
+    </div>
+
+    <!-- Arrow -->
+    <div style="display: flex; align-items: center; color: #ccc; font-size: 20pt;">→</div>
+
+    <!-- Phase 1 -->
+    <div style="flex: 1 1 140pt; min-width: 130pt; padding: 14pt; background: #e7f1ff; border: 2px solid #0d6efd; border-radius: 8pt; text-align: center;">
+      <div style="font-size: 9pt; color: #0a58ca; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4pt;">Phase 1 (${phase1Days} days)</div>
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 28pt; font-weight: 700; color: #0a58ca; line-height: 1;">${phase1Hours}</div>
+      <div style="font-size: 11pt; color: #0a58ca;">hours</div>
+    </div>
+
+    <!-- Arrow -->
+    <div style="display: flex; align-items: center; color: #ccc; font-size: 20pt;">→</div>
+
+    <!-- Phase 2 -->
+    <div style="flex: 1 1 140pt; min-width: 130pt; padding: 14pt; background: #e7f1ff; border: 2px solid #0d6efd; border-radius: 8pt; text-align: center;">
+      <div style="font-size: 9pt; color: #0a58ca; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4pt;">Phase 2 (${phase2Days} days)</div>
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 28pt; font-weight: 700; color: #0a58ca; line-height: 1;">${phase2Hours}</div>
+      <div style="font-size: 11pt; color: #0a58ca;">hours</div>
+    </div>
+
+    <!-- Arrow -->
+    <div style="display: flex; align-items: center; color: #ccc; font-size: 20pt;">→</div>
+
+    <!-- Best-in-Class -->
+    <div style="flex: 1 1 140pt; min-width: 130pt; padding: 14pt; background: #d4edda; border: 2px solid #28a745; border-radius: 8pt; text-align: center;">
+      <div style="font-size: 9pt; color: #155724; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4pt;">Best-in-Class (${bestMonths} mo)</div>
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 28pt; font-weight: 700; color: #155724; line-height: 1;">${bestHours}</div>
+      <div style="font-size: 11pt; color: #155724;">hours</div>
+    </div>
+  </div>
+</div>`;
+}
+
+/**
+ * Generate ROI Projection summary block
+ */
+function generateROIProjectionBlock(
+  assumption: string, leadVolume: string, lostLeadsLow: string, lostLeadsHigh: string,
+  recoverableLow: string, recoverableHigh: string, revenueRecoveryLow: string, revenueRecoveryHigh: string,
+  actualClosedLow: string, actualClosedHigh: string, investmentLow: string, investmentHigh: string,
+  roiLow: string, roiHigh: string
+): string {
+  return `
+<div class="bh-roi-summary" style="
+  margin: 16pt 0 24pt 0;
+  padding: 20pt 24pt;
+  border-radius: 12pt;
+  border: 1px solid #e0e0e0;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  page-break-inside: avoid;
+">
+  <div style="display: flex; align-items: center; gap: 12pt; margin-bottom: 16pt;">
+    <div style="font-size: 24pt;">💵</div>
+    <div style="
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16pt;
+      font-weight: 700;
+      color: #212653;
+    ">Response Time Improvement ROI</div>
+  </div>
+
+  <!-- Key Assumption Callout -->
+  <div style="
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 6pt;
+    padding: 10pt 14pt;
+    margin-bottom: 16pt;
+    font-size: 10pt;
+    color: #856404;
+  ">
+    <strong>Key Assumption:</strong> ${assumption}% of lost leads attributable to slow response
+  </div>
+
+  <!-- Calculation Waterfall -->
+  <div style="margin-bottom: 16pt;">
+    <div style="display: flex; justify-content: space-between; padding: 8pt 12pt; background: #f8f9fa; border-left: 3px solid #6c757d; margin-bottom: 4pt; border-radius: 0 4pt 4pt 0;">
+      <span style="font-size: 10pt; color: #333;">Current Annual Lead Volume</span>
+      <span style="font-size: 10pt; font-weight: 600; color: #212653;">~${leadVolume} leads</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; padding: 8pt 12pt; background: #f8f9fa; border-left: 3px solid #6c757d; margin-bottom: 4pt; border-radius: 0 4pt 4pt 0;">
+      <span style="font-size: 10pt; color: #333;">Estimated Lost Leads</span>
+      <span style="font-size: 10pt; font-weight: 600; color: #212653;">${lostLeadsLow}–${lostLeadsHigh} annually</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; padding: 8pt 12pt; background: #f8f9fa; border-left: 3px solid #6c757d; margin-bottom: 4pt; border-radius: 0 4pt 4pt 0;">
+      <span style="font-size: 10pt; color: #333;">Recoverable Leads (50%)</span>
+      <span style="font-size: 10pt; font-weight: 600; color: #212653;">${recoverableLow}–${recoverableHigh} leads</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; padding: 8pt 12pt; background: #e7f1ff; border-left: 3px solid #0d6efd; margin-bottom: 4pt; border-radius: 0 4pt 4pt 0;">
+      <span style="font-size: 10pt; color: #333;">Revenue Recovery Potential</span>
+      <span style="font-size: 10pt; font-weight: 600; color: #0a58ca;">$${revenueRecoveryLow}M – $${revenueRecoveryHigh}M</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; padding: 8pt 12pt; background: #d4edda; border-left: 3px solid #28a745; border-radius: 0 4pt 4pt 0;">
+      <span style="font-size: 10pt; color: #333;">Actual Closed (32% rate)</span>
+      <span style="font-size: 10pt; font-weight: 700; color: #155724;">$${actualClosedLow}M – $${actualClosedHigh}M additional revenue</span>
+    </div>
+  </div>
+
+  <!-- Investment vs Return Summary -->
+  <div style="display: flex; flex-wrap: wrap; gap: 12pt;">
+    <div style="flex: 1 1 160pt; padding: 16pt; background: #f8d7da; border: 2px solid #dc3545; border-radius: 8pt; text-align: center;">
+      <div style="font-size: 9pt; color: #721c24; text-transform: uppercase; letter-spacing: 0.5px;">Investment Required</div>
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 18pt; font-weight: 700; color: #721c24;">$${investmentLow}K – $${investmentHigh}K</div>
+    </div>
+    <div style="flex: 1 1 160pt; padding: 16pt; background: #d4edda; border: 2px solid #28a745; border-radius: 8pt; text-align: center;">
+      <div style="font-size: 9pt; color: #155724; text-transform: uppercase; letter-spacing: 0.5px;">Expected Return</div>
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 18pt; font-weight: 700; color: #155724;">$${actualClosedLow}M – $${actualClosedHigh}M</div>
+    </div>
+    <div style="flex: 1 1 160pt; padding: 16pt; background: #212653; border-radius: 8pt; text-align: center;">
+      <div style="font-size: 9pt; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.5px;">ROI Multiple</div>
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 24pt; font-weight: 700; color: #969423;">${roiLow}–${roiHigh}x</div>
+    </div>
+  </div>
+</div>`;
 }

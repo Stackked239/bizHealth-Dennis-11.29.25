@@ -131,13 +131,15 @@ export function renderRoadmapTimeline(props: RoadmapTimelineProps): string {
     const color = getPhaseColor(phase.phaseNumber);
     const icon = getPhaseIcon(phase.phaseNumber);
 
+    // P1 FIX: Ensure deliverables wrap properly and don't truncate
     const deliverables = phase.keyDeliverables.map(d => `
-      <li class="biz-roadmap-timeline__deliverable">${escapeHtml(d)}</li>
+      <li class="biz-roadmap-timeline__deliverable" style="overflow: visible; white-space: normal; word-wrap: break-word; text-overflow: clip;">${escapeHtml(d)}</li>
     `).join('');
 
+    // P1 FIX: Ensure success metrics wrap properly and don't truncate
     const metrics = showMilestones && phase.successMetrics
       ? phase.successMetrics.map(m => `
-          <li style="font-size: 10px; color: #6B7280; padding: 2px 0;">${escapeHtml(m)}</li>
+          <li style="font-size: 10px; color: #6B7280; padding: 2px 0; overflow: visible; white-space: normal; word-wrap: break-word; text-overflow: clip;">${escapeHtml(m)}</li>
         `).join('')
       : '';
 

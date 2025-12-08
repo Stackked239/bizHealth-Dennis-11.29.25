@@ -247,14 +247,14 @@ export function generateEnhancedSectionHeader(
           line-height: 1;
         ">${config.icon}</span>
         <div>
-          <h2 style="
+          <div class="section-header-title" style="
             font-family: 'Montserrat', Arial, sans-serif;
             font-size: ${sizeConfig.titleSize};
             font-weight: 700;
             color: ${BRAND_COLORS.navy};
             margin: 0;
             line-height: 1.2;
-          ">${escapeHtml(config.sectionName)}</h2>
+          ">${escapeHtml(config.sectionName)}</div>
           ${
             config.sectionCode
               ? `
@@ -445,13 +445,13 @@ export function generateMinimalSectionHeader(
     ">
       <div style="display: flex; align-items: center; gap: 12pt;">
         <span style="font-size: 20pt;">${icon}</span>
-        <h3 style="
+        <div class="section-header-title" style="
           font-family: 'Montserrat', Arial, sans-serif;
           font-size: 16pt;
           font-weight: 600;
           color: ${BRAND_COLORS.navy};
           margin: 0;
-        ">${escapeHtml(title)}</h3>
+        ">${escapeHtml(title)}</div>
       </div>
       <div style="
         font-family: 'Montserrat', Arial, sans-serif;
