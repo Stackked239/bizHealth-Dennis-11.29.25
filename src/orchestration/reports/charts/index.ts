@@ -135,3 +135,38 @@ export type {
   SparklineOptions,
   ChartContainerOptions,
 } from './svg-chart-generators.js';
+
+// ============================================================================
+// WORLD-CLASS D3-STYLE SVG CHART GENERATORS (Phase 1.5-2)
+// Executive-grade radar visualizations optimized for PDF output
+// ============================================================================
+
+export {
+  // 12-Dimension Executive Radar
+  render12DimensionExecutiveRadar,
+  render12DimensionRadarCompact,
+  renderExecutiveRadarWithDimensions,
+  // 4-Chapter Benchmark Radar
+  render4ChapterRadar,
+  render4ChapterRadarCompact,
+  renderChapterRadarFromScores,
+  // Constants
+  DIMENSION_ORDER,
+  DIMENSION_CONFIG,
+  CHAPTER_COLORS,
+  CHAPTER_CONFIG,
+  CHAPTER_ORDER,
+} from './d3/index.js';
+
+export type {
+  // 12-Dimension Types
+  DimensionConfig,
+  ChapterConfig,
+  ExecutiveRadarChartData,
+  ExecutiveRadarOptions,
+  // 4-Chapter Types
+  ChapterCode,
+  ChapterRadarItem,
+  ChapterRadarData,
+  ChapterRadarOptions,
+} from './d3/index.js';

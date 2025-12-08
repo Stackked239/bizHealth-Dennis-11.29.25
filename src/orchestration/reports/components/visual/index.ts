@@ -178,3 +178,36 @@ export {
   renderCompactRiskHeatmap,
 } from './risk-heatmap.component.js';
 export type { RiskHeatmapOptions, RiskDataPoint } from './risk-heatmap.component.js';
+
+// ============================================================================
+// WORLD-CLASS VISUAL COMPONENTS (Phase 1.5-2)
+// ============================================================================
+
+// 18. Enhanced Section Header - Section headers with percentile ranking
+export {
+  generateEnhancedSectionHeader,
+  generateCompactSectionHeader,
+  generateChapterHeader,
+  generateDimensionHeader,
+  generateMinimalSectionHeader,
+  generateInlineScoreBadge,
+  generatePercentileBadge,
+} from './section-header-percentile.component.js';
+export type {
+  SectionHeaderConfig,
+  SectionHeaderOptions,
+} from './section-header-percentile.component.js';
+
+// 19. Financial Impact Dashboard - Board-ready financial summary
+export {
+  generateFinancialImpactDashboard,
+  generateFinancialImpactSummary,
+  generateFinancialMetricCard,
+  generateROIBreakdown,
+  generateInvestmentReturnBar,
+} from './financial-impact-dashboard.component.js';
+export type {
+  FinancialImpactData,
+  FinancialImpactDashboardOptions,
+  MetricCardData,
+} from './financial-impact-dashboard.component.js';

@@ -206,3 +206,25 @@ export type {
   ChapterNarrativeContext,
   EvidenceSource,
 } from './narrative-personalizer.js';
+
+// ============================================================================
+// WORLD-CLASS VISUAL COMPONENTS INTEGRATION (Phase 1.5-2)
+// ============================================================================
+
+export {
+  // 12-Dimension Executive Radar integration
+  contextToExecutiveRadarData,
+  // 4-Chapter Radar integration
+  contextToChapterRadarData,
+  // Section Header integration
+  dimensionToSectionHeader,
+  chapterToSectionHeader,
+  // Financial Impact Dashboard integration
+  contextToFinancialImpactData,
+  // Action Plan Cards integration
+  contextToActionPlanCards,
+  // Quick Wins Cards integration
+  contextToQuickWinCards,
+  // Convenience bundle generator
+  generateWorldClassVisualsBundle,
+} from './world-class-visual-integration.js';
