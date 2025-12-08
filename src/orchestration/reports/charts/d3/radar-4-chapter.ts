@@ -12,6 +12,7 @@
  */
 
 import { BRAND_COLORS } from '../../utils/color-utils.js';
+import { extractNumericValue, formatBenchmark } from '../../utils/idm-extractors.js';
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -222,14 +223,15 @@ export function render4ChapterRadar(
   const angleStep = 360 / numChapters;
 
   // Ensure chapters are in correct order
+  // FIX: Use extractNumericValue to handle object benchmarks properly
   const orderedChapters = CHAPTER_ORDER.map(code => {
     const ch = data.chapters.find(c => c.code === code);
     const config = CHAPTER_CONFIG[code];
     return {
       code,
       name: ch?.name || config.name,
-      score: ch?.score || 0,
-      benchmark: ch?.benchmark || 50,
+      score: extractNumericValue(ch?.score, 0),
+      benchmark: extractNumericValue(ch?.benchmark, 50),
       icon: ch?.icon || config.icon,
       color: config.color,
     };
@@ -308,8 +310,9 @@ export function render4ChapterRadar(
     .join('');
 
   // Generate ARIA description
+  // FIX: Benchmark values are now guaranteed to be numbers after extraction
   const ariaDescription = orderedChapters
-    .map(ch => `${ch.name}: ${ch.score}/100 (benchmark: ${ch.benchmark})`)
+    .map(ch => `${ch.name}: ${ch.score}/100 (benchmark: ${ch.benchmark}/100)`)
     .join('. ');
 
   return `
