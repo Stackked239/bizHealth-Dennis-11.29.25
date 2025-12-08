@@ -16,6 +16,10 @@ export interface SectionMapping {
   comprehensiveSectionTitle: string;
   /** Anchor ID in Comprehensive Report for future linking */
   comprehensiveAnchor: string;
+  /** Optional: Label shown in Executive Brief context */
+  executiveBriefLabel?: string;
+  /** Optional: Anchor ID in Executive Brief for linking */
+  executiveBriefAnchor?: string;
 }
 
 export const SECTION_MAPPINGS: SectionMapping[] = [
@@ -72,6 +76,31 @@ export const SECTION_MAPPINGS: SectionMapping[] = [
     ownerLabel: 'Investment & ROI',
     comprehensiveSectionTitle: 'Financial Impact Analysis',
     comprehensiveAnchor: 'financial-impact'
+  },
+  // Executive Brief / Executive Health Snapshot sections
+  {
+    id: 'executive-health-snapshot',
+    ownerLabel: 'Health Overview',
+    comprehensiveSectionTitle: 'Executive Summary',
+    comprehensiveAnchor: 'executive-summary',
+    executiveBriefLabel: 'Executive Health Snapshot',
+    executiveBriefAnchor: 'executive-snapshot'
+  },
+  {
+    id: 'action-focus',
+    ownerLabel: 'Key Actions',
+    comprehensiveSectionTitle: 'Strategic Recommendations',
+    comprehensiveAnchor: 'strategic-recommendations',
+    executiveBriefLabel: 'Action Focus & Navigation',
+    executiveBriefAnchor: 'action-focus'
+  },
+  {
+    id: 'methods-legal-appendix',
+    ownerLabel: 'Methods & Legal',
+    comprehensiveSectionTitle: 'Assessment Methodology',
+    comprehensiveAnchor: 'methodology',
+    executiveBriefLabel: 'Methods & Legal Appendix',
+    executiveBriefAnchor: 'methods-legal'
   }
 ];
 
@@ -104,4 +133,21 @@ export function getReference(id: string): string {
  */
 export function getAllSectionMappings(): SectionMapping[] {
   return [...SECTION_MAPPINGS];
+}
+
+/**
+ * Get the executive brief label for a given mapping ID
+ */
+export function getExecutiveBriefLabel(id: string): string {
+  const mapping = getSectionMapping(id);
+  return mapping?.executiveBriefLabel || mapping?.ownerLabel || '';
+}
+
+/**
+ * Get reference text for Executive Brief
+ */
+export function getExecutiveBriefReference(id: string): string {
+  const mapping = getSectionMapping(id);
+  if (!mapping) return '';
+  return `See Comprehensive Report → "${mapping.comprehensiveSectionTitle}"`;
 }

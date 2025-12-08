@@ -40,202 +40,40 @@ import {
 // Import legal terms component
 import { buildLegalTermsPage } from './components/index.js';
 
-// Import world-class integration utilities
-import { contextToChapterRadarData } from './utils/index.js';
+// Import world-class integration utilities and shared utilities
+import {
+  contextToChapterRadarData,
+  // Shared IDM extraction utilities
+  extractNumericValue,
+  formatBenchmark,
+  getScoreBandFromValue,
+  getBandColorFromName,
+  // Shared formatting utilities
+  formatK,
+  formatOrdinal,
+  formatDate,
+  formatInvestmentRange,
+  formatReturnEstimate,
+  mapDimensionToOwner,
+} from './utils/index.js';
 import { logger } from '../../utils/logger.js';
 
 // ============================================================================
-// PHASE 1: CRITICAL BUG FIXES - UTILITY FUNCTIONS
+// LOCAL UTILITY WRAPPERS (for backward compatibility)
 // ============================================================================
 
 /**
- * Extract numeric value from potentially nested object or raw value
- * Fixes NaN issues in radar chart polygon generation
- */
-function extractNumericValue(value: unknown, fallback: number): number {
-  if (typeof value === 'number' && !isNaN(value) && isFinite(value)) {
-    return value;
-  }
-  if (typeof value === 'object' && value !== null) {
-    const obj = value as { value?: number; score?: number; percentile?: number };
-    if (typeof obj.value === 'number' && !isNaN(obj.value)) {
-      return obj.value;
-    }
-    if (typeof obj.score === 'number' && !isNaN(obj.score)) {
-      return obj.score;
-    }
-    if (typeof obj.percentile === 'number' && !isNaN(obj.percentile)) {
-      return obj.percentile;
-    }
-  }
-  if (typeof value === 'string') {
-    const parsed = parseFloat(value);
-    if (!isNaN(parsed)) {
-      return parsed;
-    }
-  }
-  return fallback;
-}
-
-/**
- * Format benchmark data safely - prevents [object Object] display
- */
-function formatBenchmark(benchmark: unknown): string {
-  if (benchmark === null || benchmark === undefined) {
-    return 'N/A';
-  }
-  if (typeof benchmark === 'object' && benchmark !== null) {
-    const benchObj = benchmark as { value?: number; percentile?: number; peerPercentile?: number; description?: string };
-    if (benchObj.peerPercentile !== undefined) {
-      return `${formatOrdinal(benchObj.peerPercentile)} percentile`;
-    }
-    if (benchObj.percentile !== undefined) {
-      return `${formatOrdinal(benchObj.percentile)} percentile`;
-    }
-    if (benchObj.value !== undefined) {
-      return `${benchObj.value}/100`;
-    }
-    return 'N/A';
-  }
-  if (typeof benchmark === 'number') {
-    return `${benchmark}/100`;
-  }
-  return String(benchmark);
-}
-
-/**
- * Format investment range from recommendation data
- */
-function formatInvestmentRange(rec: ReportRecommendation | ReportQuickWin): string {
-  const recAny = rec as Record<string, unknown>;
-  const estimatedCost = recAny.estimatedCost as { min?: number; max?: number; value?: number } | undefined;
-  const investmentLevel = recAny.investmentLevel as string | undefined;
-
-  if (estimatedCost?.min && estimatedCost?.max) {
-    return `$${formatK(estimatedCost.min)}-$${formatK(estimatedCost.max)}`;
-  }
-  if (estimatedCost?.value) {
-    return `~$${formatK(estimatedCost.value)}`;
-  }
-  if (investmentLevel) {
-    const levels: Record<string, string> = {
-      'low': '$5K-$15K',
-      'medium': '$15K-$50K',
-      'high': '$50K-$150K',
-      'minimal': '$1K-$5K',
-    };
-    return levels[investmentLevel.toLowerCase()] || investmentLevel;
-  }
-  if (rec.effortScore !== undefined) {
-    if (rec.effortScore < 30) return '$5K-$15K';
-    if (rec.effortScore < 60) return '$15K-$50K';
-    return '$50K-$150K';
-  }
-  return 'See detailed analysis';
-}
-
-/**
- * Format return estimate from recommendation data
- */
-function formatReturnEstimate(rec: ReportRecommendation | ReportQuickWin): string {
-  const recAny = rec as Record<string, unknown>;
-  const expectedValue = recAny.expectedValue as { min?: number; max?: number; value?: number } | undefined;
-
-  if (expectedValue?.min && expectedValue?.max) {
-    return `$${formatK(expectedValue.min)}-$${formatK(expectedValue.max)}/yr`;
-  }
-  if (expectedValue?.value) {
-    return `~$${formatK(expectedValue.value)}/yr`;
-  }
-  if (rec.impactScore !== undefined) {
-    if (rec.impactScore >= 80) return '$50K-$150K+ annually';
-    if (rec.impactScore >= 60) return '$15K-$50K annually';
-    return '$5K-$15K annually';
-  }
-  if (rec.expectedOutcomes) {
-    return rec.expectedOutcomes.substring(0, 50) + (rec.expectedOutcomes.length > 50 ? '...' : '');
-  }
-  return 'High-value opportunity';
-}
-
-/**
- * Map dimension code to executive owner
- */
-function mapDimensionToOwner(dimensionCode?: string): string {
-  const ownerMap: Record<string, string> = {
-    'STR': 'CEO / Strategy Lead',
-    'SAL': 'VP Sales / CRO',
-    'MKT': 'CMO / Marketing Director',
-    'CXP': 'Customer Success Lead',
-    'OPS': 'COO / Operations',
-    'FIN': 'CFO / Finance Director',
-    'HRS': 'CHRO / HR Director',
-    'LDG': 'CEO / Board',
-    'TIN': 'CTO / Innovation Lead',
-    'IDS': 'CIO / IT Director',
-    'RMS': 'Risk Manager / COO',
-    'CMP': 'General Counsel',
-    // Chapter codes
-    'GE': 'CEO / CRO',
-    'PH': 'COO / CFO',
-    'PL': 'CEO / CHRO',
-    'RS': 'COO / General Counsel',
-  };
-  return ownerMap[dimensionCode || ''] || 'Executive Team';
-}
-
-/**
- * Format number with K/M suffix
- */
-function formatK(value: number): string {
-  if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
-  if (value >= 1000) return `${(value / 1000).toFixed(0)}K`;
-  return value.toString();
-}
-
-/**
- * Format ordinal number (1st, 2nd, 3rd, etc.)
- */
-function formatOrdinal(n: number): string {
-  const s = ['th', 'st', 'nd', 'rd'];
-  const v = n % 100;
-  return n + (s[(v - 20) % 10] || s[v] || s[0]);
-}
-
-/**
- * Get score band from numeric score
+ * Get score band from numeric score (wrapper for shared utility)
  */
 function getScoreBand(score: number): string {
-  if (score >= 80) return 'Excellence';
-  if (score >= 60) return 'Proficiency';
-  if (score >= 40) return 'Attention';
-  return 'Critical';
+  return getScoreBandFromValue(score);
 }
 
 /**
- * Format date for display
- */
-function formatDate(dateStr?: string): string {
-  if (!dateStr) {
-    return new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  }
-  try {
-    return new Date(dateStr).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  } catch {
-    return dateStr;
-  }
-}
-
-/**
- * Get band color for styling
+ * Get band color for styling (wrapper for shared utility)
  */
 function getBandColor(band: string): string {
-  const bandLower = band.toLowerCase();
-  if (bandLower === 'excellence') return '#28a745';
-  if (bandLower === 'proficiency') return '#0d6efd';
-  if (bandLower === 'attention') return '#ffc107';
-  if (bandLower === 'critical') return '#dc3545';
-  return '#6c757d';
+  return getBandColorFromName(band);
 }
 
 // ============================================================================
