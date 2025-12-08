@@ -160,3 +160,24 @@ export type {
   QuickWinDisplay,
   BenchmarkComparisonItem,
 } from './visual-components.js';
+
+// ============================================================================
+// PHASE 0: PREMIUM REPORT COMPONENTS
+// ============================================================================
+
+// Cover Page Component
+export {
+  generateCoverPage,
+  generateSimpleCoverPage,
+  getCoverPageStyles,
+} from './cover-page.component.js';
+
+export type { CoverPageConfig } from './cover-page.component.js';
+
+// Enhanced Recommendation Component
+export {
+  generateEnhancedRecommendationCard,
+  generateEnhancedRecommendationsSection,
+} from './enhanced-recommendation.component.js';
+
+export type { EnhancedRecommendation, EnhancedActionStep } from './enhanced-recommendation.component.js';
