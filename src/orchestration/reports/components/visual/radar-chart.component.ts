@@ -10,6 +10,7 @@ import {
   type ScoreBand,
   BRAND_COLORS,
 } from '../../utils/color-utils.js';
+import { extractNumericValue, formatBenchmark } from '../../utils/idm-extractors.js';
 
 /**
  * Radar chart dimension data
@@ -251,9 +252,10 @@ export function renderRadarChart(props: RadarChartProps): string {
   const centerY = config.height / 2;
 
   // Extract values
-  const values = displayDimensions.map(d => d.value);
+  // FIX: Use extractNumericValue to handle object benchmarks and prevent NaN
+  const values = displayDimensions.map(d => extractNumericValue(d.value, 0));
   const labels = displayDimensions.map(d => d.label);
-  const benchmarks = showBenchmark ? displayDimensions.map(d => d.benchmark || 0) : [];
+  const benchmarks = showBenchmark ? displayDimensions.map(d => extractNumericValue(d.benchmark, 50)) : [];
 
   // Generate SVG elements
   const gridCircles = generateGridCircles(centerX, centerY, config.radius);
@@ -281,8 +283,9 @@ export function renderRadarChart(props: RadarChartProps): string {
   }
 
   // Generate ARIA description
+  // FIX: Use formatBenchmark to handle object benchmarks properly
   const ariaDescription = displayDimensions
-    .map(d => `${d.label}: ${d.value}${d.benchmark ? ` (benchmark: ${d.benchmark})` : ''}`)
+    .map(d => `${d.label}: ${d.value}${d.benchmark !== undefined ? ` (benchmark: ${formatBenchmark(d.benchmark)})` : ''}`)
     .join(', ');
 
   return `

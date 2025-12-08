@@ -85,6 +85,11 @@ import {
   generateFinancialImpactDashboard,
   // Enhanced section headers with percentile rankings
   generateEnhancedSectionHeader,
+  // Phase 1: Owner Decision Brief Premium Components
+  generateOwnerHealthDashboard,
+  getOwnerDashboardStyles,
+  generateOwnerDecisionAgenda,
+  getDecisionAgendaStyles,
 } from './components/index.js';
 import {
   contextToChapterRadarData,
@@ -93,6 +98,9 @@ import {
   // Section header integration utilities
   chapterToSectionHeader,
 } from './utils/index.js';
+
+// Import risk heatmap for enhanced risk visualization
+import { renderRiskHeatmapFromRisks } from './components/visual/risk-heatmap.component.js';
 
 /**
  * Build insight cards from findings for the owner report
@@ -318,6 +326,44 @@ export async function buildOwnersReport(
     showConfidentialBadge: true,
   });
 
+  // ============================================================================
+  // PHASE 1: OWNER DECISION BRIEF PREMIUM COMPONENTS
+  // ============================================================================
+  logger.info('Generating Owner Health Dashboard and Decision Agenda');
+
+  // Generate Owner Health Dashboard (one-page executive summary)
+  let ownerHealthDashboard = '';
+  try {
+    ownerHealthDashboard = generateOwnerHealthDashboard(ctx);
+  } catch (error) {
+    logger.warn({ error }, 'Failed to generate Owner Health Dashboard');
+  }
+
+  // Generate Owner's Decision Agenda (strategic decisions section)
+  let ownerDecisionAgenda = '';
+  try {
+    ownerDecisionAgenda = generateOwnerDecisionAgenda(ctx);
+  } catch (error) {
+    logger.warn({ error }, 'Failed to generate Owner Decision Agenda');
+  }
+
+  // Generate Risk Heatmap for enhanced risk visualization
+  let riskHeatmap = '';
+  try {
+    if (topRisks && topRisks.length > 0) {
+      riskHeatmap = renderRiskHeatmapFromRisks(topRisks.slice(0, 10).map(risk => ({
+        id: risk.id,
+        narrative: risk.narrative || risk.title || risk.description || '',
+        severity: risk.severity || 'medium',
+        likelihood: risk.likelihood || 'medium',
+        category: risk.category,
+        dimensionCode: risk.dimensionCode,
+      })));
+    }
+  } catch (error) {
+    logger.warn({ error }, 'Failed to generate Risk Heatmap');
+  }
+
   const html = wrapHtmlDocument(`
     ${coverPage}
 
@@ -325,6 +371,12 @@ export async function buildOwnersReport(
 
     <!-- Compact Terms Acceptance Banner (replaces lengthy legal block) -->
     ${acceptanceBanner}
+
+    <!-- ================================================================
+         SECTION: Owner Health Dashboard (One-Page Executive Summary)
+         Premium "Owner Decision Brief" - Phase 1
+         ================================================================ -->
+    ${ownerHealthDashboard ? ownerHealthDashboard : ''}
 
     <!-- ================================================================
          SECTION: Your Business Health at a Glance
@@ -556,24 +608,85 @@ export async function buildOwnersReport(
 
     <!-- ================================================================
          SECTION: Key Risks to Your Business
+         Enhanced with Risk Heatmap Visualization
          ================================================================ -->
-    ${narratives?.phase2?.consolidatedRisks ? `
-      <section class="section" id="key-risks">
-        ${renderOwnerSectionHeader('Key Risks to Your Business', 'What could hurt my business?')}
+    <section class="section" id="key-risks">
+      ${renderOwnerSectionHeader('Key Risks to Your Business', 'What could hurt my business?')}
+
+      <!-- Risk Heatmap Visualization -->
+      ${riskHeatmap ? `
+        <div class="risk-heatmap-section" style="margin: 1.5rem 0;">
+          <h3 style="font-family: 'Montserrat', sans-serif; color: ${options.brand.primaryColor}; margin-bottom: 1rem; font-size: 1.1rem;">
+            Risk Landscape Overview
+          </h3>
+          <p style="font-size: 0.9rem; color: #666; margin-bottom: 1rem;">
+            This heatmap shows your identified risks plotted by severity (vertical) and likelihood (horizontal).
+            Risks in the upper-right quadrant require immediate attention.
+          </p>
+          <div style="display: flex; justify-content: center;">
+            ${riskHeatmap}
+          </div>
+        </div>
+      ` : ''}
+
+      <!-- Top Risks List -->
+      ${topRisks && topRisks.length > 0 ? `
+        <div class="critical-risks-list" style="margin: 1.5rem 0;">
+          <h4 style="font-family: 'Montserrat', sans-serif; color: #dc3545; margin-bottom: 1rem;">
+            &#9888;&#65039; Priority Risks Requiring Attention
+          </h4>
+          <div style="display: grid; gap: 0.75rem;">
+            ${topRisks.slice(0, 5).map((risk, i) => `
+              <div style="
+                background: #fff;
+                border-left: 4px solid ${risk.severity === 'critical' ? '#dc3545' : risk.severity === 'high' ? '#fd7e14' : '#ffc107'};
+                padding: 1rem;
+                border-radius: 0 8px 8px 0;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+              ">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                  <strong style="color: ${options.brand.primaryColor};">${i + 1}. ${escapeHtml(risk.title || risk.narrative || 'Risk')}</strong>
+                  <span style="
+                    padding: 2px 8px;
+                    border-radius: 4px;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    background: ${risk.severity === 'critical' ? '#dc3545' : risk.severity === 'high' ? '#fd7e14' : '#ffc107'};
+                    color: ${risk.severity === 'critical' || risk.severity === 'high' ? '#fff' : '#000'};
+                  ">${escapeHtml(risk.severity || 'medium')}</span>
+                </div>
+                <p style="font-size: 0.9rem; color: #555; margin: 0; line-height: 1.5;">
+                  ${escapeHtml(truncateToSentences(risk.narrative || risk.description || '', 2))}
+                </p>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      ${narratives?.phase2?.consolidatedRisks ? `
         <div class="narrative-content">
           ${parseMarkdownToHTML(truncateToSentences(narratives.phase2.consolidatedRisks, 12), {
             maxBoldPerParagraph: 2,
             maxListItems: 6
           })}
         </div>
-        ${QUICK_REFS.riskAssessment('key-risks')}
-      </section>
-    ` : ''}
+      ` : ''}
+
+      ${QUICK_REFS.riskAssessment('key-risks')}
+    </section>
 
     <!-- ================================================================
          SECTION: Where to Go for Detail
          ================================================================ -->
     ${renderWhereToGoForDetail()}
+
+    <!-- ================================================================
+         SECTION: Owner's Decision Agenda
+         Premium "Owner Decision Brief" - Phase 1
+         ================================================================ -->
+    ${ownerDecisionAgenda ? ownerDecisionAgenda : ''}
 
     <!-- ================================================================
          SECTION: Your Next Steps
@@ -623,7 +736,7 @@ export async function buildOwnersReport(
   const htmlPath = path.join(options.outputDir, `${reportType}.html`);
   await fs.writeFile(htmlPath, sanitizedHtml, 'utf-8');
 
-  // Generate metadata with new section IDs
+  // Generate metadata with new section IDs (including Phase 1 Owner Decision Brief sections)
   const meta: ReportMeta = {
     reportType: 'owner',
     reportName,
@@ -632,16 +745,19 @@ export async function buildOwnersReport(
     runId: ctx.runId,
     healthScore: ctx.overallHealth.score,
     healthBand: ctx.overallHealth.band,
-    pageSuggestionEstimate: 5,
+    pageSuggestionEstimate: 7, // Updated for new sections
     sections: [
+      { id: 'owner-dashboard', title: 'Owner Health Dashboard' }, // NEW: Phase 1
       { id: 'health-overview', title: 'Your Business Health at a Glance' },
       { id: 'what-this-means', title: 'What This Means for You as the Owner' },
+      { id: 'chapter-performance', title: 'Your Chapter Performance Breakdown' },
       { id: 'critical-priorities', title: 'Your Critical Priorities' },
       { id: 'investment-roi', title: 'Investment & ROI Overview' },
       { id: 'execution-overview', title: 'Your Execution Overview' },
       { id: 'quick-wins', title: 'Quick Wins - Start Today' },
       { id: 'key-risks', title: 'Key Risks to Your Business' },
       { id: 'where-to-go', title: 'Where to Go for Detail' },
+      { id: 'owner-decisions', title: "Owner's Decision Agenda" }, // NEW: Phase 1
       { id: 'next-steps', title: 'Your Next Steps' },
     ],
     brand: {
@@ -771,6 +887,12 @@ function generateOwnerNarrativeStyles(primaryColor: string, accentColor: string)
   return `
     /* Phase 0: Cover Page Styles */
     ${getCoverPageStyles()}
+
+    /* Phase 1: Owner Health Dashboard Styles */
+    ${getOwnerDashboardStyles()}
+
+    /* Phase 1: Owner's Decision Agenda Styles */
+    ${getDecisionAgendaStyles()}
 
     /* Narrative Content Styles */
     .narrative-content {

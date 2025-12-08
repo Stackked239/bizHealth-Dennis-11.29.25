@@ -218,3 +218,19 @@ export type {
   QuickWinCardOptions,
   QuickWinsGridOptions,
 } from './cards/index.js';
+
+// ============================================================================
+// OWNER'S REPORT PREMIUM COMPONENTS (Phase 1 - Owner Decision Brief)
+// ============================================================================
+
+// Owner Health Dashboard Component
+export {
+  generateOwnerHealthDashboard,
+  getOwnerDashboardStyles,
+} from './owner-dashboard.component.js';
+
+// Owner's Decision Agenda Component
+export {
+  generateOwnerDecisionAgenda,
+  getDecisionAgendaStyles,
+} from './decision-agenda.component.js';
