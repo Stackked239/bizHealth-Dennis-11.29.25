@@ -799,6 +799,7 @@ export async function buildRecipeReport(
     title: `${reportName} - ${ctx.companyProfile.name}`,
     brand: options.brand,
     customCSS: generateRecipeStyles(options),
+    ctx: ctx,
   });
 
   // Write HTML file

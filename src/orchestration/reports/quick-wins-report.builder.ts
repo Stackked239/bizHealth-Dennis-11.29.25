@@ -257,6 +257,7 @@ export async function buildQuickWinsReport(
   `, {
     title: `${reportName} - ${ctx.companyProfile.name}`,
     brand: options.brand,
+    ctx: ctx,
   });
 
   // Write HTML file
