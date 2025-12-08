@@ -4256,17 +4256,21 @@ button:focus {
             //   body: JSON.stringify(acceptance)
             // });
 
-            // Hide modal with animation
-            modal.classList.add('hidden');
-            setTimeout(function() {
-              modal.classList.add('removed');
-            }, 300);
-
-            // Reveal report content
+            // Reveal report content first
             if (reportContent) {
               reportContent.classList.remove('report-content-gated');
               reportContent.classList.add('report-content-visible');
             }
+
+            // Hide modal with animation
+            modal.classList.add('hidden');
+            setTimeout(function() {
+              modal.classList.add('removed');
+              // Also hide by display:none to ensure it's completely gone
+              if (modal && modal.style) {
+                modal.style.display = 'none';
+              }
+            }, 300);
           });
         }
       })();
@@ -4659,17 +4663,21 @@ button:focus {
             //   body: JSON.stringify(acceptance)
             // });
 
-            // Hide modal with animation
-            modal.classList.add('hidden');
-            setTimeout(function() {
-              modal.classList.add('removed');
-            }, 300);
-
-            // Reveal report content
+            // Reveal report content first
             if (reportContent) {
               reportContent.classList.remove('report-content-gated');
               reportContent.classList.add('report-content-visible');
             }
+
+            // Hide modal with animation
+            modal.classList.add('hidden');
+            setTimeout(function() {
+              modal.classList.add('removed');
+              // Also hide by display:none to ensure it's completely gone
+              if (modal && modal.style) {
+                modal.style.display = 'none';
+              }
+            }, 300);
           });
         }
       })();
@@ -5819,7 +5827,7 @@ button:focus {
     <script type="application/json" id="report-metadata">
       {
   "reportId": "922cbec0-b9bf-4a97-b5c7-14e766246855",
-  "generatedAt": "2025-12-08T02:00:10.360Z",
+  "generatedAt": "2025-12-08T02:09:25.313Z",
   "pipelineVersion": "1.0.0",
   "betaMode": false,
   "termsVersion": "2025.1"

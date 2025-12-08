@@ -397,17 +397,21 @@ export function generateClickwrapModal(config: ClickwrapConfig, legalContent: st
             //   body: JSON.stringify(acceptance)
             // });
 
-            // Hide modal with animation
-            modal.classList.add('hidden');
-            setTimeout(function() {
-              modal.classList.add('removed');
-            }, 300);
-
-            // Reveal report content
+            // Reveal report content first
             if (reportContent) {
               reportContent.classList.remove('report-content-gated');
               reportContent.classList.add('report-content-visible');
             }
+
+            // Hide modal with animation
+            modal.classList.add('hidden');
+            setTimeout(function() {
+              modal.classList.add('removed');
+              // Also hide by display:none to ensure it's completely gone
+              if (modal && modal.style) {
+                modal.style.display = 'none';
+              }
+            }, 300);
           });
         }
       })();
