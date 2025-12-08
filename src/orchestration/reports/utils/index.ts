@@ -5,6 +5,28 @@
  */
 
 // ============================================================================
+// SAFE STRING UTILITIES (Type-safe string operations)
+// ============================================================================
+
+// Safe string utilities - prevent "text.replace is not a function" errors
+export {
+  safeString,
+  safeReplace,
+  safeTrim,
+  safeLowerCase,
+  safeUpperCase,
+  extractNarrativeSection,
+  isNonEmptyString,
+  isString,
+  safeEscapeHtml,
+  safeJoin,
+  safeExtract,
+  safeTruncate,
+  safeNormalizeWhitespace,
+  safeDefault,
+} from './safe-string.utils.js';
+
+// ============================================================================
 // SHARED IDM EXTRACTION & FORMATTING UTILITIES
 // ============================================================================
 
@@ -80,7 +102,7 @@ export type { ReferenceUsage } from './reference-logger.js';
 
 export {
   transformToOwnerVoice,
-  truncateToSentences,
+  // Note: truncateToSentences already exported from format-helpers.js
   truncateToWords,
   capitalizeFirst,
   normalizeWhitespace,
@@ -283,28 +305,14 @@ export {
 
 // ============================================================================
 // IDM DATA EXTRACTION UTILITIES (Phase 1 Bug Fixes)
+// NOTE: Additional exports from idm-extractors.js not included above
 // ============================================================================
 
 export {
-  // Numeric value extraction (fixes [object Object] bugs)
-  extractNumericValue,
-  formatBenchmark,
-  // Currency & number formatting
-  formatK,
-  formatInvestmentRange,
-  formatReturnEstimate,
+  // These are additional exports not already exported above
   calculateROIDisplay,
-  // Dimension & owner mapping
-  mapDimensionToOwner,
-  getDimensionName,
-  // Ordinal & date formatting
-  formatOrdinal,
-  formatDate,
-  // Score band utilities
   getScoreBandFromScore,
   getScoreBandColor,
-  // Quick win data extraction
   buildQuickWinCardData,
-  // Safe polygon generation (fixes NaN bugs)
   generateSafePolygonPoints,
 } from './idm-extractors.js';
