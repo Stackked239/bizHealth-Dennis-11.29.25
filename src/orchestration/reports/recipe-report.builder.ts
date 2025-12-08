@@ -296,9 +296,17 @@ function renderBulletList(data: Record<string, any>, isEmployeeStyle: boolean): 
   return `
     <ul class="styled-list">
       ${items.map((item: any) => {
-        const text = item.shortLabel || item.short_label || item.name || item.narrative || String(item);
+        let text = '';
+        if (typeof item === 'string') {
+          text = item;
+        } else if (typeof item === 'object' && item !== null) {
+          text = item.shortLabel || item.short_label || item.name || item.narrative || '';
+        }
+        if (!text && item) {
+          text = String(item);
+        }
         const emoji = isEmployeeStyle && item.type === 'strength' ? '🌟 ' : '';
-        return `<li>${emoji}${escapeHtml(text)}</li>`;
+        return `<li>${emoji}${escapeHtml(text || '')}</li>`;
       }).join('')}
     </ul>
   `;
@@ -314,8 +322,16 @@ function renderNumberedList(data: Record<string, any>): string {
   return `
     <ol class="styled-list">
       ${items.map((item: any) => {
-        const text = item.theme || item.shortLabel || item.name || item.narrative || String(item);
-        return `<li>${escapeHtml(text)}</li>`;
+        let text = '';
+        if (typeof item === 'string') {
+          text = item;
+        } else if (typeof item === 'object' && item !== null) {
+          text = item.theme || item.shortLabel || item.name || item.narrative || '';
+        }
+        if (!text && item) {
+          text = String(item);
+        }
+        return `<li>${escapeHtml(text || '')}</li>`;
       }).join('')}
     </ol>
   `;
@@ -331,12 +347,20 @@ function renderChecklist(data: Record<string, any>, isEmployeeStyle: boolean): s
   return `
     <div class="checklist">
       ${items.map((item: any) => {
-        const text = item.theme || item.actionSteps?.[0] || item.expectedOutcomes || item.name || String(item);
+        let text = '';
+        if (typeof item === 'string') {
+          text = item;
+        } else if (typeof item === 'object' && item !== null) {
+          text = item.theme || item.actionSteps?.[0] || item.expectedOutcomes || item.name || '';
+        }
+        if (!text && item) {
+          text = String(item);
+        }
         const icon = isEmployeeStyle ? '👍' : '☐';
         return `
           <div class="checklist-item">
             <span class="check-icon">${icon}</span>
-            <span>${escapeHtml(text)}</span>
+            <span>${escapeHtml(text || '')}</span>
           </div>
         `;
       }).join('')}
@@ -376,14 +400,29 @@ function renderTable(data: Record<string, any>, ctx: ReportContext): string {
 function getTableColumns(item: any): Array<{ header: string; render: (item: any) => string }> {
   if (item.score !== undefined || item.score_overall !== undefined) {
     return [
-      { header: 'Name', render: (i) => escapeHtml(i.name || i.shortLabel || '') },
+      { header: 'Name', render: (i) => {
+        const name = (typeof i === 'object' && i !== null) ? (i.name || i.shortLabel || '') : '';
+        return escapeHtml(String(name));
+      }},
       { header: 'Score', render: (i) => `<strong>${i.score || i.score_overall || 0}</strong>` },
       { header: 'Status', render: (i) => `<span class="band-badge ${i.band || i.score_band || ''}">${i.band || i.score_band || '-'}</span>` },
     ];
   }
   return [
-    { header: 'Item', render: (i) => escapeHtml(i.name || i.theme || i.shortLabel || String(i)) },
-    { header: 'Details', render: (i) => escapeHtml(i.narrative || i.description || '-') },
+    { header: 'Item', render: (i) => {
+      let text = '';
+      if (typeof i === 'string') {
+        text = i;
+      } else if (typeof i === 'object' && i !== null) {
+        text = i.name || i.theme || i.shortLabel || '';
+      }
+      if (!text) text = String(i);
+      return escapeHtml(text);
+    }},
+    { header: 'Details', render: (i) => {
+      const details = (typeof i === 'object' && i !== null) ? (i.narrative || i.description || '-') : '-';
+      return escapeHtml(String(details));
+    }},
   ];
 }
 

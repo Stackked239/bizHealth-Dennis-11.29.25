@@ -1484,6 +1484,10 @@ export function generateTableOfContents(sections: Array<{ id: string; title: str
  */
 export function escapeHtml(text: string): string {
   if (!text) return '';
+  // Ensure text is a string - defensive type checking
+  if (typeof text !== 'string') {
+    text = String(text);
+  }
   return text
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')

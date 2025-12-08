@@ -129,6 +129,12 @@ export const QUICK_REFS = {
     refId: 'financial-impact',
     sectionContext: ctx,
     customDescription: 'For complete ROI projections and investment models'
+  }),
+
+  scorecard: (ctx?: string) => renderComprehensiveReference({
+    refId: 'scorecard',
+    sectionContext: ctx,
+    customDescription: 'For detailed performance scorecard and metrics'
   })
 };
 
