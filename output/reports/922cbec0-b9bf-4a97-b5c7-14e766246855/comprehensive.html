@@ -6104,14 +6104,14 @@ button:focus {
           line-height: 1;
         ">🚀</span>
         <div>
-          <h2 style="
+          <div class="section-header-title" style="
             font-family: 'Montserrat', Arial, sans-serif;
             font-size: 24pt;
             font-weight: 700;
             color: #212653;
             margin: 0;
             line-height: 1.2;
-          ">Growth Engine</h2>
+          ">Growth Engine</div>
           
             <span style="
               font-size: 10pt;
@@ -6309,16 +6309,93 @@ button:focus {
         </table>
       </div>
     <h3 class="bh-subsection-heading bh-h3" id="sales-velocity-calculation">Sales Velocity Calculation</h3>
-<pre class="bh-code-block"><code class="bh-code">Sales Velocity = (# Opportunities × Deal Value × Win Rate) / Sales Cycle
 
-Current State:
-- Estimated Active Pipeline: ~$58M (based on revenue and cycle)
-- Average Deal Size: $425,000
-- Close Rate: 32%
-- Sales Cycle: 120 days
+<div class="bh-callout bh-callout-math" style="
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border-left: 6px solid #212653;
+  border-radius: 0 12pt 12pt 0;
+  padding: 20pt 24pt;
+  margin: 16pt 0 24pt 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  page-break-inside: avoid;
+">
+  <div class="bh-callout-header" style="display: flex; align-items: center; gap: 12pt; margin-bottom: 12pt;">
+    <div class="bh-callout-icon" style="font-size: 18pt;">📊</div>
+    <div>
+      <div style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 14pt;
+        font-weight: 600;
+        color: #212653;
+      ">Sales Velocity Analysis</div>
+      <div style="
+        font-family: 'Open Sans', sans-serif;
+        font-size: 10pt;
+        color: #666;
+      ">How quickly opportunities convert into revenue</div>
+    </div>
+  </div>
 
-Velocity = Moderate for construction industry
-         = ~$1.13M in expected monthly closed revenue</code></pre>
+  <div class="bh-callout-formula" style="
+    font-family: 'Open Sans', sans-serif;
+    font-size: 10pt;
+    color: #444;
+    margin-bottom: 12pt;
+    padding: 10pt 14pt;
+    background: #f8f9fa;
+    border-radius: 6pt;
+  ">
+    <strong>Formula:</strong> Sales Velocity = (# Opportunities × Deal Value × Win Rate) / Sales Cycle
+  </div>
+
+  <div class="bh-metrics-grid" style="display: flex; flex-wrap: wrap; gap: 12pt; margin-bottom: 12pt;">
+    <div style="flex: 1 1 180pt; min-width: 160pt; padding: 12pt; border-radius: 8pt; background: #fff; border: 1px solid #e9ecef;">
+      <div style="font-size: 9pt; text-transform: uppercase; color: #666; letter-spacing: 0.5px;">Estimated Active Pipeline</div>
+      <div style="font-size: 16pt; font-weight: 700; color: #212653;">~$58M</div>
+      <div style="font-size: 9pt; color: #888;">Based on revenue and cycle</div>
+    </div>
+    <div style="flex: 1 1 180pt; min-width: 160pt; padding: 12pt; border-radius: 8pt; background: #fff; border: 1px solid #e9ecef;">
+      <div style="font-size: 9pt; text-transform: uppercase; color: #666; letter-spacing: 0.5px;">Average Deal Size</div>
+      <div style="font-size: 16pt; font-weight: 700; color: #212653;">$425,000</div>
+    </div>
+    <div style="flex: 1 1 180pt; min-width: 160pt; padding: 12pt; border-radius: 8pt; background: #fff; border: 1px solid #e9ecef;">
+      <div style="font-size: 9pt; text-transform: uppercase; color: #666; letter-spacing: 0.5px;">Close Rate</div>
+      <div style="font-size: 16pt; font-weight: 700; color: #212653;">32%</div>
+    </div>
+    <div style="flex: 1 1 180pt; min-width: 160pt; padding: 12pt; border-radius: 8pt; background: #fff; border: 1px solid #e9ecef;">
+      <div style="font-size: 9pt; text-transform: uppercase; color: #666; letter-spacing: 0.5px;">Sales Cycle</div>
+      <div style="font-size: 16pt; font-weight: 700; color: #212653;">120 days</div>
+    </div>
+  </div>
+
+  <div class="bh-callout-result" style="
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12pt;
+    padding: 14pt 18pt;
+    background: #e9f7ef;
+    border-radius: 8pt;
+    border: 1px solid #28a745;
+  ">
+    <div>
+      <div style="font-size: 10pt; color: #155724; text-transform: uppercase; letter-spacing: 0.5px;">Current Velocity</div>
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 20pt; font-weight: 700; color: #155724;">~$58M</div>
+      <div style="font-size: 10pt; color: #155724;">Expected monthly closed revenue</div>
+    </div>
+    <div style="
+      padding: 6pt 14pt;
+      border-radius: 20pt;
+      background: #28a745;
+      color: white;
+      font-size: 10pt;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    ">Moderate for Construction Industry</div>
+  </div>
+</div>
 
 <h2 class="bh-section-heading bh-h2" id="marketing-effectiveness">Marketing Effectiveness</h2>
 <h3 class="bh-subsection-heading bh-h3" id="channel-performance-assessment">Channel Performance Assessment</h3>
@@ -6369,16 +6446,64 @@ Velocity = Moderate for construction industry
         </table>
       </div>
     <p class="bh-paragraph">*Note: LTV difference largely due to construction industry deal sizes vs. general benchmarks</p>
-<p class="bh-paragraph"><strong class="bh-emphasis">Revenue Impact of Loyalty:</strong></p>
-<pre class="bh-code-block"><code class="bh-code">55% repeat business = $10.2M from returning customers
-Annual retention value = $10.2M baseline
-Referral pipeline (estimated) = 60-70% of new business
 
-High loyalty creates:
-✓ Lower acquisition costs on repeat business
-✓ Predictable revenue baseline
-✓ Organic referral pipeline
-✓ Cross-sell/upsell opportunities</code></pre>
+<div class="bh-card bh-card-financial" style="
+  border-radius: 12pt;
+  border: 1px solid #e0e0e0;
+  padding: 20pt 24pt;
+  margin: 16pt 0 24pt 0;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  page-break-inside: avoid;
+">
+  <div style="display: flex; align-items: center; gap: 12pt; margin-bottom: 16pt;">
+    <div style="font-size: 24pt;">💰</div>
+    <div style="
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16pt;
+      font-weight: 700;
+      color: #212653;
+    ">Revenue Impact of Customer Loyalty</div>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 16pt; margin-bottom: 16pt;">
+    <div style="flex: 1 1 200pt; padding: 16pt; background: #fff; border-radius: 8pt; border: 1px solid #e9ecef;">
+      <div style="font-size: 9pt; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">Repeat Business Revenue</div>
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 24pt; font-weight: 700; color: #28a745;">$10.2M</div>
+      <div style="font-size: 11pt; color: #333;">55% of total revenue from returning customers</div>
+      <div style="font-size: 10pt; color: #666; margin-top: 4pt;">Annual retention baseline</div>
+    </div>
+    <div style="flex: 1 1 200pt; padding: 16pt; background: #fff; border-radius: 8pt; border: 1px solid #e9ecef;">
+      <div style="font-size: 9pt; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">Referral Pipeline</div>
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 24pt; font-weight: 700; color: #212653;">60–70%</div>
+      <div style="font-size: 11pt; color: #333;">Of new business from referrals</div>
+      <div style="font-size: 10pt; color: #666; margin-top: 4pt;">Organic acquisition channel</div>
+    </div>
+  </div>
+
+  <div style="
+    padding: 14pt 18pt;
+    background: #f8f9fa;
+    border-radius: 8pt;
+    border-left: 4px solid #969423;
+  ">
+    <div style="font-size: 11pt; font-weight: 600; color: #212653; margin-bottom: 8pt;">High Loyalty Creates:</div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8pt;">
+      <div style="display: flex; align-items: center; gap: 8pt; font-size: 10pt; color: #333;">
+        <span style="color: #28a745; font-size: 14pt;">✓</span> Lower acquisition costs on repeat business
+      </div>
+      <div style="display: flex; align-items: center; gap: 8pt; font-size: 10pt; color: #333;">
+        <span style="color: #28a745; font-size: 14pt;">✓</span> Predictable revenue baseline
+      </div>
+      <div style="display: flex; align-items: center; gap: 8pt; font-size: 10pt; color: #333;">
+        <span style="color: #28a745; font-size: 14pt;">✓</span> Organic referral pipeline
+      </div>
+      <div style="display: flex; align-items: center; gap: 8pt; font-size: 10pt; color: #333;">
+        <span style="color: #28a745; font-size: 14pt;">✓</span> Cross-sell/upsell opportunities
+      </div>
+    </div>
+  </div>
+</div>
 
 <h2 class="bh-section-heading bh-h2" id="strength-3-above-average-sales-execution">Strength #3: Above-Average Sales Execution</h2>
 <h3 class="bh-subsection-heading bh-h3" id="pipeline-amp-closing-performance">Pipeline &amp; Closing Performance</h3>
@@ -6499,12 +6624,69 @@ High loyalty creates:
 
 <h2 class="bh-section-heading bh-h2" id="recommendation-3-fix-response-time-deficit">Recommendation #3: Fix Response Time Deficit</h2>
 <h3 class="bh-subsection-heading bh-h3" id="target-state">Target State</h3>
-<pre class="bh-code-block"><code class="bh-code">    RESPONSE TIME IMPROVEMENT ROADMAP
-    
-    Current State:        16 hours
-    Phase 1 Target:       8 hours  (90-day goal)
-    Phase 2 Target:       4 hours  (180-day goal)
-    Best-in-Class Target: 2 hours  (12-month goal)</code></pre>
+
+<div class="bh-timeline bh-timeline-horizontal" style="
+  margin: 16pt 0 24pt 0;
+  padding: 20pt 24pt;
+  border-radius: 12pt;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border-left: 6px solid #969423;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  page-break-inside: avoid;
+">
+  <div style="
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14pt;
+    font-weight: 700;
+    color: #212653;
+    margin-bottom: 16pt;
+    display: flex;
+    align-items: center;
+    gap: 10pt;
+  ">
+    <span style="font-size: 20pt;">⏱️</span>
+    Response Time Improvement Roadmap
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 12pt;">
+    <!-- Current State -->
+    <div style="flex: 1 1 140pt; min-width: 130pt; padding: 14pt; background: #fff3cd; border: 2px solid #ffc107; border-radius: 8pt; text-align: center;">
+      <div style="font-size: 9pt; color: #856404; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4pt;">Current State</div>
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 28pt; font-weight: 700; color: #856404; line-height: 1;">16</div>
+      <div style="font-size: 11pt; color: #856404;">hours</div>
+    </div>
+
+    <!-- Arrow -->
+    <div style="display: flex; align-items: center; color: #ccc; font-size: 20pt;">→</div>
+
+    <!-- Phase 1 -->
+    <div style="flex: 1 1 140pt; min-width: 130pt; padding: 14pt; background: #e7f1ff; border: 2px solid #0d6efd; border-radius: 8pt; text-align: center;">
+      <div style="font-size: 9pt; color: #0a58ca; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4pt;">Phase 1 (90 days)</div>
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 28pt; font-weight: 700; color: #0a58ca; line-height: 1;">8</div>
+      <div style="font-size: 11pt; color: #0a58ca;">hours</div>
+    </div>
+
+    <!-- Arrow -->
+    <div style="display: flex; align-items: center; color: #ccc; font-size: 20pt;">→</div>
+
+    <!-- Phase 2 -->
+    <div style="flex: 1 1 140pt; min-width: 130pt; padding: 14pt; background: #e7f1ff; border: 2px solid #0d6efd; border-radius: 8pt; text-align: center;">
+      <div style="font-size: 9pt; color: #0a58ca; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4pt;">Phase 2 (180 days)</div>
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 28pt; font-weight: 700; color: #0a58ca; line-height: 1;">4</div>
+      <div style="font-size: 11pt; color: #0a58ca;">hours</div>
+    </div>
+
+    <!-- Arrow -->
+    <div style="display: flex; align-items: center; color: #ccc; font-size: 20pt;">→</div>
+
+    <!-- Best-in-Class -->
+    <div style="flex: 1 1 140pt; min-width: 130pt; padding: 14pt; background: #d4edda; border: 2px solid #28a745; border-radius: 8pt; text-align: center;">
+      <div style="font-size: 9pt; color: #155724; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4pt;">Best-in-Class (12 mo)</div>
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 28pt; font-weight: 700; color: #155724; line-height: 1;">2</div>
+      <div style="font-size: 11pt; color: #155724;">hours</div>
+    </div>
+  </div>
+</div>
 <h3 class="bh-subsection-heading bh-h3" id="implementation-plan">Implementation Plan</h3>
 <h4 class="bh-subsection-heading bh-h4" id="quick-wins-0-30-days">Quick Wins (0-30 days)</h4>
 
@@ -6531,18 +6713,79 @@ High loyalty creates:
         </table>
       </div>
     <h3 class="bh-subsection-heading bh-h3" id="roi-projection">ROI Projection</h3>
-<pre class="bh-code-block"><code class="bh-code">    RESPONSE TIME IMPROVEMENT ROI
-    
-    Assumption: 25% of lost leads attributable to slow response
-    
-    Current Annual Lead Volume:    ~140 (based on 32% close rate, 44 deals)
-    Estimated Lost Leads:          35-40 annually
-    Recoverable Leads (50%):       17-20
-    Revenue Recovery:              $7.2M - $8.5M (at $425K avg deal)
-    Actual Closed (32% rate):      $2.3M - $2.7M additional revenue
-    
-    Investment Required:           $150K - $200K
-    ROI:                          10-15x</code></pre>
+
+<div class="bh-roi-summary" style="
+  margin: 16pt 0 24pt 0;
+  padding: 20pt 24pt;
+  border-radius: 12pt;
+  border: 1px solid #e0e0e0;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  page-break-inside: avoid;
+">
+  <div style="display: flex; align-items: center; gap: 12pt; margin-bottom: 16pt;">
+    <div style="font-size: 24pt;">💵</div>
+    <div style="
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16pt;
+      font-weight: 700;
+      color: #212653;
+    ">Response Time Improvement ROI</div>
+  </div>
+
+  <!-- Key Assumption Callout -->
+  <div style="
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 6pt;
+    padding: 10pt 14pt;
+    margin-bottom: 16pt;
+    font-size: 10pt;
+    color: #856404;
+  ">
+    <strong>Key Assumption:</strong> 25% of lost leads attributable to slow response
+  </div>
+
+  <!-- Calculation Waterfall -->
+  <div style="margin-bottom: 16pt;">
+    <div style="display: flex; justify-content: space-between; padding: 8pt 12pt; background: #f8f9fa; border-left: 3px solid #6c757d; margin-bottom: 4pt; border-radius: 0 4pt 4pt 0;">
+      <span style="font-size: 10pt; color: #333;">Current Annual Lead Volume</span>
+      <span style="font-size: 10pt; font-weight: 600; color: #212653;">~140 leads</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; padding: 8pt 12pt; background: #f8f9fa; border-left: 3px solid #6c757d; margin-bottom: 4pt; border-radius: 0 4pt 4pt 0;">
+      <span style="font-size: 10pt; color: #333;">Estimated Lost Leads</span>
+      <span style="font-size: 10pt; font-weight: 600; color: #212653;">35–40 annually</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; padding: 8pt 12pt; background: #f8f9fa; border-left: 3px solid #6c757d; margin-bottom: 4pt; border-radius: 0 4pt 4pt 0;">
+      <span style="font-size: 10pt; color: #333;">Recoverable Leads (50%)</span>
+      <span style="font-size: 10pt; font-weight: 600; color: #212653;">17–20 leads</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; padding: 8pt 12pt; background: #e7f1ff; border-left: 3px solid #0d6efd; margin-bottom: 4pt; border-radius: 0 4pt 4pt 0;">
+      <span style="font-size: 10pt; color: #333;">Revenue Recovery Potential</span>
+      <span style="font-size: 10pt; font-weight: 600; color: #0a58ca;">$7.2M – $8.5M</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; padding: 8pt 12pt; background: #d4edda; border-left: 3px solid #28a745; border-radius: 0 4pt 4pt 0;">
+      <span style="font-size: 10pt; color: #333;">Actual Closed (32% rate)</span>
+      <span style="font-size: 10pt; font-weight: 700; color: #155724;">$2.3M – $2.7M additional revenue</span>
+    </div>
+  </div>
+
+  <!-- Investment vs Return Summary -->
+  <div style="display: flex; flex-wrap: wrap; gap: 12pt;">
+    <div style="flex: 1 1 160pt; padding: 16pt; background: #f8d7da; border: 2px solid #dc3545; border-radius: 8pt; text-align: center;">
+      <div style="font-size: 9pt; color: #721c24; text-transform: uppercase; letter-spacing: 0.5px;">Investment Required</div>
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 18pt; font-weight: 700; color: #721c24;">$150K – $200K</div>
+    </div>
+    <div style="flex: 1 1 160pt; padding: 16pt; background: #d4edda; border: 2px solid #28a745; border-radius: 8pt; text-align: center;">
+      <div style="font-size: 9pt; color: #155724; text-transform: uppercase; letter-spacing: 0.5px;">Expected Return</div>
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 18pt; font-weight: 700; color: #155724;">$2.3M – $2.7M</div>
+    </div>
+    <div style="flex: 1 1 160pt; padding: 16pt; background: #212653; border-radius: 8pt; text-align: center;">
+      <div style="font-size: 9pt; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.5px;">ROI Multiple</div>
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 24pt; font-weight: 700; color: #969423;">10–15x</div>
+    </div>
+  </div>
+</div>
 
 <h2 class="bh-section-heading bh-h2" id="recommendation-4-enhance-sales-enablement">Recommendation #4: Enhance Sales Enablement</h2>
 <h3 class="bh-subsection-heading bh-h3" id="sales-target-realignment">Sales Target Realignment</h3>
@@ -6619,14 +6862,14 @@ High loyalty creates:
           line-height: 1;
         ">📊</span>
         <div>
-          <h2 style="
+          <div class="section-header-title" style="
             font-family: 'Montserrat', Arial, sans-serif;
             font-size: 24pt;
             font-weight: 700;
             color: #212653;
             margin: 0;
             line-height: 1.2;
-          ">Performance &amp; Health</h2>
+          ">Performance &amp; Health</div>
           
             <span style="
               font-size: 10pt;
@@ -7097,14 +7340,14 @@ High loyalty creates:
           line-height: 1;
         ">👥</span>
         <div>
-          <h2 style="
+          <div class="section-header-title" style="
             font-family: 'Montserrat', Arial, sans-serif;
             font-size: 24pt;
             font-weight: 700;
             color: #212653;
             margin: 0;
             line-height: 1.2;
-          ">People &amp; Leadership</h2>
+          ">People &amp; Leadership</div>
           
             <span style="
               font-size: 10pt;
@@ -7597,14 +7840,14 @@ High loyalty creates:
           line-height: 1;
         ">🛡️</span>
         <div>
-          <h2 style="
+          <div class="section-header-title" style="
             font-family: 'Montserrat', Arial, sans-serif;
             font-size: 24pt;
             font-weight: 700;
             color: #212653;
             margin: 0;
             line-height: 1.2;
-          ">Resilience &amp; Safeguards</h2>
+          ">Resilience &amp; Safeguards</div>
           
             <span style="
               font-size: 10pt;
@@ -9668,18 +9911,79 @@ Partnerships      5% →  8%  (targeted growth)</code></pre>
       </div>
     <h3 class="bh-subsection-heading bh-h3" id="strategic-rationale">Strategic Rationale</h3>
 <p class="bh-paragraph">The Revenue Engine Analysis provides clear financial justification:</p>
-<pre class="bh-code-block"><code class="bh-code">RESPONSE TIME IMPROVEMENT ROI
 
-Assumption: 25% of lost leads attributable to slow response
+<div class="bh-roi-summary" style="
+  margin: 16pt 0 24pt 0;
+  padding: 20pt 24pt;
+  border-radius: 12pt;
+  border: 1px solid #e0e0e0;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  page-break-inside: avoid;
+">
+  <div style="display: flex; align-items: center; gap: 12pt; margin-bottom: 16pt;">
+    <div style="font-size: 24pt;">💵</div>
+    <div style="
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16pt;
+      font-weight: 700;
+      color: #212653;
+    ">Response Time Improvement ROI</div>
+  </div>
 
-Current Annual Lead Volume:    ~140
-Estimated Lost Leads:          35-40 annually
-Recoverable Leads (50%):       17-20
-Revenue Recovery:              $7.2M - $8.5M (at $425K avg deal)
-Actual Closed (32% rate):      $2.3M - $2.7M additional revenue
+  <!-- Key Assumption Callout -->
+  <div style="
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 6pt;
+    padding: 10pt 14pt;
+    margin-bottom: 16pt;
+    font-size: 10pt;
+    color: #856404;
+  ">
+    <strong>Key Assumption:</strong> 25% of lost leads attributable to slow response
+  </div>
 
-Investment Required:           $50K - $100K
-ROI:                          23-54x</code></pre>
+  <!-- Calculation Waterfall -->
+  <div style="margin-bottom: 16pt;">
+    <div style="display: flex; justify-content: space-between; padding: 8pt 12pt; background: #f8f9fa; border-left: 3px solid #6c757d; margin-bottom: 4pt; border-radius: 0 4pt 4pt 0;">
+      <span style="font-size: 10pt; color: #333;">Current Annual Lead Volume</span>
+      <span style="font-size: 10pt; font-weight: 600; color: #212653;">~140 leads</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; padding: 8pt 12pt; background: #f8f9fa; border-left: 3px solid #6c757d; margin-bottom: 4pt; border-radius: 0 4pt 4pt 0;">
+      <span style="font-size: 10pt; color: #333;">Estimated Lost Leads</span>
+      <span style="font-size: 10pt; font-weight: 600; color: #212653;">35–40 annually</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; padding: 8pt 12pt; background: #f8f9fa; border-left: 3px solid #6c757d; margin-bottom: 4pt; border-radius: 0 4pt 4pt 0;">
+      <span style="font-size: 10pt; color: #333;">Recoverable Leads (50%)</span>
+      <span style="font-size: 10pt; font-weight: 600; color: #212653;">17–20 leads</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; padding: 8pt 12pt; background: #e7f1ff; border-left: 3px solid #0d6efd; margin-bottom: 4pt; border-radius: 0 4pt 4pt 0;">
+      <span style="font-size: 10pt; color: #333;">Revenue Recovery Potential</span>
+      <span style="font-size: 10pt; font-weight: 600; color: #0a58ca;">$7.2M – $8.5M</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; padding: 8pt 12pt; background: #d4edda; border-left: 3px solid #28a745; border-radius: 0 4pt 4pt 0;">
+      <span style="font-size: 10pt; color: #333;">Actual Closed (32% rate)</span>
+      <span style="font-size: 10pt; font-weight: 700; color: #155724;">$2.3M – $2.7M additional revenue</span>
+    </div>
+  </div>
+
+  <!-- Investment vs Return Summary -->
+  <div style="display: flex; flex-wrap: wrap; gap: 12pt;">
+    <div style="flex: 1 1 160pt; padding: 16pt; background: #f8d7da; border: 2px solid #dc3545; border-radius: 8pt; text-align: center;">
+      <div style="font-size: 9pt; color: #721c24; text-transform: uppercase; letter-spacing: 0.5px;">Investment Required</div>
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 18pt; font-weight: 700; color: #721c24;">$50K – $100K</div>
+    </div>
+    <div style="flex: 1 1 160pt; padding: 16pt; background: #d4edda; border: 2px solid #28a745; border-radius: 8pt; text-align: center;">
+      <div style="font-size: 9pt; color: #155724; text-transform: uppercase; letter-spacing: 0.5px;">Expected Return</div>
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 18pt; font-weight: 700; color: #155724;">$2.3M – $2.7M</div>
+    </div>
+    <div style="flex: 1 1 160pt; padding: 16pt; background: #212653; border-radius: 8pt; text-align: center;">
+      <div style="font-size: 9pt; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.5px;">ROI Multiple</div>
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 24pt; font-weight: 700; color: #969423;">23–54x</div>
+    </div>
+  </div>
+</div>
 <p class="bh-paragraph">This opportunity is notable for its <strong class="bh-emphasis">asymmetric risk-reward profile</strong>: minimal investment with potential for significant revenue recovery. The Scalability Assessment notes that response time is a &quot;process change&quot; barrier—highly addressable without major capital investment.</p>
 <hr class="bh-section-divider">
 <h2 class="bh-section-heading bh-h2" id="opportunity-5-construction-technology-amp-automation-platform">OPPORTUNITY 5: Construction Technology &amp; Automation Platform</h2>
@@ -10148,13 +10452,13 @@ ROI:                          23-54x</code></pre>
         </div>
         <ul class="biz-roadmap-timeline__deliverables">
           
-      <li class="biz-roadmap-timeline__deliverable">Marketing Improvement Initiative</li>
+      <li class="biz-roadmap-timeline__deliverable" style="overflow: visible; white-space: normal; word-wrap: break-word; text-overflow: clip;">Marketing Improvement Initiative</li>
     
-      <li class="biz-roadmap-timeline__deliverable">Financials Improvement Initiative</li>
+      <li class="biz-roadmap-timeline__deliverable" style="overflow: visible; white-space: normal; word-wrap: break-word; text-overflow: clip;">Financials Improvement Initiative</li>
     
-      <li class="biz-roadmap-timeline__deliverable">Technology &amp; Innovation Improvement Initiative</li>
+      <li class="biz-roadmap-timeline__deliverable" style="overflow: visible; white-space: normal; word-wrap: break-word; text-overflow: clip;">Technology &amp; Innovation Improvement Initiative</li>
     
-      <li class="biz-roadmap-timeline__deliverable">Strategy Improvement Initiative</li>
+      <li class="biz-roadmap-timeline__deliverable" style="overflow: visible; white-space: normal; word-wrap: break-word; text-overflow: clip;">Strategy Improvement Initiative</li>
     
         </ul>
 
@@ -10165,9 +10469,9 @@ ROI:                          23-54x</code></pre>
             </div>
             <ul style="list-style: none; padding: 0; margin: 0;">
               
-          <li style="font-size: 10px; color: #6B7280; padding: 2px 0;">Improve Marketing score from 27 to 47 within the target hori</li>
+          <li style="font-size: 10px; color: #6B7280; padding: 2px 0; overflow: visible; white-space: normal; word-wrap: break-word; text-overflow: clip;">Improve Marketing score from 27 to 47 within the target hori</li>
         
-          <li style="font-size: 10px; color: #6B7280; padding: 2px 0;">Improve Financials score from 30 to 50 within the target hor</li>
+          <li style="font-size: 10px; color: #6B7280; padding: 2px 0; overflow: visible; white-space: normal; word-wrap: break-word; text-overflow: clip;">Improve Financials score from 30 to 50 within the target hor</li>
         
             </ul>
           </div>
@@ -10195,13 +10499,13 @@ ROI:                          23-54x</code></pre>
         </div>
         <ul class="biz-roadmap-timeline__deliverables">
           
-      <li class="biz-roadmap-timeline__deliverable">Human Resources Improvement Initiative</li>
+      <li class="biz-roadmap-timeline__deliverable" style="overflow: visible; white-space: normal; word-wrap: break-word; text-overflow: clip;">Human Resources Improvement Initiative</li>
     
-      <li class="biz-roadmap-timeline__deliverable">Sales Improvement Initiative</li>
+      <li class="biz-roadmap-timeline__deliverable" style="overflow: visible; white-space: normal; word-wrap: break-word; text-overflow: clip;">Sales Improvement Initiative</li>
     
-      <li class="biz-roadmap-timeline__deliverable">Operations Improvement Initiative</li>
+      <li class="biz-roadmap-timeline__deliverable" style="overflow: visible; white-space: normal; word-wrap: break-word; text-overflow: clip;">Operations Improvement Initiative</li>
     
-      <li class="biz-roadmap-timeline__deliverable">IT, Data &amp; Systems Improvement Initiative</li>
+      <li class="biz-roadmap-timeline__deliverable" style="overflow: visible; white-space: normal; word-wrap: break-word; text-overflow: clip;">IT, Data &amp; Systems Improvement Initiative</li>
     
         </ul>
 
@@ -10212,9 +10516,9 @@ ROI:                          23-54x</code></pre>
             </div>
             <ul style="list-style: none; padding: 0; margin: 0;">
               
-          <li style="font-size: 10px; color: #6B7280; padding: 2px 0;">Improve Human Resources score from 44 to 64 within the targe</li>
+          <li style="font-size: 10px; color: #6B7280; padding: 2px 0; overflow: visible; white-space: normal; word-wrap: break-word; text-overflow: clip;">Improve Human Resources score from 44 to 64 within the targe</li>
         
-          <li style="font-size: 10px; color: #6B7280; padding: 2px 0;">Improve Sales score from 47 to 67 within the target horizon.</li>
+          <li style="font-size: 10px; color: #6B7280; padding: 2px 0; overflow: visible; white-space: normal; word-wrap: break-word; text-overflow: clip;">Improve Sales score from 47 to 67 within the target horizon.</li>
         
             </ul>
           </div>
@@ -10253,6 +10557,71 @@ ROI:                          23-54x</code></pre>
         
     </div>
   
+    </div>
+  
+        </div>
+      
+
+      <!-- P2: 90-Day Priority Actions Table -->
+      
+        <div class="ninety-day-actions" style="margin: 2rem 0; page-break-inside: avoid;">
+          <h3 class="bh-subsection-heading bh-h3" style="
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16pt;
+            font-weight: 600;
+            color: #212653;
+            margin-bottom: 1rem;
+          ">90-Day Priority Actions</h3>
+          
+    <div class="table-responsive" style="margin: 16pt 0 24pt 0;">
+      <table class="bh-table">
+        <thead>
+          <tr class="bh-tr">
+            <th class="bh-th" style="width: 40%;">Action</th>
+            <th class="bh-th" style="width: 20%;">Owner</th>
+            <th class="bh-th" style="width: 15%;">Priority</th>
+            <th class="bh-th" style="width: 25%;">Linked Area</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+      <tr class="bh-tr">
+        <td class="bh-td" style="font-weight: 600;">Marketing Improvement Initiative</td>
+        <td class="bh-td">TBD</td>
+        <td class="bh-td"><span style="background: #ffc107; color: #212653; padding: 2pt 8pt; border-radius: 10pt; font-size: 8pt; text-transform: uppercase; font-weight: 600;">High</span></td>
+        <td class="bh-td">MKT</td>
+      </tr>
+    
+      <tr class="bh-tr">
+        <td class="bh-td" style="font-weight: 600;">Financials Improvement Initiative</td>
+        <td class="bh-td">TBD</td>
+        <td class="bh-td"><span style="background: #ffc107; color: #212653; padding: 2pt 8pt; border-radius: 10pt; font-size: 8pt; text-transform: uppercase; font-weight: 600;">High</span></td>
+        <td class="bh-td">FIN</td>
+      </tr>
+    
+      <tr class="bh-tr">
+        <td class="bh-td" style="font-weight: 600;">Technology &amp; Innovation Improvement Initiative</td>
+        <td class="bh-td">TBD</td>
+        <td class="bh-td"><span style="background: #ffc107; color: #212653; padding: 2pt 8pt; border-radius: 10pt; font-size: 8pt; text-transform: uppercase; font-weight: 600;">High</span></td>
+        <td class="bh-td">TIN</td>
+      </tr>
+    
+      <tr class="bh-tr">
+        <td class="bh-td" style="font-weight: 600;">Strategy Improvement Initiative</td>
+        <td class="bh-td">TBD</td>
+        <td class="bh-td"><span style="background: #ffc107; color: #212653; padding: 2pt 8pt; border-radius: 10pt; font-size: 8pt; text-transform: uppercase; font-weight: 600;">High</span></td>
+        <td class="bh-td">STR</td>
+      </tr>
+    
+      <tr class="bh-tr">
+        <td class="bh-td" style="font-weight: 600;">Leadership &amp; Governance Improvement Initiative</td>
+        <td class="bh-td">TBD</td>
+        <td class="bh-td"><span style="background: #ffc107; color: #212653; padding: 2pt 8pt; border-radius: 10pt; font-size: 8pt; text-transform: uppercase; font-weight: 600;">High</span></td>
+        <td class="bh-td">LDG</td>
+      </tr>
+    
+        </tbody>
+      </table>
     </div>
   
         </div>
@@ -16678,6 +17047,7 @@ ROI:                          23-54x</code></pre>
         <thead>
           <tr>
             <th>Recommendation</th>
+            <th>Timeframe</th>
             <th>Impact</th>
             <th>Effort</th>
             <th>ROI</th>
@@ -16687,6 +17057,7 @@ ROI:                          23-54x</code></pre>
           
             <tr>
               <td>Marketing Improvement Initiative</td>
+              <td>0–3 months</td>
               <td>73/100</td>
               <td>70/100</td>
               <td><strong>1.04x</strong></td>
@@ -16694,6 +17065,7 @@ ROI:                          23-54x</code></pre>
           
             <tr>
               <td>Financials Improvement Initiative</td>
+              <td>0–3 months</td>
               <td>70/100</td>
               <td>70/100</td>
               <td><strong>1x</strong></td>
@@ -16701,6 +17073,7 @@ ROI:                          23-54x</code></pre>
           
             <tr>
               <td>Technology &amp; Innovation Improvement Initiative</td>
+              <td>0–3 months</td>
               <td>66/100</td>
               <td>70/100</td>
               <td><strong>0.94x</strong></td>
@@ -16708,6 +17081,7 @@ ROI:                          23-54x</code></pre>
           
             <tr>
               <td>Strategy Improvement Initiative</td>
+              <td>0–3 months</td>
               <td>63/100</td>
               <td>70/100</td>
               <td><strong>0.9x</strong></td>
@@ -16715,6 +17089,7 @@ ROI:                          23-54x</code></pre>
           
             <tr>
               <td>Leadership &amp; Governance Improvement Initiative</td>
+              <td>0–3 months</td>
               <td>62/100</td>
               <td>70/100</td>
               <td><strong>0.89x</strong></td>
@@ -16722,6 +17097,7 @@ ROI:                          23-54x</code></pre>
           
             <tr>
               <td>Human Resources Improvement Initiative</td>
+              <td>6–12 months</td>
               <td>56/100</td>
               <td>50/100</td>
               <td><strong>1.12x</strong></td>
@@ -16729,6 +17105,7 @@ ROI:                          23-54x</code></pre>
           
             <tr>
               <td>Sales Improvement Initiative</td>
+              <td>6–12 months</td>
               <td>53/100</td>
               <td>50/100</td>
               <td><strong>1.06x</strong></td>
@@ -16736,6 +17113,7 @@ ROI:                          23-54x</code></pre>
           
             <tr>
               <td>Operations Improvement Initiative</td>
+              <td>6–12 months</td>
               <td>53/100</td>
               <td>50/100</td>
               <td><strong>1.06x</strong></td>
@@ -16743,6 +17121,7 @@ ROI:                          23-54x</code></pre>
           
             <tr>
               <td>IT, Data &amp; Systems Improvement Initiative</td>
+              <td>6–12 months</td>
               <td>52/100</td>
               <td>50/100</td>
               <td><strong>1.04x</strong></td>
@@ -16750,6 +17129,7 @@ ROI:                          23-54x</code></pre>
           
             <tr>
               <td>Customer Experience Improvement Initiative</td>
+              <td>6–12 months</td>
               <td>46/100</td>
               <td>50/100</td>
               <td><strong>0.92x</strong></td>
@@ -17144,7 +17524,7 @@ ROI:                          23-54x</code></pre>
     <script type="application/json" id="report-metadata">
       {
   "reportId": "922cbec0-b9bf-4a97-b5c7-14e766246855",
-  "generatedAt": "2025-12-08T07:37:26.777Z",
+  "generatedAt": "2025-12-08T15:52:46.587Z",
   "pipelineVersion": "1.0.0",
   "betaMode": false,
   "termsVersion": "2025.1"
