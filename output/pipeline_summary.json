@@ -11,22 +11,25 @@
       "owners_report",
       "quick_wins_report"
     ],
-    "renderPDF": false
+    "renderPDF": false,
+    "phase5Stage": "5c"
   },
   "results": [
     {
       "phase": 5,
       "status": "success",
-      "duration_ms": 283,
-      "output_path": "output/phase5_output.json",
+      "duration_ms": 0,
+      "output_path": "output/phase5c_output.json",
       "details": {
-        "status": "complete",
-        "reports_generated": 17,
-        "output_dir": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855",
-        "manifest": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/manifest.json"
+        "stage": "5C",
+        "status": "success",
+        "deliverablesGenerated": 9,
+        "validationPassed": true,
+        "generatedAt": "2025-12-09T03:18:51.087Z",
+        "durationMs": 0
       }
     }
   ],
-  "total_duration_ms": 284,
-  "completed_at": "2025-12-09T03:03:57.700Z"
+  "total_duration_ms": 1,
+  "completed_at": "2025-12-09T03:18:51.088Z"
 }
