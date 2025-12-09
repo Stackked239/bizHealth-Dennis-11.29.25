@@ -34,42 +34,28 @@ export {
 export {
   extractNumericValue,
   formatBenchmark,
-  getScoreBandFromValue,
-  getBandColorFromName,
-  getChapterName,
-  getChapterMeta,
-  extractChapterScores,
-  extractOverallScore,
-  extractRecommendations,
-  extractHighImpactRecommendations,
-  extractQuickWins,
-  extractRisks,
-  extractCriticalRisks,
-  extractFindings,
-  extractStrengths,
-  extractGaps,
-  extractRoadmap,
-  extractDimensions,
-  getLowestScoringDimension,
-  getHighestScoringDimension,
+  formatK,
+  formatInvestmentRange,
+  formatReturnEstimate,
+  calculateROIDisplay,
+  mapDimensionToOwner,
+  getDimensionName,
+  formatOrdinal,
+  formatDate,
+  getScoreBandFromScore,
+  getScoreBandColor,
+  buildQuickWinCardData,
+  generateSafePolygonPoints,
 } from './idm-extractors.js';
 
 // Formatting utilities (investment, dates, owners, etc.)
 export {
-  formatK,
-  formatOrdinal,
-  formatDate,
   formatDateShort,
-  formatInvestmentRange,
-  formatReturnEstimate,
-  mapDimensionToOwner,
-  getDimensionName,
   formatHorizon,
   horizonToDeadline,
   formatSeverity,
   getSeverityColor,
   truncateText,
-  truncateToSentences,
 } from './format-helpers.js';
 
 // ============================================================================
@@ -102,7 +88,7 @@ export type { ReferenceUsage } from './reference-logger.js';
 
 export {
   transformToOwnerVoice,
-  // Note: truncateToSentences already exported from format-helpers.js
+  truncateToSentences,
   truncateToWords,
   capitalizeFirst,
   normalizeWhitespace,
@@ -305,14 +291,5 @@ export {
 
 // ============================================================================
 // IDM DATA EXTRACTION UTILITIES (Phase 1 Bug Fixes)
-// NOTE: Additional exports from idm-extractors.js not included above
+// NOTE: All IDM extractor exports are already included above in lines 33-48
 // ============================================================================
-
-export {
-  // These are additional exports not already exported above
-  calculateROIDisplay,
-  getScoreBandFromScore,
-  getScoreBandColor,
-  buildQuickWinCardData,
-  generateSafePolygonPoints,
-} from './idm-extractors.js';

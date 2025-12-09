@@ -1,122 +1,136 @@
 {
   "phase": "phase_5",
-  "status": "partial",
+  "status": "complete",
   "runId": "922cbec0-b9bf-4a97-b5c7-14e766246855",
   "companyName": "Summit Build Group",
-  "reportsGenerated": 15,
+  "reportsGenerated": 17,
   "reports": [
     {
       "reportType": "comprehensive",
       "reportName": "Comprehensive Assessment Report",
       "htmlPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/comprehensive.html",
       "metaPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/comprehensive.meta.json",
-      "generatedAt": "2025-12-08T15:52:46.687Z"
+      "generatedAt": "2025-12-09T03:03:57.635Z"
+    },
+    {
+      "reportType": "owner",
+      "reportName": "Business Owner Report",
+      "htmlPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/owner.html",
+      "metaPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/owner.meta.json",
+      "generatedAt": "2025-12-09T03:03:57.654Z"
     },
     {
       "reportType": "executiveBrief",
-      "reportName": "Executive Brief",
+      "reportName": "Executive Health Snapshot",
       "htmlPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/executiveBrief.html",
       "metaPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/executiveBrief.meta.json",
-      "generatedAt": "2025-12-08T15:52:46.705Z"
+      "generatedAt": "2025-12-09T03:03:57.659Z"
     },
     {
       "reportType": "quickWins",
       "reportName": "Quick Wins Action Plan",
       "htmlPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/quickWins.html",
       "metaPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/quickWins.meta.json",
-      "generatedAt": "2025-12-08T15:52:46.708Z"
+      "generatedAt": "2025-12-09T03:03:57.661Z"
     },
     {
       "reportType": "risk",
       "reportName": "Risk Assessment Report",
       "htmlPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/risk.html",
       "metaPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/risk.meta.json",
-      "generatedAt": "2025-12-08T15:52:46.712Z"
+      "generatedAt": "2025-12-09T03:03:57.664Z"
     },
     {
       "reportType": "roadmap",
       "reportName": "Implementation Roadmap",
       "htmlPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/roadmap.html",
       "metaPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/roadmap.meta.json",
-      "generatedAt": "2025-12-08T15:52:46.715Z"
+      "generatedAt": "2025-12-09T03:03:57.667Z"
     },
     {
       "reportType": "financial",
       "reportName": "Financial Impact Analysis",
       "htmlPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/financial.html",
       "metaPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/financial.meta.json",
-      "generatedAt": "2025-12-08T15:52:46.718Z"
+      "generatedAt": "2025-12-09T03:03:57.670Z"
     },
     {
       "reportType": "deepDive:growthEngine",
       "reportName": "Growth Engine Deep Dive",
       "htmlPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/deep-dive-ge.html",
       "metaPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/deep-dive-ge.meta.json",
-      "generatedAt": "2025-12-08T15:52:46.722Z"
+      "generatedAt": "2025-12-09T03:03:57.673Z"
     },
     {
       "reportType": "deepDive:performanceHealth",
       "reportName": "Performance & Health Deep Dive",
       "htmlPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/deep-dive-ph.html",
       "metaPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/deep-dive-ph.meta.json",
-      "generatedAt": "2025-12-08T15:52:46.725Z"
+      "generatedAt": "2025-12-09T03:03:57.675Z"
     },
     {
       "reportType": "deepDive:peopleLeadership",
       "reportName": "People & Leadership Deep Dive",
       "htmlPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/deep-dive-pl.html",
       "metaPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/deep-dive-pl.meta.json",
-      "generatedAt": "2025-12-08T15:52:46.727Z"
+      "generatedAt": "2025-12-09T03:03:57.677Z"
     },
     {
       "reportType": "deepDive:resilienceSafeguards",
       "reportName": "Resilience & Safeguards Deep Dive",
       "htmlPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/deep-dive-rs.html",
       "metaPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/deep-dive-rs.meta.json",
-      "generatedAt": "2025-12-08T15:52:46.730Z"
+      "generatedAt": "2025-12-09T03:03:57.680Z"
+    },
+    {
+      "reportType": "employees",
+      "reportName": "Employee Business Health Summary",
+      "htmlPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/employees.html",
+      "metaPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/employees.meta.json",
+      "generatedAt": "2025-12-09T03:03:57.684Z"
     },
     {
       "reportType": "managersOperations",
       "reportName": "Operations Manager Report",
       "htmlPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/managersOperations.html",
       "metaPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/managersOperations.meta.json",
-      "generatedAt": "2025-12-08T15:52:46.734Z"
+      "generatedAt": "2025-12-09T03:03:57.688Z"
     },
     {
       "reportType": "managersSalesMarketing",
       "reportName": "Sales & Marketing Manager Report",
       "htmlPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/managersSalesMarketing.html",
       "metaPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/managersSalesMarketing.meta.json",
-      "generatedAt": "2025-12-08T15:52:46.737Z"
+      "generatedAt": "2025-12-09T03:03:57.690Z"
     },
     {
       "reportType": "managersFinancials",
       "reportName": "Finance Manager Report",
       "htmlPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/managersFinancials.html",
       "metaPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/managersFinancials.meta.json",
-      "generatedAt": "2025-12-08T15:52:46.740Z"
+      "generatedAt": "2025-12-09T03:03:57.693Z"
     },
     {
       "reportType": "managersStrategy",
       "reportName": "Strategy & Planning Manager Report",
       "htmlPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/managersStrategy.html",
       "metaPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/managersStrategy.meta.json",
-      "generatedAt": "2025-12-08T15:52:46.743Z"
+      "generatedAt": "2025-12-09T03:03:57.696Z"
     },
     {
       "reportType": "managersItTechnology",
       "reportName": "IT & Technology Manager Report",
       "htmlPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/managersItTechnology.html",
       "metaPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/managersItTechnology.meta.json",
-      "generatedAt": "2025-12-08T15:52:46.748Z"
+      "generatedAt": "2025-12-09T03:03:57.698Z"
     }
   ],
   "outputDir": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855",
   "manifestPath": "output/reports/922cbec0-b9bf-4a97-b5c7-14e766246855/manifest.json",
   "metadata": {
-    "startedAt": "2025-12-08T15:52:46.563Z",
-    "completedAt": "2025-12-08T15:52:46.750Z",
-    "durationMs": 187,
+    "startedAt": "2025-12-09T03:03:57.496Z",
+    "completedAt": "2025-12-09T03:03:57.700Z",
+    "durationMs": 204,
     "pipelineVersion": "1.0.0"
   },
   "qualityMetrics": {
@@ -134,14 +148,28 @@
         "dividers": false
       }
     },
+    "owner": {
+      "svgCount": 8,
+      "boldCount": 69,
+      "dividerCount": 8,
+      "listItemCount": 30,
+      "tableCount": 2,
+      "pageEstimate": 73,
+      "wordCount": 12315,
+      "meetsTargets": {
+        "visualizations": false,
+        "boldElements": true,
+        "dividers": true
+      }
+    },
     "executiveBrief": {
       "svgCount": 2,
-      "boldCount": 12,
+      "boldCount": 10,
       "dividerCount": 0,
-      "listItemCount": 16,
+      "listItemCount": 5,
       "tableCount": 0,
-      "pageEstimate": 42,
-      "wordCount": 11192,
+      "pageEstimate": 40,
+      "wordCount": 7971,
       "meetsTargets": {
         "visualizations": false,
         "boldElements": true,
@@ -260,6 +288,20 @@
         "dividers": true
       }
     },
+    "employees": {
+      "svgCount": 1,
+      "boldCount": 2,
+      "dividerCount": 0,
+      "listItemCount": 8,
+      "tableCount": 0,
+      "pageEstimate": 30,
+      "wordCount": 7874,
+      "meetsTargets": {
+        "visualizations": false,
+        "boldElements": true,
+        "dividers": true
+      }
+    },
     "managersOperations": {
       "svgCount": 1,
       "boldCount": 5,
@@ -332,20 +374,10 @@
     }
   },
   "qualitySummary": {
-    "totalVisualizations": 42,
-    "totalBoldElements": 1384,
-    "totalDividers": 108,
+    "totalVisualizations": 51,
+    "totalBoldElements": 1453,
+    "totalDividers": 116,
     "reportsPassingThresholds": 0,
-    "totalReports": 15
-  },
-  "errors": [
-    {
-      "reportType": "owner",
-      "error": "QUICK_REFS.scorecard is not a function"
-    },
-    {
-      "reportType": "employees",
-      "error": "text.replace is not a function"
-    }
-  ]
+    "totalReports": 17
+  }
 }

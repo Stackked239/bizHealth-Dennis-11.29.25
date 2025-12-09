@@ -604,7 +604,7 @@
 /* ============================================================
    BIZHEALTH.AI UNIFIED CSS FRAMEWORK
    Phase 4 Styling Patterns for Phase 5 Report Generation
-   Generated: 2025-12-08
+   Generated: 2025-12-09
    ============================================================ */
 
 /* ===== BRAND COLOR VARIABLES ===== */
@@ -2972,6 +2972,89 @@ button:focus {
     }
   
 
+    /* Phase 1: Owner Health Dashboard Styles */
+    
+    /* Owner Dashboard Styles */
+    .owner-dashboard {
+      max-width: 100%;
+    }
+
+    .owner-dashboard .chapter-tiles {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .owner-dashboard .dashboard-row-1 {
+        grid-template-columns: 1fr !important;
+      }
+      .owner-dashboard .dashboard-row-2 {
+        grid-template-columns: 1fr !important;
+      }
+      .owner-dashboard .chapter-tiles {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    @media print {
+      .owner-dashboard {
+        page-break-after: always;
+      }
+      .owner-dashboard .chapter-tile,
+      .owner-dashboard .trajectory-card,
+      .owner-dashboard .valuation-impact-card,
+      .owner-dashboard .insight-card {
+        page-break-inside: avoid;
+      }
+    }
+  
+
+    /* Phase 1: Owner's Decision Agenda Styles */
+    
+    /* Decision Agenda Styles */
+    .decision-card {
+      transition: box-shadow 0.2s ease;
+    }
+
+    .decision-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .decision-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .option-card.recommended {
+      box-shadow: 0 0 0 2px rgba(150, 148, 35, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      .decision-options {
+        grid-template-columns: 1fr !important;
+      }
+      .recommended-path {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    @media print {
+      .decision-card {
+        page-break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #dee2e6;
+      }
+      .recommended-path {
+        background: #212653 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  
+
     /* Narrative Content Styles */
     .narrative-content {
       background: #f8f9fa;
@@ -4643,6 +4726,385 @@ button:focus {
   
 
     <!-- ================================================================
+         SECTION: Owner Health Dashboard (One-Page Executive Summary)
+         Premium "Owner Decision Brief" - Phase 1
+         ================================================================ -->
+    
+    <section class="owner-dashboard page-break-after" id="owner-dashboard" style="page-break-after: always;">
+      <div class="dashboard-header" style="margin-bottom: 24px;">
+        <h1 style="font-family: 'Montserrat', sans-serif; color: #212653; margin: 0; font-size: 28px;">
+          Owner Health Dashboard
+        </h1>
+        <p style="color: #666; margin: 0.5rem 0 0 0; font-size: 14px;">
+          Summit Build Group — December 8, 2025
+        </p>
+      </div>
+
+      <!-- ROW 1: Overall Score + Chapter Tiles -->
+      <div class="dashboard-row-1" style="display: grid; grid-template-columns: 280px 1fr; gap: 24px; margin: 24px 0;">
+
+        <!-- Overall Health Gauge -->
+        <div class="overall-health-card" style="
+          background: linear-gradient(135deg, #212653 0%, #1a1f42 100%);
+          border-radius: 16px;
+          padding: 24px;
+          text-align: center;
+          color: white;
+        ">
+          
+    <svg viewBox="0 0 200 120" width="180" height="110" style="display: block; margin: 0 auto;">
+      <!-- Background arc (gray) -->
+      <path
+        d="M 30 85 A 70 70 0 0 1 170 85"
+        fill="none"
+        stroke="rgba(255,255,255,0.2)"
+        stroke-width="12"
+        stroke-linecap="round"
+      />
+      <!-- Colored arc (score) -->
+      <path
+        d="M 30 85 A 70 70 0 0 1 86.8833079789993 16.239892448991796"
+        fill="none"
+        stroke="#ffc107"
+        stroke-width="12"
+        stroke-linecap="round"
+      />
+      <!-- Tick marks -->
+      <line x1="45" y1="85" x2="38" y2="84.99999999999999" stroke="rgba(255,255,255,0.4)" stroke-width="2"/><line x1="61.10912703473989" y1="46.109127034739885" x2="56.159379566434055" y2="41.15937956643405" stroke="rgba(255,255,255,0.4)" stroke-width="2"/><line x1="100" y1="30" x2="100" y2="23" stroke="rgba(255,255,255,0.4)" stroke-width="2"/><line x1="138.89087296526012" y1="46.10912703473989" x2="143.84062043356596" y2="41.159379566434055" stroke="rgba(255,255,255,0.4)" stroke-width="2"/><line x1="155" y1="85" x2="162" y2="85" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+      <!-- Needle -->
+      <line
+        x1="100"
+        y1="85"
+        x2="90.63093427071378"
+        y2="35.885637463565565"
+        stroke="white"
+        stroke-width="3"
+        stroke-linecap="round"
+      />
+      <circle cx="100" cy="85" r="6" fill="white"/>
+    </svg>
+  
+          <div style="margin-top: 16px;">
+            <div style="font-size: 14px; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px;">
+              Overall Business Health
+            </div>
+            <div style="font-family: 'Montserrat', sans-serif; font-size: 42px; font-weight: 700; margin: 8px 0;">
+              44<span style="font-size: 20px; opacity: 0.7;">/100</span>
+            </div>
+            <div style="
+              display: inline-block;
+              padding: 6px 16px;
+              border-radius: 20px;
+              font-weight: 600;
+              text-transform: uppercase;
+              font-size: 12px;
+              background: #ffc10740;
+              color: white;
+            ">
+              Attention
+            </div>
+            
+          </div>
+        </div>
+
+        <!-- Chapter Score Tiles -->
+        <div class="chapter-tiles" style="
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 16px;
+        ">
+          
+    <div class="chapter-tile" style="
+      background: white;
+      border: 2px solid #e9ecef;
+      border-left: 5px solid #28a745;
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      page-break-inside: avoid;
+    ">
+      <div>
+        <div style="font-size: 24px; margin-bottom: 4px;">🚀</div>
+        <div style="font-family: 'Montserrat', sans-serif; font-weight: 600; color: #212653; font-size: 14px;">
+          Growth Engine
+        </div>
+        <div style="
+          display: inline-block;
+          padding: 2px 8px;
+          border-radius: 4px;
+          font-size: 10px;
+          font-weight: 600;
+          margin-top: 4px;
+          background: #ffc10720;
+          color: #ffc107;
+        ">
+          Attention
+        </div>
+      </div>
+      <div style="text-align: right;">
+        <div style="font-family: 'Montserrat', sans-serif; font-size: 32px; font-weight: 700; color: #212653;">
+          41
+        </div>
+        <div style="color: #6c757d; font-size: 14px; font-weight: 600;">
+          → stable
+        </div>
+      </div>
+    </div>
+  
+    <div class="chapter-tile" style="
+      background: white;
+      border: 2px solid #e9ecef;
+      border-left: 5px solid #0d6efd;
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      page-break-inside: avoid;
+    ">
+      <div>
+        <div style="font-size: 24px; margin-bottom: 4px;">📊</div>
+        <div style="font-family: 'Montserrat', sans-serif; font-weight: 600; color: #212653; font-size: 14px;">
+          Performance &amp; Health
+        </div>
+        <div style="
+          display: inline-block;
+          padding: 2px 8px;
+          border-radius: 4px;
+          font-size: 10px;
+          font-weight: 600;
+          margin-top: 4px;
+          background: #dc354520;
+          color: #dc3545;
+        ">
+          Critical
+        </div>
+      </div>
+      <div style="text-align: right;">
+        <div style="font-family: 'Montserrat', sans-serif; font-size: 32px; font-weight: 700; color: #212653;">
+          39
+        </div>
+        <div style="color: #6c757d; font-size: 14px; font-weight: 600;">
+          → stable
+        </div>
+      </div>
+    </div>
+  
+    <div class="chapter-tile" style="
+      background: white;
+      border: 2px solid #e9ecef;
+      border-left: 5px solid #ffc107;
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      page-break-inside: avoid;
+    ">
+      <div>
+        <div style="font-size: 24px; margin-bottom: 4px;">👥</div>
+        <div style="font-family: 'Montserrat', sans-serif; font-weight: 600; color: #212653; font-size: 14px;">
+          People &amp; Leadership
+        </div>
+        <div style="
+          display: inline-block;
+          padding: 2px 8px;
+          border-radius: 4px;
+          font-size: 10px;
+          font-weight: 600;
+          margin-top: 4px;
+          background: #ffc10720;
+          color: #ffc107;
+        ">
+          Attention
+        </div>
+      </div>
+      <div style="text-align: right;">
+        <div style="font-family: 'Montserrat', sans-serif; font-size: 32px; font-weight: 700; color: #212653;">
+          41
+        </div>
+        <div style="color: #6c757d; font-size: 14px; font-weight: 600;">
+          → stable
+        </div>
+      </div>
+    </div>
+  
+    <div class="chapter-tile" style="
+      background: white;
+      border: 2px solid #e9ecef;
+      border-left: 5px solid #dc3545;
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      page-break-inside: avoid;
+    ">
+      <div>
+        <div style="font-size: 24px; margin-bottom: 4px;">🛡️</div>
+        <div style="font-family: 'Montserrat', sans-serif; font-weight: 600; color: #212653; font-size: 14px;">
+          Resilience &amp; Safeguards
+        </div>
+        <div style="
+          display: inline-block;
+          padding: 2px 8px;
+          border-radius: 4px;
+          font-size: 10px;
+          font-weight: 600;
+          margin-top: 4px;
+          background: #ffc10720;
+          color: #ffc107;
+        ">
+          Attention
+        </div>
+      </div>
+      <div style="text-align: right;">
+        <div style="font-family: 'Montserrat', sans-serif; font-size: 32px; font-weight: 700; color: #212653;">
+          54
+        </div>
+        <div style="color: #6c757d; font-size: 14px; font-weight: 600;">
+          → stable
+        </div>
+      </div>
+    </div>
+  
+        </div>
+      </div>
+
+      <!-- ROW 2: Trajectory + Valuation Impact -->
+      <div class="dashboard-row-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 24px 0;">
+        
+    <div class="trajectory-card" style="
+      background: white;
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      padding: 24px;
+    ">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+        <span style="font-size: 28px;">➡️</span>
+        <div>
+          <div style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">Business Trajectory</div>
+          <div style="font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 700; color: #6c757d;">
+            Stable
+          </div>
+        </div>
+      </div>
+      <div style="
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 12px;
+        text-align: center;
+      ">
+        <div style="font-size: 12px; color: #666;">12-Month Projected Change</div>
+        <div style="font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 700; color: #6c757d;">
+          ±2 pts
+        </div>
+        <div style="font-size: 11px; color: #888;">Based on current trends</div>
+      </div>
+    </div>
+  
+        
+    <div class="valuation-impact-card" style="
+      background: linear-gradient(135deg, #212653 0%, #1a1f42 100%);
+      border-radius: 12px;
+      padding: 24px;
+      color: white;
+    ">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+        <span style="font-size: 28px;">💎</span>
+        <div>
+          <div style="font-size: 12px; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.5px;">Value Creation Potential</div>
+          <div style="font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 700;">
+            $4.0M - $6.5M
+          </div>
+        </div>
+      </div>
+      <div style="
+        background: rgba(255,255,255,0.1);
+        border-radius: 8px;
+        padding: 12px;
+        text-align: center;
+      ">
+        <div style="font-size: 12px; opacity: 0.8;">Annual Recurring Impact</div>
+        <div style="font-size: 11px; opacity: 0.7; margin-top: 4px;">
+          Achievable over 12-18 months with focused implementation
+        </div>
+      </div>
+    </div>
+  
+      </div>
+
+      <!-- ROW 3: Headline Insights -->
+      <div class="dashboard-row-3" style="margin: 24px 0;">
+        
+    <div class="headline-insights" style="
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 24px;
+    ">
+      <h3 style="font-family: 'Montserrat', sans-serif; color: #212653; margin: 0 0 16px 0; font-size: 16px;">
+        📋 Key Insights for Summit Build Group
+      </h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+        
+          <div class="insight-card" style="
+            background: white;
+            border-left: 4px solid #969423;
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+            page-break-inside: avoid;
+          ">
+            <div style="font-size: 18px; margin-bottom: 8px;">⚡</div>
+            <div style="font-weight: 600; color: #212653; margin-bottom: 4px; font-size: 14px;">
+              90-Day Priority
+            </div>
+            <div style="color: #555; font-size: 13px; line-height: 1.5;">
+              Human Resources Improvement Initiative
+            </div>
+          </div>
+        
+          <div class="insight-card" style="
+            background: white;
+            border-left: 4px solid #0d6efd;
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+            page-break-inside: avoid;
+          ">
+            <div style="font-size: 18px; margin-bottom: 8px;">🏆</div>
+            <div style="font-weight: 600; color: #212653; margin-bottom: 4px; font-size: 14px;">
+              Core Strength to Protect
+            </div>
+            <div style="color: #555; font-size: 13px; line-height: 1.5;">
+              Compliance Excellence
+            </div>
+          </div>
+        
+          <div class="insight-card" style="
+            background: white;
+            border-left: 4px solid #6c757d;
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+            page-break-inside: avoid;
+          ">
+            <div style="font-size: 18px; margin-bottom: 8px;">📊</div>
+            <div style="font-weight: 600; color: #212653; margin-bottom: 4px; font-size: 14px;">
+              Assessment Insight
+            </div>
+            <div style="color: #555; font-size: 13px; line-height: 1.5;">
+              See detailed analysis in Comprehensive Report for complete findings.
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  
+      </div>
+    </section>
+  
+
+    <!-- ================================================================
          SECTION: Your Business Health at a Glance
          ================================================================ -->
     <section class="section" id="health-overview">
@@ -4708,7 +5170,7 @@ button:focus {
           <div style="display: flex; justify-content: center;">
             
     <div class="chapter-radar-container" style="text-align: center; margin: 24pt 0; page-break-inside: avoid;"
-         role="figure" aria-label="4-Chapter Radar Chart for Company: Growth Engine: 41/100 (benchmark: [object Object]). Performance & Health: 39/100 (benchmark: [object Object]). People & Leadership: 41/100 (benchmark: [object Object]). Resilience & Safeguards: 54/100 (benchmark: [object Object])">
+         role="figure" aria-label="4-Chapter Radar Chart for Company: Growth Engine: 41/100 (benchmark: 21/100). Performance & Health: 39/100 (benchmark: 9/100). People & Leadership: 41/100 (benchmark: 28/100). Resilience & Safeguards: 54/100 (benchmark: 44/100)">
       <h3 style="font-family: 'Montserrat', Arial, sans-serif; font-size: 16pt; font-weight: 700; color: #212653; margin-bottom: 16pt;">Strategic Balance Overview</h3>
 
       <svg width="400" height="350" viewBox="0 0 400 350"
@@ -4836,7 +5298,7 @@ button:focus {
 
         
           <!-- Benchmark polygon -->
-          <polygon points="NaN,NaN NaN,NaN NaN,NaN NaN,NaN" fill="none" stroke="#999"
+          <polygon points="200,141.4 214.4,175 200,219.8 129.6,175" fill="none" stroke="#999"
                    stroke-width="2" stroke-dasharray="6,3" opacity="0.6"/>
         
 
@@ -4978,6 +5440,495 @@ button:focus {
     </div>
   
     </section>
+
+    <!-- ================================================================
+         SECTION: Your Chapter Performance Summary (Enhanced Headers)
+         World-class percentile ranking display for competitive context
+         ================================================================ -->
+    
+      <section class="section" id="chapter-performance">
+        
+    <div class="owner-section-header">
+      <h2>Your Chapter Performance Breakdown</h2>
+      
+        <p class="owner-question">
+          <span class="question-icon">&#128173;</span>
+          <em>"How do I compare in each area?"</em>
+        </p>
+      
+    </div>
+  
+        <p class="section-intro" style="margin-bottom: 1.5rem;">
+          Below is your performance across the four key business pillars, showing your score,
+          industry percentile ranking, and performance band. This helps you understand exactly
+          where you stand competitively.
+        </p>
+        <div class="enhanced-chapter-summaries" style="display: flex; flex-direction: column; gap: 1rem;">
+          
+    <div class="section-header-enhanced " style="
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16pt;
+      padding: 16pt 24pt;
+      background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+      border-left: 6px solid #ffc107;
+      border-radius: 0 16pt 16pt 0;
+      margin: 40pt 0 28pt 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      page-break-inside: avoid;
+    ">
+      <!-- Left Section: Icon + Title -->
+      <div style="display: flex; align-items: center; gap: 20pt;">
+        <span style="
+          font-size: 32pt;
+          line-height: 1;
+        ">🚀</span>
+        <div>
+          <div class="section-header-title" style="
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 18pt;
+            font-weight: 700;
+            color: #212653;
+            margin: 0;
+            line-height: 1.2;
+          ">Growth Engine</div>
+          
+            <span style="
+              font-size: 10pt;
+              color: #999;
+              text-transform: uppercase;
+              letter-spacing: 1.5px;
+              font-family: 'Open Sans', Arial, sans-serif;
+            ">GE</span>
+          
+        </div>
+      </div>
+
+      <!-- Right Section: Percentile + Score + Band -->
+      <div style="display: flex; align-items: center; gap: 24pt; flex-wrap: wrap;">
+
+        
+          <!-- Percentile Badge -->
+          <div style="
+            padding: 8pt 18pt;
+            background: #28a74515;
+            border: 2px solid #28a745;
+            border-radius: 24pt;
+            text-align: center;
+          ">
+            <div style="
+              font-family: 'Montserrat', Arial, sans-serif;
+              font-size: 14pt;
+              font-weight: 700;
+              color: #28a745;
+              line-height: 1;
+            ">80th</div>
+            <div style="
+              font-size: 9pt;
+              color: #28a745;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+              margin-top: 2pt;
+            ">Percentile</div>
+          </div>
+        
+
+        <!-- Score Display -->
+        <div style="text-align: center;">
+          <div style="
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 28pt;
+            font-weight: 700;
+            color: #ffc107;
+            line-height: 1;
+          ">41</div>
+          <div style="
+            font-size: 12pt;
+            color: #666;
+          ">/100</div>
+          
+        </div>
+
+        
+          <!-- Band Badge -->
+          <div style="
+            padding: 10pt 20pt;
+            background: #ffc107;
+            border-radius: 8pt;
+            text-align: center;
+          ">
+            <div style="
+              font-family: 'Montserrat', Arial, sans-serif;
+              font-size: 10pt;
+              font-weight: 700;
+              color: white;
+              text-transform: uppercase;
+              letter-spacing: 1.5px;
+            ">Attention</div>
+            
+              <div style="
+                font-size: 8pt;
+                color: rgba(255,255,255,0.8);
+                margin-top: 2pt;
+              ">vs. General</div>
+            
+          </div>
+        
+
+      </div>
+    </div>
+  
+    <div class="section-header-enhanced " style="
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16pt;
+      padding: 16pt 24pt;
+      background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+      border-left: 6px solid #ffc107;
+      border-radius: 0 16pt 16pt 0;
+      margin: 40pt 0 28pt 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      page-break-inside: avoid;
+    ">
+      <!-- Left Section: Icon + Title -->
+      <div style="display: flex; align-items: center; gap: 20pt;">
+        <span style="
+          font-size: 32pt;
+          line-height: 1;
+        ">📊</span>
+        <div>
+          <div class="section-header-title" style="
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 18pt;
+            font-weight: 700;
+            color: #212653;
+            margin: 0;
+            line-height: 1.2;
+          ">Performance &amp; Health</div>
+          
+            <span style="
+              font-size: 10pt;
+              color: #999;
+              text-transform: uppercase;
+              letter-spacing: 1.5px;
+              font-family: 'Open Sans', Arial, sans-serif;
+            ">PH</span>
+          
+        </div>
+      </div>
+
+      <!-- Right Section: Percentile + Score + Band -->
+      <div style="display: flex; align-items: center; gap: 24pt; flex-wrap: wrap;">
+
+        
+          <!-- Percentile Badge -->
+          <div style="
+            padding: 8pt 18pt;
+            background: #28a74515;
+            border: 2px solid #28a745;
+            border-radius: 24pt;
+            text-align: center;
+          ">
+            <div style="
+              font-family: 'Montserrat', Arial, sans-serif;
+              font-size: 14pt;
+              font-weight: 700;
+              color: #28a745;
+              line-height: 1;
+            ">95th</div>
+            <div style="
+              font-size: 9pt;
+              color: #28a745;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+              margin-top: 2pt;
+            ">Percentile</div>
+          </div>
+        
+
+        <!-- Score Display -->
+        <div style="text-align: center;">
+          <div style="
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 28pt;
+            font-weight: 700;
+            color: #ffc107;
+            line-height: 1;
+          ">39</div>
+          <div style="
+            font-size: 12pt;
+            color: #666;
+          ">/100</div>
+          
+        </div>
+
+        
+          <!-- Band Badge -->
+          <div style="
+            padding: 10pt 20pt;
+            background: #ffc107;
+            border-radius: 8pt;
+            text-align: center;
+          ">
+            <div style="
+              font-family: 'Montserrat', Arial, sans-serif;
+              font-size: 10pt;
+              font-weight: 700;
+              color: white;
+              text-transform: uppercase;
+              letter-spacing: 1.5px;
+            ">Attention</div>
+            
+              <div style="
+                font-size: 8pt;
+                color: rgba(255,255,255,0.8);
+                margin-top: 2pt;
+              ">vs. General</div>
+            
+          </div>
+        
+
+      </div>
+    </div>
+  
+    <div class="section-header-enhanced " style="
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16pt;
+      padding: 16pt 24pt;
+      background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+      border-left: 6px solid #ffc107;
+      border-radius: 0 16pt 16pt 0;
+      margin: 40pt 0 28pt 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      page-break-inside: avoid;
+    ">
+      <!-- Left Section: Icon + Title -->
+      <div style="display: flex; align-items: center; gap: 20pt;">
+        <span style="
+          font-size: 32pt;
+          line-height: 1;
+        ">👥</span>
+        <div>
+          <div class="section-header-title" style="
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 18pt;
+            font-weight: 700;
+            color: #212653;
+            margin: 0;
+            line-height: 1.2;
+          ">People &amp; Leadership</div>
+          
+            <span style="
+              font-size: 10pt;
+              color: #999;
+              text-transform: uppercase;
+              letter-spacing: 1.5px;
+              font-family: 'Open Sans', Arial, sans-serif;
+            ">PL</span>
+          
+        </div>
+      </div>
+
+      <!-- Right Section: Percentile + Score + Band -->
+      <div style="display: flex; align-items: center; gap: 24pt; flex-wrap: wrap;">
+
+        
+          <!-- Percentile Badge -->
+          <div style="
+            padding: 8pt 18pt;
+            background: #0d6efd15;
+            border: 2px solid #0d6efd;
+            border-radius: 24pt;
+            text-align: center;
+          ">
+            <div style="
+              font-family: 'Montserrat', Arial, sans-serif;
+              font-size: 14pt;
+              font-weight: 700;
+              color: #0d6efd;
+              line-height: 1;
+            ">70th</div>
+            <div style="
+              font-size: 9pt;
+              color: #0d6efd;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+              margin-top: 2pt;
+            ">Percentile</div>
+          </div>
+        
+
+        <!-- Score Display -->
+        <div style="text-align: center;">
+          <div style="
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 28pt;
+            font-weight: 700;
+            color: #ffc107;
+            line-height: 1;
+          ">41</div>
+          <div style="
+            font-size: 12pt;
+            color: #666;
+          ">/100</div>
+          
+        </div>
+
+        
+          <!-- Band Badge -->
+          <div style="
+            padding: 10pt 20pt;
+            background: #ffc107;
+            border-radius: 8pt;
+            text-align: center;
+          ">
+            <div style="
+              font-family: 'Montserrat', Arial, sans-serif;
+              font-size: 10pt;
+              font-weight: 700;
+              color: white;
+              text-transform: uppercase;
+              letter-spacing: 1.5px;
+            ">Attention</div>
+            
+              <div style="
+                font-size: 8pt;
+                color: rgba(255,255,255,0.8);
+                margin-top: 2pt;
+              ">vs. General</div>
+            
+          </div>
+        
+
+      </div>
+    </div>
+  
+    <div class="section-header-enhanced " style="
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16pt;
+      padding: 16pt 24pt;
+      background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+      border-left: 6px solid #0d6efd;
+      border-radius: 0 16pt 16pt 0;
+      margin: 40pt 0 28pt 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      page-break-inside: avoid;
+    ">
+      <!-- Left Section: Icon + Title -->
+      <div style="display: flex; align-items: center; gap: 20pt;">
+        <span style="
+          font-size: 32pt;
+          line-height: 1;
+        ">🛡️</span>
+        <div>
+          <div class="section-header-title" style="
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 18pt;
+            font-weight: 700;
+            color: #212653;
+            margin: 0;
+            line-height: 1.2;
+          ">Resilience &amp; Safeguards</div>
+          
+            <span style="
+              font-size: 10pt;
+              color: #999;
+              text-transform: uppercase;
+              letter-spacing: 1.5px;
+              font-family: 'Open Sans', Arial, sans-serif;
+            ">RS</span>
+          
+        </div>
+      </div>
+
+      <!-- Right Section: Percentile + Score + Band -->
+      <div style="display: flex; align-items: center; gap: 24pt; flex-wrap: wrap;">
+
+        
+          <!-- Percentile Badge -->
+          <div style="
+            padding: 8pt 18pt;
+            background: #0d6efd15;
+            border: 2px solid #0d6efd;
+            border-radius: 24pt;
+            text-align: center;
+          ">
+            <div style="
+              font-family: 'Montserrat', Arial, sans-serif;
+              font-size: 14pt;
+              font-weight: 700;
+              color: #0d6efd;
+              line-height: 1;
+            ">65th</div>
+            <div style="
+              font-size: 9pt;
+              color: #0d6efd;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+              margin-top: 2pt;
+            ">Percentile</div>
+          </div>
+        
+
+        <!-- Score Display -->
+        <div style="text-align: center;">
+          <div style="
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 28pt;
+            font-weight: 700;
+            color: #0d6efd;
+            line-height: 1;
+          ">54</div>
+          <div style="
+            font-size: 12pt;
+            color: #666;
+          ">/100</div>
+          
+        </div>
+
+        
+          <!-- Band Badge -->
+          <div style="
+            padding: 10pt 20pt;
+            background: #0d6efd;
+            border-radius: 8pt;
+            text-align: center;
+          ">
+            <div style="
+              font-family: 'Montserrat', Arial, sans-serif;
+              font-size: 10pt;
+              font-weight: 700;
+              color: white;
+              text-transform: uppercase;
+              letter-spacing: 1.5px;
+            ">Proficiency</div>
+            
+              <div style="
+                font-size: 8pt;
+                color: rgba(255,255,255,0.8);
+                margin-top: 2pt;
+              ">vs. General</div>
+            
+          </div>
+        
+
+      </div>
+    </div>
+  
+        </div>
+        
+      </section>
+    
 
     <!-- ================================================================
          SECTION: Your Critical Priorities
@@ -5396,518 +6347,54 @@ button:focus {
 
         <!-- World-Class: Quick Wins Cards -->
         
-          <div class="world-class-quick-wins-section" style="margin: 1.5rem 0;">
-            
-    <div class="quick-wins-section">
-      
-    <div style="margin-bottom: 24pt;">
-      <h2 style="
-        font-family: 'Montserrat', Arial, sans-serif;
-        font-size: 20pt;
-        font-weight: 700;
-        color: #212653;
-        margin: 0 0 8pt 0;
-      ">⚡ Quick Wins — High Impact, Low Effort</h2>
-      <p style="
-        font-family: 'Open Sans', Arial, sans-serif;
-        font-size: 11pt;
-        color: #666;
-        margin: 0;
-      ">These initiatives can be implemented within 90 days with minimal investment for maximum impact.</p>
-    </div>
-  
-
-      <div class="quick-wins-grid" style="
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20pt;
-        margin: 24pt 0;
-      ">
+          <div class="quick-win-card">
+            <div class="title">Human Resources Improvement Initiative</div>
+            <p>Improve Human Resources score from 44 to 64 within the target horizon.</p>
+            <div class="metrics">
+              <span>Impact: 56/100</span>
+              <span>Effort: 50/100</span>
+              <span>ROI: 1.12x</span>
+            </div>
+          </div>
         
-    <div class="quick-win-card " data-card-id="rec-HRS-6" style="
-      background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
-      border: 2px solid #28a745;
-      border-radius: 12pt;
-      padding: 20pt;
-      page-break-inside: avoid;
-    ">
-      <!-- Header -->
-      <div style="display: flex; align-items: flex-start; gap: 12pt; margin-bottom: 16pt;">
-        <span style="font-size: 28pt;">⚡</span>
-        <div style="flex: 1;">
-          <div style="
-            display: inline-block;
-            padding: 3pt 10pt;
-            background: #28a745;
-            color: white;
-            border-radius: 4pt;
-            font-family: 'Montserrat', Arial, sans-serif;
-            font-size: 9pt;
-            font-weight: 700;
-            margin-bottom: 6pt;
-          ">⚡ QUICK WIN</div>
-          <h3 style="
-            font-family: 'Montserrat', Arial, sans-serif;
-            font-size: 14pt;
-            font-weight: 700;
-            color: #212653;
-            margin: 0;
-            line-height: 1.3;
-          ">Quick Win 1</h3>
-        </div>
-        <div style="
-          padding: 6pt 14pt;
-          background: #212653;
-          color: white;
-          border-radius: 20pt;
-          font-family: 'Montserrat', Arial, sans-serif;
-          font-size: 11pt;
-          font-weight: 700;
-          white-space: nowrap;
-        ">90 days</div>
-      </div>
-
-      <!-- Current → Target -->
-      <div style="
-        display: flex;
-        align-items: center;
-        gap: 12pt;
-        padding: 12pt 16pt;
-        background: white;
-        border-radius: 8pt;
-        margin-bottom: 16pt;
-      ">
-        <div style="flex: 1; text-align: center;">
-          <div style="font-size: 9pt; color: #dc3545; text-transform: uppercase; letter-spacing: 0.5px;">Current</div>
-          <div style="font-family: 'Montserrat', Arial, sans-serif; font-size: 13pt; font-weight: 600; color: #dc3545;">
-            Current state
+          <div class="quick-win-card">
+            <div class="title">Sales Improvement Initiative</div>
+            <p>Improve Sales score from 47 to 67 within the target horizon.</p>
+            <div class="metrics">
+              <span>Impact: 53/100</span>
+              <span>Effort: 50/100</span>
+              <span>ROI: 1.06x</span>
+            </div>
           </div>
-        </div>
-        <div style="font-size: 20pt; color: #28a745;">→</div>
-        <div style="flex: 1; text-align: center;">
-          <div style="font-size: 9pt; color: #28a745; text-transform: uppercase; letter-spacing: 0.5px;">Target</div>
-          <div style="font-family: 'Montserrat', Arial, sans-serif; font-size: 13pt; font-weight: 600; color: #28a745;">
-            Improved state
-          </div>
-        </div>
-      </div>
-
-      <!-- Metrics Row -->
-      <div style="
-        display: flex;
-        gap: 16pt;
-        margin-bottom: 12pt;
-      ">
-        <div style="flex: 1; text-align: center;">
-          <div style="font-size: 9pt; color: #666;">Investment</div>
-          <div style="font-family: 'Montserrat', Arial, sans-serif; font-size: 13pt; font-weight: 700; color: #212653;">
-            Minimal
-          </div>
-        </div>
-        <div style="flex: 1; text-align: center;">
-          <div style="font-size: 9pt; color: #666;">Return</div>
-          <div style="font-family: 'Montserrat', Arial, sans-serif; font-size: 13pt; font-weight: 700; color: #28a745;">
-            Minimal
-          </div>
-        </div>
-        <div style="flex: 1; text-align: center;">
-          <div style="font-size: 9pt; color: #666;">ROI</div>
-          <div style="font-family: 'Montserrat', Arial, sans-serif; font-size: 13pt; font-weight: 700; color: #969423;">
-            10x
-          </div>
-        </div>
-      </div>
-
-      <!-- Footer -->
-      <div style="
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-top: 12pt;
-        border-top: 1px dashed #c3e6cb;
-      ">
-        <div style="font-size: 10pt; color: #666;">
-          <strong>Owner:</strong> TBD
-        </div>
         
-          <a href="#page-1" style="
-            font-family: 'Montserrat', Arial, sans-serif;
-            font-size: 10pt;
-            font-weight: 600;
-            color: #0d6efd;
-            text-decoration: none;
-          ">Learn More →</a>
+          <div class="quick-win-card">
+            <div class="title">Operations Improvement Initiative</div>
+            <p>Improve Operations score from 47 to 67 within the target horizon.</p>
+            <div class="metrics">
+              <span>Impact: 53/100</span>
+              <span>Effort: 50/100</span>
+              <span>ROI: 1.06x</span>
+            </div>
+          </div>
         
-      </div>
-    </div>
-  
-    <div class="quick-win-card " data-card-id="rec-SAL-7" style="
-      background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
-      border: 2px solid #28a745;
-      border-radius: 12pt;
-      padding: 20pt;
-      page-break-inside: avoid;
-    ">
-      <!-- Header -->
-      <div style="display: flex; align-items: flex-start; gap: 12pt; margin-bottom: 16pt;">
-        <span style="font-size: 28pt;">⚡</span>
-        <div style="flex: 1;">
-          <div style="
-            display: inline-block;
-            padding: 3pt 10pt;
-            background: #28a745;
-            color: white;
-            border-radius: 4pt;
-            font-family: 'Montserrat', Arial, sans-serif;
-            font-size: 9pt;
-            font-weight: 700;
-            margin-bottom: 6pt;
-          ">⚡ QUICK WIN</div>
-          <h3 style="
-            font-family: 'Montserrat', Arial, sans-serif;
-            font-size: 14pt;
-            font-weight: 700;
-            color: #212653;
-            margin: 0;
-            line-height: 1.3;
-          ">Quick Win 2</h3>
-        </div>
-        <div style="
-          padding: 6pt 14pt;
-          background: #212653;
-          color: white;
-          border-radius: 20pt;
-          font-family: 'Montserrat', Arial, sans-serif;
-          font-size: 11pt;
-          font-weight: 700;
-          white-space: nowrap;
-        ">90 days</div>
-      </div>
-
-      <!-- Current → Target -->
-      <div style="
-        display: flex;
-        align-items: center;
-        gap: 12pt;
-        padding: 12pt 16pt;
-        background: white;
-        border-radius: 8pt;
-        margin-bottom: 16pt;
-      ">
-        <div style="flex: 1; text-align: center;">
-          <div style="font-size: 9pt; color: #dc3545; text-transform: uppercase; letter-spacing: 0.5px;">Current</div>
-          <div style="font-family: 'Montserrat', Arial, sans-serif; font-size: 13pt; font-weight: 600; color: #dc3545;">
-            Current state
+          <div class="quick-win-card">
+            <div class="title">Marketing Improvement Initiative</div>
+            <p>Improve Marketing score from 27 to 47 within the target horizon.</p>
+            <div class="metrics">
+              <span>Impact: 73/100</span>
+              <span>Effort: 70/100</span>
+              <span>ROI: 1.04x</span>
+            </div>
           </div>
-        </div>
-        <div style="font-size: 20pt; color: #28a745;">→</div>
-        <div style="flex: 1; text-align: center;">
-          <div style="font-size: 9pt; color: #28a745; text-transform: uppercase; letter-spacing: 0.5px;">Target</div>
-          <div style="font-family: 'Montserrat', Arial, sans-serif; font-size: 13pt; font-weight: 600; color: #28a745;">
-            Improved state
-          </div>
-        </div>
-      </div>
-
-      <!-- Metrics Row -->
-      <div style="
-        display: flex;
-        gap: 16pt;
-        margin-bottom: 12pt;
-      ">
-        <div style="flex: 1; text-align: center;">
-          <div style="font-size: 9pt; color: #666;">Investment</div>
-          <div style="font-family: 'Montserrat', Arial, sans-serif; font-size: 13pt; font-weight: 700; color: #212653;">
-            Minimal
-          </div>
-        </div>
-        <div style="flex: 1; text-align: center;">
-          <div style="font-size: 9pt; color: #666;">Return</div>
-          <div style="font-family: 'Montserrat', Arial, sans-serif; font-size: 13pt; font-weight: 700; color: #28a745;">
-            Minimal
-          </div>
-        </div>
-        <div style="flex: 1; text-align: center;">
-          <div style="font-size: 9pt; color: #666;">ROI</div>
-          <div style="font-family: 'Montserrat', Arial, sans-serif; font-size: 13pt; font-weight: 700; color: #969423;">
-            10x
-          </div>
-        </div>
-      </div>
-
-      <!-- Footer -->
-      <div style="
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-top: 12pt;
-        border-top: 1px dashed #c3e6cb;
-      ">
-        <div style="font-size: 10pt; color: #666;">
-          <strong>Owner:</strong> TBD
-        </div>
         
-          <a href="#page-1" style="
-            font-family: 'Montserrat', Arial, sans-serif;
-            font-size: 10pt;
-            font-weight: 600;
-            color: #0d6efd;
-            text-decoration: none;
-          ">Learn More →</a>
-        
-      </div>
-    </div>
-  
-    <div class="quick-win-card " data-card-id="rec-OPS-8" style="
-      background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
-      border: 2px solid #28a745;
-      border-radius: 12pt;
-      padding: 20pt;
-      page-break-inside: avoid;
-    ">
-      <!-- Header -->
-      <div style="display: flex; align-items: flex-start; gap: 12pt; margin-bottom: 16pt;">
-        <span style="font-size: 28pt;">⚡</span>
-        <div style="flex: 1;">
-          <div style="
-            display: inline-block;
-            padding: 3pt 10pt;
-            background: #28a745;
-            color: white;
-            border-radius: 4pt;
-            font-family: 'Montserrat', Arial, sans-serif;
-            font-size: 9pt;
-            font-weight: 700;
-            margin-bottom: 6pt;
-          ">⚡ QUICK WIN</div>
-          <h3 style="
-            font-family: 'Montserrat', Arial, sans-serif;
-            font-size: 14pt;
-            font-weight: 700;
-            color: #212653;
-            margin: 0;
-            line-height: 1.3;
-          ">Quick Win 3</h3>
-        </div>
-        <div style="
-          padding: 6pt 14pt;
-          background: #212653;
-          color: white;
-          border-radius: 20pt;
-          font-family: 'Montserrat', Arial, sans-serif;
-          font-size: 11pt;
-          font-weight: 700;
-          white-space: nowrap;
-        ">90 days</div>
-      </div>
-
-      <!-- Current → Target -->
-      <div style="
-        display: flex;
-        align-items: center;
-        gap: 12pt;
-        padding: 12pt 16pt;
-        background: white;
-        border-radius: 8pt;
-        margin-bottom: 16pt;
-      ">
-        <div style="flex: 1; text-align: center;">
-          <div style="font-size: 9pt; color: #dc3545; text-transform: uppercase; letter-spacing: 0.5px;">Current</div>
-          <div style="font-family: 'Montserrat', Arial, sans-serif; font-size: 13pt; font-weight: 600; color: #dc3545;">
-            Current state
-          </div>
-        </div>
-        <div style="font-size: 20pt; color: #28a745;">→</div>
-        <div style="flex: 1; text-align: center;">
-          <div style="font-size: 9pt; color: #28a745; text-transform: uppercase; letter-spacing: 0.5px;">Target</div>
-          <div style="font-family: 'Montserrat', Arial, sans-serif; font-size: 13pt; font-weight: 600; color: #28a745;">
-            Improved state
-          </div>
-        </div>
-      </div>
-
-      <!-- Metrics Row -->
-      <div style="
-        display: flex;
-        gap: 16pt;
-        margin-bottom: 12pt;
-      ">
-        <div style="flex: 1; text-align: center;">
-          <div style="font-size: 9pt; color: #666;">Investment</div>
-          <div style="font-family: 'Montserrat', Arial, sans-serif; font-size: 13pt; font-weight: 700; color: #212653;">
-            Minimal
-          </div>
-        </div>
-        <div style="flex: 1; text-align: center;">
-          <div style="font-size: 9pt; color: #666;">Return</div>
-          <div style="font-family: 'Montserrat', Arial, sans-serif; font-size: 13pt; font-weight: 700; color: #28a745;">
-            Minimal
-          </div>
-        </div>
-        <div style="flex: 1; text-align: center;">
-          <div style="font-size: 9pt; color: #666;">ROI</div>
-          <div style="font-family: 'Montserrat', Arial, sans-serif; font-size: 13pt; font-weight: 700; color: #969423;">
-            10x
-          </div>
-        </div>
-      </div>
-
-      <!-- Footer -->
-      <div style="
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-top: 12pt;
-        border-top: 1px dashed #c3e6cb;
-      ">
-        <div style="font-size: 10pt; color: #666;">
-          <strong>Owner:</strong> TBD
-        </div>
-        
-          <a href="#page-1" style="
-            font-family: 'Montserrat', Arial, sans-serif;
-            font-size: 10pt;
-            font-weight: 600;
-            color: #0d6efd;
-            text-decoration: none;
-          ">Learn More →</a>
-        
-      </div>
-    </div>
-  
-    <div class="quick-win-card " data-card-id="rec-MKT-1" style="
-      background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
-      border: 2px solid #28a745;
-      border-radius: 12pt;
-      padding: 20pt;
-      page-break-inside: avoid;
-    ">
-      <!-- Header -->
-      <div style="display: flex; align-items: flex-start; gap: 12pt; margin-bottom: 16pt;">
-        <span style="font-size: 28pt;">⚡</span>
-        <div style="flex: 1;">
-          <div style="
-            display: inline-block;
-            padding: 3pt 10pt;
-            background: #28a745;
-            color: white;
-            border-radius: 4pt;
-            font-family: 'Montserrat', Arial, sans-serif;
-            font-size: 9pt;
-            font-weight: 700;
-            margin-bottom: 6pt;
-          ">⚡ QUICK WIN</div>
-          <h3 style="
-            font-family: 'Montserrat', Arial, sans-serif;
-            font-size: 14pt;
-            font-weight: 700;
-            color: #212653;
-            margin: 0;
-            line-height: 1.3;
-          ">Quick Win 4</h3>
-        </div>
-        <div style="
-          padding: 6pt 14pt;
-          background: #212653;
-          color: white;
-          border-radius: 20pt;
-          font-family: 'Montserrat', Arial, sans-serif;
-          font-size: 11pt;
-          font-weight: 700;
-          white-space: nowrap;
-        ">90 days</div>
-      </div>
-
-      <!-- Current → Target -->
-      <div style="
-        display: flex;
-        align-items: center;
-        gap: 12pt;
-        padding: 12pt 16pt;
-        background: white;
-        border-radius: 8pt;
-        margin-bottom: 16pt;
-      ">
-        <div style="flex: 1; text-align: center;">
-          <div style="font-size: 9pt; color: #dc3545; text-transform: uppercase; letter-spacing: 0.5px;">Current</div>
-          <div style="font-family: 'Montserrat', Arial, sans-serif; font-size: 13pt; font-weight: 600; color: #dc3545;">
-            Current state
-          </div>
-        </div>
-        <div style="font-size: 20pt; color: #28a745;">→</div>
-        <div style="flex: 1; text-align: center;">
-          <div style="font-size: 9pt; color: #28a745; text-transform: uppercase; letter-spacing: 0.5px;">Target</div>
-          <div style="font-family: 'Montserrat', Arial, sans-serif; font-size: 13pt; font-weight: 600; color: #28a745;">
-            Improved state
-          </div>
-        </div>
-      </div>
-
-      <!-- Metrics Row -->
-      <div style="
-        display: flex;
-        gap: 16pt;
-        margin-bottom: 12pt;
-      ">
-        <div style="flex: 1; text-align: center;">
-          <div style="font-size: 9pt; color: #666;">Investment</div>
-          <div style="font-family: 'Montserrat', Arial, sans-serif; font-size: 13pt; font-weight: 700; color: #212653;">
-            Minimal
-          </div>
-        </div>
-        <div style="flex: 1; text-align: center;">
-          <div style="font-size: 9pt; color: #666;">Return</div>
-          <div style="font-family: 'Montserrat', Arial, sans-serif; font-size: 13pt; font-weight: 700; color: #28a745;">
-            Minimal
-          </div>
-        </div>
-        <div style="flex: 1; text-align: center;">
-          <div style="font-size: 9pt; color: #666;">ROI</div>
-          <div style="font-family: 'Montserrat', Arial, sans-serif; font-size: 13pt; font-weight: 700; color: #969423;">
-            10x
-          </div>
-        </div>
-      </div>
-
-      <!-- Footer -->
-      <div style="
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-top: 12pt;
-        border-top: 1px dashed #c3e6cb;
-      ">
-        <div style="font-size: 10pt; color: #666;">
-          <strong>Owner:</strong> TBD
-        </div>
-        
-          <a href="#page-1" style="
-            font-family: 'Montserrat', Arial, sans-serif;
-            font-size: 10pt;
-            font-weight: 600;
-            color: #0d6efd;
-            text-decoration: none;
-          ">Learn More →</a>
-        
-      </div>
-    </div>
-  
-      </div>
-
-      <style>
-        @media (max-width: 768px) {
-          .quick-wins-grid {
-            grid-template-columns: 1fr !important;
-          }
-        }
-        @media print {
-          .quick-wins-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-          }
-        }
-      </style>
-    </div>
-  
+          <div class="quick-win-card">
+            <div class="title">IT, Data &amp; Systems Improvement Initiative</div>
+            <p>Improve IT, Data &amp; Systems score from 48 to 68 within the target horizon.</p>
+            <div class="metrics">
+              <span>Impact: 52/100</span>
+              <span>Effort: 50/100</span>
+              <span>ROI: 1.04x</span>
+            </div>
           </div>
         
       </section>
@@ -5915,10 +6402,10 @@ button:focus {
 
     <!-- ================================================================
          SECTION: Key Risks to Your Business
+         Enhanced with Risk Heatmap Visualization
          ================================================================ -->
-    
-      <section class="section" id="key-risks">
-        
+    <section class="section" id="key-risks">
+      
     <div class="owner-section-header">
       <h2>Key Risks to Your Business</h2>
       
@@ -5929,6 +6416,340 @@ button:focus {
       
     </div>
   
+
+      <!-- Risk Heatmap Visualization -->
+      
+        <div class="risk-heatmap-section" style="margin: 1.5rem 0;">
+          <h3 style="font-family: 'Montserrat', sans-serif; color: #212653; margin-bottom: 1rem; font-size: 1.1rem;">
+            Risk Landscape Overview
+          </h3>
+          <p style="font-size: 0.9rem; color: #666; margin-bottom: 1rem;">
+            This heatmap shows your identified risks plotted by severity (vertical) and likelihood (horizontal).
+            Risks in the upper-right quadrant require immediate attention.
+          </p>
+          <div style="display: flex; justify-content: center;">
+            
+    <div class="svg-chart-container risk-heatmap" role="figure" aria-label="Risk Heat Map showing 5 risks by severity and likelihood">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" style="max-width: 100%; height: auto;">
+        <!-- Background -->
+        <rect width="600" height="400" fill="white" rx="4"/>
+
+        <!-- Title -->
+        <text x="300" y="24" text-anchor="middle" font-family="'Segoe UI', sans-serif"
+              font-size="16" font-weight="600" fill="#212653">Risk Heat Map</text>
+
+        <!-- Grid Cells -->
+        
+        <rect x="80" y="40" width="125" height="75"
+              fill="#ffc107" fill-opacity="0.25"
+              stroke="#e9ecef" stroke-width="1"/>
+      
+        <rect x="205" y="40" width="125" height="75"
+              fill="#e67e22" fill-opacity="0.25"
+              stroke="#e9ecef" stroke-width="1"/>
+      
+        <rect x="330" y="40" width="125" height="75"
+              fill="#dc3545" fill-opacity="0.25"
+              stroke="#e9ecef" stroke-width="1"/>
+      
+        <rect x="455" y="40" width="125" height="75"
+              fill="#dc3545" fill-opacity="0.25"
+              stroke="#e9ecef" stroke-width="1"/>
+      
+        <rect x="80" y="115" width="125" height="75"
+              fill="#28a745" fill-opacity="0.25"
+              stroke="#e9ecef" stroke-width="1"/>
+      
+        <rect x="205" y="115" width="125" height="75"
+              fill="#ffc107" fill-opacity="0.25"
+              stroke="#e9ecef" stroke-width="1"/>
+      
+        <rect x="330" y="115" width="125" height="75"
+              fill="#e67e22" fill-opacity="0.25"
+              stroke="#e9ecef" stroke-width="1"/>
+      
+        <rect x="455" y="115" width="125" height="75"
+              fill="#dc3545" fill-opacity="0.25"
+              stroke="#e9ecef" stroke-width="1"/>
+      
+        <rect x="80" y="190" width="125" height="75"
+              fill="#28a745" fill-opacity="0.25"
+              stroke="#e9ecef" stroke-width="1"/>
+      
+        <rect x="205" y="190" width="125" height="75"
+              fill="#28a745" fill-opacity="0.25"
+              stroke="#e9ecef" stroke-width="1"/>
+      
+        <rect x="330" y="190" width="125" height="75"
+              fill="#ffc107" fill-opacity="0.25"
+              stroke="#e9ecef" stroke-width="1"/>
+      
+        <rect x="455" y="190" width="125" height="75"
+              fill="#e67e22" fill-opacity="0.25"
+              stroke="#e9ecef" stroke-width="1"/>
+      
+        <rect x="80" y="265" width="125" height="75"
+              fill="#28a745" fill-opacity="0.25"
+              stroke="#e9ecef" stroke-width="1"/>
+      
+        <rect x="205" y="265" width="125" height="75"
+              fill="#28a745" fill-opacity="0.25"
+              stroke="#e9ecef" stroke-width="1"/>
+      
+        <rect x="330" y="265" width="125" height="75"
+              fill="#28a745" fill-opacity="0.25"
+              stroke="#e9ecef" stroke-width="1"/>
+      
+        <rect x="455" y="265" width="125" height="75"
+              fill="#ffc107" fill-opacity="0.25"
+              stroke="#e9ecef" stroke-width="1"/>
+      
+
+        <!-- Risk Points -->
+        
+      <g class="risk-point" >
+        <circle cx="517.5" cy="77.5" r="14" fill="#dc3545" stroke="#fff" stroke-width="2"/>
+        <text x="517.5" y="81.5" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">
+          1
+        </text>
+        
+      </g>
+    
+      <g class="risk-point" >
+        <circle cx="517.5" cy="77.5" r="14" fill="#dc3545" stroke="#fff" stroke-width="2"/>
+        <text x="517.5" y="81.5" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">
+          2
+        </text>
+        
+      </g>
+    
+      <g class="risk-point" >
+        <circle cx="517.5" cy="77.5" r="14" fill="#dc3545" stroke="#fff" stroke-width="2"/>
+        <text x="517.5" y="81.5" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">
+          3
+        </text>
+        
+      </g>
+    
+      <g class="risk-point" >
+        <circle cx="517.5" cy="77.5" r="14" fill="#dc3545" stroke="#fff" stroke-width="2"/>
+        <text x="517.5" y="81.5" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">
+          4
+        </text>
+        
+      </g>
+    
+      <g class="risk-point" >
+        <circle cx="517.5" cy="77.5" r="14" fill="#dc3545" stroke="#fff" stroke-width="2"/>
+        <text x="517.5" y="81.5" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">
+          5
+        </text>
+        
+      </g>
+    
+
+        <!-- X-Axis Labels -->
+        
+    <text x="142.5" y="375"
+          text-anchor="middle" font-size="11" fill="#666" font-family="'Segoe UI', sans-serif">Low</text>
+  
+    <text x="267.5" y="375"
+          text-anchor="middle" font-size="11" fill="#666" font-family="'Segoe UI', sans-serif">Medium</text>
+  
+    <text x="392.5" y="375"
+          text-anchor="middle" font-size="11" fill="#666" font-family="'Segoe UI', sans-serif">Med-High</text>
+  
+    <text x="517.5" y="375"
+          text-anchor="middle" font-size="11" fill="#666" font-family="'Segoe UI', sans-serif">High</text>
+  
+
+        <!-- Y-Axis Labels -->
+        
+    <text x="70" y="306.5"
+          text-anchor="end" font-size="11" fill="#666" font-family="'Segoe UI', sans-serif">Low</text>
+  
+    <text x="70" y="231.5"
+          text-anchor="end" font-size="11" fill="#666" font-family="'Segoe UI', sans-serif">Medium</text>
+  
+    <text x="70" y="156.5"
+          text-anchor="end" font-size="11" fill="#666" font-family="'Segoe UI', sans-serif">High</text>
+  
+    <text x="70" y="81.5"
+          text-anchor="end" font-size="11" fill="#666" font-family="'Segoe UI', sans-serif">Critical</text>
+  
+
+        <!-- Axis Titles -->
+        <text x="300" y="395" text-anchor="middle" font-size="12" font-weight="500" fill="#333"
+              font-family="'Segoe UI', sans-serif">
+          Likelihood &rarr;
+        </text>
+        <text x="15" y="200" text-anchor="middle" font-size="12" font-weight="500" fill="#333"
+              font-family="'Segoe UI', sans-serif"
+              transform="rotate(-90, 15, 200)">
+          Severity &rarr;
+        </text>
+
+        
+    <g transform="translate(420, 345)">
+      <text x="0" y="0" font-size="10" font-weight="600" fill="#333" font-family="'Segoe UI', sans-serif">Risk Count by Severity</text>
+      <g transform="translate(0, 12)">
+        <circle cx="8" cy="6" r="6" fill="#dc3545"/>
+        <text x="20" y="10" font-size="9" fill="#666">Critical (5)</text>
+      </g>
+      <g transform="translate(0, 26)">
+        <circle cx="8" cy="6" r="6" fill="#e67e22"/>
+        <text x="20" y="10" font-size="9" fill="#666">High (0)</text>
+      </g>
+      <g transform="translate(80, 12)">
+        <circle cx="8" cy="6" r="6" fill="#ffc107"/>
+        <text x="20" y="10" font-size="9" fill="#666">Medium (0)</text>
+      </g>
+      <g transform="translate(80, 26)">
+        <circle cx="8" cy="6" r="6" fill="#28a745"/>
+        <text x="20" y="10" font-size="9" fill="#666">Low (0)</text>
+      </g>
+    </g>
+  
+      </svg>
+    </div>
+  
+          </div>
+        </div>
+      
+
+      <!-- Top Risks List -->
+      
+        <div class="critical-risks-list" style="margin: 1.5rem 0;">
+          <h4 style="font-family: 'Montserrat', sans-serif; color: #dc3545; margin-bottom: 1rem;">
+            &#9888;&#65039; Priority Risks Requiring Attention
+          </h4>
+          <div style="display: grid; gap: 0.75rem;">
+            
+              <div style="
+                background: #fff;
+                border-left: 4px solid #ffc107;
+                padding: 1rem;
+                border-radius: 0 8px 8px 0;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+              ">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                  <strong style="color: #212653;">1. Strategy is at critical levels with a score of 37/100. Immediate intervention is required to mitigate business risk.</strong>
+                  <span style="
+                    padding: 2px 8px;
+                    border-radius: 4px;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    background: #ffc107;
+                    color: #000;
+                  ">Critical</span>
+                </div>
+                <p style="font-size: 0.9rem; color: #555; margin: 0; line-height: 1.5;">
+                  Strategy is at critical levels with a score of 37/100. Immediate intervention is required to mitigate business risk.
+                </p>
+              </div>
+            
+              <div style="
+                background: #fff;
+                border-left: 4px solid #ffc107;
+                padding: 1rem;
+                border-radius: 0 8px 8px 0;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+              ">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                  <strong style="color: #212653;">2. Marketing is at critical levels with a score of 27/100. Immediate intervention is required to mitigate business risk.</strong>
+                  <span style="
+                    padding: 2px 8px;
+                    border-radius: 4px;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    background: #ffc107;
+                    color: #000;
+                  ">Critical</span>
+                </div>
+                <p style="font-size: 0.9rem; color: #555; margin: 0; line-height: 1.5;">
+                  Marketing is at critical levels with a score of 27/100. Immediate intervention is required to mitigate business risk.
+                </p>
+              </div>
+            
+              <div style="
+                background: #fff;
+                border-left: 4px solid #ffc107;
+                padding: 1rem;
+                border-radius: 0 8px 8px 0;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+              ">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                  <strong style="color: #212653;">3. Financials is at critical levels with a score of 30/100. Immediate intervention is required to mitigate business risk.</strong>
+                  <span style="
+                    padding: 2px 8px;
+                    border-radius: 4px;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    background: #ffc107;
+                    color: #000;
+                  ">Critical</span>
+                </div>
+                <p style="font-size: 0.9rem; color: #555; margin: 0; line-height: 1.5;">
+                  Financials is at critical levels with a score of 30/100. Immediate intervention is required to mitigate business risk.
+                </p>
+              </div>
+            
+              <div style="
+                background: #fff;
+                border-left: 4px solid #ffc107;
+                padding: 1rem;
+                border-radius: 0 8px 8px 0;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+              ">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                  <strong style="color: #212653;">4. Leadership &amp; Governance is at critical levels with a score of 38/100. Immediate intervention is required to mitigate business risk.</strong>
+                  <span style="
+                    padding: 2px 8px;
+                    border-radius: 4px;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    background: #ffc107;
+                    color: #000;
+                  ">Critical</span>
+                </div>
+                <p style="font-size: 0.9rem; color: #555; margin: 0; line-height: 1.5;">
+                  Leadership &amp; Governance is at critical levels with a score of 38/100. Immediate intervention is required to mitigate business risk.
+                </p>
+              </div>
+            
+              <div style="
+                background: #fff;
+                border-left: 4px solid #ffc107;
+                padding: 1rem;
+                border-radius: 0 8px 8px 0;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+              ">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                  <strong style="color: #212653;">5. Technology &amp; Innovation is at critical levels with a score of 34/100. Immediate intervention is required to mitigate business risk.</strong>
+                  <span style="
+                    padding: 2px 8px;
+                    border-radius: 4px;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    background: #ffc107;
+                    color: #000;
+                  ">Critical</span>
+                </div>
+                <p style="font-size: 0.9rem; color: #555; margin: 0; line-height: 1.5;">
+                  Technology &amp; Innovation is at critical levels with a score of 34/100. Immediate intervention is required to mitigate business risk.
+                </p>
+              </div>
+            
+          </div>
+        </div>
+      
+
+      
         <div class="narrative-content">
           <h1 class="bh-section-heading bh-h1" id="comprehensive-risk-assessment">Comprehensive Risk Assessment</h1>
 <h2 class="bh-section-heading bh-h2" id="summit-build-group">Summit Build Group</h2>
@@ -5945,7 +6766,9 @@ button:focus {
       </div>
     
         </div>
-        
+      
+
+      
     <div class="comprehensive-reference">
       <span class="ref-icon">&#128214;</span>
       <span class="ref-text">
@@ -5954,8 +6777,7 @@ button:focus {
       </span>
     </div>
   
-      </section>
-    
+    </section>
 
     <!-- ================================================================
          SECTION: Where to Go for Detail
@@ -6031,6 +6853,21 @@ button:focus {
                 <td><em>Financial Impact Analysis</em></td>
               </tr>
             
+              <tr>
+                <td>Health Overview</td>
+                <td><em>Executive Summary</em></td>
+              </tr>
+            
+              <tr>
+                <td>Key Actions</td>
+                <td><em>Strategic Recommendations</em></td>
+              </tr>
+            
+              <tr>
+                <td>Methods & Legal</td>
+                <td><em>Assessment Methodology</em></td>
+              </tr>
+            
           </tbody>
         </table>
       </div>
@@ -6067,6 +6904,268 @@ button:focus {
             <span>Complete risk inventory</span>
           </div>
         </div>
+      </div>
+    </section>
+  
+
+    <!-- ================================================================
+         SECTION: Owner's Decision Agenda
+         Premium "Owner Decision Brief" - Phase 1
+         ================================================================ -->
+    
+    <section class="section" id="owner-decisions" style="page-break-before: auto;">
+      <div class="owner-section-header" style="margin-bottom: 24px;">
+        <h2 style="font-family: 'Montserrat', sans-serif; color: #212653; margin: 0 0 8px 0; font-size: 24px;">
+          Owner's Decision Agenda
+        </h2>
+        <p class="owner-question" style="
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 1rem;
+          color: #666;
+          margin: 0;
+          padding-left: 8px;
+          border-left: 3px solid #969423;
+        ">
+          <span style="font-size: 1.1rem;">🎯</span>
+          <em>"What decisions do I need to make?"</em>
+        </p>
+      </div>
+
+      <p class="section-intro" style="font-size: 15px; color: #555; margin-bottom: 24px; line-height: 1.6;">
+        Based on your assessment results, these are the key decisions requiring your attention
+        in the next 90 days. Each includes options and our recommended path forward.
+      </p>
+
+      <div class="decisions-list" style="margin: 24px 0;">
+        
+    <div class="decision-card" style="
+      background: white;
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+      page-break-inside: avoid;
+    ">
+      <div style="display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px;">
+        <div style="
+          width: 36px;
+          height: 36px;
+          background: #212653;
+          color: white;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: 'Montserrat', sans-serif;
+          font-weight: 700;
+          flex-shrink: 0;
+        ">1</div>
+        <div style="flex: 1;">
+          <h3 style="font-family: 'Montserrat', sans-serif; color: #212653; margin: 0; font-size: 16px; line-height: 1.4;">
+            Determine leadership accountability for improvement initiatives
+          </h3>
+          <div style="display: flex; gap: 16px; color: #666; font-size: 13px; margin-top: 6px;">
+            <span>⏱️ Timeline: 30 days</span>
+            <span style="color: #28a745;">📊 Impact: high</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="decision-options" style="
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+        margin: 16px 0;
+      ">
+        
+          <div class="option-card recommended" style="
+            background: rgba(150, 148, 35, 0.1);
+            border: 2px solid #969423;
+            border-radius: 8px;
+            padding: 12px;
+          ">
+            <div style="font-weight: 600; color: #212653; margin-bottom: 4px;">
+              ✓ Option A
+            </div>
+            <div style="font-size: 13px; color: #555; margin-bottom: 8px;">Assign dedicated transformation lead</div>
+            <div style="font-size: 12px; color: #888;">
+              <strong>Trade-off:</strong> Resource commitment, focused execution
+            </div>
+          </div>
+        
+          <div class="option-card " style="
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 12px;
+          ">
+            <div style="font-weight: 600; color: #212653; margin-bottom: 4px;">
+              Option B
+            </div>
+            <div style="font-size: 13px; color: #555; margin-bottom: 8px;">Distribute among existing leadership</div>
+            <div style="font-size: 12px; color: #888;">
+              <strong>Trade-off:</strong> No new hire, risk of diffused accountability
+            </div>
+          </div>
+        
+      </div>
+
+      <div class="recommended-path" style="
+        background: #212653;
+        color: white;
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+      ">
+        <span><strong>Recommended:</strong> Assign clear ownership to drive accountability</span>
+        <span style="
+          background: #28a745;
+          padding: 2px 10px;
+          border-radius: 4px;
+          font-size: 11px;
+          font-weight: 600;
+          text-transform: uppercase;
+        ">high confidence</span>
+      </div>
+    </div>
+  
+    <div class="decision-card" style="
+      background: white;
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+      page-break-inside: avoid;
+    ">
+      <div style="display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px;">
+        <div style="
+          width: 36px;
+          height: 36px;
+          background: #212653;
+          color: white;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: 'Montserrat', sans-serif;
+          font-weight: 700;
+          flex-shrink: 0;
+        ">2</div>
+        <div style="flex: 1;">
+          <h3 style="font-family: 'Montserrat', sans-serif; color: #212653; margin: 0; font-size: 16px; line-height: 1.4;">
+            Allocate budget for priority improvement initiatives
+          </h3>
+          <div style="display: flex; gap: 16px; color: #666; font-size: 13px; margin-top: 6px;">
+            <span>⏱️ Timeline: 60 days</span>
+            <span style="color: #28a745;">📊 Impact: high</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="decision-options" style="
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+        margin: 16px 0;
+      ">
+        
+          <div class="option-card recommended" style="
+            background: rgba(150, 148, 35, 0.1);
+            border: 2px solid #969423;
+            border-radius: 8px;
+            padding: 12px;
+          ">
+            <div style="font-weight: 600; color: #212653; margin-bottom: 4px;">
+              ✓ Option A
+            </div>
+            <div style="font-size: 13px; color: #555; margin-bottom: 8px;">Fund top 3-5 initiatives comprehensively</div>
+            <div style="font-size: 12px; color: #888;">
+              <strong>Trade-off:</strong> Higher investment, maximum impact
+            </div>
+          </div>
+        
+          <div class="option-card " style="
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 12px;
+          ">
+            <div style="font-weight: 600; color: #212653; margin-bottom: 4px;">
+              Option B
+            </div>
+            <div style="font-size: 13px; color: #555; margin-bottom: 8px;">Partial funding across more initiatives</div>
+            <div style="font-size: 12px; color: #888;">
+              <strong>Trade-off:</strong> Broader coverage, slower progress per item
+            </div>
+          </div>
+        
+          <div class="option-card " style="
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 12px;
+          ">
+            <div style="font-weight: 600; color: #212653; margin-bottom: 4px;">
+              Option C
+            </div>
+            <div style="font-size: 13px; color: #555; margin-bottom: 8px;">Defer until next fiscal year</div>
+            <div style="font-size: 12px; color: #888;">
+              <strong>Trade-off:</strong> Preserve cash, delay improvements
+            </div>
+          </div>
+        
+      </div>
+
+      <div class="recommended-path" style="
+        background: #212653;
+        color: white;
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+      ">
+        <span><strong>Recommended:</strong> Focus resources on fewer, high-impact initiatives</span>
+        <span style="
+          background: #28a745;
+          padding: 2px 10px;
+          border-radius: 4px;
+          font-size: 11px;
+          font-weight: 600;
+          text-transform: uppercase;
+        ">high confidence</span>
+      </div>
+    </div>
+  
+      </div>
+
+      <!-- Reference to Comprehensive Report -->
+      <div class="comprehensive-reference" style="
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: #f8f9fa;
+        border-left: 3px solid #969423;
+        padding: 12px 16px;
+        margin-top: 24px;
+        font-size: 14px;
+      ">
+        <span class="ref-icon">📖</span>
+        <span class="ref-text" style="color: #555;">
+          For detailed analysis supporting these decisions, see the
+          <strong style="color: #212653;">Strategic Recommendations</strong> section in your
+          <em style="color: #969423;">Comprehensive Report</em>.
+        </span>
       </div>
     </section>
   
@@ -6485,7 +7584,7 @@ button:focus {
     <script type="application/json" id="report-metadata">
       {
   "reportId": "922cbec0-b9bf-4a97-b5c7-14e766246855",
-  "generatedAt": "2025-12-08T07:22:28.705Z",
+  "generatedAt": "2025-12-09T03:03:57.519Z",
   "pipelineVersion": "1.0.0",
   "betaMode": false,
   "termsVersion": "2025.1"

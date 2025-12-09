@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="generator" content="BizHealth.ai Report Generator v2.0">
-  <title>Quick Wins Action Plan - Summit Build Group</title>
+  <title>Employee Business Health Summary - Summit Build Group</title>
   <style>
     /* Base Styles */
     
@@ -2936,6 +2936,277 @@ button:focus {
 
     /* Report-Specific Custom Styles */
     
+    .recipe-section {
+      margin-bottom: 2rem;
+    }
+
+    .section-description {
+      color: #666;
+      font-style: italic;
+      margin-bottom: 1rem;
+    }
+
+    .styled-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .styled-list li {
+      padding: 0.5rem 0;
+      padding-left: 1.5rem;
+      position: relative;
+      border-bottom: 1px solid #eee;
+    }
+
+    .styled-list li:before {
+      content: "▸";
+      position: absolute;
+      left: 0;
+      color: #969423;
+    }
+
+    .checklist {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border-left: 3px solid #969423;
+    }
+
+    .check-icon {
+      font-size: 1.25rem;
+    }
+
+    .bar-chart-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .bar-label {
+      width: 150px;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .bar-track {
+      flex: 1;
+      height: 24px;
+      background: #e9ecef;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 0.5rem;
+      border-radius: 12px;
+      transition: width 0.3s ease;
+    }
+
+    .bar-value {
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .narrative-item {
+      padding: 1rem;
+    }
+
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #212653;
+    }
+
+    /* Enhanced radar placeholder */
+    .radar-placeholder {
+      padding: 1.5rem;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .radar-placeholder .radar-title {
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 1rem;
+    }
+
+    .radar-scores {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+    }
+
+    .radar-score-item {
+      background: #fff;
+      padding: 0.75rem;
+      border-radius: 8px;
+      border-left: 3px solid #969423;
+    }
+
+    .radar-score-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #212653;
+    }
+
+    .radar-score-label {
+      font-size: 0.75rem;
+      color: #666;
+    }
+
+    /* Import chart component styles for any embedded charts */
+    
+    
+    .svg-chart-container {
+      display: flex;
+      justify-content: center;
+      margin: 1rem 0;
+      page-break-inside: avoid;
+    }
+
+    .svg-chart-container svg {
+      max-width: 100%;
+      height: auto;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+    }
+
+    @media print {
+      .svg-chart-container {
+        page-break-inside: avoid;
+      }
+
+      .svg-chart-container svg {
+        box-shadow: none;
+        border: 1px solid #e0e0e0;
+      }
+    }
+  
+
+    /* Executive Dashboard Styles */
+    .executive-dashboard {
+      margin: 2rem 0;
+    }
+
+    .dashboard-row {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .dashboard-main {
+      flex: 2;
+      min-width: 350px;
+    }
+
+    .dashboard-side {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .dashboard-full {
+      width: 100%;
+    }
+
+    /* Chart grid layout */
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .chart-cell {
+      background: #FFFFFF;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Chart error fallback */
+    .chart-error,
+    .chart-fallback {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: #f8f9fa;
+      border: 2px dashed #dee2e6;
+      border-radius: 8px;
+      color: #6c757d;
+      min-height: 200px;
+      text-align: center;
+    }
+
+    .chart-fallback-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    @media print {
+      .executive-dashboard,
+      .chart-grid,
+      .svg-chart-container {
+        page-break-inside: avoid;
+      }
+
+      .chart-cell {
+        box-shadow: none;
+        border: 1px solid #dee2e6;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-row {
+        flex-direction: column;
+      }
+
+      .dashboard-main,
+      .dashboard-side {
+        min-width: 100%;
+      }
+
+      .chart-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  
+
+    @media print {
+      .bar-chart-container,
+      .radar-placeholder {
+        page-break-inside: avoid;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .radar-scores {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  
   </style>
 </head>
 <body>
@@ -3404,481 +3675,168 @@ button:focus {
   
   <div class="report-container report-content-gated">
     
-    <style>
-      /* Chart styles */
-      
-    
-    .svg-chart-container {
-      display: flex;
-      justify-content: center;
-      margin: 1rem 0;
-      page-break-inside: avoid;
-    }
-
-    .svg-chart-container svg {
-      max-width: 100%;
-      height: auto;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-      border-radius: 8px;
-    }
-
-    @media print {
-      .svg-chart-container {
-        page-break-inside: avoid;
-      }
-
-      .svg-chart-container svg {
-        box-shadow: none;
-        border: 1px solid #e0e0e0;
-      }
-    }
-  
-
-    /* Executive Dashboard Styles */
-    .executive-dashboard {
-      margin: 2rem 0;
-    }
-
-    .dashboard-row {
-      display: flex;
-      gap: 2rem;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
-    }
-
-    .dashboard-main {
-      flex: 2;
-      min-width: 350px;
-    }
-
-    .dashboard-side {
-      flex: 1;
-      min-width: 280px;
-    }
-
-    .dashboard-full {
-      width: 100%;
-    }
-
-    /* Chart grid layout */
-    .chart-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2rem;
-      margin: 2rem 0;
-    }
-
-    .chart-cell {
-      background: #FFFFFF;
-      border-radius: 8px;
-      padding: 1rem;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-    }
-
-    /* Chart error fallback */
-    .chart-error,
-    .chart-fallback {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      background: #f8f9fa;
-      border: 2px dashed #dee2e6;
-      border-radius: 8px;
-      color: #6c757d;
-      min-height: 200px;
-      text-align: center;
-    }
-
-    .chart-fallback-icon {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-    }
-
-    @media print {
-      .executive-dashboard,
-      .chart-grid,
-      .svg-chart-container {
-        page-break-inside: avoid;
-      }
-
-      .chart-cell {
-        box-shadow: none;
-        border: 1px solid #dee2e6;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .dashboard-row {
-        flex-direction: column;
-      }
-
-      .dashboard-main,
-      .dashboard-side {
-        min-width: 100%;
-      }
-
-      .chart-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  
-
-      .quickwins-chart-section {
-        margin: 2rem 0;
-        text-align: center;
-      }
-
-      .quickwins-chart-section .chart-wrapper {
-        display: inline-block;
-        max-width: 100%;
-      }
-    </style>
-
     
     <header class="report-header">
-      <h1>Quick Wins Action Plan</h1>
-      <p class="subtitle">High-Impact, Low-Effort Improvements</p>
+      <h1>Employee Business Health Summary</h1>
+      <p class="subtitle">Accessible summary for all employees with focus on company health, culture, and how their work contributes to improvement.</p>
       <p class="company-name">Summit Build Group</p>
       <p class="date">Assessment Date: December 8, 2025</p>
     </header>
   
-
-    <section class="section">
-      <h2>Quick Wins Overview</h2>
-
-      <div class="callout info">
-        <div class="title">What are Quick Wins?</div>
-        <p>Quick Wins are high-impact, low-effort improvements that can be implemented within 90 days to generate immediate value. They are characterized by:</p>
-        <ul>
-          <li><strong>High Impact Score:</strong> Significant positive effect on business performance</li>
-          <li><strong>Low Effort Score:</strong> Minimal resources, time, and complexity required</li>
-          <li><strong>Strong ROI:</strong> Excellent return on investment ratio</li>
-        </ul>
+    
+    <section class="section recipe-section" id="welcome">
+      <div class="section-header">
+        <h2>Our Business Health Journey</h2>
       </div>
-
-      <div class="grid grid-3 mt-3">
-        <div class="score-card small">
-          <div class="score-value">5</div>
-          <div class="score-label">Quick Wins Identified</div>
-        </div>
-        <div class="score-card small">
-          <div class="score-value">57</div>
-          <div class="score-label">Avg Impact Score</div>
-        </div>
-        <div class="score-card small">
-          <div class="score-value">1.1x</div>
-          <div class="score-label">Avg ROI</div>
-        </div>
-      </div>
-
+      <p class="section-description">Introduction to the assessment and why it matters</p>
       
-        <div class="quickwins-chart-section">
-          <h3>Current Business Health by Chapter</h3>
-          <div class="chart-wrapper">
-            
-    <div class="svg-chart-container" role="figure" aria-label="Chapter Performance Overview">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 232" style="max-width: 100%; height: auto;"><rect width="600" height="232" fill="white" rx="4"/><text x="300" y="28" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Chapter Performance Overview</text><text x="132" y="70" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Growth Engine</text><rect x="140" y="50" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="50" width="164" height="30" fill="#e67e22" rx="4"/><text x="312" y="70" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">41</text><text x="132" y="108" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Performance &amp; He...</text><rect x="140" y="88" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="88" width="156" height="30" fill="#e74c3c" rx="4"/><text x="304" y="108" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">39</text><text x="132" y="146" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">People &amp; Leaders...</text><rect x="140" y="126" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="126" width="164" height="30" fill="#e67e22" rx="4"/><text x="312" y="146" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">41</text><text x="132" y="184" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Resilience &amp; Saf...</text><rect x="140" y="164" width="400" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="164" width="216" height="30" fill="#e67e22" rx="4"/><text x="364" y="184" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">54</text></svg>
+    <div class="health-score-display">
+      <div class="health-score-circle">
+        <span class="score">44</span>
+        <span class="out-of">/ 100</span>
+      </div>
+      <div class="health-score-details">
+        <p class="status">📈 Critical Condition</p>
+        <p class="trajectory">
+          <span style="color: #6c757d;">&#x25AC;</span>
+          Trajectory: Flat
+        </p>
+        <p><span class="band-badge Attention">Attention</span></p>
+      </div>
     </div>
   
-          </div>
-        </div>
-      
     </section>
+  
 
-    <section class="section page-break">
-      <h2>Quick Wins Prioritized List</h2>
-
-      
-        <table>
-          <thead>
-            <tr>
-              <th>Priority</th>
-              <th>Quick Win</th>
-              <th>Impact</th>
-              <th>Effort</th>
-              <th>ROI</th>
-            </tr>
-          </thead>
-          <tbody>
-            
-              <tr>
-                <td><strong>#1</strong></td>
-                <td>Human Resources Improvement Initiative</td>
-                <td>56/100</td>
-                <td>50/100</td>
-                <td><strong>1.12x</strong></td>
-              </tr>
-            
-              <tr>
-                <td><strong>#2</strong></td>
-                <td>Sales Improvement Initiative</td>
-                <td>53/100</td>
-                <td>50/100</td>
-                <td><strong>1.06x</strong></td>
-              </tr>
-            
-              <tr>
-                <td><strong>#3</strong></td>
-                <td>Operations Improvement Initiative</td>
-                <td>53/100</td>
-                <td>50/100</td>
-                <td><strong>1.06x</strong></td>
-              </tr>
-            
-              <tr>
-                <td><strong>#4</strong></td>
-                <td>Marketing Improvement Initiative</td>
-                <td>73/100</td>
-                <td>70/100</td>
-                <td><strong>1.04x</strong></td>
-              </tr>
-            
-              <tr>
-                <td><strong>#5</strong></td>
-                <td>IT, Data &amp; Systems Improvement Initiative</td>
-                <td>52/100</td>
-                <td>50/100</td>
-                <td><strong>1.04x</strong></td>
-              </tr>
-            
-          </tbody>
-        </table>
-      
-    </section>
-
-    
-      <section class="section page-break">
-        <h2>Detailed Quick Win Analysis</h2>
-
-        
-          <div class="card mb-2">
-            <div class="card-header">
-              <span class="card-title">#1. Human Resources Improvement Initiative</span>
-              <span class="band-badge Excellence">ROI: 1.12x</span>
-            </div>
-            <div class="card-body">
-              <div class="flex gap-3 mb-2">
-                <span><strong>Impact:</strong> 56/100</span>
-                <span><strong>Effort:</strong> 50/100</span>
-                <span><strong>Timeframe:</strong> 3-12 Months</span>
-              </div>
-
-              <h5>Expected Outcomes</h5>
-              <p>Improve Human Resources score from 44 to 64 within the target horizon.</p>
-
-              
-                <h5>Implementation Steps</h5>
-                <ol>
-                  <li>Conduct detailed human resources assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
-                </ol>
-              
-            </div>
-          </div>
-        
-          <div class="card mb-2">
-            <div class="card-header">
-              <span class="card-title">#2. Sales Improvement Initiative</span>
-              <span class="band-badge Excellence">ROI: 1.06x</span>
-            </div>
-            <div class="card-body">
-              <div class="flex gap-3 mb-2">
-                <span><strong>Impact:</strong> 53/100</span>
-                <span><strong>Effort:</strong> 50/100</span>
-                <span><strong>Timeframe:</strong> 3-12 Months</span>
-              </div>
-
-              <h5>Expected Outcomes</h5>
-              <p>Improve Sales score from 47 to 67 within the target horizon.</p>
-
-              
-                <h5>Implementation Steps</h5>
-                <ol>
-                  <li>Conduct detailed sales assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
-                </ol>
-              
-            </div>
-          </div>
-        
-          <div class="card mb-2">
-            <div class="card-header">
-              <span class="card-title">#3. Operations Improvement Initiative</span>
-              <span class="band-badge Excellence">ROI: 1.06x</span>
-            </div>
-            <div class="card-body">
-              <div class="flex gap-3 mb-2">
-                <span><strong>Impact:</strong> 53/100</span>
-                <span><strong>Effort:</strong> 50/100</span>
-                <span><strong>Timeframe:</strong> 3-12 Months</span>
-              </div>
-
-              <h5>Expected Outcomes</h5>
-              <p>Improve Operations score from 47 to 67 within the target horizon.</p>
-
-              
-                <h5>Implementation Steps</h5>
-                <ol>
-                  <li>Conduct detailed operations assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
-                </ol>
-              
-            </div>
-          </div>
-        
-          <div class="card mb-2">
-            <div class="card-header">
-              <span class="card-title">#4. Marketing Improvement Initiative</span>
-              <span class="band-badge Excellence">ROI: 1.04x</span>
-            </div>
-            <div class="card-body">
-              <div class="flex gap-3 mb-2">
-                <span><strong>Impact:</strong> 73/100</span>
-                <span><strong>Effort:</strong> 70/100</span>
-                <span><strong>Timeframe:</strong> 0-90 Days</span>
-              </div>
-
-              <h5>Expected Outcomes</h5>
-              <p>Improve Marketing score from 27 to 47 within the target horizon.</p>
-
-              
-                <h5>Implementation Steps</h5>
-                <ol>
-                  <li>Conduct detailed marketing assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
-                </ol>
-              
-            </div>
-          </div>
-        
-          <div class="card mb-2">
-            <div class="card-header">
-              <span class="card-title">#5. IT, Data &amp; Systems Improvement Initiative</span>
-              <span class="band-badge Excellence">ROI: 1.04x</span>
-            </div>
-            <div class="card-body">
-              <div class="flex gap-3 mb-2">
-                <span><strong>Impact:</strong> 52/100</span>
-                <span><strong>Effort:</strong> 50/100</span>
-                <span><strong>Timeframe:</strong> 3-12 Months</span>
-              </div>
-
-              <h5>Expected Outcomes</h5>
-              <p>Improve IT, Data &amp; Systems score from 48 to 68 within the target horizon.</p>
-
-              
-                <h5>Implementation Steps</h5>
-                <ol>
-                  <li>Conduct detailed it, data &amp; systems assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
-                </ol>
-              
-            </div>
-          </div>
-        
-      </section>
-    
-
-    <section class="section page-break">
-      <h2>30-60-90 Day Action Plan</h2>
-
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="phase-name">Days 1-30: Immediate Actions</div>
-          <div class="time-horizon">Quick Start Phase</div>
-          
-            <p>Focus on planning and resource allocation for upcoming quick wins.</p>
-          
-        </div>
-
-        <div class="timeline-item">
-          <div class="phase-name">Days 31-60: Short-Term Wins</div>
-          <div class="time-horizon">Momentum Building Phase</div>
-          
-            <ul>
-              <li>Human Resources Improvement Initiative</li><li>Sales Improvement Initiative</li><li>Operations Improvement Initiative</li><li>IT, Data &amp; Systems Improvement Initiative</li>
-            </ul>
-          
-        </div>
-
-        <div class="timeline-item">
-          <div class="phase-name">Days 61-90: Mid-Term Completion</div>
-          <div class="time-horizon">Value Realization Phase</div>
-          
-            <ul>
-              <li>Marketing Improvement Initiative</li>
-            </ul>
-          
-        </div>
+    <section class="section recipe-section" id="what_we_do_well">
+      <div class="section-header">
+        <h2>What We Do Well</h2>
       </div>
+      <p class="section-description">Celebrating our strengths and competitive advantages</p>
+      
+    <ul class="styled-list">
+      <li>🌟 Compliance Excellence</li><li>🌟 Strong Incident Reporting</li><li>Compliance</li><li>Customer Experience</li><li>Risk Management &amp; Sustainability</li>
+    </ul>
+  
     </section>
+  
 
-    <section class="section">
-      <h2>Success Metrics & Tracking</h2>
-
-      <div class="callout success">
-        <div class="title">Recommended KPIs</div>
-        <ul>
-          <li><strong>Completion Rate:</strong> Percentage of quick wins implemented on schedule</li>
-          <li><strong>Impact Realization:</strong> Actual vs. projected improvement in affected areas</li>
-          <li><strong>Time to Value:</strong> Days from initiation to measurable results</li>
-          <li><strong>Resource Efficiency:</strong> Actual vs. budgeted effort and costs</li>
-        </ul>
+    <section class="section recipe-section" id="where_we_grow">
+      <div class="section-header">
+        <h2>Where We&#039;re Growing</h2>
       </div>
-
-      <h3>Tracking Template</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Quick Win</th>
-            <th>Start Date</th>
-            <th>Target Date</th>
-            <th>Status</th>
-            <th>Results</th>
-          </tr>
-        </thead>
-        <tbody>
-          
-            <tr>
-              <td>Human Resources Improvement Initiative</td>
-              <td>_________</td>
-              <td>_________</td>
-              <td>_________</td>
-              <td>_________</td>
-            </tr>
-          
-            <tr>
-              <td>Sales Improvement Initiative</td>
-              <td>_________</td>
-              <td>_________</td>
-              <td>_________</td>
-              <td>_________</td>
-            </tr>
-          
-            <tr>
-              <td>Operations Improvement Initiative</td>
-              <td>_________</td>
-              <td>_________</td>
-              <td>_________</td>
-              <td>_________</td>
-            </tr>
-          
-            <tr>
-              <td>Marketing Improvement Initiative</td>
-              <td>_________</td>
-              <td>_________</td>
-              <td>_________</td>
-              <td>_________</td>
-            </tr>
-          
-            <tr>
-              <td>IT, Data &amp; Systems Improvement Initiative</td>
-              <td>_________</td>
-              <td>_________</td>
-              <td>_________</td>
-              <td>_________</td>
-            </tr>
-          
-        </tbody>
-      </table>
+      <p class="section-description">Areas of focus for improvement</p>
+      
+    <ul class="styled-list">
+      <li>Marketing</li><li>Financials</li><li>Technology &amp; Innovation</li>
+    </ul>
+  
     </section>
+  
 
+    <section class="section recipe-section" id="team_focus">
+      <div class="section-header">
+        <h2>How We Can All Contribute</h2>
+      </div>
+      <p class="section-description">Ways every team member can support improvement</p>
+      
+    <div class="checklist">
+      
+          <div class="checklist-item">
+            <span class="check-icon">👍</span>
+            <span>Human Resources Improvement Initiative</span>
+          </div>
+        
+          <div class="checklist-item">
+            <span class="check-icon">👍</span>
+            <span>Sales Improvement Initiative</span>
+          </div>
+        
+          <div class="checklist-item">
+            <span class="check-icon">👍</span>
+            <span>Operations Improvement Initiative</span>
+          </div>
+        
+          <div class="checklist-item">
+            <span class="check-icon">👍</span>
+            <span>Marketing Improvement Initiative</span>
+          </div>
+        
+          <div class="checklist-item">
+            <span class="check-icon">👍</span>
+            <span>IT, Data &amp; Systems Improvement Initiative</span>
+          </div>
+        
+          <div class="checklist-item">
+            <span class="check-icon">👍</span>
+            <span>Marketing Improvement Initiative</span>
+          </div>
+        
+          <div class="checklist-item">
+            <span class="check-icon">👍</span>
+            <span>Financials Improvement Initiative</span>
+          </div>
+        
+          <div class="checklist-item">
+            <span class="check-icon">👍</span>
+            <span>Technology &amp; Innovation Improvement Initiative</span>
+          </div>
+        
+    </div>
+  
+    </section>
+  
+
+    <section class="section recipe-section" id="culture_spotlight">
+      <div class="section-header">
+        <h2>Culture &amp; People Focus</h2>
+      </div>
+      <p class="section-description">How we&#039;re investing in our people</p>
+      
+      <div class="narrative-item card mb-2">
+        <h4>Human Resources <span class="band-badge Attention">44/100</span></h4>
+        <p>Talent management, culture, and employee engagement</p>
+      </div>
+    
+      <div class="narrative-item card mb-2">
+        <h4>Human Resources Performance Gap</h4>
+        <p>Human Resources shows moderate performance at 44/100. This gap presents improvement opportunities that should be addressed within 6-12 months.</p>
+      </div>
+    
+      <div class="narrative-item card mb-2">
+        <h4>Talent Acquisition Gap</h4>
+        <p>Talent Acquisition within Human Resources requires attention with a score of 25/100.</p>
+      </div>
+    
+    </section>
+  
+
+    <section class="section recipe-section" id="whats_next">
+      <div class="section-header">
+        <h2>What&#039;s Next</h2>
+      </div>
+      <p class="section-description">Our improvement journey and what to expect</p>
+      
+    <div class="timeline">
+      
+        <div class="timeline-item">
+          <div class="phase-name">Foundation &amp; Quick Wins</div>
+          <div class="time-horizon">0-90 days</div>
+          <p>Focus on immediate value creation through quick wins and critical risk mitigation. Build momentum with visible early successes.</p>
+          
+        </div>
+      
+        <div class="timeline-item">
+          <div class="phase-name">Core Capability Building</div>
+          <div class="time-horizon">3-12 months</div>
+          <p>Implement foundational improvements across key dimensions. Establish new processes and capabilities.</p>
+          
+        </div>
+      
+    </div>
+  
+    </section>
+  
     
     <footer class="report-footer">
       <p>&copy; 2025 BizHealth.ai - Confidential Business Assessment Report</p>

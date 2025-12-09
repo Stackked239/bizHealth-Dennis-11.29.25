@@ -1,13 +1,17 @@
 {
   "reportType": "owner",
   "reportName": "Business Owner Report",
-  "generatedAt": "2025-12-08T07:22:28.820Z",
+  "generatedAt": "2025-12-09T03:03:57.654Z",
   "companyName": "Summit Build Group",
   "runId": "922cbec0-b9bf-4a97-b5c7-14e766246855",
   "healthScore": 44,
   "healthBand": "Attention",
-  "pageSuggestionEstimate": 5,
+  "pageSuggestionEstimate": 7,
   "sections": [
+    {
+      "id": "owner-dashboard",
+      "title": "Owner Health Dashboard"
+    },
     {
       "id": "health-overview",
       "title": "Your Business Health at a Glance"
@@ -15,6 +19,10 @@
     {
       "id": "what-this-means",
       "title": "What This Means for You as the Owner"
+    },
+    {
+      "id": "chapter-performance",
+      "title": "Your Chapter Performance Breakdown"
     },
     {
       "id": "critical-priorities",
@@ -39,6 +47,10 @@
     {
       "id": "where-to-go",
       "title": "Where to Go for Detail"
+    },
+    {
+      "id": "owner-decisions",
+      "title": "Owner's Decision Agenda"
     },
     {
       "id": "next-steps",

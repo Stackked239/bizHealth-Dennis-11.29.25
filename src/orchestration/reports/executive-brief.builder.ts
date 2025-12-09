@@ -46,8 +46,8 @@ import {
   // Shared IDM extraction utilities
   extractNumericValue,
   formatBenchmark,
-  getScoreBandFromValue,
-  getBandColorFromName,
+  getScoreBandFromScore,
+  getScoreBandColor,
   // Shared formatting utilities
   formatK,
   formatOrdinal,
@@ -66,14 +66,14 @@ import { logger } from '../../utils/logger.js';
  * Get score band from numeric score (wrapper for shared utility)
  */
 function getScoreBand(score: number): string {
-  return getScoreBandFromValue(score);
+  return getScoreBandFromScore(score);
 }
 
 /**
  * Get band color for styling (wrapper for shared utility)
  */
 function getBandColor(band: string): string {
-  return getBandColorFromName(band);
+  return getScoreBandColor(band);
 }
 
 // ============================================================================
