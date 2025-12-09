@@ -32,3 +32,13 @@ export {
   validateReportVisuals,
 } from './report-visuals.config.js';
 export type { VisualDefinition, ReportVisualConfig } from './report-visuals.config.js';
+
+// Manager Report Recipes Configuration
+export {
+  MANAGER_RECIPES,
+  getManagerRecipe,
+  isManagerReport,
+  getAllManagerRecipes,
+  getManagerReportsByDimension,
+} from './manager-recipes.js';
+export type { ManagerRecipe, ManagerReportSection } from './manager-recipes.js';

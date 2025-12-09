@@ -343,6 +343,22 @@ export async function buildComprehensiveReport(
           ${phase5Visuals.benchmarkTable}
         </div>
       ` : generateBenchmarkSummaryTable(ctx)}
+
+      <!-- Phase 1B: Dimension Health Dashboard (12 gauge SVGs) -->
+      ${phase5Visuals.dimensionGaugesGrid ? `
+        <div class="dimension-health-dashboard" style="margin: 2rem 0;">
+          <h3 style="color: ${options.brand.primaryColor}; margin: 0 0 1.5rem 0; font-family: 'Montserrat', sans-serif;">12-Dimension Health Overview</h3>
+          ${phase5Visuals.dimensionGaugesGrid}
+        </div>
+      ` : ''}
+
+      <!-- Phase 1B: Dimension Benchmark Comparison (12 bar SVGs) -->
+      ${phase5Visuals.dimensionBenchmarkBars ? `
+        <div class="dimension-benchmark-comparison" style="margin: 2rem 0;">
+          <h3 style="color: ${options.brand.primaryColor}; margin: 0 0 1.5rem 0; font-family: 'Montserrat', sans-serif;">Dimension Benchmark Comparison</h3>
+          ${phase5Visuals.dimensionBenchmarkBars}
+        </div>
+      ` : ''}
     </section>`,
 
     // Chapter Deep Dives with proper anchor IDs matching section-mapping.ts (now with dimension charts)
@@ -1565,6 +1581,9 @@ interface Phase5Visuals {
   overallGaugeChart: string;
   // Chapter gauges (individual gauges for each chapter)
   chapterGauges: string;
+  // Dimension-level visualizations (Phase 1B - adds 24+ SVGs)
+  dimensionGaugesGrid: string;
+  dimensionBenchmarkBars: string;
   // Risk visualizations
   riskHeatmap: string;
   riskMatrix: string;
@@ -1678,6 +1697,16 @@ function generatePhase5Visualizations(ctx: ReportContext): Phase5Visuals {
   // Generate chapter gauges (one gauge per chapter)
   const chapterGauges = generateChapterGaugesViz(ctx);
 
+  // ============================================================================
+  // PHASE 1B: DIMENSION-LEVEL VISUALIZATIONS (adds 24+ SVGs)
+  // ============================================================================
+
+  // Generate dimension gauges grid (12 SVGs - one per dimension)
+  const dimensionGaugesGrid = generateDimensionGaugesGrid(ctx);
+
+  // Generate dimension benchmark bars (12 SVGs - one per dimension)
+  const dimensionBenchmarkBars = generateDimensionBenchmarkBarsViz(ctx);
+
   // Generate risk severity donut chart
   const riskSeverityDonut = generateRiskSeverityDonutViz(ctx);
 
@@ -1712,14 +1741,17 @@ function generatePhase5Visualizations(ctx: ReportContext): Phase5Visuals {
   logger.info({
     visualCount: Object.values({
       executiveDashboard, keyStatsRow, scorecardGrid, chapterRadarChart,
-      overallGaugeChart, chapterGauges, riskHeatmap, riskMatrix, riskSeverityDonut,
+      overallGaugeChart, chapterGauges,
+      // Phase 1B: Dimension-level visualizations
+      dimensionGaugesGrid, dimensionBenchmarkBars,
+      riskHeatmap, riskMatrix, riskSeverityDonut,
       roadmapTimeline, roadmapTimelineSVG, recommendationsList, recommendationsDonut,
       quickWinsSummary, investmentDonut, impactBars, findingsGrid, benchmarkTable,
       benchmarkBars, executiveHighlightsRow, keyTakeawaysBox,
       // World-class components
       executiveRadar12Dimension, financialImpactDashboard, actionPlanCards
     }).filter(v => v).length
-  }, 'Phase 5 visualizations generated (including world-class components)');
+  }, 'Phase 5 visualizations generated (including Phase 1B dimension visualizations)');
 
   return {
     executiveDashboard,
@@ -1728,6 +1760,9 @@ function generatePhase5Visualizations(ctx: ReportContext): Phase5Visuals {
     chapterRadarChart,
     overallGaugeChart,
     chapterGauges,
+    // Phase 1B: Dimension-level visualizations
+    dimensionGaugesGrid,
+    dimensionBenchmarkBars,
     riskHeatmap,
     riskMatrix,
     riskSeverityDonut,
@@ -2177,6 +2212,80 @@ function generateChapterGaugesViz(ctx: ReportContext): string {
   return `
     <div class="chapter-gauges-row" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin: 1.5rem 0;">
       ${gauges}
+    </div>
+  `;
+}
+
+/**
+ * B1b: Generate 12-dimension gauges grid visualization
+ * Adds 12 SVG gauges (one for each dimension) to reach 50+ total visualizations
+ */
+function generateDimensionGaugesGrid(ctx: ReportContext): string {
+  if (!ctx.dimensions || ctx.dimensions.length === 0) return '';
+
+  const gauges = ctx.dimensions.map(dimension => {
+    const svg = generateGaugeChartSVG({
+      value: dimension.score,
+      maxValue: 100,
+      label: dimension.name,
+    }, {
+      width: 120,
+      height: 80,
+      showValue: true,
+      showLabel: true,
+      colorBands: [
+        { min: 0, max: 40, color: '#dc3545' },
+        { min: 40, max: 60, color: '#ffc107' },
+        { min: 60, max: 80, color: '#969423' },
+        { min: 80, max: 100, color: '#28a745' },
+      ],
+    });
+
+    return `
+      <div class="dimension-gauge-item" style="text-align: center;">
+        ${svg}
+        <span class="dimension-code" style="font-size: 0.7rem; color: #666; display: block; margin-top: 4px;">${escapeHtml(dimension.code || '')}</span>
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <div class="dimension-gauges-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 2rem 0;">
+      ${gauges}
+    </div>
+  `;
+}
+
+/**
+ * B1c: Generate dimension benchmark comparison bars
+ * Adds 12 SVG benchmark bars (one for each dimension)
+ */
+function generateDimensionBenchmarkBarsViz(ctx: ReportContext): string {
+  if (!ctx.dimensions || ctx.dimensions.length === 0) return '';
+
+  const bars = ctx.dimensions.map(dimension => {
+    const benchmarkScore = dimension.benchmark?.industryAverage || dimension.industryBenchmark || 60;
+    const delta = dimension.score - benchmarkScore;
+    const deltaColor = delta >= 0 ? '#28a745' : '#dc3545';
+    const deltaSymbol = delta >= 0 ? '+' : '';
+
+    return generateHorizontalBarChartSVG({
+      label: dimension.name,
+      value: dimension.score,
+      maxValue: 100,
+      benchmarkValue: benchmarkScore,
+    }, {
+      width: 280,
+      height: 40,
+      showValue: true,
+      showLabel: true,
+      showBenchmark: true,
+    });
+  }).join('');
+
+  return `
+    <div class="dimension-benchmark-bars" style="margin: 2rem 0;">
+      ${bars}
     </div>
   `;
 }

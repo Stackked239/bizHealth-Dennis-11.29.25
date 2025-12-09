@@ -46,7 +46,16 @@ export {
   getScoreBandColor,
   buildQuickWinCardData,
   generateSafePolygonPoints,
+  // Manager report filter utilities
+  filterQuickWinsByDimensions,
+  filterRisksByDimensions,
+  filterRecommendationsByDimensions,
+  computeDepartmentHealthScore,
+  getDimensionFromChapters,
+  getAllDimensionsFromChapters,
 } from './idm-extractors.js';
+
+export type { DimensionCode } from './idm-extractors.js';
 
 // Formatting utilities (investment, dates, owners, etc.)
 export {
