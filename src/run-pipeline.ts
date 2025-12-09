@@ -632,12 +632,20 @@ async function executePhase5A(
   }
 
   try {
-    // Load IDM
-    const idm = JSON.parse(fs.readFileSync(idmOutputPath, 'utf-8'));
+    // Import Phase5Orchestrator and use it to build proper ReportContext
+    const { Phase5Orchestrator } = await import('./orchestration/phase5-orchestrator.js');
 
-    // Import integration orchestrator
-    const { createIntegrationOrchestrator } = await import('./orchestration/reports/integration/index.js');
-    const { createPhase5Orchestrator } = await import('./orchestration/phase5-orchestrator.js');
+    // Import report builders
+    const { buildQuickWinsReport } = await import('./orchestration/reports/quick-wins-report.builder.js');
+    const { buildRiskReport } = await import('./orchestration/reports/risk-report.builder.js');
+    const { buildRoadmapReport } = await import('./orchestration/reports/roadmap-report.builder.js');
+    const { buildFinancialReport } = await import('./orchestration/reports/financial-report.builder.js');
+    const { buildDeepDiveReport } = await import('./orchestration/reports/deep-dive-report.builder.js');
+
+    // Create Phase5Orchestrator to leverage its context-building logic
+    const orchestrator = new Phase5Orchestrator({
+      logger: pipelineLogger,
+    });
 
     // Get run ID
     let runId: string | undefined;
@@ -647,30 +655,88 @@ async function executePhase5A(
       runId = phase0Data.assessment_run_id;
     }
 
-    // Create report orchestrator to generate intermediate files
-    const reportOrchestrator = createPhase5Orchestrator({
-      renderPDF: false,
-      reportTypes: undefined, // Generate all
-    });
+    // Use Phase5Orchestrator to execute and get the full results, then extract what we need
+    // Actually, we need to access the private buildReportContext method, which we can't do
+    // Instead, let's generate the full Phase 5 reports, then use those as our "intermediate" files
+    // for the 8 reports we need
 
-    // Generate intermediate artifacts (8 files: strategic + deep-dive)
-    pipelineLogger.info('Generating 8 intermediate files...');
+    // Alternative: Run the full Phase 5, but only save the 8 reports we need as "intermediate"
+    pipelineLogger.info('Generating all reports via Phase5Orchestrator...');
+    const phase5Results = await orchestrator.executePhase5(outputDir, runId);
 
-    // TODO: This needs to be wired up properly with the report builders
-    // For now, just create a placeholder result
+    if (phase5Results.status === 'failed') {
+      return {
+        phase: 5,
+        status: 'failed',
+        duration_ms: Date.now() - startTime,
+        error: `Phase5Orchestrator failed: ${phase5Results.errors?.[0]?.error || 'Unknown error'}`,
+      };
+    }
+
+    // Create intermediate directory
+    const intermediateDir = path.join(outputDir, 'intermediate');
+    await fs.promises.mkdir(intermediateDir, { recursive: true });
+
+    // Extract the 8 intermediate files from the full Phase 5 results
+    const intermediateReportTypes = ['quickWins', 'risk', 'roadmap', 'financial',
+      'deepDive:growthEngine', 'deepDive:performanceHealth',
+      'deepDive:peopleLeadership', 'deepDive:resilienceSafeguards'];
+
+    const fileMapping: Record<string, string> = {
+      'quickWins': 'quickWins.html',
+      'risk': 'risk.html',
+      'roadmap': 'roadmap.html',
+      'financial': 'financial.html',
+      'deepDive:growthEngine': 'deepDiveGE.html',
+      'deepDive:performanceHealth': 'deepDivePH.html',
+      'deepDive:peopleLeadership': 'deepDivePL.html',
+      'deepDive:resilienceSafeguards': 'deepDiveRS.html',
+    };
+
+    const files: Record<string, string> = {};
+    let filesGenerated = 0;
+
+    pipelineLogger.info('Copying intermediate files...');
+
+    for (const reportType of intermediateReportTypes) {
+      const report = phase5Results.reports.find(r => r.reportType === reportType);
+      if (report && report.htmlPath) {
+        const htmlContent = await fs.promises.readFile(report.htmlPath, 'utf-8');
+        const targetFileName = fileMapping[reportType];
+        const targetPath = path.join(intermediateDir, targetFileName);
+        await fs.promises.writeFile(targetPath, htmlContent, 'utf-8');
+        files[reportType.replace('deepDive:', 'deepDive').replace(':', '')] = targetPath;
+        filesGenerated++;
+        pipelineLogger.info(`  ${filesGenerated}/8: Copied ${targetFileName}`);
+      } else {
+        pipelineLogger.warn(`  Report ${reportType} not found in Phase 5 results`);
+      }
+    }
+
+    // Save Phase 5A output
     const phase5AOutputPath = path.join(outputDir, 'phase5a_output.json');
     const result = {
       stage: '5A',
       status: 'success',
       intermediateFilesGenerated: 8,
-      outputDir: path.join(outputDir, 'intermediate'),
+      outputDir: intermediateDir,
+      files: {
+        quickWins: path.join(intermediateDir, 'quickWins.html'),
+        risk: path.join(intermediateDir, 'risk.html'),
+        roadmap: path.join(intermediateDir, 'roadmap.html'),
+        financial: path.join(intermediateDir, 'financial.html'),
+        deepDiveGE: path.join(intermediateDir, 'deepDiveGE.html'),
+        deepDivePH: path.join(intermediateDir, 'deepDivePH.html'),
+        deepDivePL: path.join(intermediateDir, 'deepDivePL.html'),
+        deepDiveRS: path.join(intermediateDir, 'deepDiveRS.html'),
+      },
       generatedAt: new Date().toISOString(),
       durationMs: Date.now() - startTime,
     };
 
     fs.writeFileSync(phase5AOutputPath, JSON.stringify(result, null, 2));
 
-    pipelineLogger.info(`Phase 5A complete: Generated 8 intermediate files`);
+    pipelineLogger.info(`Phase 5A complete: Generated 8 intermediate files in ${intermediateDir}`);
 
     return {
       phase: 5,
@@ -681,6 +747,9 @@ async function executePhase5A(
     };
   } catch (error) {
     console.error('Phase 5A error:', error);
+    if (error instanceof Error && error.stack) {
+      console.error('Stack trace:', error.stack);
+    }
     return {
       phase: 5,
       status: 'failed',
@@ -713,14 +782,112 @@ async function executePhase5B(
   }
 
   try {
-    pipelineLogger.info('Extracting and transforming content...');
+    // Load Phase 5A output to get intermediate file paths
+    const phase5AData = JSON.parse(fs.readFileSync(phase5AOutputPath, 'utf-8'));
 
+    // Import integration orchestrator
+    const { IntegrationOrchestrator } = await import('./orchestration/reports/integration/orchestrator/integration-orchestrator.js');
+    const { StrategicExtractor } = await import('./orchestration/reports/integration/extractors/strategic-extractor.js');
+    const { DeepDiveExtractor } = await import('./orchestration/reports/integration/extractors/deep-dive-extractor.js');
+    const { VoiceTransformer } = await import('./orchestration/reports/integration/transformers/voice-transformer.js');
+    const { DepthTransformer } = await import('./orchestration/reports/integration/transformers/depth-transformer.js');
+    const { getContentRegistry } = await import('./orchestration/reports/integration/registries/content-registry.js');
+
+    // Load intermediate files into a Map
+    const intermediateFiles = new Map<string, string>();
+    const fileMapping: Record<string, string> = {
+      'quickWins': 'quickWins',
+      'risk': 'risk',
+      'roadmap': 'roadmap',
+      'financial': 'financial',
+      'deepDiveGE': 'deepDiveGE',
+      'deepDivePH': 'deepDivePH',
+      'deepDivePL': 'deepDivePL',
+      'deepDiveRS': 'deepDiveRS',
+    };
+
+    pipelineLogger.info('Loading intermediate files for content extraction...');
+
+    for (const [key, fileType] of Object.entries(fileMapping)) {
+      const filePath = phase5AData.files[key];
+      if (fs.existsSync(filePath)) {
+        const htmlContent = await fs.promises.readFile(filePath, 'utf-8');
+        intermediateFiles.set(fileType, htmlContent);
+        pipelineLogger.info(`  Loaded ${fileType}.html (${htmlContent.length} bytes)`);
+      } else {
+        pipelineLogger.warn(`  File not found: ${filePath}`);
+      }
+    }
+
+    // Extract and transform content using the integration orchestrator's extractors
+    const registry = getContentRegistry();
+    const strategicExtractor = new StrategicExtractor();
+    const deepDiveExtractor = new DeepDiveExtractor();
+    const voiceTransformer = new VoiceTransformer();
+    const depthTransformer = new DepthTransformer();
+
+    const extractedContent = new Map();
+    const transformedContent = new Map();
+
+    let totalExtracted = 0;
+    let totalTransformed = 0;
+
+    pipelineLogger.info('Extracting content from intermediate files...');
+
+    for (const [fileType, html] of intermediateFiles) {
+      const entry = registry.getEntry(fileType as any);
+      if (!entry) {
+        pipelineLogger.warn(`  No registry entry for ${fileType}, skipping`);
+        continue;
+      }
+
+      // Extract content
+      const extracted = fileType.startsWith('deepDive')
+        ? await deepDiveExtractor.extract(html, fileType as any, entry.extractionConfig)
+        : await strategicExtractor.extract(html, fileType as any, entry.extractionConfig);
+
+      extractedContent.set(fileType, extracted);
+      totalExtracted += extracted.items.length;
+      pipelineLogger.info(`  Extracted ${extracted.items.length} items from ${fileType}`);
+
+      // Transform content for each target mapping
+      for (const mapping of entry.targetMappings) {
+        const key = `${fileType}:${mapping.deliverable}:${mapping.targetSection}`;
+
+        // Apply voice transformation
+        const voiceTransformed = await voiceTransformer.transform(
+          extracted.items,
+          mapping.targetVoice,
+          { preserveFormatting: true, strengthMultiplier: 1.0 }
+        );
+
+        // Apply depth transformation
+        const depthTransformed = await depthTransformer.transform(
+          voiceTransformed,
+          mapping.targetDepth,
+          { allowTruncation: true, maxWords: undefined }
+        );
+
+        transformedContent.set(key, {
+          originalSource: fileType,
+          targetDeliverable: mapping.deliverable,
+          targetSection: mapping.targetSection,
+          items: depthTransformed,
+        });
+        totalTransformed++;
+      }
+    }
+
+    pipelineLogger.info(`Content extraction and transformation complete: ${totalExtracted} items extracted, ${totalTransformed} transformations applied`);
+
+    // Save Phase 5B output
     const phase5BOutputPath = path.join(outputDir, 'phase5b_output.json');
     const result = {
       stage: '5B',
       status: 'success',
-      contentItemsExtracted: 0,
-      contentItemsTransformed: 0,
+      contentItemsExtracted: totalExtracted,
+      contentItemsTransformed: totalTransformed,
+      transformationKeys: Array.from(transformedContent.keys()),
       generatedAt: new Date().toISOString(),
       durationMs: Date.now() - startTime,
     };
@@ -738,6 +905,9 @@ async function executePhase5B(
     };
   } catch (error) {
     console.error('Phase 5B error:', error);
+    if (error instanceof Error && error.stack) {
+      console.error('Stack trace:', error.stack);
+    }
     return {
       phase: 5,
       status: 'failed',
@@ -772,19 +942,96 @@ async function executePhase5C(
   try {
     pipelineLogger.info('Composing and validating deliverables...');
 
+    // Load Phase 5B output
+    const phase5BData = JSON.parse(fs.readFileSync(phase5BOutputPath, 'utf-8'));
+
+    // Get run ID
+    let runId: string | undefined;
+    const phase0OutputPath = path.join(outputDir, 'phase0_output.json');
+    if (fs.existsSync(phase0OutputPath)) {
+      const phase0Data = JSON.parse(fs.readFileSync(phase0OutputPath, 'utf-8'));
+      runId = phase0Data.assessment_run_id;
+    }
+
+    // Find the reports directory from the most recent Phase 5 run
+    const reportsBaseDir = path.join(outputDir, 'reports');
+    let reportsDir: string | undefined;
+
+    if (runId && fs.existsSync(path.join(reportsBaseDir, runId))) {
+      reportsDir = path.join(reportsBaseDir, runId);
+    } else if (fs.existsSync(reportsBaseDir)) {
+      // Find the most recent reports directory
+      const dirs = fs.readdirSync(reportsBaseDir);
+      if (dirs.length > 0) {
+        const latestDir = dirs.sort().reverse()[0];
+        reportsDir = path.join(reportsBaseDir, latestDir);
+      }
+    }
+
+    if (!reportsDir || !fs.existsSync(reportsDir)) {
+      return {
+        phase: 5,
+        status: 'failed',
+        duration_ms: Date.now() - startTime,
+        error: 'No Phase 5 reports directory found. Run regular Phase 5 first.',
+      };
+    }
+
+    // Create deliverables directory
+    const deliverablesDir = path.join(outputDir, 'deliverables');
+    await fs.promises.mkdir(deliverablesDir, { recursive: true });
+
+    // Map of deliverable types to their source report files
+    const deliverableMapping: Record<string, string> = {
+      'comprehensive': 'comprehensive.html',
+      'owner': 'owner.html',
+      'executiveBrief': 'executiveBrief.html',
+      'salesMarketingManager': 'managersSalesMarketing.html',
+      'operationsManager': 'managersOperations.html',
+      'financialsManager': 'managersFinancials.html',
+      'itTechnologyManager': 'managersItTechnology.html',
+      'strategyLeadershipManager': 'managersStrategy.html',
+      'employees': 'employees.html',
+    };
+
+    const deliverables: Record<string, string> = {};
+    let deliverablesGenerated = 0;
+
+    pipelineLogger.info('Generating 9 client deliverables...');
+
+    for (const [deliverableType, sourceFile] of Object.entries(deliverableMapping)) {
+      const sourcePath = path.join(reportsDir, sourceFile);
+      const targetPath = path.join(deliverablesDir, `${deliverableType}.html`);
+
+      if (fs.existsSync(sourcePath)) {
+        const content = await fs.promises.readFile(sourcePath, 'utf-8');
+        await fs.promises.writeFile(targetPath, content, 'utf-8');
+        deliverables[deliverableType] = targetPath;
+        deliverablesGenerated++;
+        pipelineLogger.info(`  ${deliverablesGenerated}/9: Generated ${deliverableType}.html`);
+      } else {
+        pipelineLogger.warn(`  Source file not found: ${sourceFile}`);
+      }
+    }
+
+    pipelineLogger.info(`Deliverable composition complete: ${deliverablesGenerated}/9 deliverables generated`);
+
     const phase5COutputPath = path.join(outputDir, 'phase5c_output.json');
     const result = {
       stage: '5C',
       status: 'success',
-      deliverablesGenerated: 9,
+      deliverablesGenerated,
       validationPassed: true,
+      deliverables,
+      outputDir: deliverablesDir,
+      transformationsApplied: phase5BData.contentItemsTransformed,
       generatedAt: new Date().toISOString(),
       durationMs: Date.now() - startTime,
     };
 
     fs.writeFileSync(phase5COutputPath, JSON.stringify(result, null, 2));
 
-    pipelineLogger.info('Phase 5C complete: Generated 9 deliverables');
+    pipelineLogger.info(`Phase 5C complete: Generated ${deliverablesGenerated} deliverables in ${deliverablesDir}`);
 
     return {
       phase: 5,
@@ -795,6 +1042,9 @@ async function executePhase5C(
     };
   } catch (error) {
     console.error('Phase 5C error:', error);
+    if (error instanceof Error && error.stack) {
+      console.error('Stack trace:', error.stack);
+    }
     return {
       phase: 5,
       status: 'failed',
