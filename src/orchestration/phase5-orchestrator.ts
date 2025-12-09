@@ -70,15 +70,19 @@ import { buildRoadmapReport } from './reports/roadmap-report.builder.js';
 import { buildFinancialReport } from './reports/financial-report.builder.js';
 import { buildDeepDiveReport } from './reports/deep-dive-report.builder.js';
 
-// Import recipe-based report builders
+// Import recipe-based report builders (employees only)
 import {
   buildEmployeesReport,
+} from './reports/recipe-report.builder.js';
+
+// Import TypeScript-based manager report builders
+import {
   buildManagersOperationsReport,
   buildManagersSalesMarketingReport,
   buildManagersFinancialsReport,
   buildManagersStrategyReport,
   buildManagersItTechnologyReport,
-} from './reports/recipe-report.builder.js';
+} from './reports/manager-report.builder.js';
 
 // ============================================================================
 // TYPES
