@@ -101,6 +101,31 @@ export const SECTION_MAPPINGS: SectionMapping[] = [
     comprehensiveAnchor: 'methodology',
     executiveBriefLabel: 'Methods & Legal Appendix',
     executiveBriefAnchor: 'methods-legal'
+  },
+  // Performance Scorecard and Quick Reference sections
+  {
+    id: 'scorecard',
+    ownerLabel: 'Performance Scorecard',
+    comprehensiveSectionTitle: 'Performance Scorecard & Metrics',
+    comprehensiveAnchor: 'scorecard',
+    executiveBriefLabel: 'Performance Scorecard',
+    executiveBriefAnchor: 'scorecard'
+  },
+  {
+    id: 'what-this-means',
+    ownerLabel: 'What This Means',
+    comprehensiveSectionTitle: 'Executive Summary',
+    comprehensiveAnchor: 'executive-summary',
+    executiveBriefLabel: 'Key Implications',
+    executiveBriefAnchor: 'implications'
+  },
+  {
+    id: 'chapter-performance',
+    ownerLabel: 'Chapter Performance',
+    comprehensiveSectionTitle: 'Chapter Performance Analysis',
+    comprehensiveAnchor: 'chapter-analysis',
+    executiveBriefLabel: 'Chapter Scores',
+    executiveBriefAnchor: 'chapter-scores'
   }
 ];
 
