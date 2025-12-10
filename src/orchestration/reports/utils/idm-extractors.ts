@@ -668,3 +668,326 @@ export function generateSafePolygonPoints(
     })
     .join(' ');
 }
+
+// ============================================================================
+// MANAGER REPORT FILTER UTILITIES
+// ============================================================================
+
+/** Dimension codes used for filtering */
+export type DimensionCode =
+  | 'STR' | 'SAL' | 'MKT' | 'CXP'
+  | 'OPS' | 'FIN' | 'HRS' | 'LDG'
+  | 'TIN' | 'IDS' | 'RMS' | 'CMP';
+
+/**
+ * Maps category strings to dimension codes.
+ * @internal
+ */
+function mapCategoryToDimension(category: string): DimensionCode | null {
+  const mapping: Record<string, DimensionCode> = {
+    'strategy': 'STR',
+    'strategic': 'STR',
+    'sales': 'SAL',
+    'marketing': 'MKT',
+    'customer_experience': 'CXP',
+    'customer experience': 'CXP',
+    'customer': 'CXP',
+    'operations': 'OPS',
+    'operational': 'OPS',
+    'financials': 'FIN',
+    'financial': 'FIN',
+    'finance': 'FIN',
+    'human_resources': 'HRS',
+    'human resources': 'HRS',
+    'hr': 'HRS',
+    'people': 'HRS',
+    'leadership': 'LDG',
+    'governance': 'LDG',
+    'technology': 'TIN',
+    'innovation': 'TIN',
+    'tech': 'TIN',
+    'it': 'IDS',
+    'data': 'IDS',
+    'systems': 'IDS',
+    'security': 'IDS',
+    'risk': 'RMS',
+    'sustainability': 'RMS',
+    'compliance': 'CMP',
+    'legal': 'CMP',
+    'regulatory': 'CMP',
+  };
+
+  const normalized = category.toLowerCase().trim();
+  return mapping[normalized] || null;
+}
+
+/**
+ * Filters quick wins to only those relevant to specified dimensions.
+ * Used by manager reports to show department-specific quick wins.
+ *
+ * @param quickWins - Array of quick win objects
+ * @param dimensionCodes - Array of dimension codes to filter by
+ * @returns Filtered array of quick wins
+ *
+ * @example
+ * filterQuickWinsByDimensions(idm.quick_wins, ['OPS', 'HRS']) // Operations-related wins
+ */
+export function filterQuickWinsByDimensions(
+  quickWins: Array<{
+    dimension?: string;
+    dimensionCode?: string;
+    dimension_code?: string;
+    category?: string;
+    [key: string]: unknown;
+  }>,
+  dimensionCodes: DimensionCode[]
+): typeof quickWins {
+  if (!Array.isArray(quickWins) || quickWins.length === 0) {
+    return [];
+  }
+
+  const codeSet = new Set(dimensionCodes.map(c => c.toUpperCase()));
+
+  return quickWins.filter(qw => {
+    // Check dimension code directly
+    const dimCode = (qw.dimensionCode || qw.dimension_code || qw.dimension)?.toUpperCase();
+    if (dimCode && codeSet.has(dimCode)) {
+      return true;
+    }
+
+    // Check if category maps to a dimension
+    if (qw.category) {
+      const mappedDim = mapCategoryToDimension(qw.category);
+      if (mappedDim && codeSet.has(mappedDim)) {
+        return true;
+      }
+    }
+
+    return false;
+  });
+}
+
+/**
+ * Filters risks to only those relevant to specified dimensions.
+ * Used by manager reports to show department-specific risks.
+ *
+ * @param risks - Array of risk objects
+ * @param dimensionCodes - Array of dimension codes to filter by
+ * @returns Filtered array of risks
+ *
+ * @example
+ * filterRisksByDimensions(idm.risks, ['FIN', 'CMP']) // Financial risks
+ */
+export function filterRisksByDimensions(
+  risks: Array<{
+    dimension?: string;
+    dimensionCode?: string;
+    dimension_code?: string;
+    category?: string;
+    affected_dimensions?: string[];
+    affectedDimensions?: string[];
+    [key: string]: unknown;
+  }>,
+  dimensionCodes: DimensionCode[]
+): typeof risks {
+  if (!Array.isArray(risks) || risks.length === 0) {
+    return [];
+  }
+
+  const codeSet = new Set(dimensionCodes.map(c => c.toUpperCase()));
+
+  return risks.filter(risk => {
+    // Check dimension code directly
+    const dimCode = (risk.dimensionCode || risk.dimension_code || risk.dimension)?.toUpperCase();
+    if (dimCode && codeSet.has(dimCode)) {
+      return true;
+    }
+
+    // Check if category maps to a dimension
+    if (risk.category) {
+      const mappedDim = mapCategoryToDimension(risk.category);
+      if (mappedDim && codeSet.has(mappedDim)) {
+        return true;
+      }
+    }
+
+    // Check affected dimensions
+    const affectedDims = risk.affected_dimensions || risk.affectedDimensions;
+    if (Array.isArray(affectedDims)) {
+      if (affectedDims.some(d => codeSet.has(d.toUpperCase()))) {
+        return true;
+      }
+    }
+
+    return false;
+  });
+}
+
+/**
+ * Filters recommendations to only those relevant to specified dimensions.
+ * Used by manager reports to show department-specific recommendations.
+ *
+ * @param recommendations - Array of recommendation objects
+ * @param dimensionCodes - Array of dimension codes to filter by
+ * @returns Filtered array of recommendations
+ *
+ * @example
+ * filterRecommendationsByDimensions(idm.recommendations, ['SAL', 'MKT']) // Sales & Marketing recs
+ */
+export function filterRecommendationsByDimensions(
+  recommendations: Array<{
+    dimension?: string;
+    dimensionCode?: string;
+    dimension_code?: string;
+    primary_dimension?: string;
+    primaryDimension?: string;
+    category?: string;
+    [key: string]: unknown;
+  }>,
+  dimensionCodes: DimensionCode[]
+): typeof recommendations {
+  if (!Array.isArray(recommendations) || recommendations.length === 0) {
+    return [];
+  }
+
+  const codeSet = new Set(dimensionCodes.map(c => c.toUpperCase()));
+
+  return recommendations.filter(rec => {
+    // Check dimension code directly
+    const dimCode = (rec.dimensionCode || rec.dimension_code || rec.dimension)?.toUpperCase();
+    if (dimCode && codeSet.has(dimCode)) {
+      return true;
+    }
+
+    // Check primary dimension
+    const primaryDim = (rec.primary_dimension || rec.primaryDimension)?.toUpperCase();
+    if (primaryDim && codeSet.has(primaryDim)) {
+      return true;
+    }
+
+    // Check if category maps to a dimension
+    if (rec.category) {
+      const mappedDim = mapCategoryToDimension(rec.category);
+      if (mappedDim && codeSet.has(mappedDim)) {
+        return true;
+      }
+    }
+
+    return false;
+  });
+}
+
+/**
+ * Computes a department health score as the average of relevant dimension scores.
+ * Used by manager reports to show department-level health.
+ *
+ * @param chapters - The IDM chapters object
+ * @param dimensionCodes - Array of dimension codes to include
+ * @returns Average score (0-100), rounded to 1 decimal place
+ *
+ * @example
+ * computeDepartmentHealthScore(idm.chapters, ['OPS', 'HRS']) // 72.5
+ */
+export function computeDepartmentHealthScore(
+  chapters: Record<string, {
+    dimensions?: Array<{
+      code?: string;
+      score?: number;
+    }>;
+    [key: string]: unknown;
+  }>,
+  dimensionCodes: DimensionCode[]
+): number {
+  const scores: number[] = [];
+  const codeSet = new Set(dimensionCodes.map(c => c.toUpperCase()));
+
+  for (const chapter of Object.values(chapters)) {
+    if (!chapter.dimensions || !Array.isArray(chapter.dimensions)) continue;
+
+    for (const dimension of chapter.dimensions) {
+      const dimCode = dimension.code?.toUpperCase();
+      if (dimCode && codeSet.has(dimCode)) {
+        const score = dimension.score;
+        if (typeof score === 'number' && !isNaN(score)) {
+          scores.push(score);
+        }
+      }
+    }
+  }
+
+  if (scores.length === 0) {
+    return 0;
+  }
+
+  const average = scores.reduce((sum, s) => sum + s, 0) / scores.length;
+  return Math.round(average * 10) / 10; // Round to 1 decimal
+}
+
+/**
+ * Gets dimension details from chapters by code.
+ *
+ * @param chapters - The IDM chapters object
+ * @param dimensionCode - The dimension code to find
+ * @returns Object with dimension and parent chapter, or null if not found
+ *
+ * @example
+ * const data = getDimensionFromChapters(idm.chapters, 'SAL');
+ * if (data) {
+ *   console.log(data.dimension.score, data.chapter.name);
+ * }
+ */
+export function getDimensionFromChapters(
+  chapters: Record<string, {
+    name?: string;
+    score?: number;
+    dimensions?: Array<{
+      code?: string;
+      name?: string;
+      score?: number;
+      [key: string]: unknown;
+    }>;
+    [key: string]: unknown;
+  }>,
+  dimensionCode: DimensionCode
+): { dimension: NonNullable<typeof chapters[string]['dimensions']>[number]; chapter: typeof chapters[string] } | null {
+  const targetCode = dimensionCode.toUpperCase();
+
+  for (const chapter of Object.values(chapters)) {
+    if (!chapter.dimensions || !Array.isArray(chapter.dimensions)) continue;
+
+    const dimension = chapter.dimensions.find(d => d.code?.toUpperCase() === targetCode);
+    if (dimension) {
+      return { dimension, chapter };
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Gets all dimensions from chapters as a flat array.
+ *
+ * @param chapters - The IDM chapters object
+ * @returns Array of all dimensions across all chapters
+ */
+export function getAllDimensionsFromChapters(
+  chapters: Record<string, {
+    dimensions?: Array<{
+      code?: string;
+      name?: string;
+      score?: number;
+      [key: string]: unknown;
+    }>;
+    [key: string]: unknown;
+  }>
+): Array<{ code?: string; name?: string; score?: number; [key: string]: unknown }> {
+  const dimensions: Array<{ code?: string; name?: string; score?: number; [key: string]: unknown }> = [];
+
+  for (const chapter of Object.values(chapters)) {
+    if (chapter.dimensions && Array.isArray(chapter.dimensions)) {
+      dimensions.push(...chapter.dimensions);
+    }
+  }
+
+  return dimensions;
+}

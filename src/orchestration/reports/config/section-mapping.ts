@@ -77,6 +77,12 @@ export const SECTION_MAPPINGS: SectionMapping[] = [
     comprehensiveSectionTitle: 'Financial Impact Analysis',
     comprehensiveAnchor: 'financial-impact'
   },
+  {
+    id: 'scorecard',
+    ownerLabel: 'Performance Scorecard',
+    comprehensiveSectionTitle: 'Business Health Scorecard',
+    comprehensiveAnchor: 'health-scorecard'
+  },
   // Executive Brief / Executive Health Snapshot sections
   {
     id: 'executive-health-snapshot',
