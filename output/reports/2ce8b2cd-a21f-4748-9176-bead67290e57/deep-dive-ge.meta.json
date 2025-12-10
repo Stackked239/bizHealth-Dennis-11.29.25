@@ -1,0 +1,52 @@
+{
+  "reportType": "deepDive:growthEngine",
+  "reportName": "Growth Engine Deep Dive",
+  "generatedAt": "2025-12-10T09:29:09.523Z",
+  "companyName": "EWM Global",
+  "runId": "2ce8b2cd-a21f-4748-9176-bead67290e57",
+  "healthScore": 49,
+  "healthBand": "Attention",
+  "pageSuggestionEstimate": 12,
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Chapter Overview"
+    },
+    {
+      "id": "scorecard",
+      "title": "Dimension Scorecard"
+    },
+    {
+      "id": "dim-STR",
+      "title": "Strategy"
+    },
+    {
+      "id": "dim-SAL",
+      "title": "Sales"
+    },
+    {
+      "id": "dim-MKT",
+      "title": "Marketing"
+    },
+    {
+      "id": "dim-CXP",
+      "title": "Customer Experience"
+    },
+    {
+      "id": "findings",
+      "title": "Findings Summary"
+    },
+    {
+      "id": "recommendations",
+      "title": "Recommendations"
+    },
+    {
+      "id": "risks",
+      "title": "Risk Assessment"
+    }
+  ],
+  "brand": {
+    "primaryColor": "#212653",
+    "accentColor": "#969423"
+  }
+}
