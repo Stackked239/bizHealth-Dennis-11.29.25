@@ -621,7 +621,7 @@ function generateExecutiveSummaryWithNarrative(ctx: ReportContext, narratives: a
         </div>
       ` : ''}
 
-      ${keyImperatives.length > 0 ? `
+      ${keyImperatives && keyImperatives.length > 0 ? `
         <div class="callout warning mt-3">
           <div class="title">Strategic Imperatives</div>
           <ul>
@@ -1623,7 +1623,9 @@ function generatePhase5Visualizations(ctx: ReportContext): Phase5Visuals {
   const keyStatsRow = generateKeyStatsRow(ctx);
 
   // Generate scorecard grid from chapters
-  const scorecardGrid = generateScorecardGrid(chaptersToScorecardItems(ctx.chapters, ctx.dimensions));
+  const scorecardGrid = ctx.chapters && ctx.chapters.length > 0
+    ? generateScorecardGrid(chaptersToScorecardItems(ctx.chapters))
+    : '';
 
   // Generate chapter radar chart (SVG)
   const chapterRadarChart = generateChapterRadarChartViz(ctx);
@@ -1632,22 +1634,22 @@ function generatePhase5Visualizations(ctx: ReportContext): Phase5Visuals {
   const overallGaugeChart = generateOverallGaugeViz(ctx);
 
   // Generate risk heatmap
-  const riskHeatmap = ctx.risks.length > 0 ? renderRiskHeatmapFromRisks(ctx.risks) : '';
+  const riskHeatmap = ctx.risks && ctx.risks.length > 0 ? renderRiskHeatmapFromRisks(ctx.risks) : '';
 
   // Generate risk matrix visualization
-  const riskMatrix = ctx.risks.length > 0 ? generateRiskMatrix(risksToMatrixItems(ctx.risks)) : '';
+  const riskMatrix = ctx.risks && ctx.risks.length > 0 ? generateRiskMatrix(risksToMatrixItems(ctx.risks)) : '';
 
   // Generate roadmap timeline
   const roadmapTimeline = generateRoadmapTimelineViz(ctx);
 
   // Generate recommendations list
   const quickWinIds = new Set(ctx.quickWins?.map(qw => qw.id) || []);
-  const recommendationsList = ctx.recommendations.length > 0
+  const recommendationsList = ctx.recommendations && ctx.recommendations.length > 0
     ? generateRecommendationsList(recommendationsToCardProps(ctx.recommendations, quickWinIds))
     : '';
 
   // Generate quick wins summary - fix property mapping for QuickWinDisplay interface
-  const quickWinsSummary = ctx.quickWins.length > 0
+  const quickWinsSummary = ctx.quickWins && ctx.quickWins.length > 0
     ? generateQuickWinsSummary(ctx.quickWins.map(qw => {
         // Find the linked recommendation to get dimension info
         const linkedRec = ctx.recommendations.find(r => r.id === qw.recommendationId);
@@ -1663,26 +1665,27 @@ function generatePhase5Visualizations(ctx: ReportContext): Phase5Visuals {
     : '';
 
   // Generate findings grid
-  const findingsGrid = ctx.findings.length > 0
+  const findingsGrid = ctx.findings && ctx.findings.length > 0
     ? generateFindingsGrid(findingsToGridProps(ctx.findings))
     : '';
 
   // Generate benchmark comparison table
-  const benchmarkTable = generateBenchmarkComparisonTable(
-    ctx.chapters.map(ch => ({
+  const benchmarkTable = ctx.chapters && ctx.chapters.length > 0
+    ? generateBenchmarkComparisonTable(
+      ctx.chapters.map(ch => ({
       name: ch.name,
       score: ch.score,
       benchmark: ch.industryBenchmark || 65,
       delta: ch.score - (ch.industryBenchmark || 65),
-    }))
-  );
+    })))
+    : '';
 
   // Generate executive highlights row
   const executiveHighlightsRow = generateExecutiveHighlightsRow([
-    { icon: '📊', value: ctx.overallHealth.score.toString(), label: 'Health Score', color: getScoreBandColor(ctx.overallHealth.score) },
-    { icon: '📈', value: ctx.findings.filter(f => f.type === 'strength').length.toString(), label: 'Strengths', color: '#28a745' },
-    { icon: '⚠️', value: ctx.risks.length.toString(), label: 'Risks', color: '#dc3545' },
-    { icon: '🎯', value: ctx.recommendations.length.toString(), label: 'Actions', color: '#212653' },
+    { icon: '📊', value: ctx.overallHealth?.score?.toString() || '0', label: 'Health Score', color: getScoreBandColor(ctx.overallHealth?.score || 0) },
+    { icon: '📈', value: (ctx.findings?.filter(f => f.type === 'strength')?.length || 0).toString(), label: 'Strengths', color: '#28a745' },
+    { icon: '⚠️', value: (ctx.risks?.length || 0).toString(), label: 'Risks', color: '#dc3545' },
+    { icon: '🎯', value: (ctx.recommendations?.length || 0).toString(), label: 'Actions', color: '#212653' },
   ]);
 
   // Generate key takeaways box
@@ -1812,7 +1815,7 @@ function getTakeawayIcon(type: string): string {
  * Generate chapter radar chart visualization (SVG)
  */
 function generateChapterRadarChartViz(ctx: ReportContext): string {
-  if (ctx.chapters.length === 0) return '';
+  if (!ctx.chapters || ctx.chapters.length === 0) return '';
 
   // Use the format expected by generateRadarChartSVG
   const data = {
@@ -1841,8 +1844,10 @@ function generateChapterRadarChartViz(ctx: ReportContext): string {
  * Generate overall health gauge visualization (SVG)
  */
 function generateOverallGaugeViz(ctx: ReportContext): string {
+  if (!ctx.overallHealth) return '';
+
   const svg = generateGaugeChartSVG({
-    value: ctx.overallHealth.score,
+    value: ctx.overallHealth.score || 0,
     maxValue: 100,
     label: 'Overall Health',
   }, {
@@ -1868,20 +1873,24 @@ function generateOverallGaugeViz(ctx: ReportContext): string {
  * Generate executive metrics dashboard
  */
 function generateExecutiveMetricsDashboard(ctx: ReportContext): string {
+  if (!ctx.overallHealth || !ctx.chapters) {
+    return '<div class="metrics-unavailable">Executive metrics unavailable</div>';
+  }
+
   const metrics = [
     {
       label: 'Overall Health',
-      value: ctx.overallHealth.score,
+      value: ctx.overallHealth.score || 0,
       unit: '/100',
-      status: getScoreBand(ctx.overallHealth.score) as ScoreBand,
+      status: getScoreBand(ctx.overallHealth.score || 0) as ScoreBand,
       trend: ctx.overallHealth.trajectory === 'Improving' ? 'up' as const :
              ctx.overallHealth.trajectory === 'Declining' ? 'down' as const : 'flat' as const
     },
     ...ctx.chapters.map(chapter => ({
       label: chapter.name,
-      value: chapter.score,
+      value: chapter.score || 0,
       unit: '/100',
-      status: getScoreBand(chapter.score) as ScoreBand
+      status: getScoreBand(chapter.score || 0) as ScoreBand
     }))
   ];
 
@@ -1930,12 +1939,17 @@ function generateRoadmapTimelineViz(ctx: ReportContext): string {
  * Generate key stats row
  */
 function generateKeyStatsRow(ctx: ReportContext): string {
-  const statusColor = ctx.overallHealth.score >= 80 ? '#28a745' :
-                      ctx.overallHealth.score >= 60 ? '#969423' :
-                      ctx.overallHealth.score >= 40 ? '#ffc107' : '#dc3545';
+  if (!ctx.overallHealth || !ctx.dimensions || !ctx.findings || !ctx.recommendations || !ctx.quickWins) {
+    return '<div class="stats-unavailable">Statistics unavailable</div>';
+  }
+
+  const score = ctx.overallHealth.score || 0;
+  const statusColor = score >= 80 ? '#28a745' :
+                      score >= 60 ? '#969423' :
+                      score >= 40 ? '#ffc107' : '#dc3545';
 
   return renderQuickStatsRow([
-    { label: 'Health Score', value: ctx.overallHealth.score, color: statusColor },
+    { label: 'Health Score', value: score, color: statusColor },
     { label: 'Dimensions', value: ctx.dimensions.length },
     { label: 'Findings', value: ctx.findings.length },
     { label: 'Recommendations', value: ctx.recommendations.length },
@@ -1982,7 +1996,7 @@ function generateRiskAssessmentWithHeatmap(
   const structuredRisks = !sanitizedNarrative ? generateRisksSection(ctx) : '';
 
   // Generate risk matrix if not provided
-  const riskMatrix = riskMatrixHtml || (ctx.risks.length > 0
+  const riskMatrix = riskMatrixHtml || (ctx.risks && ctx.risks.length > 0
     ? generateRiskMatrix(risksToMatrixItems(ctx.risks))
     : '');
 
@@ -1999,7 +2013,7 @@ function generateRiskAssessmentWithHeatmap(
           <div class="risk-heatmap-container" style="flex: 1; min-width: 300px; page-break-inside: avoid;">
             <h4 style="margin: 0 0 0.75rem 0; color: #212653; font-size: 1rem;">Risk Heat Map</h4>
             <p style="color: #666; font-size: 0.85rem; margin-bottom: 1rem;">
-              ${ctx.risks.length} risks plotted by severity × likelihood
+              ${ctx.risks?.length || 0} risks plotted by severity × likelihood
             </p>
             ${heatmapHtml}
           </div>
@@ -2183,7 +2197,7 @@ function getInitiativeTimeframe(rec: { timeHorizon?: string; horizon?: string })
  * B1: Generate chapter gauges - one gauge per chapter
  */
 function generateChapterGaugesViz(ctx: ReportContext): string {
-  if (ctx.chapters.length === 0) return '';
+  if (!ctx.chapters || ctx.chapters.length === 0) return '';
 
   const gauges = ctx.chapters.map(chapter => {
     const svg = generateGaugeChartSVG({
@@ -2264,22 +2278,20 @@ function generateDimensionBenchmarkBarsViz(ctx: ReportContext): string {
   if (!ctx.dimensions || ctx.dimensions.length === 0) return '';
 
   const bars = ctx.dimensions.map(dimension => {
-    const benchmarkScore = dimension.benchmark?.industryAverage || dimension.industryBenchmark || 60;
-    const delta = dimension.score - benchmarkScore;
-    const deltaColor = delta >= 0 ? '#28a745' : '#dc3545';
-    const deltaSymbol = delta >= 0 ? '+' : '';
+    const benchmarkScore = dimension.benchmark?.peerPercentile || 60;
 
     return generateHorizontalBarChartSVG({
-      label: dimension.name,
-      value: dimension.score,
+      items: [{
+        label: dimension.name,
+        value: dimension.score,
+        benchmark: benchmarkScore,
+      }],
       maxValue: 100,
-      benchmarkValue: benchmarkScore,
     }, {
       width: 280,
       height: 40,
-      showValue: true,
-      showLabel: true,
       showBenchmark: true,
+      showValues: true,
     });
   }).join('');
 
@@ -2484,7 +2496,7 @@ function generateInvestmentDonutViz(ctx: ReportContext): string {
  * B3: Generate impact bars visualization
  */
 function generateImpactBarsViz(ctx: ReportContext): string {
-  if (ctx.recommendations.length === 0) return '';
+  if (!ctx.recommendations || ctx.recommendations.length === 0) return '';
 
   const topRecs = ctx.recommendations
     .sort((a, b) => (b.impactScore || 0) - (a.impactScore || 0))
@@ -2515,7 +2527,7 @@ function generateImpactBarsViz(ctx: ReportContext): string {
  * B3: Generate recommendations donut by horizon
  */
 function generateRecommendationsDonutViz(ctx: ReportContext): string {
-  if (ctx.recommendations.length === 0) return '';
+  if (!ctx.recommendations || ctx.recommendations.length === 0) return '';
 
   // Group by horizon
   const horizonCounts = {
@@ -2627,7 +2639,7 @@ function generateRoadmapTimelineSVGViz(ctx: ReportContext): string {
  * B4: Generate benchmark comparison bars
  */
 function generateBenchmarkBarsViz(ctx: ReportContext): string {
-  if (ctx.chapters.length === 0) return '';
+  if (!ctx.chapters || ctx.chapters.length === 0) return '';
 
   const items = ctx.chapters.map(ch => ({
     label: ch.name,
@@ -2662,7 +2674,7 @@ function generateBenchmarkBarsViz(ctx: ReportContext): string {
  * Signature visualization showing all 12 business dimensions in a radar chart
  */
 function generate12DimensionExecutiveRadarViz(ctx: ReportContext): string {
-  if (ctx.dimensions.length === 0) return '';
+  if (!ctx.dimensions || ctx.dimensions.length === 0) return '';
 
   try {
     // Convert ReportContext to radar data format
@@ -2738,7 +2750,7 @@ function generateFinancialImpactDashboardViz(ctx: ReportContext): string {
  * Strategic action cards with expandable details and priority indicators
  */
 function generateActionPlanCardsViz(ctx: ReportContext): string {
-  if (ctx.recommendations.length === 0) return '';
+  if (!ctx.recommendations || ctx.recommendations.length === 0) return '';
 
   try {
     // Convert ReportContext to action plan card data

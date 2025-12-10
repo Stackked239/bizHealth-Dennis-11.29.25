@@ -167,30 +167,6 @@ function generateScorecardFallback(ctx: ReportContext): string {
   `;
 }
 
-/**
- * Safe wrapper for QUICK_REFS calls to prevent "is not a function" errors.
- * Returns empty string if QUICK_REFS or the specific method is not available.
- */
-function safeQuickRef(
-  methodName: keyof typeof QUICK_REFS,
-  context?: string
-): string {
-  try {
-    if (!QUICK_REFS || typeof QUICK_REFS !== 'object') {
-      logger.warn(`QUICK_REFS is not available (attempted: ${methodName})`);
-      return '';
-    }
-    const method = QUICK_REFS[methodName];
-    if (typeof method !== 'function') {
-      logger.warn(`QUICK_REFS.${methodName} is not a function`);
-      return '';
-    }
-    return method(context);
-  } catch (error) {
-    logger.error(`Error calling QUICK_REFS.${methodName}: ${error}`);
-    return '';
-  }
-}
 
 /**
  * Build insight cards from findings for the owner report

@@ -45,7 +45,7 @@ import {
   getDimensionFromChapters,
   getDimensionName,
   getScoreBandFromScore,
-  ensureString,
+  safeString,
   type DimensionCode,
 } from './utils/index.js';
 import {
@@ -960,16 +960,6 @@ export async function buildManagersItTechnologyReport(
 // ============================================================================
 
 /**
- * Get score color based on value
- */
-function getScoreColor(score: number): string {
-  if (score >= 80) return '#28a745';
-  if (score >= 60) return '#969423';
-  if (score >= 40) return '#ffc107';
-  return '#dc3545';
-}
-
-/**
  * Render Company Snapshot section for manager reports.
  * Shows overall company health + manager's department health.
  */
@@ -1097,7 +1087,7 @@ export function renderDimensionDeepDiveSection(
           <div class="dimension-findings" style="margin-top: 16px;">
             <h4 style="margin: 0 0 8px 0; font-size: 1rem;">Key Findings</h4>
             <ul style="margin: 0; padding-left: 20px;">
-              ${dimensionFindings.slice(0, 3).map(f => `<li>${escapeHtml(ensureString(f.description || f.finding || ''))}</li>`).join('')}
+              ${dimensionFindings.slice(0, 3).map(f => `<li>${escapeHtml(safeString(f.description || f.finding || ''))}</li>`).join('')}
             </ul>
           </div>
         ` : ''}
@@ -1106,7 +1096,7 @@ export function renderDimensionDeepDiveSection(
           <div class="dimension-recommendations" style="margin-top: 16px;">
             <h4 style="margin: 0 0 8px 0; font-size: 1rem;">Recommendations</h4>
             <ul style="margin: 0; padding-left: 20px;">
-              ${dimensionRecs.slice(0, 3).map(r => `<li>${escapeHtml(ensureString(r.title || r.recommendation || ''))}</li>`).join('')}
+              ${dimensionRecs.slice(0, 3).map(r => `<li>${escapeHtml(safeString(r.title || r.recommendation || ''))}</li>`).join('')}
             </ul>
           </div>
         ` : ''}
@@ -1176,9 +1166,9 @@ export function renderDepartmentRoadmapSection(
           <ul class="quick-wins-list" style="list-style: none; padding: 0;">
             ${departmentQuickWins.slice(0, 5).map(qw => `
               <li class="quick-win-item" style="margin-bottom: 12px; padding: 12px; background: #f0f9f0; border-left: 4px solid ${options.brand.accentColor}; border-radius: 4px;">
-                <strong>${escapeHtml(ensureString(qw.title || qw.theme || qw.name || ''))}</strong>
+                <strong>${escapeHtml(safeString(qw.title || qw.theme || qw.name || ''))}</strong>
                 ${qw.impactScore ? `<span style="display: inline-block; padding: 2px 8px; background: #e3f2fd; border-radius: 12px; font-size: 0.8em; margin-left: 8px;">Impact: ${qw.impactScore}/10</span>` : ''}
-                <p style="margin: 8px 0 0 0; color: #555;">${escapeHtml(ensureString(qw.description || ''))}</p>
+                <p style="margin: 8px 0 0 0; color: #555;">${escapeHtml(safeString(qw.description || ''))}</p>
               </li>
             `).join('')}
           </ul>
@@ -1191,9 +1181,9 @@ export function renderDepartmentRoadmapSection(
           <ol class="recommendations-list" style="padding-left: 20px;">
             ${departmentRecs.slice(0, 5).map(rec => `
               <li class="recommendation-item" style="margin-bottom: 16px; padding: 12px; background: #f8f9fa; border-radius: 4px;">
-                <strong>${escapeHtml(ensureString(rec.title || rec.recommendation || ''))}</strong>
+                <strong>${escapeHtml(safeString(rec.title || rec.recommendation || ''))}</strong>
                 ${rec.priority ? `<span style="display: inline-block; padding: 2px 8px; background: #fff3e0; color: #e65100; border-radius: 12px; font-size: 0.8em; margin-left: 8px;">${rec.priority} Priority</span>` : ''}
-                <p style="margin: 8px 0 0 0; color: #555;">${escapeHtml(ensureString(rec.description || rec.rationale || ''))}</p>
+                <p style="margin: 8px 0 0 0; color: #555;">${escapeHtml(safeString(rec.description || rec.rationale || ''))}</p>
               </li>
             `).join('')}
           </ol>
@@ -1237,9 +1227,9 @@ export function renderRiskOverviewSection(
           <h3 style="color: #dc3545; margin: 0 0 12px 0;">Critical Risks Requiring Immediate Attention</h3>
           ${criticalRisks.map(risk => `
             <div class="risk-item critical" style="margin-bottom: 12px; padding: 12px; background: #fff5f5; border-radius: 4px;">
-              <strong>${escapeHtml(ensureString(risk.title || risk.name || ''))}</strong>
-              <p style="margin: 8px 0 0 0;">${escapeHtml(ensureString(risk.description || ''))}</p>
-              ${risk.mitigation ? `<p style="margin: 8px 0 0 0; font-style: italic;"><em>Mitigation:</em> ${escapeHtml(ensureString(risk.mitigation || ''))}</p>` : ''}
+              <strong>${escapeHtml(safeString(risk.title || risk.name || ''))}</strong>
+              <p style="margin: 8px 0 0 0;">${escapeHtml(safeString(risk.description || ''))}</p>
+              ${risk.mitigation ? `<p style="margin: 8px 0 0 0; font-style: italic;"><em>Mitigation:</em> ${escapeHtml(safeString(risk.mitigation || ''))}</p>` : ''}
             </div>
           `).join('')}
         </div>
@@ -1250,8 +1240,8 @@ export function renderRiskOverviewSection(
           <h3 style="color: #856404; margin: 0 0 12px 0;">High Priority Risks</h3>
           ${highRisks.map(risk => `
             <div class="risk-item high" style="margin-bottom: 12px; padding: 12px; background: #fffbf0; border-radius: 4px;">
-              <strong>${escapeHtml(ensureString(risk.title || risk.name || ''))}</strong>
-              <p style="margin: 8px 0 0 0;">${escapeHtml(ensureString(risk.description || ''))}</p>
+              <strong>${escapeHtml(safeString(risk.title || risk.name || ''))}</strong>
+              <p style="margin: 8px 0 0 0;">${escapeHtml(safeString(risk.description || ''))}</p>
             </div>
           `).join('')}
         </div>

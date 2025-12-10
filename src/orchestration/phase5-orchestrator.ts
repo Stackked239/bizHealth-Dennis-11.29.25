@@ -254,7 +254,8 @@ export class Phase5Orchestrator {
           }
         } catch (error) {
           const errorMsg = error instanceof Error ? error.message : String(error);
-          this.logger.error({ type: builder.type, error: errorMsg }, 'Failed to generate report');
+          const errorStack = error instanceof Error ? error.stack : undefined;
+          this.logger.error({ type: builder.type, error: errorMsg, stack: errorStack }, 'Failed to generate report');
           errors.push({ reportType: builder.type, error: errorMsg });
         }
       }
