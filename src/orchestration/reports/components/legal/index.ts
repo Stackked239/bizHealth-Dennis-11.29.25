@@ -12,6 +12,7 @@
 export {
   generateClickwrapModal,
   generateClickwrapLegalContent,
+  renderClickwrapModal,
 } from './clickwrap-modal.component.js';
 
 export type { ClickwrapConfig } from './clickwrap-modal.component.js';
