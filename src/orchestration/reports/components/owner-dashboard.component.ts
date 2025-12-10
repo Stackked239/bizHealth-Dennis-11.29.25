@@ -191,14 +191,14 @@ function generateChapterTile(chapter: ChapterData): string {
 // ============================================================================
 
 function generateTrajectoryCard(ctx: ReportContext): string {
-  const trajectory = ctx.overallHealth?.trajectory || 'stable';
-  const trajectoryLabel = trajectory === 'up' ? 'Improving' : trajectory === 'down' ? 'Declining' : 'Stable';
-  const trajectoryIcon = trajectory === 'up' ? '📈' : trajectory === 'down' ? '📉' : '➡️';
-  const trajectoryColor = trajectory === 'up' ? '#28a745' : trajectory === 'down' ? '#dc3545' : '#6c757d';
+  const trajectory = ctx.overallHealth?.trajectory || 'Flat';
+  const trajectoryLabel = trajectory === 'Improving' ? 'Improving' : trajectory === 'Declining' ? 'Declining' : 'Stable';
+  const trajectoryIcon = trajectory === 'Improving' ? '📈' : trajectory === 'Declining' ? '📉' : '➡️';
+  const trajectoryColor = trajectory === 'Improving' ? '#28a745' : trajectory === 'Declining' ? '#dc3545' : '#6c757d';
 
   // Calculate projected score improvement
-  const currentScore = extractNumericValue(ctx.overallHealth?.score, 50);
-  const projectedImprovement = trajectory === 'up' ? '+8-12 pts' : trajectory === 'down' ? '-5-8 pts' : '±2 pts';
+  const _currentScore = extractNumericValue(ctx.overallHealth?.score, 50);
+  const projectedImprovement = trajectory === 'Improving' ? '+8-12 pts' : trajectory === 'Declining' ? '-5-8 pts' : '±2 pts';
 
   return `
     <div class="trajectory-card" style="
@@ -410,8 +410,8 @@ export function generateOwnerHealthDashboard(ctx: ReportContext): string {
   // Extract overall health
   const overallScore = extractNumericValue(ctx.overallHealth?.score, 50);
   const overallBand = ctx.overallHealth?.band || getScoreBandFromScore(overallScore);
-  const overallPercentile = extractNumericValue(ctx.overallHealth?.percentile, null);
-  const industry = ctx.companyProfile?.industry || 'your industry';
+  const _overallPercentile = extractNumericValue(ctx.overallHealth?.benchmarks?.percentile, undefined);
+  const _industry = ctx.companyProfile?.industry || 'your industry';
 
   // Extract chapters
   const chapters: ChapterData[] = (ctx.chapters || []).map((ch: any) => ({
@@ -420,8 +420,8 @@ export function generateOwnerHealthDashboard(ctx: ReportContext): string {
     score: extractNumericValue(ch.score, 0),
     band: ch.band || getScoreBandFromScore(extractNumericValue(ch.score, 50)),
     trend: ch.trend || 'stable',
-    benchmark: extractNumericValue(ch.benchmark || ch.industryBenchmark, null),
-    percentile: extractNumericValue(ch.percentileRank, null),
+    benchmark: extractNumericValue(ch.benchmark || ch.industryBenchmark, undefined),
+    percentile: extractNumericValue(ch.percentileRank, undefined),
   }));
 
   // Ensure we have 4 chapters
