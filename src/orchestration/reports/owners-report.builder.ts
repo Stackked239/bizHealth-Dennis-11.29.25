@@ -24,6 +24,12 @@ import {
 import { calculateROI } from '../../types/report.types.js';
 import { NarrativeExtractionService } from '../../services/narrative-extraction.service.js';
 import { logger } from '../../utils/logger.js';
+import {
+  extractNumericValueSafe,
+  getScoreBandSafe,
+  extractStringSafe,
+  safeExecute,
+} from '../../utils/safety.utils.js';
 
 // Import visual enhancement components
 import {
@@ -101,6 +107,65 @@ import {
 
 // Import risk heatmap for enhanced risk visualization
 import { renderRiskHeatmapFromRisks } from './components/visual/risk-heatmap.component.js';
+
+// ============================================================================
+// SAFETY WRAPPERS FOR QUICK_REFS
+// ============================================================================
+
+/**
+ * Safely access QUICK_REFS functions with fallback.
+ * Prevents "QUICK_REFS.scorecard is not a function" errors.
+ */
+function safeQuickRef(
+  refName: string,
+  context: string,
+  fallback: string = ''
+): string {
+  try {
+    if (!QUICK_REFS || typeof QUICK_REFS !== 'object') {
+      logger.warn('QUICK_REFS object not available');
+      return fallback;
+    }
+
+    const ref = (QUICK_REFS as Record<string, unknown>)[refName];
+    if (typeof ref === 'function') {
+      const result = ref(context);
+      return result ?? fallback;
+    }
+
+    logger.warn(`QUICK_REFS.${refName} is not a function`);
+    return fallback;
+  } catch (error) {
+    logger.warn({ error, refName }, `QUICK_REFS.${refName} failed`);
+    return fallback;
+  }
+}
+
+/**
+ * Fallback scorecard generator when QUICK_REFS fails.
+ */
+function generateScorecardFallback(ctx: ReportContext): string {
+  const score = extractNumericValueSafe(ctx?.overallHealth?.score, 0);
+  const band = getScoreBandSafe(score);
+  const companyName = extractStringSafe(
+    ctx?.companyProfile?.name,
+    'Your Company'
+  );
+
+  return `
+    <div class="scorecard scorecard-fallback" style="padding: 1rem; background: #f8f9fa; border-radius: 8px; margin: 1rem 0;">
+      <h4 style="margin: 0 0 0.5rem 0;">${companyName} - Business Health Scorecard</h4>
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <div style="font-size: 2rem; font-weight: bold; color: #212653;">
+          ${score}<span style="font-size: 1rem; color: #666;">/100</span>
+        </div>
+        <div style="padding: 4px 12px; border-radius: 4px; background: ${band === 'Excellence' ? '#28a745' : band === 'Proficiency' ? '#17a2b8' : band === 'Attention' ? '#ffc107' : '#dc3545'}; color: ${band === 'Attention' ? '#000' : '#fff'}; font-weight: 600;">
+          ${band}
+        </div>
+      </div>
+    </div>
+  `;
+}
 
 /**
  * Safe wrapper for QUICK_REFS calls to prevent "is not a function" errors.

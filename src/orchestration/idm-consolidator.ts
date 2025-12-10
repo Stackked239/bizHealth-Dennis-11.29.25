@@ -65,6 +65,13 @@ import {
   type CompanyBenchmarkProfile,
   type PercentileResult,
 } from '../utils/benchmark-calculator.js';
+// Safety utilities available for defensive coding patterns
+// Import: extractNumericValueSafe, extractStringSafe, extractArraySafe,
+//         calculateWeightedScoreSafe, getScoreBandSafe, validatePrioritySafe,
+//         validateSeveritySafe, validateProbabilitySafe, isString, isValidDimensionCode,
+//         isValidChapterCode, clampScoreSafe, safeReplace, consolidateRecommendationsSafe,
+//         compileRisksSafe, enrichQuickWinsSafe, safeGet, safeExecute
+// from '../utils/safety.utils.js';
 import type {
   NormalizedQuestionnaireResponses,
   NormalizedChapter,

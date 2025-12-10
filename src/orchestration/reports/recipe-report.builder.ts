@@ -30,6 +30,11 @@ import {
   type ChapterChartData,
 } from './charts/index.js';
 import { logger } from '../../utils/logger.js';
+import {
+  safeReplace,
+  extractStringSafe,
+  extractNumericValueSafe,
+} from '../../utils/safety.utils.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
