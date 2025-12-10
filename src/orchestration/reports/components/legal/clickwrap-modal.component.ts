@@ -7,7 +7,12 @@
  * - Affirmative checkbox action required
  * - Clear acceptance language
  * - Acceptance timestamp recorded
+ *
+ * UPDATED 2025-12-10: Added mobile-optimized renderClickwrapModal function
+ * with comprehensive fixes for iOS Safari and Android touch handling.
  */
+
+import type { BrandConfig } from '../../../../types/report.types.js';
 
 export interface ClickwrapConfig {
   reportId: string;
@@ -516,4 +521,768 @@ export function generateClickwrapLegalContent(): string {
     <h3>Entire Agreement</h3>
     <p>These terms, together with any applicable service agreements, constitute the entire agreement between you and BizHealth.ai regarding this Report and supersede all prior agreements and understandings.</p>
   `;
+}
+
+/**
+ * Renders a production-ready clickwrap modal for legal terms acceptance.
+ *
+ * MOBILE FIXES INCLUDED:
+ * - Intersection Observer for reliable scroll-to-bottom detection on iOS
+ * - Dual event handling (click + touchend) for all interactive elements
+ * - Touch target optimization (minimum 48px for all interactive elements)
+ * - Visual feedback with loading states
+ * - Safety net timer to prevent complete blocking
+ * - Helper text guiding users on required actions
+ *
+ * @param brand - BrandConfig for styling customization
+ * @returns Complete HTML string with embedded CSS and JavaScript
+ */
+export function renderClickwrapModal(brand: BrandConfig): string {
+  const termsVersion = '2025.1';
+  const primaryColor = brand?.primaryColor || '#212653'; // BizNavy
+  const accentColor = brand?.accentColor || '#969423';   // BizGreen
+
+  return `
+<!-- CLICKWRAP MODAL - Mobile-Optimized Implementation -->
+<div id="clickwrap-modal" class="clickwrap-overlay" role="dialog" aria-modal="true" aria-labelledby="clickwrap-title">
+
+  <style>
+    /* ========================================
+       CLICKWRAP MODAL STYLES
+       Mobile-first responsive design
+       ======================================== */
+
+    .clickwrap-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      box-sizing: border-box;
+    }
+
+    .clickwrap-container {
+      background: #ffffff;
+      border-radius: 12px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+
+    .clickwrap-header {
+      background: ${primaryColor};
+      color: white;
+      padding: 20px 24px;
+      flex-shrink: 0;
+    }
+
+    .clickwrap-header h2 {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .clickwrap-header p {
+      margin: 8px 0 0 0;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .clickwrap-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #333;
+      /* MOBILE FIX: Enable smooth momentum scrolling on iOS */
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+
+    .clickwrap-body h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: ${primaryColor};
+      margin: 24px 0 12px 0;
+    }
+
+    .clickwrap-body h3:first-child {
+      margin-top: 0;
+    }
+
+    .clickwrap-body p {
+      margin: 0 0 12px 0;
+    }
+
+    .clickwrap-body ul {
+      margin: 0 0 12px 0;
+      padding-left: 24px;
+    }
+
+    .clickwrap-body li {
+      margin-bottom: 6px;
+    }
+
+    /* Scroll sentinel - invisible marker at bottom */
+    #terms-sentinel {
+      height: 1px;
+      width: 100%;
+      visibility: hidden;
+    }
+
+    .clickwrap-footer {
+      background: #f8f9fa;
+      padding: 20px 24px;
+      border-top: 1px solid #e9ecef;
+      flex-shrink: 0;
+    }
+
+    /* Helper text for user guidance */
+    .clickwrap-helper {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 16px;
+      min-height: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .clickwrap-helper.error {
+      color: #dc3545;
+    }
+
+    .clickwrap-helper.success {
+      color: #28a745;
+    }
+
+    .helper-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    /* Checkbox container - MOBILE FIX: Large touch target */
+    .clickwrap-checkbox-container {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 20px;
+      /* MOBILE FIX: Minimum 48px touch target */
+      min-height: 48px;
+      padding: 8px;
+      margin: -8px -8px 12px -8px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .clickwrap-checkbox-container:hover {
+      background-color: rgba(0, 0, 0, 0.03);
+    }
+
+    .clickwrap-checkbox-container:active {
+      background-color: rgba(0, 0, 0, 0.06);
+    }
+
+    /* Custom checkbox - MOBILE FIX: Larger tap target */
+    .clickwrap-checkbox {
+      /* MOBILE FIX: 24px checkbox is easier to tap */
+      width: 24px;
+      height: 24px;
+      min-width: 24px;
+      margin-top: 2px;
+      cursor: pointer;
+      accent-color: ${primaryColor};
+    }
+
+    .clickwrap-checkbox-label {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #333;
+      cursor: pointer;
+      user-select: none;
+      /* MOBILE FIX: Prevent text selection on tap */
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Accept button - MOBILE FIX: Large touch target with states */
+    .clickwrap-accept-btn {
+      width: 100%;
+      /* MOBILE FIX: Minimum 52px height for comfortable tapping */
+      min-height: 52px;
+      padding: 14px 24px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      /* MOBILE FIX: Prevent zoom on iOS when focusing input */
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .clickwrap-accept-btn:disabled {
+      background-color: #d1d5db;
+      color: #6b7280;
+      cursor: not-allowed;
+    }
+
+    .clickwrap-accept-btn:not(:disabled) {
+      background-color: ${primaryColor};
+      color: white;
+    }
+
+    .clickwrap-accept-btn:not(:disabled):hover {
+      background-color: #1a1f42;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(33, 38, 83, 0.3);
+    }
+
+    .clickwrap-accept-btn:not(:disabled):active {
+      transform: translateY(0);
+      box-shadow: 0 2px 6px rgba(33, 38, 83, 0.2);
+    }
+
+    /* Loading state */
+    .clickwrap-accept-btn.loading {
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    .btn-spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Scroll progress indicator */
+    .scroll-progress {
+      height: 3px;
+      background: #e9ecef;
+      border-radius: 2px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .scroll-progress-bar {
+      height: 100%;
+      background: ${accentColor};
+      width: 0%;
+      transition: width 0.1s ease;
+      border-radius: 2px;
+    }
+
+    /* Mobile-specific adjustments */
+    @media (max-width: 480px) {
+      .clickwrap-overlay {
+        padding: 8px;
+      }
+
+      .clickwrap-container {
+        max-height: 95vh;
+        border-radius: 8px;
+      }
+
+      .clickwrap-header {
+        padding: 16px 20px;
+      }
+
+      .clickwrap-header h2 {
+        font-size: 18px;
+      }
+
+      .clickwrap-body {
+        padding: 20px;
+        /* MOBILE FIX: Limit height to ensure footer is visible */
+        max-height: 45vh;
+      }
+
+      .clickwrap-footer {
+        padding: 16px 20px;
+      }
+
+      .clickwrap-checkbox-label {
+        font-size: 13px;
+      }
+
+      .clickwrap-accept-btn {
+        font-size: 15px;
+        min-height: 48px;
+      }
+    }
+
+    /* Blurred content behind modal */
+    .report-content-blurred {
+      filter: blur(8px);
+      pointer-events: none;
+      user-select: none;
+    }
+  </style>
+
+  <div class="clickwrap-container">
+    <div class="clickwrap-header">
+      <h2 id="clickwrap-title">Terms of Service & Privacy Policy</h2>
+      <p>Please review and accept to continue</p>
+    </div>
+
+    <div class="clickwrap-body" id="clickwrap-body">
+      <h3>Terms of Service</h3>
+      <p>By accessing this BizHealth.ai Business Health Assessment Report ("Report"), you agree to be bound by these Terms of Service.</p>
+
+      <p><strong>1. Confidentiality.</strong> This Report contains proprietary analysis and recommendations prepared exclusively for the named client organization. You agree to maintain the confidentiality of this Report and not disclose its contents to third parties without prior written consent from BizHealth.ai.</p>
+
+      <p><strong>2. Intended Use.</strong> This Report is intended solely for informational and internal planning purposes. The insights, scores, and recommendations provided are based on the assessment data submitted and should be considered as one input among many in your business decision-making process.</p>
+
+      <p><strong>3. No Professional Advice.</strong> This Report does not constitute legal, financial, tax, or other professional advice. You should consult with qualified professionals before making significant business decisions based on this Report's contents.</p>
+
+      <p><strong>4. Accuracy of Information.</strong> The analysis in this Report is based on information provided during the assessment process. BizHealth.ai makes no warranties regarding the accuracy or completeness of the underlying data or the conclusions drawn therefrom.</p>
+
+      <p><strong>5. Limitation of Liability.</strong> To the fullest extent permitted by law, BizHealth.ai shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of this Report.</p>
+
+      <h3>Privacy Policy</h3>
+      <p>BizHealth.ai is committed to protecting your privacy and the confidentiality of your business information.</p>
+
+      <p><strong>Data Collection.</strong> We collect business assessment data that you voluntarily provide through our questionnaire. This includes operational metrics, financial indicators, and organizational information necessary to generate your Report.</p>
+
+      <p><strong>Data Use.</strong> Your data is used exclusively to generate your personalized Business Health Assessment Report and to improve our analytical methodologies. We do not sell or share your individual business data with third parties.</p>
+
+      <p><strong>Data Security.</strong> We implement industry-standard security measures to protect your data against unauthorized access, alteration, disclosure, or destruction.</p>
+
+      <p><strong>Data Retention.</strong> Assessment data is retained for the period necessary to provide our services and comply with legal obligations. You may request deletion of your data by contacting us.</p>
+
+      <p><strong>Contact.</strong> For questions about these terms or our privacy practices, please contact us at legal@bizhealth.ai.</p>
+
+      <!-- MOBILE FIX: Sentinel element for Intersection Observer -->
+      <div id="terms-sentinel" aria-hidden="true"></div>
+    </div>
+
+    <div class="clickwrap-footer">
+      <!-- Scroll progress indicator -->
+      <div class="scroll-progress" role="progressbar" aria-label="Reading progress">
+        <div class="scroll-progress-bar" id="scroll-progress-bar"></div>
+      </div>
+
+      <!-- Helper text with dynamic messaging -->
+      <div class="clickwrap-helper" id="clickwrap-helper" aria-live="polite">
+        <svg class="helper-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+        </svg>
+        <span id="helper-text">Please scroll down to read all terms</span>
+      </div>
+
+      <!-- Checkbox with large touch target -->
+      <div class="clickwrap-checkbox-container" id="checkbox-container" role="group" aria-labelledby="checkbox-label">
+        <input
+          type="checkbox"
+          id="accept-checkbox"
+          class="clickwrap-checkbox"
+          aria-describedby="helper-text"
+        >
+        <label for="accept-checkbox" class="clickwrap-checkbox-label" id="checkbox-label">
+          I have read and agree to the Terms of Service and Privacy Policy
+        </label>
+      </div>
+
+      <!-- Accept button with loading state support -->
+      <button
+        type="button"
+        id="accept-btn"
+        class="clickwrap-accept-btn"
+        disabled
+        aria-describedby="clickwrap-helper"
+      >
+        <span class="btn-text">Accept & View Report</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ================================================
+  // CLICKWRAP MODAL - Mobile-Optimized Implementation
+  // ================================================
+
+  const TERMS_VERSION = '${termsVersion}';
+  const STORAGE_KEY = 'bizhealth-terms-accepted';
+  const SAFETY_TIMEOUT_MS = 15000; // 15 second safety net
+
+  // State management
+  let hasScrolledToBottom = false;
+  let hasCheckedAccept = false;
+  let isSubmitting = false;
+
+  // DOM Elements
+  const modal = document.getElementById('clickwrap-modal');
+  const body = document.getElementById('clickwrap-body');
+  const checkbox = document.getElementById('accept-checkbox');
+  const checkboxContainer = document.getElementById('checkbox-container');
+  const acceptBtn = document.getElementById('accept-btn');
+  const helperDiv = document.getElementById('clickwrap-helper');
+  const helperText = document.getElementById('helper-text');
+  const progressBar = document.getElementById('scroll-progress-bar');
+  const sentinel = document.getElementById('terms-sentinel');
+
+  // ================================================
+  // CHECK EXISTING ACCEPTANCE
+  // ================================================
+
+  function checkExistingAcceptance() {
+    try {
+      const stored = sessionStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        const data = JSON.parse(stored);
+        if (data.version === TERMS_VERSION) {
+          hideModal();
+          return true;
+        }
+      }
+    } catch (e) {
+      // Storage not available or corrupted
+    }
+    return false;
+  }
+
+  // ================================================
+  // SCROLL DETECTION - LAYER 1: Intersection Observer
+  // MOBILE FIX: Most reliable method for iOS Safari
+  // ================================================
+
+  function setupIntersectionObserver() {
+    if (!('IntersectionObserver' in window) || !sentinel) {
+      return false;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !hasScrolledToBottom) {
+            // MOBILE FIX: User has scrolled to bottom
+            hasScrolledToBottom = true;
+            updateButtonState();
+            observer.disconnect();
+          }
+        });
+      },
+      {
+        root: body,
+        threshold: 0.1,
+        rootMargin: '0px 0px 50px 0px' // Trigger slightly before reaching bottom
+      }
+    );
+
+    observer.observe(sentinel);
+    return true;
+  }
+
+  // ================================================
+  // SCROLL DETECTION - LAYER 2: Scroll Events Fallback
+  // MOBILE FIX: Added touchend as backup trigger
+  // ================================================
+
+  function setupScrollFallback() {
+    function checkScrollPosition() {
+      if (hasScrolledToBottom) return;
+
+      const { scrollTop, scrollHeight, clientHeight } = body;
+      const scrollPercentage = Math.min(100, (scrollTop / (scrollHeight - clientHeight)) * 100);
+
+      // Update progress bar
+      if (progressBar) {
+        progressBar.style.width = scrollPercentage + '%';
+      }
+
+      // MOBILE FIX: Use 150px threshold for momentum scrolling tolerance
+      if (scrollHeight - scrollTop <= clientHeight + 150) {
+        hasScrolledToBottom = true;
+        updateButtonState();
+      }
+    }
+
+    // MOBILE FIX: Listen to both scroll and touchend events
+    body.addEventListener('scroll', checkScrollPosition, { passive: true });
+    body.addEventListener('touchend', function() {
+      // Delay check to allow momentum scroll to settle
+      setTimeout(checkScrollPosition, 100);
+    }, { passive: true });
+  }
+
+  // ================================================
+  // SCROLL DETECTION - LAYER 3: Short Content Check
+  // Handle case where content doesn't need scrolling
+  // ================================================
+
+  function checkContentFitsWithoutScroll() {
+    requestAnimationFrame(() => {
+      if (body.scrollHeight <= body.clientHeight + 20) {
+        // Content is short, no scroll needed
+        hasScrolledToBottom = true;
+        if (progressBar) progressBar.style.width = '100%';
+        updateButtonState();
+      }
+    });
+  }
+
+  // ================================================
+  // SCROLL DETECTION - LAYER 4: Safety Net Timer
+  // MOBILE FIX: Prevent permanent blocking if detection fails
+  // ================================================
+
+  function setupSafetyTimer() {
+    setTimeout(() => {
+      if (!hasScrolledToBottom) {
+        console.warn('[Clickwrap] Safety timer triggered - enabling scroll completion');
+        hasScrolledToBottom = true;
+        if (progressBar) progressBar.style.width = '100%';
+        updateButtonState();
+      }
+    }, SAFETY_TIMEOUT_MS);
+  }
+
+  // ================================================
+  // CHECKBOX HANDLING
+  // MOBILE FIX: Dual event binding for reliability
+  // ================================================
+
+  function setupCheckboxHandling() {
+    function handleCheckboxChange() {
+      hasCheckedAccept = checkbox.checked;
+      updateButtonState();
+    }
+
+    // Standard change event
+    checkbox.addEventListener('change', handleCheckboxChange);
+
+    // MOBILE FIX: Also handle click with slight delay for state sync
+    checkbox.addEventListener('click', function() {
+      setTimeout(handleCheckboxChange, 10);
+    });
+
+    // MOBILE FIX: Allow tapping anywhere in the checkbox container
+    checkboxContainer.addEventListener('click', function(e) {
+      if (e.target !== checkbox) {
+        checkbox.checked = !checkbox.checked;
+        handleCheckboxChange();
+      }
+    });
+
+    // MOBILE FIX: Handle touch events on container
+    checkboxContainer.addEventListener('touchend', function(e) {
+      if (e.target !== checkbox) {
+        e.preventDefault();
+        checkbox.checked = !checkbox.checked;
+        handleCheckboxChange();
+      }
+    }, { passive: false });
+  }
+
+  // ================================================
+  // BUTTON STATE MANAGEMENT
+  // ================================================
+
+  function updateButtonState() {
+    const canProceed = hasScrolledToBottom && hasCheckedAccept && !isSubmitting;
+
+    // MOBILE FIX: Ensure both attribute and property are set
+    acceptBtn.disabled = !canProceed;
+    if (canProceed) {
+      acceptBtn.removeAttribute('disabled');
+    } else {
+      acceptBtn.setAttribute('disabled', 'disabled');
+    }
+
+    // Update helper text
+    updateHelperText();
+  }
+
+  function updateHelperText() {
+    if (isSubmitting) {
+      helperDiv.className = 'clickwrap-helper';
+      helperText.textContent = 'Processing...';
+      return;
+    }
+
+    if (!hasScrolledToBottom) {
+      helperDiv.className = 'clickwrap-helper';
+      helperText.textContent = 'Please scroll down to read all terms';
+    } else if (!hasCheckedAccept) {
+      helperDiv.className = 'clickwrap-helper';
+      helperText.textContent = 'Please check the acceptance box above';
+    } else {
+      helperDiv.className = 'clickwrap-helper success';
+      helperText.textContent = 'Ready! Click the button below to continue';
+    }
+  }
+
+  // ================================================
+  // BUTTON CLICK HANDLING
+  // MOBILE FIX: Dual event binding + double-click prevention
+  // ================================================
+
+  function setupButtonHandling() {
+    function handleAccept(e) {
+      // Prevent default and stop propagation
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      // Guard against invalid state or double submission
+      if (acceptBtn.disabled || isSubmitting || !hasScrolledToBottom || !hasCheckedAccept) {
+        return;
+      }
+
+      // Set submitting state
+      isSubmitting = true;
+      acceptBtn.classList.add('loading');
+      acceptBtn.innerHTML = '<span class="btn-spinner"></span><span class="btn-text">Opening Report...</span>';
+      updateButtonState();
+
+      // Log acceptance
+      try {
+        const acceptanceData = {
+          version: TERMS_VERSION,
+          timestamp: new Date().toISOString(),
+          userAgent: navigator.userAgent.substring(0, 200),
+          method: 'clickwrap-v2'
+        };
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(acceptanceData));
+      } catch (e) {
+        console.warn('[Clickwrap] Could not save acceptance to storage');
+      }
+
+      // Hide modal with slight delay for visual feedback
+      setTimeout(hideModal, 300);
+    }
+
+    // MOBILE FIX: Bind both click and touchend events
+    acceptBtn.addEventListener('click', handleAccept);
+
+    // MOBILE FIX: touchend as backup for click failures
+    acceptBtn.addEventListener('touchend', function(e) {
+      if (!acceptBtn.disabled && !isSubmitting) {
+        handleAccept(e);
+      }
+    }, { passive: false });
+
+    // Keyboard accessibility
+    acceptBtn.addEventListener('keydown', function(e) {
+      if ((e.key === 'Enter' || e.key === ' ') && !acceptBtn.disabled) {
+        e.preventDefault();
+        handleAccept(e);
+      }
+    });
+  }
+
+  // ================================================
+  // MODAL VISIBILITY
+  // ================================================
+
+  function hideModal() {
+    modal.style.opacity = '0';
+    modal.style.transition = 'opacity 0.3s ease';
+
+    setTimeout(() => {
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+
+      // Remove blur from report content
+      const reportContent = document.querySelector('.report-content');
+      if (reportContent) {
+        reportContent.classList.remove('report-content-blurred');
+      }
+
+      // Also try alternative selectors
+      document.querySelectorAll('[data-blurred]').forEach(el => {
+        el.removeAttribute('data-blurred');
+        el.style.filter = '';
+        el.style.pointerEvents = '';
+      });
+    }, 300);
+  }
+
+  function showModal() {
+    modal.style.display = 'flex';
+    modal.style.opacity = '1';
+    document.body.style.overflow = 'hidden';
+
+    // Focus management for accessibility
+    setTimeout(() => {
+      const firstFocusable = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      if (firstFocusable) firstFocusable.focus();
+    }, 100);
+  }
+
+  // ================================================
+  // INITIALIZATION
+  // ================================================
+
+  function initialize() {
+    // Check for existing acceptance first
+    if (checkExistingAcceptance()) {
+      return;
+    }
+
+    // Show modal
+    showModal();
+
+    // Setup all detection layers
+    const hasObserver = setupIntersectionObserver();
+    setupScrollFallback();
+    checkContentFitsWithoutScroll();
+    setupSafetyTimer();
+
+    // Setup interaction handlers
+    setupCheckboxHandling();
+    setupButtonHandling();
+
+    // Initial state
+    updateButtonState();
+
+    console.log('[Clickwrap] Initialized with Intersection Observer:', hasObserver);
+  }
+
+  // Run initialization when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initialize);
+  } else {
+    initialize();
+  }
+})();
+</script>
+`;
 }
