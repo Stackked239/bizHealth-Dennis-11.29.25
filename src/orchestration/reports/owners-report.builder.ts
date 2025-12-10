@@ -103,6 +103,31 @@ import {
 import { renderRiskHeatmapFromRisks } from './components/visual/risk-heatmap.component.js';
 
 /**
+ * Safe wrapper for QUICK_REFS calls to prevent "is not a function" errors.
+ * Returns empty string if QUICK_REFS or the specific method is not available.
+ */
+function safeQuickRef(
+  methodName: keyof typeof QUICK_REFS,
+  context?: string
+): string {
+  try {
+    if (!QUICK_REFS || typeof QUICK_REFS !== 'object') {
+      logger.warn(`QUICK_REFS is not available (attempted: ${methodName})`);
+      return '';
+    }
+    const method = QUICK_REFS[methodName];
+    if (typeof method !== 'function') {
+      logger.warn(`QUICK_REFS.${methodName} is not a function`);
+      return '';
+    }
+    return method(context);
+  } catch (error) {
+    logger.error(`Error calling QUICK_REFS.${methodName}: ${error}`);
+    return '';
+  }
+}
+
+/**
  * Build insight cards from findings for the owner report
  */
 function buildOwnerInsightCards(ctx: ReportContext, maxCards: number = 6): string {
@@ -461,7 +486,7 @@ export async function buildOwnersReport(
         </div>
       </div>
 
-      ${QUICK_REFS.executiveSummary('what-this-means')}
+      ${safeQuickRef('executiveSummary', 'what-this-means')}
     </section>
 
     <!-- ================================================================
@@ -479,7 +504,7 @@ export async function buildOwnersReport(
         <div class="enhanced-chapter-summaries" style="display: flex; flex-direction: column; gap: 1rem;">
           ${enhancedChapterSummaries}
         </div>
-        ${QUICK_REFS.scorecard('chapter-performance')}
+        ${safeQuickRef('scorecard', 'chapter-performance')}
       </section>
     ` : ''}
 
@@ -521,7 +546,7 @@ export async function buildOwnersReport(
         </div>
       </div>
 
-      ${QUICK_REFS.strategicRecommendations('critical-priorities')}
+      ${safeQuickRef('strategicRecommendations', 'critical-priorities')}
     </section>
 
     <!-- ================================================================
@@ -560,7 +585,7 @@ export async function buildOwnersReport(
         </div>
       `}
 
-      ${QUICK_REFS.financialImpact('investment-roi')}
+      ${safeQuickRef('financialImpact', 'investment-roi')}
     </section>
 
     <!-- ================================================================
@@ -575,7 +600,7 @@ export async function buildOwnersReport(
             maxListItems: 6
           })}
         </div>
-        ${QUICK_REFS.roadmap('execution-overview')}
+        ${safeQuickRef('roadmap', 'execution-overview')}
       </section>
     ` : ''}
 
@@ -674,7 +699,7 @@ export async function buildOwnersReport(
         </div>
       ` : ''}
 
-      ${QUICK_REFS.riskAssessment('key-risks')}
+      ${safeQuickRef('riskAssessment', 'key-risks')}
     </section>
 
     <!-- ================================================================

@@ -732,8 +732,34 @@ function identifyQuickWins(recommendations: Recommendation[]): QuickWin[] {
 // ============================================================================
 
 /**
- * Extract risks from findings and dimensions
+ * Generate mitigation suggestion based on dimension and severity
  */
+function generateMitigationSuggestion(
+  dimensionCode: DimensionCode,
+  severity: string | number
+): string {
+  const dimensionName = DIMENSION_METADATA[dimensionCode]?.name || 'this area';
+  const isCritical = severity === 'Critical' || (typeof severity === 'number' && severity >= 4);
+
+  const mitigationTemplates: Record<DimensionCode, string> = {
+    STR: `Develop a comprehensive strategic review process. ${isCritical ? 'Engage external strategic advisors immediately.' : 'Schedule quarterly strategy sessions.'}`,
+    SAL: `Implement sales performance tracking and coaching programs. ${isCritical ? 'Review sales team structure and compensation.' : 'Optimize pipeline management processes.'}`,
+    MKT: `Conduct marketing effectiveness audit and ROI analysis. ${isCritical ? 'Reallocate marketing spend to highest-performing channels.' : 'Test new customer acquisition strategies.'}`,
+    CXP: `Establish customer feedback loops and satisfaction monitoring. ${isCritical ? 'Launch customer retention initiative.' : 'Enhance customer journey mapping.'}`,
+    OPS: `Review and optimize operational processes for efficiency. ${isCritical ? 'Conduct comprehensive process redesign.' : 'Implement continuous improvement practices.'}`,
+    FIN: `Strengthen financial controls and forecasting accuracy. ${isCritical ? 'Engage financial advisors for turnaround strategy.' : 'Improve cash flow management practices.'}`,
+    HRS: `Enhance talent management and employee engagement programs. ${isCritical ? 'Address critical retention and culture issues.' : 'Develop succession planning.'}`,
+    LDG: `Improve governance structures and leadership effectiveness. ${isCritical ? 'Conduct leadership assessment and development.' : 'Establish clearer decision-making frameworks.'}`,
+    TIN: `Accelerate technology adoption and innovation culture. ${isCritical ? 'Prioritize critical digital transformation initiatives.' : 'Build innovation capabilities systematically.'}`,
+    IDS: `Strengthen IT infrastructure and data management. ${isCritical ? 'Address cybersecurity vulnerabilities immediately.' : 'Develop data governance frameworks.'}`,
+    RMS: `Enhance risk identification and business continuity planning. ${isCritical ? 'Implement comprehensive risk management program.' : 'Regular risk assessment reviews.'}`,
+    CMP: `Strengthen compliance monitoring and policy adherence. ${isCritical ? 'Conduct compliance audit and remediation.' : 'Enhance compliance training programs.'}`,
+  };
+
+  return mitigationTemplates[dimensionCode] ||
+    `Develop targeted improvement plan for ${dimensionName}. Monitor progress through regular reviews.`;
+}
+
 function extractRisks(
   dimensions: Dimension[],
   findings: Finding[],
@@ -745,14 +771,16 @@ function extractRisks(
   const riskFindings = findings.filter(f => f.type === 'risk' || f.severity === 'Critical');
 
   for (const finding of riskFindings) {
+    const mitigation = generateMitigationSuggestion(finding.dimension_code, finding.severity);
     risks.push({
       id: `risk-${finding.id}`,
       dimension_code: finding.dimension_code,
       severity: finding.severity,
       likelihood: 'High',
       narrative: finding.narrative,
-      category: DIMENSION_METADATA[finding.dimension_code].name
-    });
+      category: DIMENSION_METADATA[finding.dimension_code].name,
+      mitigation,
+    } as Risk);
   }
 
   // Add systemic risks for very low-scoring dimensions
@@ -764,14 +792,16 @@ function extractRisks(
     );
 
     if (!existingRisk) {
+      const mitigation = generateMitigationSuggestion(dim.dimension_code, 'High');
       risks.push({
         id: `risk-systemic-${dim.dimension_code}`,
         dimension_code: dim.dimension_code,
         severity: 'High',
         likelihood: 'Medium',
         narrative: `Systemic risk identified in ${dim.name} due to critical performance level (${dim.score_overall}/100).`,
-        category: 'Systemic'
-      });
+        category: 'Systemic',
+        mitigation,
+      } as Risk);
     }
   }
 
