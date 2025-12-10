@@ -33,12 +33,44 @@ export {
 } from './report-visuals.config.js';
 export type { VisualDefinition, ReportVisualConfig } from './report-visuals.config.js';
 
-// Manager Report Recipes Configuration
+// Manager Report Section Types (discriminated union)
 export {
+  isCompanySnapshotSection,
+  isDimensionDeepDiveSection,
+  isDepartmentRoadmapSection,
+  isRiskOverviewSection,
+  isMetricsDashboardSection,
+  isManagerClosingSection,
+  isQuickWinsHighlightSection,
+  isRecommendationsSummarySection,
+  isFindingsOverviewSection,
+} from './section-types.js';
+
+export type {
+  BaseRecipeSection,
+  CompanySnapshotSection,
+  DimensionDeepDiveSection,
+  DepartmentRoadmapSection,
+  RiskOverviewSection,
+  MetricsDashboardSection,
+  ManagerClosingSection,
+  QuickWinsHighlightSection,
+  RecommendationsSummarySection,
+  FindingsOverviewSection,
+  GenericSection,
+  ManagerRecipeSection,
+  ManagerReportRecipe,
+} from './section-types.js';
+
+// Manager Report Recipes
+export {
+  OPERATIONS_MANAGER_RECIPE,
+  SALES_MARKETING_MANAGER_RECIPE,
+  FINANCIALS_MANAGER_RECIPE,
+  STRATEGY_MANAGER_RECIPE,
+  IT_TECHNOLOGY_MANAGER_RECIPE,
   MANAGER_RECIPES,
   getManagerRecipe,
   isManagerReport,
-  getAllManagerRecipes,
-  getManagerReportsByDimension,
+  getManagerReportTypes,
 } from './manager-recipes.js';
-export type { ManagerRecipe, ManagerReportSection } from './manager-recipes.js';

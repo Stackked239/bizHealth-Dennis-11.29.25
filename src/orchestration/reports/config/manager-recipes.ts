@@ -1,208 +1,467 @@
 /**
- * Manager Report Recipes Configuration
+ * Manager Report Recipes
  *
- * Defines the recipe configurations for each manager report type,
- * including target audience, relevant dimensions, and section structure.
+ * Configuration-driven recipe definitions for the 5 manager report types.
+ * Each recipe defines the sections, dimension focus, and rendering options.
  *
  * @module manager-recipes
  */
 
-import type { DimensionCode } from '../utils/index.js';
+import type { DimensionCode } from '../../../types/idm.types.js';
+import type { ManagerReportRecipe } from './section-types.js';
+
+// ============================================================================
+// OPERATIONS MANAGER REPORT
+// ============================================================================
 
 /**
- * Section types available for manager reports
+ * Operations Manager Report Recipe
+ * Focus: Operations efficiency, process optimization, technology integration
  */
-export type ManagerReportSection =
-  | 'companySnapshot'
-  | 'dimensionDeepDive'
-  | 'departmentRoadmap'
-  | 'riskOverview'
-  | 'metricsDashboard'
-  | 'managerClosing'
-  | 'adaptiveAppendix';
+export const OPERATIONS_MANAGER_RECIPE: ManagerReportRecipe = {
+  reportType: 'managersOperations',
+  title: 'Operations Manager Report',
+  subtitle: 'Your Operational Excellence & Team Performance Toolkit',
+  persona: 'Operational Excellence Coach',
+  managerType: 'operations',
+  dimensionCodes: ['OPS', 'TIN'] as DimensionCode[],
+  targetPages: { min: 8, max: 12 },
+  toneConfig: {
+    tone: 'tactical',
+    actionOriented: true,
+    includeEmpowerment: true,
+  },
+  sections: [
+    {
+      id: 'company-snapshot',
+      title: 'Company Health Snapshot',
+      type: 'companySnapshot',
+      showTrajectory: true,
+      showBenchmark: true,
+    },
+    {
+      id: 'deep-dive',
+      title: 'Operations & Technology Deep Dive',
+      type: 'dimensionDeepDive',
+      dimensionCodes: ['OPS', 'TIN'] as DimensionCode[],
+      showQuickWins: true,
+      showBenchmarks: true,
+      showSubIndicators: true,
+      maxFindings: 5,
+    },
+    {
+      id: 'quick-wins',
+      title: 'Quick Wins for Operations',
+      type: 'quickWinsHighlight',
+      dimensionCodes: ['OPS', 'TIN'] as DimensionCode[],
+      maxQuickWins: 5,
+      showChecklist: true,
+    },
+    {
+      id: 'roadmap',
+      title: 'Department Implementation Roadmap',
+      type: 'departmentRoadmap',
+      dimensionCodes: ['OPS', 'TIN'] as DimensionCode[],
+      horizonDays: 180,
+      showDependencies: false,
+      maxItemsPerPhase: 5,
+    },
+    {
+      id: 'risks',
+      title: 'Operational Risk Overview',
+      type: 'riskOverview',
+      dimensionCodes: ['OPS', 'TIN', 'RMS'] as DimensionCode[],
+      showHeatmap: true,
+      showMitigation: true,
+      maxRisks: 5,
+    },
+    {
+      id: 'metrics',
+      title: 'Key Performance Metrics',
+      type: 'metricsDashboard',
+      dimensionCodes: ['OPS', 'TIN'] as DimensionCode[],
+      showBenchmark: true,
+      showTrend: true,
+    },
+    {
+      id: 'closing',
+      title: 'Next Steps & Resources',
+      type: 'managerClosing',
+      managerType: 'operations',
+      showNextSteps: true,
+      showResources: true,
+    },
+  ],
+};
+
+// ============================================================================
+// SALES & MARKETING MANAGER REPORT
+// ============================================================================
 
 /**
- * Manager report recipe configuration
+ * Sales & Marketing Manager Report Recipe
+ * Focus: Revenue growth, customer acquisition, market positioning
  */
-export interface ManagerRecipe {
-  /** Unique report type identifier */
-  reportType: string;
-  /** Display title for the report */
-  title: string;
-  /** Subtitle shown below title */
-  subtitle: string;
-  /** Target audience description */
-  targetAudience: string;
-  /** Primary dimensions this report focuses on */
-  primaryDimensions: DimensionCode[];
-  /** Secondary/related dimensions to include */
-  secondaryDimensions: DimensionCode[];
-  /** Ordered list of sections to include */
-  sections: ManagerReportSection[];
-  /** Key focus areas for this manager type */
-  focusAreas: string[];
-}
+export const SALES_MARKETING_MANAGER_RECIPE: ManagerReportRecipe = {
+  reportType: 'managersSalesMarketing',
+  title: 'Sales & Marketing Manager Report',
+  subtitle: 'Your Revenue Growth & Customer Acquisition Playbook',
+  persona: 'Strategic Revenue Coach',
+  managerType: 'salesMarketing',
+  dimensionCodes: ['STR', 'SAL', 'MKT', 'CXP'] as DimensionCode[],
+  targetPages: { min: 8, max: 12 },
+  toneConfig: {
+    tone: 'strategic',
+    actionOriented: true,
+    includeEmpowerment: true,
+  },
+  sections: [
+    {
+      id: 'company-snapshot',
+      title: 'Company Health Snapshot',
+      type: 'companySnapshot',
+      showTrajectory: true,
+      showBenchmark: true,
+    },
+    {
+      id: 'deep-dive',
+      title: 'Growth Engine Deep Dive',
+      type: 'dimensionDeepDive',
+      dimensionCodes: ['STR', 'SAL', 'MKT', 'CXP'] as DimensionCode[],
+      showQuickWins: true,
+      showBenchmarks: true,
+      showSubIndicators: true,
+      maxFindings: 5,
+    },
+    {
+      id: 'quick-wins',
+      title: 'Revenue Quick Wins',
+      type: 'quickWinsHighlight',
+      dimensionCodes: ['STR', 'SAL', 'MKT', 'CXP'] as DimensionCode[],
+      maxQuickWins: 5,
+      showChecklist: true,
+    },
+    {
+      id: 'roadmap',
+      title: 'Revenue Growth Roadmap',
+      type: 'departmentRoadmap',
+      dimensionCodes: ['STR', 'SAL', 'MKT', 'CXP'] as DimensionCode[],
+      horizonDays: 180,
+      showDependencies: false,
+      maxItemsPerPhase: 5,
+    },
+    {
+      id: 'risks',
+      title: 'Market & Revenue Risks',
+      type: 'riskOverview',
+      dimensionCodes: ['STR', 'SAL', 'MKT', 'CXP'] as DimensionCode[],
+      showHeatmap: true,
+      showMitigation: true,
+      maxRisks: 5,
+    },
+    {
+      id: 'metrics',
+      title: 'Sales & Marketing KPIs',
+      type: 'metricsDashboard',
+      dimensionCodes: ['STR', 'SAL', 'MKT', 'CXP'] as DimensionCode[],
+      showBenchmark: true,
+      showTrend: true,
+    },
+    {
+      id: 'closing',
+      title: 'Next Steps & Resources',
+      type: 'managerClosing',
+      managerType: 'salesMarketing',
+      showNextSteps: true,
+      showResources: true,
+    },
+  ],
+};
+
+// ============================================================================
+// FINANCIALS MANAGER REPORT
+// ============================================================================
 
 /**
- * All manager report recipes
+ * Financials Manager Report Recipe
+ * Focus: Financial health, risk management, compliance
  */
-export const MANAGER_RECIPES: Record<string, ManagerRecipe> = {
-  managersOperations: {
-    reportType: 'managersOperations',
-    title: 'Operations Manager Report',
-    subtitle: 'Your Operational Excellence & Team Performance Toolkit',
-    targetAudience: 'Operations Manager, VP Operations, COO',
-    primaryDimensions: ['OPS', 'HRS'],
-    secondaryDimensions: ['TIN', 'CXP'],
-    sections: [
-      'companySnapshot',
-      'dimensionDeepDive',
-      'metricsDashboard',
-      'departmentRoadmap',
-      'riskOverview',
-      'managerClosing',
-    ],
-    focusAreas: [
-      'operational_efficiency',
-      'process_optimization',
-      'team_performance',
-      'capacity_utilization',
-    ],
+export const FINANCIALS_MANAGER_RECIPE: ManagerReportRecipe = {
+  reportType: 'managersFinancials',
+  title: 'Financials Manager Report',
+  subtitle: 'Your Financial Health & Profitability Roadmap',
+  persona: 'Financial Performance Coach',
+  managerType: 'financials',
+  dimensionCodes: ['FIN', 'RMS', 'CMP'] as DimensionCode[],
+  targetPages: { min: 8, max: 12 },
+  toneConfig: {
+    tone: 'professional',
+    actionOriented: true,
+    includeEmpowerment: true,
   },
+  sections: [
+    {
+      id: 'company-snapshot',
+      title: 'Company Health Snapshot',
+      type: 'companySnapshot',
+      showTrajectory: true,
+      showBenchmark: true,
+    },
+    {
+      id: 'deep-dive',
+      title: 'Financial Health Deep Dive',
+      type: 'dimensionDeepDive',
+      dimensionCodes: ['FIN', 'RMS', 'CMP'] as DimensionCode[],
+      showQuickWins: true,
+      showBenchmarks: true,
+      showSubIndicators: true,
+      maxFindings: 5,
+    },
+    {
+      id: 'quick-wins',
+      title: 'Financial Quick Wins',
+      type: 'quickWinsHighlight',
+      dimensionCodes: ['FIN', 'RMS', 'CMP'] as DimensionCode[],
+      maxQuickWins: 5,
+      showChecklist: true,
+    },
+    {
+      id: 'roadmap',
+      title: 'Financial Optimization Roadmap',
+      type: 'departmentRoadmap',
+      dimensionCodes: ['FIN', 'RMS', 'CMP'] as DimensionCode[],
+      horizonDays: 365,
+      showDependencies: false,
+      maxItemsPerPhase: 5,
+    },
+    {
+      id: 'risks',
+      title: 'Financial & Compliance Risks',
+      type: 'riskOverview',
+      dimensionCodes: ['FIN', 'RMS', 'CMP'] as DimensionCode[],
+      showHeatmap: true,
+      showMitigation: true,
+      maxRisks: 5,
+    },
+    {
+      id: 'metrics',
+      title: 'Financial Performance Metrics',
+      type: 'metricsDashboard',
+      dimensionCodes: ['FIN', 'RMS', 'CMP'] as DimensionCode[],
+      showBenchmark: true,
+      showTrend: true,
+    },
+    {
+      id: 'closing',
+      title: 'Next Steps & Resources',
+      type: 'managerClosing',
+      managerType: 'financials',
+      showNextSteps: true,
+      showResources: true,
+    },
+  ],
+};
 
-  managersSalesMarketing: {
-    reportType: 'managersSalesMarketing',
-    title: 'Sales & Marketing Manager Report',
-    subtitle: 'Your Revenue Growth & Customer Acquisition Playbook',
-    targetAudience: 'Sales Manager, Marketing Manager, VP Sales/Marketing, CRO',
-    primaryDimensions: ['SAL', 'MKT'],
-    secondaryDimensions: ['CXP', 'STR'],
-    sections: [
-      'companySnapshot',
-      'dimensionDeepDive',
-      'metricsDashboard',
-      'departmentRoadmap',
-      'riskOverview',
-      'managerClosing',
-    ],
-    focusAreas: [
-      'revenue_growth',
-      'pipeline_health',
-      'customer_acquisition',
-      'brand_positioning',
-    ],
-  },
+// ============================================================================
+// STRATEGY MANAGER REPORT
+// ============================================================================
 
-  managersFinancials: {
-    reportType: 'managersFinancials',
-    title: 'Finance Manager Report',
-    subtitle: 'Your Financial Health & Profitability Roadmap',
-    targetAudience: 'CFO, Controller, Finance Manager, FP&A Lead',
-    primaryDimensions: ['FIN'],
-    secondaryDimensions: ['RMS', 'CMP'],
-    sections: [
-      'companySnapshot',
-      'dimensionDeepDive',
-      'metricsDashboard',
-      'departmentRoadmap',
-      'riskOverview',
-      'managerClosing',
-    ],
-    focusAreas: [
-      'profitability',
-      'cash_flow',
-      'cost_optimization',
-      'financial_controls',
-    ],
+/**
+ * Strategy & Leadership Manager Report Recipe
+ * Focus: Strategic direction, leadership, governance
+ */
+export const STRATEGY_MANAGER_RECIPE: ManagerReportRecipe = {
+  reportType: 'managersStrategy',
+  title: 'Strategy & Leadership Manager Report',
+  subtitle: 'Your Strategic Direction & Organizational Leadership Toolkit',
+  persona: 'Strategic Leadership Coach',
+  managerType: 'strategy',
+  dimensionCodes: ['STR', 'LDG', 'RMS'] as DimensionCode[],
+  targetPages: { min: 10, max: 15 },
+  toneConfig: {
+    tone: 'strategic',
+    actionOriented: true,
+    includeEmpowerment: true,
   },
+  sections: [
+    {
+      id: 'company-snapshot',
+      title: 'Company Health Snapshot',
+      type: 'companySnapshot',
+      showTrajectory: true,
+      showBenchmark: true,
+    },
+    {
+      id: 'deep-dive',
+      title: 'Strategy & Leadership Deep Dive',
+      type: 'dimensionDeepDive',
+      dimensionCodes: ['STR', 'LDG', 'RMS'] as DimensionCode[],
+      showQuickWins: true,
+      showBenchmarks: true,
+      showSubIndicators: true,
+      maxFindings: 5,
+    },
+    {
+      id: 'quick-wins',
+      title: 'Strategic Quick Wins',
+      type: 'quickWinsHighlight',
+      dimensionCodes: ['STR', 'LDG', 'RMS'] as DimensionCode[],
+      maxQuickWins: 5,
+      showChecklist: true,
+    },
+    {
+      id: 'roadmap',
+      title: 'Strategic Initiatives Roadmap',
+      type: 'departmentRoadmap',
+      dimensionCodes: ['STR', 'LDG', 'RMS'] as DimensionCode[],
+      horizonDays: 365,
+      showDependencies: false,
+      maxItemsPerPhase: 5,
+    },
+    {
+      id: 'risks',
+      title: 'Strategic & Governance Risks',
+      type: 'riskOverview',
+      dimensionCodes: ['STR', 'LDG', 'RMS'] as DimensionCode[],
+      showHeatmap: true,
+      showMitigation: true,
+      maxRisks: 5,
+    },
+    {
+      id: 'metrics',
+      title: 'Strategic Performance Metrics',
+      type: 'metricsDashboard',
+      dimensionCodes: ['STR', 'LDG', 'RMS'] as DimensionCode[],
+      showBenchmark: true,
+      showTrend: true,
+    },
+    {
+      id: 'closing',
+      title: 'Next Steps & Resources',
+      type: 'managerClosing',
+      managerType: 'strategy',
+      showNextSteps: true,
+      showResources: true,
+    },
+  ],
+};
 
-  managersStrategy: {
-    reportType: 'managersStrategy',
-    title: 'Strategy & Leadership Manager Report',
-    subtitle: 'Your Strategic Direction & Organizational Leadership Toolkit',
-    targetAudience: 'Strategy Lead, COO, Chief of Staff, VP Strategy',
-    primaryDimensions: ['STR', 'LDG'],
-    secondaryDimensions: ['RMS'],
-    sections: [
-      'companySnapshot',
-      'dimensionDeepDive',
-      'metricsDashboard',
-      'departmentRoadmap',
-      'riskOverview',
-      'managerClosing',
-    ],
-    focusAreas: [
-      'strategic_alignment',
-      'leadership_effectiveness',
-      'governance',
-      'succession_planning',
-    ],
-  },
+// ============================================================================
+// IT & TECHNOLOGY MANAGER REPORT
+// ============================================================================
 
-  managersItTechnology: {
-    reportType: 'managersItTechnology',
-    title: 'IT & Technology Manager Report',
-    subtitle: 'Your Technology Stack & Digital Transformation Roadmap',
-    targetAudience: 'IT Manager, CTO, CIO, VP Technology',
-    primaryDimensions: ['TIN', 'IDS'],
-    secondaryDimensions: ['RMS', 'CMP'],
-    sections: [
-      'companySnapshot',
-      'dimensionDeepDive',
-      'metricsDashboard',
-      'departmentRoadmap',
-      'riskOverview',
-      'managerClosing',
-    ],
-    focusAreas: [
-      'technology_modernization',
-      'security_posture',
-      'digital_transformation',
-      'system_integration',
-    ],
+/**
+ * IT & Technology Manager Report Recipe
+ * Focus: Technology infrastructure, data security, digital transformation
+ */
+export const IT_TECHNOLOGY_MANAGER_RECIPE: ManagerReportRecipe = {
+  reportType: 'managersItTechnology',
+  title: 'IT & Technology Manager Report',
+  subtitle: 'Your Technology Stack & Digital Transformation Roadmap',
+  persona: 'Technology Transformation Coach',
+  managerType: 'itTechnology',
+  dimensionCodes: ['TIN', 'IDS', 'RMS'] as DimensionCode[],
+  targetPages: { min: 8, max: 12 },
+  toneConfig: {
+    tone: 'tactical',
+    actionOriented: true,
+    includeEmpowerment: true,
   },
+  sections: [
+    {
+      id: 'company-snapshot',
+      title: 'Company Health Snapshot',
+      type: 'companySnapshot',
+      showTrajectory: true,
+      showBenchmark: true,
+    },
+    {
+      id: 'deep-dive',
+      title: 'Technology & Systems Deep Dive',
+      type: 'dimensionDeepDive',
+      dimensionCodes: ['TIN', 'IDS', 'RMS'] as DimensionCode[],
+      showQuickWins: true,
+      showBenchmarks: true,
+      showSubIndicators: true,
+      maxFindings: 5,
+    },
+    {
+      id: 'quick-wins',
+      title: 'Technology Quick Wins',
+      type: 'quickWinsHighlight',
+      dimensionCodes: ['TIN', 'IDS', 'RMS'] as DimensionCode[],
+      maxQuickWins: 5,
+      showChecklist: true,
+    },
+    {
+      id: 'roadmap',
+      title: 'Technology Modernization Roadmap',
+      type: 'departmentRoadmap',
+      dimensionCodes: ['TIN', 'IDS', 'RMS'] as DimensionCode[],
+      horizonDays: 365,
+      showDependencies: false,
+      maxItemsPerPhase: 5,
+    },
+    {
+      id: 'risks',
+      title: 'Technology & Security Risks',
+      type: 'riskOverview',
+      dimensionCodes: ['TIN', 'IDS', 'RMS'] as DimensionCode[],
+      showHeatmap: true,
+      showMitigation: true,
+      maxRisks: 5,
+    },
+    {
+      id: 'metrics',
+      title: 'Technology Performance Metrics',
+      type: 'metricsDashboard',
+      dimensionCodes: ['TIN', 'IDS', 'RMS'] as DimensionCode[],
+      showBenchmark: true,
+      showTrend: true,
+    },
+    {
+      id: 'closing',
+      title: 'Next Steps & Resources',
+      type: 'managerClosing',
+      managerType: 'itTechnology',
+      showNextSteps: true,
+      showResources: true,
+    },
+  ],
+};
+
+// ============================================================================
+// RECIPE REGISTRY
+// ============================================================================
+
+/**
+ * All manager report recipes indexed by report type
+ */
+export const MANAGER_RECIPES: Record<string, ManagerReportRecipe> = {
+  managersOperations: OPERATIONS_MANAGER_RECIPE,
+  managersSalesMarketing: SALES_MARKETING_MANAGER_RECIPE,
+  managersFinancials: FINANCIALS_MANAGER_RECIPE,
+  managersStrategy: STRATEGY_MANAGER_RECIPE,
+  managersItTechnology: IT_TECHNOLOGY_MANAGER_RECIPE,
 };
 
 /**
- * Get a manager recipe by report type
- *
- * @param reportType - The report type key (e.g., 'managersOperations')
- * @returns The recipe configuration or undefined if not found
+ * Get recipe by report type
  */
-export function getManagerRecipe(reportType: string): ManagerRecipe | undefined {
-  return MANAGER_RECIPES[reportType];
+export function getManagerRecipe(reportType: string): ManagerReportRecipe | null {
+  return MANAGER_RECIPES[reportType] || null;
 }
 
 /**
  * Check if a report type is a manager report
- *
- * @param reportType - The report type to check
- * @returns True if this is a manager report type
  */
 export function isManagerReport(reportType: string): boolean {
   return reportType in MANAGER_RECIPES;
 }
 
 /**
- * Get all manager recipe configurations
- *
- * @returns Array of all manager recipes
+ * Get all manager report types
  */
-export function getAllManagerRecipes(): ManagerRecipe[] {
-  return Object.values(MANAGER_RECIPES);
-}
-
-/**
- * Get manager report types that include a specific dimension
- *
- * @param dimensionCode - The dimension code to search for
- * @returns Array of report types that include this dimension
- */
-export function getManagerReportsByDimension(dimensionCode: DimensionCode): string[] {
-  return Object.entries(MANAGER_RECIPES)
-    .filter(([_, recipe]) =>
-      recipe.primaryDimensions.includes(dimensionCode) ||
-      recipe.secondaryDimensions.includes(dimensionCode)
-    )
-    .map(([key]) => key);
+export function getManagerReportTypes(): string[] {
+  return Object.keys(MANAGER_RECIPES);
 }
