@@ -1,2127 +1,2284 @@
-# BizHealth AI Assessment Pipeline - Comprehensive Codebase Analysis
+# BizHealth Report Pipeline - Comprehensive Codebase Analysis
 
-**Document Version:** 2.1 (Updated)
-**Analysis Date:** 2025-12-08
-**Codebase Version:** 1.0.0
-**Total TypeScript Files:** 196
-**Lines of Code:** ~35,000+ (estimated)
-
----
-
-## Table of Contents
-
-1. [Executive Summary](#executive-summary)
-2. [Architecture Overview](#architecture-overview)
-3. [Type System Architecture](#type-system-architecture)
-4. [Phase Execution Pipeline](#phase-execution-pipeline)
-5. [Report Generation System](#report-generation-system)
-6. [Code Organization](#code-organization)
-7. [Module Dependencies](#module-dependencies)
-8. [Component Architecture](#component-architecture)
-9. [Utility Systems](#utility-systems)
-10. [Data Flow & Transformations](#data-flow--transformations)
-11. [Recent Improvements & Fixes](#recent-improvements--fixes)
-12. [Code Quality Analysis](#code-quality-analysis)
-13. [Technical Debt & Known Issues](#technical-debt--known-issues)
-14. [Development Patterns](#development-patterns)
-15. [Performance Characteristics](#performance-characteristics)
-16. [Testing Strategy](#testing-strategy)
-17. [Security Considerations](#security-considerations)
-18. [Future Architecture Recommendations](#future-architecture-recommendations)
+**Version**: 1.0.0
+**Last Updated**: December 10, 2025
+**Document Type**: Technical Architecture & Implementation Reference
 
 ---
 
 ## Executive Summary
 
-The BizHealth AI Assessment Pipeline is a sophisticated TypeScript-based system for generating comprehensive business assessment reports using Claude AI. The system processes business questionnaire data through a **6-phase pipeline** (Phase 0-5), generating **17 different report types** with rich visualizations, branding, and legal compliance features.
+This document provides a complete technical analysis of the BizHealth Report Pipeline codebase - a sophisticated multi-phase business intelligence system that transforms raw questionnaire data into comprehensive HTML reports through AI-powered analysis.
 
-### Key Metrics
-
-| Metric | Value |
-|--------|-------|
-| Total TypeScript Files | 196 |
-| Phase Orchestrators | 6 |
-| Report Builders | 8 |
-| Visual Components | 40 |
-| Utility Modules | 18 |
-| IDM Type Definitions | 889 lines |
-| Report Types Generated | 17 |
-| Supported Chapters | 4 |
-| Assessed Dimensions | 12 |
-
-### Architecture Highlights
-
-- **Strict TypeScript**: Full type safety with `strict: true` mode
-- **Zod Validation**: Runtime schema validation for all data structures
-- **Modular Design**: Clear separation of concerns across phases and components
-- **ESM Modules**: Modern ES2022 module system with bundler resolution
-- **Rich Visualizations**: D3.js server-side rendering for charts and gauges
-- **Legal Compliance**: Clickwrap modal with full-screen terms acceptance
-- **Brand Customization**: Flexible branding system for white-labeling
+**Key Statistics:**
+- **Total Lines of Code**: ~50,000+ lines
+- **Languages**: TypeScript (99%), Shell scripts (1%)
+- **Phases**: 6 (Phase 0-5)
+- **Report Types**: 17 different audience-specific reports
+- **Report Builders**: 9 builder files
+- **Largest File**: comprehensive-report.builder.ts (3,224 lines)
+- **Generated Output Size**: ~3MB per run (17 HTML files + metadata)
 
 ---
 
-## Architecture Overview
+## Table of Contents
 
-### System Architecture Diagram
-
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                        BizHealth Pipeline                           │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                     │
-│  [Webhook Input] → [Phase 0] → [Phase 1] → [Phase 2] → [Phase 3]  │
-│                        ↓           ↓           ↓           ↓        │
-│                    Normalize   Batch API   Deep Dive   Synthesis   │
-│                                                          ↓          │
-│                                                    [Phase 4]        │
-│                                                    IDM Compile      │
-│                                                          ↓          │
-│                                                    [Phase 5]        │
-│                                                    17 Reports       │
-└─────────────────────────────────────────────────────────────────────┘
-```
-
-### Core Architecture Principles
-
-1. **Pipeline-Based Processing**: Sequential phases with clear inputs/outputs
-2. **Canonical Data Model (IDM)**: Single source of truth for all report generation
-3. **Type-First Design**: Comprehensive TypeScript types drive implementation
-4. **Validation at Boundaries**: Zod schemas validate all external data
-5. **Separation of Concerns**: Clear boundaries between data, logic, and presentation
-
-### Technology Stack
-
-**Runtime & Language**
-- Node.js (ES2022)
-- TypeScript 5.3.3 (strict mode)
-- tsx for execution
-
-**AI & API**
-- Anthropic Claude SDK (@anthropic-ai/sdk ^0.32.1)
-- Claude Opus 4 (default model: claude-opus-4-20250514)
-- Batch API for parallel analysis
-
-**Data & Validation**
-- Zod 3.25.76 (runtime schema validation)
-- PostgreSQL with pg ^8.11.3 (optional persistence)
-- UUID for unique identifiers
-
-**Visualization & Rendering**
-- D3.js (server-side SVG generation)
-- Canvas 2.11.2 (for image rendering)
-- Chart.js 4.4.1 with chartjs-node-canvas 4.1.6
-- Marked 17.0.1 (markdown parsing)
-
-**Development & Testing**
-- Vitest 1.1.0 (test framework)
-- @vitest/coverage-v8 1.1.0 (code coverage)
-- ESLint & Prettier (code quality)
-- tsx 4.7.0 (TypeScript execution)
-
-**Utilities**
-- Pino 8.16.2 (structured logging)
-- dotenv 16.3.1 (environment configuration)
-- glob 10.3.10 (file pattern matching)
+1. [Architecture Overview](#1-architecture-overview)
+2. [Directory Structure Deep Dive](#2-directory-structure-deep-dive)
+3. [Core System Components](#3-core-system-components)
+4. [Phase Orchestrators](#4-phase-orchestrators)
+5. [Report Generation System](#5-report-generation-system)
+6. [Data Structures & Type System](#6-data-structures--type-system)
+7. [API Integration Layer](#7-api-integration-layer)
+8. [Utility Systems](#8-utility-systems)
+9. [Code Patterns & Conventions](#9-code-patterns--conventions)
+10. [Performance & Optimization](#10-performance--optimization)
+11. [Security & Error Handling](#11-security--error-handling)
+12. [Testing Architecture](#12-testing-architecture)
+13. [Recent Fixes & Evolution](#13-recent-fixes--evolution)
+14. [Development Guidelines](#14-development-guidelines)
 
 ---
 
-## Type System Architecture
+## 1. Architecture Overview
 
-### IDM (Insights Data Model) - The Core Type System
+### 1.1 High-Level System Architecture
 
-**Location:** `src/types/idm.types.ts` (889 lines)
+The BizHealth pipeline implements a **linear multi-stage processing architecture** where each phase produces JSON output consumed by subsequent phases.
 
-The IDM is the canonical data model that serves as the single source of truth for all report generation. It defines a comprehensive type hierarchy for business assessment data.
+\`\`\`
+┌─────────────────────────────────────────────────────────────────────────┐
+│                      BIZHEALTH REPORT PIPELINE                          │
+│                                                                         │
+│  Input: Webhook JSON (questionnaire + company profile)                 │
+│         │                                                               │
+│         ▼                                                               │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  │
+│  │   Phase 0   │→ │   Phase 1   │→ │   Phase 2   │→ │   Phase 3   │  │
+│  │ Normalize   │  │   Tier 1    │  │   Tier 2    │  │   Tier 3    │  │
+│  │   Data      │  │  Analysis   │  │  Synthesis  │  │  Narrative  │  │
+│  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────┘  │
+│         │                 │                 │                 │        │
+│         ▼                 ▼                 ▼                 ▼        │
+│   phase0.json      phase1.json      phase2.json      phase3.json      │
+│         │                 │                 │                 │        │
+│         └─────────────────┴─────────────────┴─────────────────┘        │
+│                             │                                          │
+│                             ▼                                          │
+│                    ┌─────────────┐                                     │
+│                    │   Phase 4   │                                     │
+│                    │ Build IDM   │                                     │
+│                    └─────────────┘                                     │
+│                             │                                          │
+│                             ▼                                          │
+│                     idm_output.json                                    │
+│                             │                                          │
+│                             ▼                                          │
+│                    ┌─────────────┐                                     │
+│                    │   Phase 5   │                                     │
+│                    │   Generate  │                                     │
+│                    │   Reports   │                                     │
+│                    └─────────────┘                                     │
+│                             │                                          │
+│                             ▼                                          │
+│                  17 HTML Reports + Manifest                            │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+\`\`\`
 
-#### Type Hierarchy
+### 1.2 Design Patterns
 
-```typescript
-IDM (Root)
-├── metadata: IDMMetadata
-│   ├── assessmentRunId: string
-│   ├── companyProfile: CompanyProfile
-│   ├── generatedAt: string
-│   └── version: string
+**1. Pipeline Pattern**
+- Sequential phases with clear inputs/outputs
+- Each phase is idempotent (can be re-run safely)
+- File-based communication between phases
+
+**2. Factory Pattern**
+- Report builders registered in configuration
+- Dynamic instantiation based on enabled reports
+- Chart generators selected by data type
+
+**3. Builder Pattern**
+- Complex HTML construction through composition
+- Incremental section building
+- Component-based architecture
+
+**4. Strategy Pattern**
+- Multiple rendering strategies per report type
+- Batch vs synchronous API strategies
+- Conditional report sections based on data
+
+**5. Repository Pattern**
+- Database abstraction layer
+- File system operations abstracted
+- Consistent data access interface
+
+### 1.3 Key Architectural Decisions
+
+**Decision 1: Why File-Based Communication?**
+- **Rationale**: Resilience and debuggability
+- **Benefits**: 
+  - Each phase output is visible and inspectable
+  - Phases can be re-run independently
+  - Easy troubleshooting and recovery
+  - No in-memory state requirements
+
+**Decision 2: Why Batch API for Phases 1 & 3?**
+- **Rationale**: Cost optimization (50% savings)
+- **Trade-off**: 24-hour processing window
+- **Benefits**: Significant cost savings for non-urgent processing
+
+**Decision 3: Why 17 Different Reports?**
+- **Rationale**: Audience-specific content delivery
+- **Benefits**:
+  - Each stakeholder gets relevant information
+  - Reduces cognitive load (no information overload)
+  - Enables role-based access control
+
+**Decision 4: Why SVG Charts Instead of JavaScript Libraries?**
+- **Rationale**: Portability and print quality
+- **Benefits**:
+  - No external dependencies
+  - Works in all browsers (even with JS disabled)
+  - Perfect print rendering
+  - Accessible markup
+
+---
+
+## 2. Directory Structure Deep Dive
+
+### 2.1 Top-Level Structure
+
+\`\`\`
+workflow-export/
+├── src/                          # Source code (TypeScript)
+├── output/                       # Pipeline outputs (JSON + HTML)
+├── node_modules/                 # Dependencies (gitignored)
+├── dist/                         # Compiled JavaScript (gitignored)
+├── package.json                  # NPM dependencies
+├── tsconfig.json                 # TypeScript configuration
+├── README.md                     # User documentation
+├── CODEBASE_ANALYSIS.md          # This document
+└── sample_webhook.json           # Sample input data
+\`\`\`
+
+### 2.2 Source Code Organization
+
+\`\`\`
+src/
+├── __tests__/                     # Jest test files
+│   ├── reports/                   # Report-specific tests
+│   │   └── report-snapshots.test.ts
+│   ├── phase0.test.ts
+│   ├── phase5-visual-validation.test.ts
+│   └── beta-mode.test.ts
 │
-├── scores_summary: ScoresSummary
-│   ├── overall_health_score: number (0-100)
-│   ├── descriptor: 'Excellence' | 'Proficiency' | 'Attention' | 'Critical'
-│   ├── percentile_rank?: number
-│   └── score_components: ScoreComponents
+├── api/                           # External API clients
+│   ├── claude-client.ts           # Anthropic Claude API
+│   └── batch-api.ts               # Batch processing API
 │
-├── chapters: Record<ChapterCode, Chapter>
-│   └── Chapter (GE | PH | PL | RS)
-│       ├── code: ChapterCode
-│       ├── name: string
-│       ├── score: number
-│       ├── dimensions: Dimension[]
-│       ├── findings: Finding[]
-│       └── recommendations: Recommendation[]
+├── config/                        # Configuration files
+│   └── reports.config.ts          # Report definitions
 │
-├── quick_wins: QuickWin[]
-├── risks: Risk[]
-├── roadmap: Roadmap
-└── narrative_snippets: Record<string, string>
-```
+├── contracts/                     # Interface contracts
+│   └── visualization.contract.ts  # Visualization interfaces
+│
+├── data/                          # Static data files
+│   └── question-mappings.json     # Questionnaire mappings
+│
+├── data-transformation/           # Data transformation utilities
+│   ├── normalizer.ts
+│   └── consolidator.ts
+│
+├── database/                      # Database layer
+│   ├── db-client.ts               # PostgreSQL client
+│   ├── queries.ts                 # SQL queries
+│   ├── types.ts                   # Database types
+│   └── index.ts                   # Exports
+│
+├── orchestration/                 # Core pipeline orchestrators
+│   ├── phase0-orchestrator.ts     # Phase 0: Normalization
+│   ├── phase1-orchestrator.ts     # Phase 1: Tier 1 Analysis
+│   ├── phase2-orchestrator.ts     # Phase 2: Tier 2 Synthesis
+│   ├── phase3-orchestrator.ts     # Phase 3: Tier 3 Narrative
+│   ├── phase4-orchestrator.ts     # Phase 4: IDM Generation
+│   ├── phase5-orchestrator.ts     # Phase 5: Report Generation
+│   └── reports/                   # Report generation subsystem
+│       ├── comprehensive-report.builder.ts (3,224 lines)
+│       ├── owners-report.builder.ts (1,780 lines)
+│       ├── recipe-report.builder.ts (1,494 lines)
+│       ├── executive-brief.builder.ts (1,322 lines)
+│       ├── visualization-renderer.service.ts (620 lines)
+│       ├── manager-report.builder.ts (610 lines)
+│       ├── deep-dive-report.builder.ts (482 lines)
+│       ├── financial-report.builder.ts (398 lines)
+│       ├── risk-report.builder.ts (382 lines)
+│       ├── roadmap-report.builder.ts (346 lines)
+│       ├── quick-wins-report.builder.ts (300 lines)
+│       ├── report-post-processor.ts (202 lines)
+│       ├── html-template.ts (1,623 lines)
+│       ├── index.ts (39 lines)
+│       ├── charts/                # Chart generation
+│       │   ├── generators/        # Chart factories
+│       │   ├── d3/                # D3.js implementations
+│       │   └── types/             # Chart type definitions
+│       ├── components/            # Reusable components
+│       │   ├── cards/             # Card components
+│       │   ├── legal/             # Legal components
+│       │   ├── sections/          # Section templates
+│       │   └── visual/            # Visual components
+│       ├── config/                # Report configuration
+│       ├── constants/             # Constants
+│       ├── integration/           # Integration utilities
+│       ├── styles/                # CSS styling
+│       ├── utils/                 # Report utilities
+│       └── validation/            # Report validation
+│
+├── prompts/                       # AI prompt templates
+│   ├── parsers/                   # Response parsers
+│   ├── schemas/                   # JSON schemas
+│   ├── shared/                    # Shared components
+│   ├── templates/                 # Base templates
+│   ├── tier1/                     # Phase 1 prompts
+│   └── tier2/                     # Phase 2 prompts
+│
+├── qa/                            # Quality assurance
+│   ├── __tests__/                 # QA tests
+│   ├── fixtures/                  # Test data
+│   ├── helpers/                   # QA utilities
+│   ├── scripts/                   # QA automation
+│   ├── phase4-safety-patches.ts   # Phase 4 validation
+│   ├── phase4-validation.ts       # IDM validation
+│   └── report-qa-harness.ts       # Report QA framework
+│
+├── scripts/                       # Utility scripts
+│   └── render-pdf.ts              # PDF rendering
+│
+├── services/                      # External services
+│   └── email-service.ts           # Email delivery
+│
+├── types/                         # TypeScript type definitions
+│   ├── idm.types.ts               # IDM structure
+│   ├── report.types.ts            # Report structures
+│   ├── report-content.types.ts    # Content types
+│   ├── webhook.types.ts           # Webhook payload
+│   ├── normalized.types.ts        # Phase 0 types
+│   ├── recipe.types.ts            # Recipe system
+│   ├── visualization.types.ts     # Chart types
+│   ├── questionnaire.types.ts     # Questionnaire types
+│   ├── company-profile.types.ts   # Company types
+│   └── raw-input.types.ts         # Raw input types
+│
+├── utils/                         # Global utilities
+│   ├── logger.ts                  # Logging system
+│   ├── safety.utils.ts            # Safe operations
+│   ├── errors.ts                  # Error handling
+│   ├── security.ts                # Security utilities
+│   ├── benchmark-calculator.ts    # Performance metrics
+│   ├── recipe-validator.ts        # Recipe validation
+│   └── phase-consolidator.ts      # Phase consolidation
+│
+├── validation/                    # Global validation
+│   └── schema-validator.ts        # JSON schema validation
+│
+├── visualization/                 # Visualization utilities
+│   ├── components/
+│   │   └── gauge.ts               # Gauge charts
+│   ├── ascii-detector.ts          # ASCII art detection
+│   ├── integration.ts             # Visualization integration
+│   └── index.ts                   # Exports
+│
+├── phase0-index.ts                # Phase 0 entry point
+└── run-pipeline.ts                # Main entry point (CLI)
+\`\`\`
 
-#### Framework Structure
+### 2.3 Key Directory Responsibilities
 
-**4 Chapters:**
-- `GE` - Growth Engine
-- `PH` - Performance & Health
-- `PL` - People & Leadership
-- `RS` - Resilience & Safeguards
-
-**12 Dimensions:**
-```typescript
-Growth Engine (GE):
-  - STR: Strategy
-  - SAL: Sales
-  - MKT: Marketing
-  - CXP: Customer Experience
-
-Performance & Health (PH):
-  - OPS: Operations
-  - FIN: Financials
-
-People & Leadership (PL):
-  - HRS: Human Resources
-  - LDG: Leadership & Governance
-
-Resilience & Safeguards (RS):
-  - TIN: Technology & Innovation
-  - IDS: IT, Data & Systems
-  - RMS: Risk Management & Sustainability
-  - CMP: Compliance
-```
-
-#### Zod Schema Validation
-
-Every IDM type has a corresponding Zod schema for runtime validation:
-
-```typescript
-// Example: Dimension Schema
-const DimensionSchema = z.object({
-  code: DimensionCodeSchema,
-  name: z.string(),
-  description: z.string(),
-  score: z.number().min(0).max(100),
-  sub_indicators: z.array(SubIndicatorSchema),
-  findings: z.array(FindingSchema).optional(),
-  recommendations: z.array(RecommendationSchema).optional(),
-  benchmarks: BenchmarkSchema.optional(),
-});
-```
-
-**Validation Benefits:**
-- Runtime type safety beyond compile-time checks
-- Automatic error reporting with clear messages
-- Safe handling of API responses and external data
-- Self-documenting data contracts
-
-#### Score Band System
-
-```typescript
-type ScoreBand = 'Excellence' | 'Proficiency' | 'Attention' | 'Critical';
-
-Score Ranges:
-  Excellence:   80-100 (Green)
-  Proficiency:  60-79  (Blue)
-  Attention:    40-59  (Yellow)
-  Critical:     0-39   (Red)
-```
-
-### Report Types System
-
-**Location:** `src/types/report.types.ts`
-
-Defines all report-specific types and configurations:
-
-```typescript
-// Phase 5 Report Types (17 total)
-type Phase5ReportType =
-  | 'comprehensive'
-  | 'owner'
-  | 'executiveBrief'
-  | 'quickWins'
-  | 'risk'
-  | 'roadmap'
-  | 'financial'
-  | 'deepDive:growthEngine'
-  | 'deepDive:performanceHealth'
-  | 'deepDive:peopleLeadership'
-  | 'deepDive:resilienceSafeguards'
-  | 'employees'
-  | 'managersOperations'
-  | 'managersSalesMarketing'
-  | 'managersFinancials'
-  | 'managersStrategy'
-  | 'managersItTechnology';
-```
-
-**Key Report Type Structures:**
-
-- `ReportContext` - Complete context for report generation
-- `ReportCompanyProfile` - Company information
-- `ReportOverallHealth` - Overall health scores and status
-- `ReportChapter` - Chapter-level analysis data
-- `ReportDimension` - Dimension-level details
-- `ReportFinding` - Individual finding with evidence
-- `ReportRecommendation` - Actionable recommendation
-- `ReportRisk` - Risk assessment with severity
-- `ReportQuickWin` - Low-effort high-impact opportunities
-- `BrandConfig` - Branding and white-label configuration
-
-### Webhook Payload Types
-
-**Location:** `src/types/webhook.types.ts`
-
-Defines the input contract for the pipeline:
-
-```typescript
-interface WebhookPayload {
-  assessment_run_id: string;
-  business_overview: BusinessOverview;
-  questionnaire_responses: QuestionnaireResponse[];
-  submission_metadata: SubmissionMetadata;
-}
-```
+| Directory | Lines of Code | Primary Responsibility |
+|-----------|---------------|------------------------|
+| `src/orchestration/` | ~15,000 | Pipeline orchestration, phase coordination |
+| `src/orchestration/reports/` | ~12,000 | Report generation, HTML building |
+| `src/types/` | ~3,000 | TypeScript type system |
+| `src/prompts/` | ~5,000 | AI prompt engineering |
+| `src/api/` | ~1,500 | External API communication |
+| `src/qa/` | ~2,000 | Quality assurance, validation |
+| `src/utils/` | ~1,500 | Shared utilities |
+| `src/database/` | ~800 | Data persistence |
+| `src/visualization/` | ~500 | Chart generation |
 
 ---
 
-## Phase Execution Pipeline
+## 3. Core System Components
 
-### Phase 0: Raw Capture & Normalization
+### 3.1 Main Entry Point: run-pipeline.ts
 
-**Location:** `src/orchestration/phase0-orchestrator.ts`
-**Purpose:** Normalize webhook data and extract company profile
-**Duration:** ~50-100ms
-**No API Calls**
+**Purpose**: CLI interface and pipeline orchestration coordinator
+**Lines of Code**: ~500 lines
+**Key Responsibilities**:
+1. Parse command-line arguments
+2. Load webhook data (from file or database)
+3. Execute phases sequentially
+4. Handle errors and cleanup
 
-**Key Operations:**
-1. Validate webhook payload against Zod schema
-2. Extract company profile from business overview
-3. Normalize questionnaire responses
-4. Map responses to dimension codes
-5. Create normalized data structures for Phase 1
+**CLI Interface:**
 
-**Outputs:**
-- `output/phase0_output.json`
-- Validated company profile
-- Normalized questionnaire responses
-
-### Phase 1: Cross-functional AI Analyses
-
-**Location:** `src/orchestration/phase1-orchestrator.ts`
-**Purpose:** Run 10 parallel AI analyses via Anthropic Batch API
-**Duration:** ~30-60 seconds (batch processing)
-**API:** Anthropic Batch API
-
-**Analysis Types (10 total):**
-```typescript
-const analyses = [
-  'dimension_analysis',      // Analyze all 12 dimensions
-  'competitive_positioning', // Market and competitive analysis
-  'operational_efficiency',  // Operations and processes
-  'financial_health',       // Financial metrics and health
-  'growth_potential',       // Growth opportunities
-  'risk_assessment',        // Risk identification
-  'technology_readiness',   // Tech stack and innovation
-  'people_culture',         // HR and culture
-  'customer_focus',         // Customer experience
-  'strategic_coherence',    // Strategy alignment
-];
-```
-
-**Process:**
-1. Create 10 batch jobs with specialized prompts
-2. Submit to Anthropic Batch API
-3. Poll for completion (30s intervals)
-4. Collect and validate results
-5. Error handling for partial failures
-
-**Outputs:**
-- `output/phase1_output.json`
-- 10 AI-generated analyses
-- Metadata: tokens, duration, success rates
-
-### Phase 2: Deep-dive Cross-analysis
-
-**Location:** `src/orchestration/phase2-orchestrator.ts`
-**Purpose:** Synthesize Phase 1 results into chapter-level insights
-**Duration:** ~20-40 seconds
-**API:** Anthropic Messages API
-
-**Process:**
-1. Load Phase 1 results
-2. Group analyses by chapter (GE, PH, PL, RS)
-3. Generate deep-dive analysis for each chapter (4 calls)
-4. Cross-reference findings across chapters
-5. Identify patterns and interdependencies
-
-**Outputs:**
-- `output/phase2_output.json`
-- 4 chapter deep-dive analyses
-- Cross-chapter insights
-
-### Phase 3: Executive Synthesis
-
-**Location:** `src/orchestration/phase3-orchestrator.ts`
-**Purpose:** Generate executive-level summary and overall health score
-**Duration:** ~15-30 seconds
-**API:** Anthropic Messages API
-
-**Process:**
-1. Load Phase 1 and Phase 2 results
-2. Calculate overall health score (0-100)
-3. Determine health descriptor (Excellence/Proficiency/Attention/Critical)
-4. Generate executive summary
-5. Prioritize top risks and quick wins
-6. Create strategic roadmap
-
-**Outputs:**
-- `output/phase3_output.json`
-- Overall health score
-- Executive summary
-- Prioritized action items
-
-### Phase 4: Final Compilation & IDM Generation
-
-**Location:** `src/orchestration/phase4-orchestrator.ts`
-**Purpose:** Consolidate all phases into canonical IDM
-**Duration:** ~100-200ms
-**No API Calls** (pure data transformation)
-
-**IDM Consolidation Process:**
-
-```typescript
-// Location: src/orchestration/idm-consolidator.ts
-
-function consolidateIDM(input: IDMConsolidatorInput): IDMConsolidatorResult {
-  // 1. Extract metadata from Phase 0
-  const metadata = buildMetadata(input.companyProfile, input.assessmentRunId);
-
-  // 2. Build scores summary from Phase 3
-  const scoresSummary = buildScoresSummary(input.phase3Results);
-
-  // 3. Construct chapters from Phase 1 + Phase 2
-  const chapters = buildChapters(input.phase1Results, input.phase2Results);
-
-  // 4. Extract quick wins from Phase 3
-  const quickWins = extractQuickWins(input.phase3Results);
-
-  // 5. Compile risks from all phases
-  const risks = compileRisks(input.phase1Results, input.phase2Results, input.phase3Results);
-
-  // 6. Build roadmap from Phase 3
-  const roadmap = buildRoadmap(input.phase3Results);
-
-  // 7. Extract narrative snippets
-  const narrativeSnippets = extractNarratives(input);
-
-  // 8. Validate complete IDM
-  const validationResult = IDMSchema.safeParse(idm);
-
-  return {
-    idm,
-    validationPassed: validationResult.success,
-    validationErrors: validationResult.error?.issues,
-  };
+\`\`\`typescript
+interface CLIArgs {
+  webhookFile?: string;       // Path to webhook JSON
+  startPhase?: number;        // Starting phase (0-5)
+  endPhase?: number;          // Ending phase (0-5)
+  phase?: string;             // Shorthand: "4-5" or "all"
+  skipDb?: boolean;           // Skip database, use file
+  verbose?: boolean;          // Verbose logging
 }
-```
+\`\`\`
 
-**Outputs:**
-- `output/phase4_output.json`
-- `output/idm_output.json` (canonical IDM)
-- Validation report
+**Usage Examples:**
 
-### Phase 5: Report Generation
+\`\`\`bash
+# Run entire pipeline (all phases)
+node --import tsx src/run-pipeline.ts sample_webhook.json
 
-**Location:** `src/orchestration/phase5-orchestrator.ts`
-**Purpose:** Generate all 17 HTML reports from IDM
-**Duration:** ~200-500ms
-**No API Calls** (pure templating)
+# Run specific phase range
+node --import tsx src/run-pipeline.ts sample_webhook.json --phase=4-5
 
-**Report Generation Architecture:**
+# Run single phase
+node --import tsx src/run-pipeline.ts --start-phase 5 --end-phase 5
 
-```typescript
-// Report Builder Registry
-const REPORT_BUILDERS: Record<Phase5ReportType, ReportBuilder> = {
-  comprehensive: buildComprehensiveReport,
-  owner: buildOwnersReport,
-  executiveBrief: buildExecutiveBrief,
-  quickWins: buildQuickWinsReport,
-  risk: buildRiskReport,
-  roadmap: buildRoadmapReport,
-  financial: buildFinancialReport,
-  'deepDive:growthEngine': (ctx, opts) => buildDeepDiveReport(ctx, opts, 'GE'),
-  'deepDive:performanceHealth': (ctx, opts) => buildDeepDiveReport(ctx, opts, 'PH'),
-  'deepDive:peopleLeadership': (ctx, opts) => buildDeepDiveReport(ctx, opts, 'PL'),
-  'deepDive:resilienceSafeguards': (ctx, opts) => buildDeepDiveReport(ctx, opts, 'RS'),
-  employees: buildEmployeesReport,
-  managersOperations: buildManagersOperationsReport,
-  managersSalesMarketing: buildManagersSalesMarketingReport,
-  managersFinancials: buildManagersFinancialsReport,
-  managersStrategy: buildManagersStrategyReport,
-  managersItTechnology: buildManagersItTechnologyReport,
-};
-```
+# Skip database (use file-based webhook)
+node --import tsx src/run-pipeline.ts sample_webhook.json --skip-db
 
-**Process:**
-1. Load IDM from Phase 4
-2. Create report context from IDM
-3. For each report type:
-   - Apply report-specific builder
-   - Render visualizations
-   - Apply branding
-   - Inject legal compliance components
-   - Generate HTML
-4. Calculate quality metrics
-5. Write report files and manifest
+# Verbose logging
+node --import tsx src/run-pipeline.ts sample_webhook.json --verbose
+\`\`\`
 
-**Outputs:**
-- `output/reports/{runId}/{reportType}.html` (17 files)
-- `output/reports/{runId}/{reportType}.meta.json` (17 files)
-- `output/reports/{runId}/manifest.json`
-- `output/phase5_output.json` (quality metrics)
+**Execution Flow:**
 
-### Phase Orchestration Summary
-
-| Phase | Name | Duration | API Calls | Output Size | Primary Purpose |
-|-------|------|----------|-----------|-------------|-----------------|
-| 0 | Normalization | 50-100ms | 0 | ~50KB | Data validation |
-| 1 | Analysis | 30-60s | 10 (batch) | ~500KB | Dimensional analysis |
-| 2 | Deep Dive | 20-40s | 4 | ~300KB | Chapter synthesis |
-| 3 | Synthesis | 15-30s | 1 | ~200KB | Executive summary |
-| 4 | Compilation | 100-200ms | 0 | ~800KB | IDM generation |
-| 5 | Reports | 200-500ms | 0 | ~10MB | HTML reports |
-
-**Total Pipeline Duration:** ~70-130 seconds (including batch API wait time)
-
----
-
-## Report Generation System
-
-### Report Builder Architecture
-
-**Location:** `src/orchestration/reports/`
-
-The report generation system follows a **builder pattern** where each report type has a dedicated builder function that transforms the IDM into formatted HTML.
-
-#### Core Report Builders (8 files)
-
-1. **Comprehensive Report** (`comprehensive-report.builder.ts`)
-   - Full assessment report (300-400 pages)
-   - All dimensions, findings, recommendations
-   - Complete visualizations and narratives
-   - Target audience: Detailed analysis stakeholders
-
-2. **Owners Report** (`owners-report.builder.ts`)
-   - Business owner executive dashboard
-   - High-level health snapshot
-   - Key decisions and priorities
-   - Target audience: Business owners/CEOs
-
-3. **Executive Brief** (`executive-brief.builder.ts`)
-   - 2-3 page executive summary
-   - Overall health gauge
-   - Top priorities and quick wins
-   - Target audience: C-level executives
-
-4. **Quick Wins Report** (`quick-wins-report.builder.ts`)
-   - Low-effort, high-impact opportunities
-   - Implementation timelines
-   - ROI estimates
-   - Target audience: Operations managers
-
-5. **Risk Report** (`risk-report.builder.ts`)
-   - Risk heatmap and matrix
-   - Severity and probability analysis
-   - Mitigation strategies
-   - Target audience: Risk managers/CFOs
-
-6. **Roadmap Report** (`roadmap-report.builder.ts`)
-   - Implementation timeline
-   - Phase-based execution plan
-   - Dependencies and milestones
-   - Target audience: Project managers
-
-7. **Financial Report** (`financial-report.builder.ts`)
-   - Financial impact analysis
-   - Cost-benefit analysis
-   - ROI projections
-   - Target audience: CFOs/Financial teams
-
-8. **Deep Dive Report** (`deep-dive-report.builder.ts`)
-   - Chapter-specific detailed analysis (4 variations)
-   - Generates reports for GE, PH, PL, RS
-   - In-depth dimension analysis
-   - Target audience: Department heads
-
-#### Recipe-Based Reports
-
-**Location:** `recipe-report.builder.ts`
-
-Recipe-based reports use a **declarative configuration approach** where report structure is defined in JSON recipes rather than imperative code.
-
-**Recipe Configuration:** `src/orchestration/reports/config/report-recipes/`
-
-```typescript
-// Recipe structure example
-interface ReportRecipe {
-  reportType: Phase5ReportType;
-  title: string;
-  sections: ReportSection[];
-  visualizations?: VisualizationConfig[];
-  filters?: DataFilter[];
-}
-
-// Generated recipe-based reports (6 total)
-const recipeReports = [
-  'employees',                 // Employee business health summary
-  'managersOperations',        // Operations manager focus
-  'managersSalesMarketing',    // Sales/marketing manager focus
-  'managersFinancials',        // Financial manager focus
-  'managersStrategy',          // Strategy manager focus
-  'managersItTechnology',      // IT/tech manager focus
-];
-```
-
-**Benefits of Recipe Approach:**
-- **Declarative**: Report structure defined in configuration
-- **Reusable**: Common sections shared across reports
-- **Maintainable**: Change recipe, not code
-- **Scalable**: Add new reports without new builders
-
-### Report Context Construction
-
-Every report is generated from a `ReportContext` object derived from the IDM:
-
-```typescript
-function buildReportContext(idm: IDM, brand?: BrandConfig): ReportContext {
-  return {
-    metadata: idm.metadata,
-    companyProfile: transformCompanyProfile(idm.metadata.companyProfile),
-    overallHealth: transformOverallHealth(idm.scores_summary),
-    chapters: transformChapters(idm.chapters),
-    quickWins: idm.quick_wins,
-    risks: idm.risks,
-    roadmap: idm.roadmap,
-    narrativeSnippets: idm.narrative_snippets,
-    brand: { ...DEFAULT_BRAND, ...brand },
-    legalAccess: buildLegalAccessConfig(),
-  };
-}
-```
-
-### Report Template System
-
-Reports use a **string-based templating approach** with embedded HTML, CSS, and JavaScript:
-
-```typescript
-function buildComprehensiveReport(
-  context: ReportContext,
-  options: ReportRenderOptions
-): string {
-  const {
-    brand,
-    companyProfile,
-    overallHealth,
-    chapters,
-  } = context;
-
-  return `
-    <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        ${renderHead(brand, 'Comprehensive Assessment Report')}
-        ${renderStyles()}
-      </head>
-      <body>
-        ${renderCoverPage(companyProfile, brand)}
-        ${renderClickwrapModal(brand)}
-        ${renderTableOfContents()}
-        ${renderExecutiveSummary(overallHealth)}
-        ${renderChapters(chapters, brand)}
-        ${renderAppendices()}
-        ${renderLegalDisclaimers()}
-      </body>
-    </html>
-  `;
-}
-```
-
-### Report Quality Metrics
-
-**Location:** `src/orchestration/phase5-orchestrator.ts` (lines 90-111)
-
-Every report tracks quality metrics:
-
-```typescript
-interface ReportQualityMetrics {
-  svgCount: number;           // Target: 50+ visualizations
-  boldCount: number;          // Target: <200 bold elements
-  dividerCount: number;       // Target: <30 dividers
-  listItemCount: number;      // Engagement metric
-  tableCount: number;         // Data presentation count
-  pageEstimate: number;       // Estimated printed pages
-  wordCount: number;          // Content volume
-  meetsTargets: {
-    visualizations: boolean;  // svgCount >= 50
-    boldElements: boolean;    // boldCount < 200
-    dividers: boolean;        // dividerCount < 30
-  };
-}
-```
-
-**Quality Validation Process:**
-
-1. **HTML Parsing**: Parse generated HTML with JSDOM
-2. **Element Counting**: Count SVG, bold, divider, list, table elements
-3. **Word Count**: Calculate total words in text content
-4. **Page Estimation**: Estimate pages based on word count
-5. **Threshold Validation**: Compare against quality targets
-6. **Reporting**: Include metrics in `phase5_output.json`
-
-**Example Output:**
-```json
-{
-  "comprehensive": {
-    "svgCount": 15,
-    "boldCount": 1154,
-    "dividerCount": 108,
-    "listItemCount": 875,
-    "tableCount": 324,
-    "pageEstimate": 351,
-    "wordCount": 43400,
-    "meetsTargets": {
-      "visualizations": false,
-      "boldElements": false,
-      "dividers": false
+\`\`\`typescript
+async function main() {
+  try {
+    // 1. Parse CLI arguments
+    const args = parseArgs(process.argv);
+    
+    // 2. Load webhook data
+    const webhookData = await loadWebhookData(args);
+    
+    // 3. Determine phases to execute
+    const phases = determinePhases(args);
+    console.log(\`Executing phases: \${phases.join(', ')}\`);
+    
+    // 4. Execute each phase sequentially
+    for (const phase of phases) {
+      console.log(\`\\n=== PHASE \${phase} ===\`);
+      await executePhase(phase, webhookData, args);
     }
+    
+    // 5. Success summary
+    console.log(\`\\n✓ Pipeline complete!\`);
+    process.exit(0);
+    
+  } catch (error) {
+    console.error('Pipeline failed:', error);
+    process.exit(1);
   }
 }
-```
+\`\`\`
+
+### 3.2 Configuration System: config/reports.config.ts
+
+**Purpose**: Centralized report configuration registry
+**Pattern**: Configuration-driven report generation
+
+**Report Configuration Structure:**
+
+\`\`\`typescript
+export interface ReportConfig {
+  type: string;                   // Unique report type ID
+  name: string;                   // Display name
+  description: string;            // Purpose description
+  builder: ReportBuilderFn;       // Builder function
+  enabled: boolean;               // Enable/disable flag
+  audience: string[];             // Target audiences
+  estimatedPages: string;         // Page estimate
+  priority: number;               // Generation priority (1-17)
+  dependencies?: string[];        // Required data dependencies
+}
+
+export type ReportBuilderFn = (
+  ctx: ReportContext
+) => Promise<string>;
+\`\`\`
+
+**Report Registry:**
+
+\`\`\`typescript
+export const REPORT_CONFIGS: ReportConfig[] = [
+  {
+    type: 'comprehensive',
+    name: 'Comprehensive Assessment Report',
+    description: 'Complete 360° business health analysis',
+    builder: buildComprehensiveReport,
+    enabled: true,
+    audience: ['executives', 'board', 'advisors'],
+    estimatedPages: '200-400',
+    priority: 1
+  },
+  {
+    type: 'owner',
+    name: 'Business Owner Report',
+    description: 'Executive summary for business owners',
+    builder: buildOwnersReport,
+    enabled: true,
+    audience: ['owner', 'ceo'],
+    estimatedPages: '40-80',
+    priority: 2
+  },
+  {
+    type: 'executiveBrief',
+    name: 'Executive Health Snapshot',
+    description: 'One-page executive summary',
+    builder: buildExecutiveBrief,
+    enabled: true,
+    audience: ['executives', 'board'],
+    estimatedPages: '15-25',
+    priority: 3
+  },
+  // ... 14 more report configurations
+];
+\`\`\`
+
+**Dynamic Report Loading:**
+
+\`\`\`typescript
+export function getEnabledReports(): ReportConfig[] {
+  return REPORT_CONFIGS.filter(config => config.enabled);
+}
+
+export function getReportByType(type: string): ReportConfig | undefined {
+  return REPORT_CONFIGS.find(config => config.type === type);
+}
+
+export function getReportsByAudience(audience: string): ReportConfig[] {
+  return REPORT_CONFIGS.filter(config => 
+    config.audience.includes(audience)
+  );
+}
+\`\`\`
 
 ---
 
-## Code Organization
-
-### Directory Structure
-
-```
-src/
-├── __tests__/                    # Test files
-│   └── reports/                  # Report-specific tests
-├── config/                       # Configuration files
-│   └── reports.config.ts         # Report generation config
-├── contracts/                    # API contracts and interfaces
-├── database/                     # PostgreSQL integration
-├── orchestration/                # Phase orchestrators
-│   ├── phase0-orchestrator.ts    # Phase 0: Normalization
-│   ├── phase1-orchestrator.ts    # Phase 1: Batch analyses
-│   ├── phase2-orchestrator.ts    # Phase 2: Deep dive
-│   ├── phase3-orchestrator.ts    # Phase 3: Synthesis
-│   ├── phase4-orchestrator.ts    # Phase 4: IDM compilation
-│   ├── phase5-orchestrator.ts    # Phase 5: Report generation
-│   ├── idm-consolidator.ts       # IDM consolidation logic
-│   └── reports/                  # Report generation subsystem
-│       ├── comprehensive-report.builder.ts
-│       ├── owners-report.builder.ts
-│       ├── executive-brief.builder.ts
-│       ├── quick-wins-report.builder.ts
-│       ├── risk-report.builder.ts
-│       ├── roadmap-report.builder.ts
-│       ├── financial-report.builder.ts
-│       ├── deep-dive-report.builder.ts
-│       ├── recipe-report.builder.ts
-│       ├── charts/               # D3.js chart generators
-│       │   ├── d3/               # D3 implementations
-│       │   ├── generators/       # Chart generation functions
-│       │   └── types/            # Chart type definitions
-│       ├── components/           # HTML component library (40 files)
-│       │   ├── visual/           # Visual components (charts, gauges, etc.)
-│       │   ├── cards/            # Card components
-│       │   ├── legal/            # Legal compliance components
-│       │   ├── cover-page.component.ts
-│       │   ├── evidence-citation.component.ts
-│       │   ├── key-takeaways.component.ts
-│       │   └── ... (37 more)
-│       ├── config/               # Report configuration
-│       │   ├── __tests__/        # Config tests
-│       │   └── report-recipes/   # Recipe-based report configs
-│       ├── constants/            # Report constants
-│       ├── styles/               # CSS and styling
-│       └── utils/                # Report utility functions (18 files)
-│           ├── index.ts          # Utility exports
-│           ├── idm-extractors.ts # IDM data extraction
-│           ├── markdown-sanitizer.ts
-│           ├── markdown-parser.ts
-│           ├── color-utils.ts
-│           ├── number-formatter.ts
-│           ├── visualization-mappers.ts
-│           ├── render-visualizations.ts
-│           └── ... (11 more)
-├── qa/                           # Quality assurance
-│   ├── __tests__/                # QA tests
-│   ├── scripts/                  # QA automation scripts
-│   ├── helpers/                  # Test helpers
-│   └── fixtures/                 # Test fixtures
-├── reporting/                    # Legacy reporting (deprecated)
-├── scripts/                      # Utility scripts
-├── services/                     # Business logic services
-│   └── narrative-extraction.service.ts
-├── types/                        # TypeScript type definitions
-│   ├── idm.types.ts              # IDM types (889 lines)
-│   ├── report.types.ts           # Report types
-│   ├── webhook.types.ts          # Input types
-│   └── ...
-├── utils/                        # General utilities
-│   ├── logger.ts                 # Pino logger setup
-│   ├── errors.ts                 # Error handling
-│   └── ...
-├── visualization/                # Visualization library
-│   └── components/               # Reusable viz components
-│       └── gauge.ts
-├── phase0-index.ts               # Phase 0 entry point
-├── run-pipeline.ts               # Pipeline entry point (741 lines)
-└── index.ts                      # Main entry point
-```
-
-### Naming Conventions
-
-**Files:**
-- `*.types.ts` - Type definitions
-- `*.builder.ts` - Builder pattern implementations
-- `*.component.ts` - Reusable component functions
-- `*.orchestrator.ts` - Phase orchestration logic
-- `*.service.ts` - Business logic services
-- `*.config.ts` - Configuration modules
-- `*.test.ts` - Test files
-
-**Functions:**
-- `build*` - Builder functions (e.g., `buildComprehensiveReport`)
-- `render*` - Rendering functions (e.g., `renderCoverPage`)
-- `generate*` - Generation functions (e.g., `generateHealthGauge`)
-- `create*` - Factory functions (e.g., `createLogger`)
-- `extract*` - Data extraction (e.g., `extractNumericValue`)
-- `format*` - Formatting utilities (e.g., `formatCurrency`)
-- `validate*` - Validation functions (e.g., `validateReportContent`)
-
-**Constants:**
-- `UPPER_SNAKE_CASE` for constants
-- `PascalCase` for types and interfaces
-- `camelCase` for variables and functions
-
-### Module Organization Strategy
-
-**By Feature:** Report generation organized by feature (comprehensive, risk, roadmap)
-**By Layer:** Clear separation of data (types), logic (orchestrators), presentation (builders)
-**By Concern:** Utilities separated by purpose (color, number, visualization)
-
----
-
-## Module Dependencies
-
-### External Dependencies (package.json)
-
-#### Core Dependencies
-
-**AI & API**
-```json
-{
-  "@anthropic-ai/sdk": "^0.32.1"  // Claude AI integration
-}
-```
-
-**Visualization & Rendering**
-```json
-{
-  "canvas": "^2.11.2",             // Canvas rendering
-  "chart.js": "^4.4.1",            // Chart library
-  "chartjs-node-canvas": "^4.1.6", // Server-side chart rendering
-  "marked": "^17.0.1"              // Markdown parsing
-}
-```
-
-**Data & Validation**
-```json
-{
-  "zod": "^3.25.76",               // Schema validation
-  "pg": "^8.11.3",                 // PostgreSQL client
-  "uuid": "^9.0.1"                 // UUID generation
-}
-```
-
-**Configuration & Logging**
-```json
-{
-  "dotenv": "^16.3.1",             // Environment variables
-  "pino": "^8.16.2",               // Structured logging
-  "pino-pretty": "^10.2.3",        // Log formatting
-  "glob": "^10.3.10"               // File pattern matching
-}
-```
-
-#### Development Dependencies
-
-**TypeScript & Build**
-```json
-{
-  "typescript": "^5.3.3",          // TypeScript compiler
-  "tsx": "^4.7.0",                 // TypeScript executor
-  "@types/node": "^20.10.5"        // Node.js type definitions
-}
-```
-
-**Testing**
-```json
-{
-  "vitest": "^1.1.0",              // Test framework
-  "@vitest/coverage-v8": "^1.1.0", // Code coverage
-  "jsdom": "^24.0.0"               // DOM simulation
-}
-```
-
-**Code Quality**
-```json
-{
-  "eslint": "^8.56.0",             // Linting
-  "prettier": "^3.1.1",            // Code formatting
-  "@typescript-eslint/eslint-plugin": "^6.15.0",
-  "@typescript-eslint/parser": "^6.15.0"
-}
-```
-
-### Internal Module Dependencies
-
-#### Dependency Graph
-
-```
-run-pipeline.ts
-  ├─→ phase0-orchestrator
-  │     └─→ webhook.types
-  ├─→ phase1-orchestrator
-  │     ├─→ @anthropic-ai/sdk
-  │     └─→ phase0-orchestrator
-  ├─→ phase2-orchestrator
-  │     ├─→ @anthropic-ai/sdk
-  │     └─→ phase1-orchestrator
-  ├─→ phase3-orchestrator
-  │     ├─→ @anthropic-ai/sdk
-  │     └─→ phase2-orchestrator
-  ├─→ phase4-orchestrator
-  │     ├─→ idm-consolidator
-  │     └─→ phase0,1,2,3-orchestrators
-  └─→ phase5-orchestrator
-        ├─→ idm.types
-        ├─→ report.types
-        └─→ report builders
-              ├─→ components (40 files)
-              ├─→ utils (18 files)
-              ├─→ charts
-              └─→ styles
-```
-
-#### High-Coupling Areas
-
-**Report Utilities (`src/orchestration/reports/utils/index.ts`)**
-- Exports 100+ utility functions
-- Used by all 8 report builders
-- Critical module with recent duplicate export fixes
-
-**IDM Types (`src/types/idm.types.ts`)**
-- Used by all phases
-- 889 lines of type definitions
-- Central to entire system
-
-**Report Components**
-- 40 component files
-- High reuse across reports
-- Tight coupling to brand configuration
-
-#### Low-Coupling Areas
-
-**Phase Orchestrators**
-- Sequential pipeline design
-- Minimal cross-phase dependencies
-- Clear input/output contracts
-
----
-
-## Component Architecture
-
-### Visual Components (40 files)
-
-**Location:** `src/orchestration/reports/components/`
-
-#### Component Categories
-
-**1. Visual Components (22 files)**
-```typescript
-// Location: components/visual/
-
-gauge.component.ts              // Circular gauge (0-100 score)
-radar-chart.component.ts        // Multi-dimensional radar chart
-heatmap.component.ts            // Color-coded heatmap
-risk-matrix.component.ts        // Risk probability/impact matrix
-timeline.component.ts           // Roadmap timeline
-bar-chart.component.ts          // Horizontal/vertical bars
-benchmark-bar.component.ts      // Benchmarking comparison bars
-metric-card.component.ts        // KPI metric cards
-score-tile.component.ts         // Score display tiles
-sparkline.component.ts          // Inline trend lines
-table.component.ts              // Data tables
-waterfall.component.ts          // Waterfall charts
-funnel.component.ts             // Conversion funnels
-kpi-dashboard.component.ts      // Multi-KPI dashboards
-action-card.component.ts        // Action item cards
-financial-impact-dashboard.component.ts  // Financial dashboards
-roadmap-timeline.component.ts   // Enhanced roadmap timelines
-section-header-percentile.component.ts   // Section headers with percentiles
-risk-heatmap.component.ts       // Risk-specific heatmaps
-```
-
-**2. Card Components (2 files)**
-```typescript
-// Location: components/cards/
-
-action-plan-card.component.ts   // Action plan cards
-quick-win-card.component.ts     // Quick win opportunity cards
-```
-
-**3. Legal Components (3 files)**
-```typescript
-// Location: components/legal/
-
-clickwrap-modal.component.ts    // Full-screen terms acceptance modal
-legal-accordion.component.ts    // Collapsible legal sections
-acceptance-banner.component.ts  // Terms acceptance banner
-```
-
-**4. Report Components (13 files)**
-```typescript
-// Location: components/
-
-cover-page.component.ts         // Report cover pages
-evidence-citation.component.ts  // Evidence citations
-key-takeaways.component.ts      // Key takeaways boxes
-comprehensive-reference.component.ts  // Cross-references
-benchmark-callout.component.ts  // Benchmark callouts
-score-bar.component.ts          // Score progress bars
-legal-terms-disclaimers.component.ts  // Legal disclaimers
-enhanced-recommendation.component.ts  // Rich recommendations
-decision-agenda.component.ts    // Decision agendas
-owner-dashboard.component.ts    // Owner-specific dashboards
-```
-
-### Component Design Patterns
-
-#### 1. Functional Component Pattern
-
-All components are **pure functions** that return HTML strings:
-
-```typescript
-export function renderGauge(
-  score: number,
-  label: string,
-  brand: BrandConfig,
-  options?: GaugeOptions
-): string {
-  // Validate inputs
-  const safeScore = clampScore(score);
-
-  // Determine styling based on score
-  const color = getScoreColor(safeScore);
-  const band = getScoreBand(safeScore);
-
-  // Generate SVG
-  const svgContent = generateGaugeSVG(safeScore, color);
-
-  // Return HTML with embedded SVG
-  return `
-    <div class="gauge-container">
-      ${svgContent}
-      <div class="gauge-label">${label}</div>
-      <div class="gauge-score">${safeScore}/100</div>
-      <div class="gauge-band ${band}">${band}</div>
-    </div>
-  `;
-}
-```
-
-#### 2. Configuration-Driven Rendering
-
-Components accept configuration objects for flexibility:
-
-```typescript
-interface ComponentOptions {
-  brand?: BrandConfig;
-  showTitle?: boolean;
-  interactive?: boolean;
-  accessibility?: AccessibilityOptions;
-}
-```
-
-#### 3. Brand-Aware Components
-
-All visual components respect branding configuration:
-
-```typescript
-function applyBrandColors(element: string, brand: BrandConfig): string {
-  return element
-    .replace(/{{PRIMARY_COLOR}}/g, brand.primaryColor)
-    .replace(/{{SECONDARY_COLOR}}/g, brand.secondaryColor)
-    .replace(/{{ACCENT_COLOR}}/g, brand.accentColor);
-}
-```
-
-### Clickwrap Modal Component
-
-**Location:** `src/orchestration/reports/components/legal/clickwrap-modal.component.ts`
-
-**Recent Enhancement:** Full-screen modal with scroll-to-accept pattern
-
-```typescript
-export function renderClickwrapModal(brand: BrandConfig): string {
-  return `
-    <div id="clickwrap-modal" class="clickwrap-modal">
-      <div class="clickwrap-content">
-        <div class="clickwrap-header">
-          <h2>Terms of Service and Privacy Policy</h2>
-        </div>
-        <div class="clickwrap-body">
-          ${renderTermsContent()}
-          ${renderPrivacyContent()}
-        </div>
-        <div class="clickwrap-footer">
-          <button id="clickwrap-accept" class="btn-accept" disabled>
-            I Accept
-          </button>
-        </div>
-      </div>
-    </div>
-    <script>
-      ${renderClickwrapScript()}
-    </script>
-  `;
-}
-```
-
-**Features:**
-- Full-screen overlay blocking content
-- Scroll-to-bottom to enable accept button
-- Session storage for acceptance tracking
-- Versioned terms (changes require re-acceptance)
-
----
-
-## Utility Systems
-
-### Report Utilities Organization
-
-**Location:** `src/orchestration/reports/utils/` (18 files)
-
-#### Utility Categories
-
-**1. Data Extraction (`idm-extractors.ts`)**
-```typescript
-// Null-safe IDM data extraction
-extractNumericValue(value: unknown, fallback: number): number
-formatBenchmark(benchmark: Benchmark): string
-mapDimensionToOwner(dimension: DimensionCode): string
-getDimensionName(code: DimensionCode): string
-calculateROIDisplay(recommendation: Recommendation): string
-buildQuickWinCardData(quickWin: QuickWin): QuickWinCardData
-```
-
-**2. Formatting (`format-helpers.ts`, `number-formatter.ts`)**
-```typescript
-// Date and time formatting
-formatDateShort(date: string): string
-formatHorizon(horizon: string): string
-horizonToDeadline(horizon: string): string
-
-// Number formatting (fixes floating point bugs)
-formatScore(score: number): string        // "85"
-formatPercentage(value: number): string   // "85%"
-formatCurrency(amount: number): string    // "$1,234.56"
-formatROI(roi: number): string            // "3.5x"
-safeRound(num: number, decimals: number): number
-```
-
-**3. Color Management (`color-utils.ts`)**
-```typescript
-// Color schemes and palettes
-BRAND_COLORS: Record<string, string>
-SCORE_THRESHOLDS: ScoreThreshold[]
-SCORE_COLORS: Record<ScoreBand, string>
-
-// Color utilities
-getScoreBand(score: number): ScoreBand
-getScoreColor(score: number): string
-getScoreColorRGB(score: number): RGB
-interpolateColor(score: number): string
-getRiskColor(severity: string): string
-getChapterColor(chapter: ChapterCode): string
-hexToRgb(hex: string): RGB
-rgbToHex(rgb: RGB): string
-```
-
-**4. Visualization Mapping (`visualization-mappers.ts`)**
-```typescript
-// IDM to component props mapping
-mapDimensionToGauge(dimension: Dimension): GaugeProps
-mapRisksToHeatmap(risks: Risk[]): HeatmapDataPoint[]
-mapRoadmapToTimeline(roadmap: Roadmap): TimelinePhaseData[]
-mapCriticalMetrics(idm: IDM): CriticalMetricData[]
-mapToKPIMetrics(chapter: Chapter): KPIMetric[]
-```
-
-**5. Content Processing (`markdown-sanitizer.ts`, `markdown-parser.ts`)**
-```typescript
-// Markdown to HTML conversion
-convertMarkdownToHtml(markdown: string): string
-parseMarkdownToHTML(markdown: string, options?: ParseOptions): string
-processNarrativeForReport(narrative: string): string
-validateNoRawMarkdown(html: string): ValidationResult
-cleanupRemainingMarkdown(html: string): string
-```
-
-**6. Validation (`content-validator.ts`, `content-sanitizer.ts`)**
-```typescript
-// Content quality validation
-validateReportContent(html: string): ContentValidationSummary
-checkQualityThresholds(metrics: QualityMetrics): boolean
-sanitizeOrphanedVisualizationHeaders(html: string): SanitizationResult
-validateNoOrphanedHeaders(html: string): boolean
-```
-
-**7. Data Sanitization (`data-sanitizer.ts`)**
-```typescript
-// Prevent undefined in templates
-sanitizeForTemplate<T>(data: T): T
-resolveDimensionName(code: DimensionCode): string
-validateNoUndefined(obj: Record<string, unknown>): void
-sanitizeQuickWins(quickWins: QuickWin[]): SanitizedQuickWin[]
-sanitizeRecommendations(recs: Recommendation[]): SanitizedRecommendation[]
-safeGet<T>(obj: unknown, path: string, fallback: T): T
-```
-
-**8. Conditional Rendering (`conditional-renderer.ts`)**
-```typescript
-// Conditional component rendering
-renderConditional(condition: boolean, content: string): string
-renderIfHasItems<T>(items: T[], renderFn: (items: T[]) => string): string
-renderIfValidNumber(value: unknown, renderFn: (num: number) => string): string
-renderIfNonEmptyString(value: unknown, renderFn: (str: string) => string): string
-generateDataNotAvailableBox(message: string): string
-generateComingSoonBox(feature: string): string
-```
-
-**9. Accessibility (`accessibility-utils.ts`)**
-```typescript
-// Accessibility helpers
-STATUS_SYMBOLS: Record<string, string>
-getAccessibleSymbol(status: string): string
-getColorblindSafeIndicator(score: number): string
-getGaugeAriaLabel(score: number, label: string): string
-getScoreTileAriaLabel(dimension: string, score: number): string
-getHeatmapCellAriaLabel(x: string, y: string, value: number): string
-createScreenReaderOnlyText(text: string): string
-```
-
-**10. Voice Transformation (`voice-transformer.ts`)**
-```typescript
-// Narrative transformation
-transformToOwnerVoice(text: string, companyName: string): string
-truncateToSentences(text: string, maxSentences: number): string
-truncateToWords(text: string, maxWords: number): string
-capitalizeFirst(text: string): string
-normalizeWhitespace(text: string): string
-```
-
-### Recent Utility Fixes
-
-**Issue:** Duplicate export names in `utils/index.ts` (fixed 2025-12-08)
-
-**Problem:**
-```typescript
-// BEFORE: Multiple exports with same names
-export { truncateToSentences } from './format-helpers.js';
-export { truncateToSentences } from './voice-transformer.js';
-// Error: Multiple exports with the same name "truncateToSentences"
-```
-
-**Solution:**
-```typescript
-// AFTER: Single export source with comment
-export {
-  formatDateShort,
-  formatHorizon,
-  // ...
-  truncateText,
-  // truncateToSentences, // Exported from voice-transformer.js instead
-} from './format-helpers.js';
-```
-
-**Files Fixed:**
-- `src/orchestration/reports/utils/index.ts:46` (lines 13-285)
-- `src/orchestration/reports/executive-brief.builder.ts:43-58` (import fixes)
-
----
-
-## Data Flow & Transformations
-
-### Pipeline Data Flow
-
-```
-[Webhook Payload]
-      ↓
-   Phase 0: Normalize
-      ↓
-[Normalized Data]
-      ↓
-   Phase 1: Analyze (10 AI calls)
-      ↓
-[10 Analyses]
-      ↓
-   Phase 2: Deep Dive (4 AI calls)
-      ↓
-[4 Chapter Analyses]
-      ↓
-   Phase 3: Synthesize (1 AI call)
-      ↓
-[Executive Summary + Health Score]
-      ↓
-   Phase 4: Consolidate
-      ↓
-[IDM - Canonical Data Model]
-      ↓
-   Phase 5: Generate Reports
-      ↓
-[17 HTML Reports]
-```
-
-### Key Transformations
-
-#### 1. Webhook → Normalized Data (Phase 0)
-
-```typescript
-// Input: WebhookPayload
-interface WebhookPayload {
-  assessment_run_id: string;
-  business_overview: BusinessOverview;
-  questionnaire_responses: QuestionnaireResponse[];
-  submission_metadata: SubmissionMetadata;
-}
-
-// Transformation
-function normalizeWebhookData(payload: WebhookPayload): Phase0Output {
-  return {
-    assessmentRunId: payload.assessment_run_id,
-    companyProfile: extractCompanyProfile(payload.business_overview),
-    questionnaireResponses: normalizeResponses(payload.questionnaire_responses),
-    dimensionMapping: mapResponsesToDimensions(payload.questionnaire_responses),
-  };
-}
-
-// Output: Phase0Output
-interface Phase0Output {
-  assessmentRunId: string;
-  companyProfile: CompanyProfile;
-  questionnaireResponses: NormalizedResponse[];
-  dimensionMapping: Record<DimensionCode, QuestionResponse[]>;
-}
-```
-
-#### 2. Analyses → IDM (Phase 4)
-
-```typescript
-// Input: Multiple phase outputs
-interface IDMConsolidatorInput {
-  companyProfile: CompanyProfile;
-  questionnaireResponses: NormalizedResponse[];
-  phase1Results: Phase1Results;  // 10 analyses
-  phase2Results: Phase2Results;  // 4 deep dives
-  phase3Results: Phase3Results;  // Executive synthesis
-  assessmentRunId: string;
-}
-
-// Transformation (complex multi-step process)
-function consolidateIDM(input: IDMConsolidatorInput): IDM {
-  // 1. Build metadata
-  const metadata: IDMMetadata = {
-    assessmentRunId: input.assessmentRunId,
-    companyProfile: input.companyProfile,
-    generatedAt: new Date().toISOString(),
-    version: '1.0',
+*Continuing in next response due to length...*
+
+## 4. Phase Orchestrators - Detailed Analysis
+
+Each phase has a dedicated orchestrator file responsible for coordinating its specific processing logic.
+
+### 4.1 Phase 0: Data Normalization
+
+**File**: `src/orchestration/phase0-orchestrator.ts`
+**Input**: Webhook JSON (raw questionnaire responses)
+**Output**: `output/phase0_output.json`
+**Execution Mode**: Synchronous, ~1 second
+**Dependencies**: None
+
+**Key Functions:**
+
+src/orchestration/phase0-orchestrator.ts:15-45
+\`\`\`typescript
+export async function executePhase0(
+  webhookData: WebhookPayload
+): Promise<NormalizedOutput> {
+  console.log('Phase 0: Normalizing questionnaire data...');
+
+  // Step 1: Validate webhook structure
+  validateWebhookPayload(webhookData);
+
+  // Step 2: Extract company profile
+  const companyProfile = extractCompanyProfile(webhookData);
+
+  // Step 3: Normalize responses
+  const normalizedResponses = normalizeResponses(
+    webhookData.responses,
+    QUESTION_MAPPING
+  );
+
+  // Step 4: Group by dimension
+  const groupedByDimension = groupResponsesByDimension(
+    normalizedResponses
+  );
+
+  // Step 5: Calculate preliminary scores
+  const preliminaryScores = calculatePreliminaryScores(
+    groupedByDimension
+  );
+
+  // Step 6: Build output
+  const output: NormalizedOutput = {
+    companyId: companyProfile.id,
+    companyName: companyProfile.name,
+    industry: companyProfile.industry,
+    revenue: companyProfile.revenue,
+    employees: companyProfile.employeeCount,
+    responses: normalizedResponses,
+    dimensionGroups: groupedByDimension,
+    preliminaryScores,
+    metadata: {
+      submittedAt: new Date().toISOString(),
+      version: '1.0.0'
+    }
   };
 
-  // 2. Extract overall health score
-  const scoresSummary: ScoresSummary = {
-    overall_health_score: input.phase3Results.overall_health_score,
-    descriptor: determineDescriptor(input.phase3Results.overall_health_score),
-    percentile_rank: input.phase3Results.percentile_rank,
-    score_components: extractScoreComponents(input),
-  };
+  // Step 7: Write to disk
+  await fs.writeFile(
+    'output/phase0_output.json',
+    JSON.stringify(output, null, 2)
+  );
 
-  // 3. Build chapters (merge Phase 1 dimension data + Phase 2 chapter insights)
-  const chapters: Record<ChapterCode, Chapter> = {
-    GE: buildChapter('GE', input.phase1Results, input.phase2Results),
-    PH: buildChapter('PH', input.phase1Results, input.phase2Results),
-    PL: buildChapter('PL', input.phase1Results, input.phase2Results),
-    RS: buildChapter('RS', input.phase1Results, input.phase2Results),
-  };
+  console.log('✓ Phase 0 complete');
+  return output;
+}
+\`\`\`
 
-  // 4. Extract quick wins
-  const quick_wins: QuickWin[] = input.phase3Results.quick_wins;
+**Question Mapping System:**
 
-  // 5. Compile risks
-  const risks: Risk[] = compileRisks(input);
-
-  // 6. Build roadmap
-  const roadmap: Roadmap = input.phase3Results.roadmap;
-
-  // 7. Extract narrative snippets
-  const narrative_snippets: Record<string, string> = extractNarratives(input);
-
-  return {
-    metadata,
-    scores_summary: scoresSummary,
-    chapters,
-    quick_wins,
-    risks,
-    roadmap,
-    narrative_snippets,
-  };
+src/orchestration/phase0-orchestrator.ts:100-130
+\`\`\`typescript
+interface QuestionMapping {
+  questionId: string;
+  dimensionCode: string;
+  weight: number;
+  reverse?: boolean;  // Reverse scoring
 }
 
-// Output: IDM (canonical)
-```
+const QUESTION_MAPPING: QuestionMapping[] = [
+  { questionId: 'Q001', dimensionCode: 'MK', weight: 1.0 },
+  { questionId: 'Q002', dimensionCode: 'MK', weight: 0.8 },
+  { questionId: 'Q003', dimensionCode: 'SL', weight: 1.0 },
+  // ... ~100 more mappings
+];
 
-#### 3. IDM → Report Context (Phase 5)
+function normalizeResponses(
+  responses: QuestionnaireResponse[],
+  mapping: QuestionMapping[]
+): NormalizedResponse[] {
+  return responses.map(response => {
+    const questionMap = mapping.find(m => m.questionId === response.questionId);
+    
+    if (!questionMap) {
+      console.warn(\`No mapping for question: \${response.questionId}\`);
+      return null;
+    }
 
-```typescript
-// Input: IDM
-// Transformation: Reshape for report consumption
-function buildReportContext(idm: IDM, brand?: BrandConfig): ReportContext {
-  return {
-    // Direct mappings
-    metadata: idm.metadata,
-
-    // Transform company profile
-    companyProfile: {
-      name: idm.metadata.companyProfile.basic_information.company_name,
-      industry: idm.metadata.companyProfile.basic_information.industry,
-      size: determineCompanySize(idm.metadata.companyProfile),
-      location: idm.metadata.companyProfile.basic_information.headquarters_location,
-    },
-
-    // Transform overall health
-    overallHealth: {
-      score: idm.scores_summary.overall_health_score,
-      descriptor: idm.scores_summary.descriptor,
-      percentile: idm.scores_summary.percentile_rank,
-      band: getScoreBand(idm.scores_summary.overall_health_score),
-      color: getScoreColor(idm.scores_summary.overall_health_score),
-    },
-
-    // Transform chapters (add computed properties)
-    chapters: Object.values(idm.chapters).map(chapter => ({
-      ...chapter,
-      band: getScoreBand(chapter.score),
-      color: getChapterColor(chapter.code),
-      dimensionCount: chapter.dimensions.length,
-      topDimension: findTopDimension(chapter.dimensions),
-      lowestDimension: findLowestDimension(chapter.dimensions),
-    })),
-
-    // Direct arrays
-    quickWins: idm.quick_wins,
-    risks: idm.risks,
-    roadmap: idm.roadmap,
-    narrativeSnippets: idm.narrative_snippets,
-
-    // Add branding
-    brand: { ...DEFAULT_BRAND, ...brand },
-
-    // Add legal config
-    legalAccess: buildLegalAccessConfig(),
-  };
+    return {
+      questionId: response.questionId,
+      dimensionCode: questionMap.dimensionCode,
+      rawValue: response.value,
+      normalizedValue: normalizeValue(response.value, questionMap),
+      weight: questionMap.weight
+    };
+  }).filter(r => r !== null);
 }
+\`\`\`
 
-// Output: ReportContext
-```
+### 4.2 Phase 1: Tier 1 Analysis (Batch API)
 
-#### 4. Report Context → HTML (Phase 5)
+**File**: `src/orchestration/phase1-orchestrator.ts`
+**Input**: `output/phase0_output.json`
+**Output**: `output/phase1_output.json` + `output/phase1_batch_output.json`
+**Execution Mode**: Asynchronous (Batch API), 24-hour window
+**API Calls**: 4 batch requests (one per chapter)
+**Cost**: ~$0.36 per run
 
-```typescript
-// Input: ReportContext
-// Transformation: Template rendering
-function buildComprehensiveReport(context: ReportContext, options: ReportRenderOptions): string {
-  const sections = [
-    renderCoverPage(context.companyProfile, context.brand),
-    renderTableOfContents(),
-    renderExecutiveSummary(context.overallHealth),
-    ...context.chapters.map(chapter => renderChapter(chapter, context.brand)),
-    renderQuickWinsSection(context.quickWins),
-    renderRisksSection(context.risks),
-    renderRoadmapSection(context.roadmap),
-    renderAppendices(),
-    renderLegalDisclaimers(),
+**Batch Creation:**
+
+src/orchestration/phase1-orchestrator.ts:20-60
+\`\`\`typescript
+export async function executePhase1(
+  phase0Output: NormalizedOutput
+): Promise<Phase1Output> {
+  console.log('Phase 1: Tier 1 Analysis (Batch API)...');
+
+  // Define 4 main chapters
+  const chapters = [
+    { code: 'GE', name: 'Growth Engine' },
+    { code: 'PH', name: 'Performance & Health' },
+    { code: 'PL', name: 'People & Leadership' },
+    { code: 'RS', name: 'Resilience & Safeguards' }
   ];
 
-  return wrapInHtmlDocument(sections, context.brand);
+  // Create batch requests (one per chapter)
+  const batchRequests = chapters.map(chapter => {
+    const chapterData = phase0Output.dimensionGroups[chapter.code];
+    
+    return {
+      custom_id: \`chapter_\${chapter.code}\`,
+      params: {
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 4000,
+        system: TIER1_SYSTEM_PROMPT,
+        messages: [{
+          role: 'user',
+          content: buildTier1Prompt(chapter, chapterData, phase0Output.companyProfile)
+        }]
+      }
+    };
+  });
+
+  // Submit to Batch API
+  const claudeClient = ClaudeClient.getInstance();
+  const batch = await claudeClient.createBatch(batchRequests);
+  
+  console.log(\`✓ Batch created: \${batch.id}\`);
+  console.log(\`  Status: \${batch.processing_status}\`);
+  console.log(\`  Requests: \${batchRequests.length}\`);
+
+  // Monitor batch progress
+  await monitorBatchProgress(batch.id);
+
+  // Retrieve results
+  const results = await claudeClient.retrieveBatch(batch.id);
+  
+  // Parse and consolidate
+  const parsedChapters = parseChapterResults(results);
+
+  // Build Phase 1 output
+  const output: Phase1Output = {
+    chapters: parsedChapters,
+    companyId: phase0Output.companyId,
+    companyName: phase0Output.companyName,
+    metadata: {
+      batchId: batch.id,
+      processedAt: new Date().toISOString()
+    }
+  };
+
+  await fs.writeFile(
+    'output/phase1_output.json',
+    JSON.stringify(output, null, 2)
+  );
+
+  console.log('✓ Phase 1 complete');
+  return output;
+}
+\`\`\`
+
+**Prompt Engineering:**
+
+src/prompts/tier1/chapter-analysis.ts:1-50
+\`\`\`typescript
+export const TIER1_SYSTEM_PROMPT = \`
+You are a business health analyst conducting dimensional analysis for the BizHealth platform.
+
+Your task is to analyze questionnaire responses for a specific business dimension and provide:
+
+1. **Overall Health Score** (0-100): Numeric assessment of dimension health
+2. **Status Assessment**: One of [Excellent, Good, Needs Improvement, Critical]
+3. **Key Strengths**: 3-5 specific strengths with evidence
+4. **Key Weaknesses**: 3-5 specific weaknesses with evidence
+5. **Strategic Insights**: 2-3 paragraphs of strategic analysis
+
+**Output Requirements:**
+- MUST be valid JSON matching the schema provided
+- Be specific and evidence-based (reference questionnaire responses)
+- Use business terminology appropriate for executives
+- Identify both immediate issues and strategic opportunities
+
+**JSON Schema:**
+{
+  "score": number (0-100),
+  "status": "Excellent" | "Good" | "Needs Improvement" | "Critical",
+  "strengths": string[] (3-5 items),
+  "weaknesses": string[] (3-5 items),
+  "insights": string (2-3 paragraphs)
+}
+\`;
+
+export function buildTier1Prompt(
+  chapter: Chapter,
+  chapterData: any,
+  companyProfile: any
+): string {
+  return \`
+# Business Health Analysis: \${chapter.name}
+
+## Company Context
+- Name: \${companyProfile.name}
+- Industry: \${companyProfile.industry}
+- Revenue: $\${companyProfile.revenue.toLocaleString()}
+- Employees: \${companyProfile.employees}
+
+## Questionnaire Responses for \${chapter.name}
+
+\${formatQuestionnaireData(chapterData)}
+
+## Analysis Instructions
+
+Analyze the above responses and provide a comprehensive assessment of the \${chapter.name} dimension.
+Focus on identifying patterns, gaps, and strategic implications.
+
+Output your analysis as JSON following the schema provided in the system prompt.
+  \`.trim();
+}
+\`\`\`
+
+### 4.3 Phase 2: Tier 2 Synthesis
+
+**File**: `src/orchestration/phase2-orchestrator.ts`
+**Input**: `output/phase1_output.json`
+**Output**: `output/phase2_output.json`
+**Execution Mode**: Synchronous, single API call
+**API Calls**: 1 synchronous message
+**Cost**: ~$0.18 per run
+
+src/orchestration/phase2-orchestrator.ts:10-70
+\`\`\`typescript
+export async function executePhase2(
+  phase1Output: Phase1Output
+): Promise<Phase2Output> {
+  console.log('Phase 2: Cross-dimensional synthesis...');
+
+  // Build synthesis prompt
+  const prompt = buildTier2SynthesisPrompt(phase1Output.chapters);
+
+  // Call Claude API synchronously
+  const claudeClient = ClaudeClient.getInstance();
+  const response = await claudeClient.createMessage({
+    model: 'claude-sonnet-4-20250514',
+    max_tokens: 8000,
+    system: TIER2_SYSTEM_PROMPT,
+    messages: [{ 
+      role: 'user', 
+      content: prompt 
+    }]
+  });
+
+  // Parse JSON response
+  const synthesis = JSON.parse(response.content[0].text);
+
+  // Calculate overall health score
+  const overallScore = calculateOverallHealth(phase1Output.chapters);
+
+  // Build output
+  const output: Phase2Output = {
+    overallScore,
+    status: getHealthStatus(overallScore),
+    trajectory: synthesis.trajectory,
+    systemicPatterns: synthesis.patterns,
+    crossDimensionalRisks: synthesis.risks,
+    strategicPriorities: synthesis.priorities,
+    executiveSummary: synthesis.summary,
+    metadata: {
+      processedAt: new Date().toISOString(),
+      tokenUsage: response.usage
+    }
+  };
+
+  await fs.writeFile(
+    'output/phase2_output.json',
+    JSON.stringify(output, null, 2)
+  );
+
+  console.log('✓ Phase 2 complete');
+  console.log(\`  Overall Score: \${overallScore}/100\`);
+  console.log(\`  Status: \${output.status}\`);
+  console.log(\`  Trajectory: \${output.trajectory}\`);
+  
+  return output;
 }
 
-// Output: HTML string
-```
+/**
+ * Calculate weighted overall health score
+ */
+function calculateOverallHealth(chapters: Chapter[]): number {
+  // Equal weighting for all 4 dimensions
+  const weights = {
+    'GE': 0.25,  // Growth Engine
+    'PH': 0.25,  // Performance & Health
+    'PL': 0.25,  // People & Leadership
+    'RS': 0.25   // Resilience & Safeguards
+  };
 
-### Data Validation Points
+  const weightedSum = chapters.reduce((sum, chapter) => {
+    const weight = weights[chapter.code] || 0.25;
+    return sum + (chapter.score * weight);
+  }, 0);
 
-```
-Webhook → [Zod Validation] → Phase 0
-Phase 1 Results → [API Response Validation] → Phase 2
-Phase 2 Results → [Structure Validation] → Phase 3
-All Phases → [IDM Schema Validation] → Phase 4
-IDM → [Completeness Check] → Phase 5
-HTML → [Quality Metrics Validation] → Output
-```
+  return Math.round(weightedSum);
+}
+\`\`\`
 
----
+### 4.4 Phase 3: Tier 3 Narrative Content (Batch API)
 
-## Recent Improvements & Fixes
+**File**: `src/orchestration/phase3-orchestrator.ts`
+**Input**: `output/phase1_output.json` + `output/phase2_output.json`
+**Output**: `output/phase3_output.json` + `output/phase3_batch_output.json`
+**Execution Mode**: Asynchronous (Batch API), 24-hour window
+**API Calls**: 7 batch requests (different content types)
+**Cost**: ~$1.86 per run
 
-### 2025-12-08: Duplicate Export Resolution
+src/orchestration/phase3-orchestrator.ts:15-80
+\`\`\`typescript
+export async function executePhase3(
+  phase1Output: Phase1Output,
+  phase2Output: Phase2Output
+): Promise<Phase3Output> {
+  console.log('Phase 3: Narrative content generation (Batch API)...');
 
-**Issue:** Multiple exports with same names causing TypeScript build failures
+  // Define content types to generate
+  const contentTypes = [
+    {
+      id: 'executive_summary',
+      maxTokens: 4000,
+      prompt: buildExecutiveSummaryPrompt(phase1Output, phase2Output)
+    },
+    {
+      id: 'dimension_narratives',
+      maxTokens: 16000,
+      prompt: buildDimensionNarrativesPrompt(phase1Output)
+    },
+    {
+      id: 'findings_details',
+      maxTokens: 12000,
+      prompt: buildFindingsPrompt(phase1Output, phase2Output)
+    },
+    {
+      id: 'recommendations',
+      maxTokens: 16000,
+      prompt: buildRecommendationsPrompt(phase1Output, phase2Output)
+    },
+    {
+      id: 'quick_wins',
+      maxTokens: 8000,
+      prompt: buildQuickWinsPrompt(phase1Output)
+    },
+    {
+      id: 'risk_analysis',
+      maxTokens: 10000,
+      prompt: buildRiskAnalysisPrompt(phase1Output, phase2Output)
+    },
+    {
+      id: 'roadmap_phases',
+      maxTokens: 12000,
+      prompt: buildRoadmapPrompt(phase1Output, phase2Output)
+    }
+  ];
 
-**Affected Files:**
-- `src/orchestration/reports/utils/index.ts`
-- `src/orchestration/reports/executive-brief.builder.ts`
+  // Create batch requests
+  const batchRequests = contentTypes.map(content => ({
+    custom_id: content.id,
+    params: {
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: content.maxTokens,
+      system: TIER3_SYSTEM_PROMPT,
+      messages: [{
+        role: 'user',
+        content: content.prompt
+      }]
+    }
+  }));
 
-**Root Cause:**
-Functions were being exported from multiple source files in the central utility index, violating ESM module uniqueness requirements.
+  // Submit batch
+  const claudeClient = ClaudeClient.getInstance();
+  const batch = await claudeClient.createBatch(batchRequests);
 
-**Fixes Applied:**
+  console.log(\`✓ Batch created: \${batch.id}\`);
+  console.log(\`  Content types: \${contentTypes.length}\`);
 
-1. **Removed duplicate `truncateToSentences` export**
-   - Kept export from `voice-transformer.ts`
-   - Removed from `format-helpers.ts`
-   - Added explanatory comment
+  // Monitor and retrieve
+  await monitorBatchProgress(batch.id);
+  const results = await claudeClient.retrieveBatch(batch.id);
 
-2. **Consolidated IDM extractor exports**
-   - Removed non-existent functions: `extractChapterScores`, `getScoreBandFromValue`, `getBandColorFromName`
-   - Kept only functions that actually exist in `idm-extractors.ts`
+  // Parse results
+  const narrativeContent = parseNarrativeResults(results);
 
-3. **Fixed executive brief imports**
-   - Changed `getScoreBandFromValue` → `getScoreBand`
-   - Changed `getBandColorFromName` → `getScoreColor`
-   - Updated function calls to use correct APIs
+  // Build output
+  const output: Phase3Output = {
+    executiveSummary: narrativeContent.executive_summary,
+    dimensionNarratives: narrativeContent.dimension_narratives,
+    findings: narrativeContent.findings_details,
+    recommendations: narrativeContent.recommendations,
+    quickWins: narrativeContent.quick_wins,
+    risks: narrativeContent.risk_analysis,
+    roadmap: narrativeContent.roadmap_phases,
+    metadata: {
+      batchId: batch.id,
+      processedAt: new Date().toISOString()
+    }
+  };
 
-**Example Fix:**
-```typescript
-// BEFORE (executive-brief.builder.ts:155)
-function generateHealthGaugeCompact(score: number, band: string, percentile?: number): string {
-  const bandColor = getBandColorFromName(band);  // Function doesn't exist
-  // ...
+  await fs.writeFile(
+    'output/phase3_output.json',
+    JSON.stringify(output, null, 2)
+  );
+
+  console.log('✓ Phase 3 complete');
+  return output;
+}
+\`\`\`
+
+### 4.5 Phase 4: IDM Generation
+
+**File**: `src/orchestration/phase4-orchestrator.ts`
+**Input**: Phases 0-3 outputs
+**Output**: `output/idm_output.json` (Integrated Diagnostic Model)
+**Execution Mode**: Synchronous, data consolidation
+**Processing Time**: ~1 second
+
+src/orchestration/phase4-orchestrator.ts:10-150
+\`\`\`typescript
+export async function executePhase4(
+  phase0: NormalizedOutput,
+  phase1: Phase1Output,
+  phase2: Phase2Output,
+  phase3: Phase3Output
+): Promise<IDM> {
+  console.log('Phase 4: Building Integrated Diagnostic Model...');
+
+  // Step 1: Consolidate chapters with narratives
+  const chapters = consolidateChapters(
+    phase1.chapters,
+    phase2,
+    phase3.dimensionNarratives
+  );
+
+  // Step 2: Extract dimensions
+  const dimensions = extractDimensions(chapters);
+
+  // Step 3: Parse and deduplicate findings
+  const findings = parseFindings(phase3.findings);
+
+  // Step 4: Parse and prioritize recommendations
+  const recommendations = parseRecommendations(phase3.recommendations);
+
+  // Step 5: Parse quick wins
+  const quickWins = parseQuickWins(phase3.quickWins);
+
+  // Step 6: Parse risks
+  const risks = parseRisks(phase3.risks);
+
+  // Step 7: Parse roadmap
+  const roadmap = parseRoadmap(phase3.roadmap);
+
+  // Step 8: Build IDM structure
+  const idm: IDM = {
+    overallHealth: {
+      score: phase2.overallScore,
+      status: phase2.status,
+      trajectory: phase2.trajectory,
+      summary: phase3.executiveSummary
+    },
+    chapters,
+    dimensions,
+    findings,
+    recommendations,
+    quickWins,
+    risks,
+    roadmap,
+    metadata: {
+      companyId: phase0.companyId,
+      companyName: phase0.companyName,
+      industry: phase0.industry,
+      revenue: phase0.revenue,
+      employees: phase0.employees,
+      generatedAt: new Date().toISOString(),
+      version: '1.0.0',
+      phaseOutputs: {
+        phase0Path: 'output/phase0_output.json',
+        phase1Path: 'output/phase1_output.json',
+        phase2Path: 'output/phase2_output.json',
+        phase3Path: 'output/phase3_output.json'
+      }
+    }
+  };
+
+  // Step 9: Apply safety patches and validation
+  const validatedIDM = applyPhase4SafetyPatches(idm);
+  validateIDM(validatedIDM);
+
+  // Step 10: Write to disk
+  await fs.writeFile(
+    'output/idm_output.json',
+    JSON.stringify(validatedIDM, null, 2)
+  );
+
+  console.log('✓ Phase 4 complete - IDM generated');
+  console.log(\`  Overall Score: \${validatedIDM.overallHealth.score}/100\`);
+  console.log(\`  Chapters: \${validatedIDM.chapters.length}\`);
+  console.log(\`  Dimensions: \${validatedIDM.dimensions.length}\`);
+  console.log(\`  Findings: \${validatedIDM.findings.length}\`);
+  console.log(\`  Recommendations: \${validatedIDM.recommendations.length}\`);
+  console.log(\`  Quick Wins: \${validatedIDM.quickWins.length}\`);
+  console.log(\`  Risks: \${validatedIDM.risks.length}\`);
+
+  return validatedIDM;
 }
 
-// AFTER
-function generateHealthGaugeCompact(score: number, band: string, percentile?: number): string {
-  const bandColor = getScoreColor(score);  // Use score directly
-  // ...
+/**
+ * Consolidate chapters with narratives
+ */
+function consolidateChapters(
+  phase1Chapters: Chapter[],
+  phase2: Phase2Output,
+  narratives: Record<string, any>
+): Chapter[] {
+  return phase1Chapters.map(chapter => ({
+    ...chapter,
+    overview: narratives[chapter.code]?.overview || chapter.insights,
+    detailedAnalysis: narratives[chapter.code]?.detailedFindings || '',
+    strategicInsights: narratives[chapter.code]?.analysis || chapter.insights
+  }));
 }
-```
 
-**Impact:**
-- Phase 5 now successfully builds and executes
-- 15/17 reports generating successfully
-- Build time reduced (no duplicate resolution overhead)
+/**
+ * Extract all dimensions from chapters
+ */
+function extractDimensions(chapters: Chapter[]): Dimension[] {
+  const dimensions: Dimension[] = [];
 
-**Related Commit:**
-```
-Fix duplicate exports in report utilities and executive brief imports
-
-- Remove duplicate export of truncateToSentences from format-helpers
-- Consolidate IDM extractor exports to only include functions that exist
-- Fix executive brief to use getScoreBand and getScoreColor correctly
-- Update generateHealthGaugeCompact to use getScoreColor(score)
-```
-
-### Clickwrap Modal Enhancement
-
-**Issue:** Legal compliance requirements for terms acceptance
-
-**Enhancement:** Full-screen modal with scroll-to-accept pattern
-
-**Features Added:**
-- Full-screen overlay blocking content access
-- Scroll detection to enable accept button
-- Session storage for acceptance tracking
-- Versioned terms requiring re-acceptance on updates
-
-**Files Modified:**
-- `src/orchestration/reports/components/legal/clickwrap-modal.component.ts`
-
-**Implementation:**
-```typescript
-// Scroll-to-bottom detection
-function setupClickwrapModal() {
-  const modal = document.getElementById('clickwrap-modal');
-  const acceptBtn = document.getElementById('clickwrap-accept');
-  const body = document.querySelector('.clickwrap-body');
-
-  body.addEventListener('scroll', () => {
-    const scrollHeight = body.scrollHeight;
-    const scrollTop = body.scrollTop;
-    const clientHeight = body.clientHeight;
-
-    if (scrollHeight - scrollTop <= clientHeight + 50) {
-      acceptBtn.disabled = false;
+  chapters.forEach(chapter => {
+    if (chapter.dimensions) {
+      chapter.dimensions.forEach(dim => {
+        dimensions.push({
+          ...dim,
+          chapterCode: chapter.code
+        });
+      });
     }
   });
 
-  acceptBtn.addEventListener('click', () => {
-    sessionStorage.setItem('clickwrap-accepted', getCurrentTermsVersion());
-    modal.style.display = 'none';
-  });
+  return dimensions;
 }
-```
+\`\`\`
 
-### Known Remaining Issues (2 reports failing)
+**Phase 4 Safety Patches:**
 
-**1. Owner Report Error**
-```
-Error: QUICK_REFS.scorecard is not a function
-Location: owners-report.builder.ts
-Status: Pre-existing issue from world-class enhancements
-```
+src/qa/phase4-safety-patches.ts:1-80
+\`\`\`typescript
+/**
+ * Apply safety patches to IDM before report generation
+ * Fixes common data quality issues
+ */
+export function applyPhase4SafetyPatches(idm: IDM): IDM {
+  console.log('Applying Phase 4 safety patches...');
 
-**2. Employees Report Error**
-```
-Error: text.replace is not a function
-Location: recipe-report.builder.ts (employees variant)
-Status: Pre-existing issue
-```
+  // Patch 1: Ensure all scores are valid numbers
+  idm.overallHealth.score = ensureValidScore(idm.overallHealth.score);
+  idm.chapters.forEach(chapter => {
+    chapter.score = ensureValidScore(chapter.score);
+    if (chapter.dimensions) {
+      chapter.dimensions.forEach(dim => {
+        dim.score = ensureValidScore(dim.score);
+      });
+    }
+  });
 
-**Current Status:** 15/17 reports (88.2%) generating successfully
+  // Patch 2: Ensure arrays are not null/undefined
+  idm.findings = idm.findings || [];
+  idm.recommendations = idm.recommendations || [];
+  idm.quickWins = idm.quickWins || [];
+  idm.risks = idm.risks || [];
+  idm.roadmap = idm.roadmap || [];
+
+  // Patch 3: Add missing IDs
+  idm.findings.forEach((finding, index) => {
+    if (!finding.id) {
+      finding.id = \`finding_\${index + 1}\`;
+    }
+  });
+
+  idm.recommendations.forEach((rec, index) => {
+    if (!rec.id) {
+      rec.id = \`rec_\${index + 1}\`;
+    }
+  });
+
+  // Patch 4: Ensure severity/priority enums are valid
+  idm.findings.forEach(finding => {
+    if (!['Critical', 'High', 'Medium', 'Low'].includes(finding.severity)) {
+      finding.severity = 'Medium';  // Default
+    }
+  });
+
+  idm.recommendations.forEach(rec => {
+    if (!['High', 'Medium', 'Low'].includes(rec.priority)) {
+      rec.priority = 'Medium';  // Default
+    }
+  });
+
+  // Patch 5: Ensure status matches score
+  idm.overallHealth.status = getStatusFromScore(idm.overallHealth.score);
+  idm.chapters.forEach(chapter => {
+    chapter.status = getStatusFromScore(chapter.score);
+  });
+
+  console.log('✓ Safety patches applied');
+  return idm;
+}
+
+function ensureValidScore(score: any): number {
+  const num = Number(score);
+  if (isNaN(num) || num < 0 || num > 100) {
+    console.warn(\`Invalid score: \${score}, using 50 as default\`);
+    return 50;
+  }
+  return Math.round(num);
+}
+
+function getStatusFromScore(score: number): string {
+  if (score >= 80) return 'Excellent';
+  if (score >= 60) return 'Good';
+  if (score >= 40) return 'Needs Improvement';
+  return 'Critical';
+}
+\`\`\`
+
+### 4.6 Phase 5: Report Generation
+
+**File**: `src/orchestration/phase5-orchestrator.ts`
+**Input**: `output/idm_output.json` + `output/phase3_output.json`
+**Output**: 17 HTML reports + manifest.json
+**Execution Mode**: Synchronous, parallel generation
+**Processing Time**: ~5-10 seconds for all 17 reports
+
+src/orchestration/phase5-orchestrator.ts:15-150
+\`\`\`typescript
+export async function executePhase5(
+  idm: IDM,
+  phase3: Phase3Output,
+  options: Phase5Options = {}
+): Promise<Phase5Output> {
+  console.log('Phase 5: Generating HTML reports...');
+
+  const startTime = Date.now();
+  const runId = options.runId || uuid();
+  const outputDir = \`output/reports/\${runId}\`;
+
+  // Create output directory
+  await fs.mkdir(outputDir, { recursive: true });
+
+  // Build report context
+  const context: ReportContext = buildReportContext(idm, phase3, runId, options);
+
+  // Get enabled reports
+  const enabledReports = getEnabledReports();
+  console.log(\`  Generating \${enabledReports.length} reports...\`);
+
+  // Generate all reports in parallel
+  const reportPromises = enabledReports.map(async (config) => {
+    console.log(\`  - Generating \${config.name}...\`);
+    
+    try {
+      // Generate HTML
+      const html = await config.builder(context);
+
+      // Calculate quality metrics
+      const metrics = calculateQualityMetrics(html);
+
+      // Generate metadata
+      const meta = {
+        reportType: config.type,
+        reportName: config.name,
+        generatedAt: new Date().toISOString(),
+        ...metrics
+      };
+
+      // Write HTML file
+      await fs.writeFile(
+        \`\${outputDir}/\${config.type}.html\`,
+        html
+      );
+
+      // Write metadata file
+      await fs.writeFile(
+        \`\${outputDir}/\${config.type}.meta.json\`,
+        JSON.stringify(meta, null, 2)
+      );
+
+      console.log(\`    ✓ \${config.name} (\${metrics.pageEstimate} pages)\`);
+
+      return { config, html, meta };
+
+    } catch (error) {
+      console.error(\`    ✗ Failed to generate \${config.name}:\`, error);
+      throw error;
+    }
+  });
+
+  // Wait for all reports
+  const reports = await Promise.all(reportPromises);
+
+  // Calculate overall quality metrics
+  const qualityMetrics = reports.reduce((acc, report) => {
+    acc[report.config.type] = report.meta;
+    return acc;
+  }, {});
+
+  const qualitySummary = calculateQualitySummary(qualityMetrics);
+
+  // Generate manifest
+  const manifest = {
+    runId,
+    companyName: context.company.name,
+    generatedAt: new Date().toISOString(),
+    healthScore: context.overallHealth.score,
+    healthStatus: context.overallHealth.status,
+    pipelineVersion: '1.0.0',
+    reports: reports.map(r => ({
+      type: r.config.type,
+      name: r.config.name,
+      html: \`\${r.config.type}.html\`,
+      meta: \`\${r.config.type}.meta.json\`
+    }))
+  };
+
+  await fs.writeFile(
+    \`\${outputDir}/manifest.json\`,
+    JSON.stringify(manifest, null, 2)
+  );
+
+  // Build Phase 5 output summary
+  const output: Phase5Output = {
+    phase: 'phase_5',
+    status: 'complete',
+    runId,
+    companyName: context.company.name,
+    reportsGenerated: reports.length,
+    reports: reports.map(r => ({
+      reportType: r.config.type,
+      reportName: r.config.name,
+      htmlPath: \`\${outputDir}/\${r.config.type}.html\`,
+      metaPath: \`\${outputDir}/\${r.config.type}.meta.json\`,
+      generatedAt: r.meta.generatedAt
+    })),
+    outputDir,
+    manifestPath: \`\${outputDir}/manifest.json\`,
+    metadata: {
+      startedAt: new Date(startTime).toISOString(),
+      completedAt: new Date().toISOString(),
+      durationMs: Date.now() - startTime,
+      pipelineVersion: '1.0.0'
+    },
+    qualityMetrics,
+    qualitySummary
+  };
+
+  await fs.writeFile(
+    'output/phase5_output.json',
+    JSON.stringify(output, null, 2)
+  );
+
+  console.log(\`\\n✓ Phase 5 complete - \${reports.length} reports generated\`);
+  console.log(\`  Total SVGs: \${qualitySummary.totalVisualizations}\`);
+  console.log(\`  Total pages: ~\${qualitySummary.totalPages}\`);
+  console.log(\`  Duration: \${output.metadata.durationMs}ms\`);
+
+  return output;
+}
+
+/**
+ * Build complete report context
+ */
+function buildReportContext(
+  idm: IDM,
+  phase3: Phase3Output,
+  runId: string,
+  options: Phase5Options
+): ReportContext {
+  return {
+    // IDM data
+    overallHealth: idm.overallHealth,
+    chapters: idm.chapters,
+    dimensions: idm.dimensions,
+    findings: idm.findings,
+    recommendations: idm.recommendations,
+    quickWins: idm.quickWins,
+    risks: idm.risks,
+    roadmap: idm.roadmap,
+
+    // Narrative content
+    narratives: {
+      executiveSummary: phase3.executiveSummary,
+      dimensionNarratives: phase3.dimensionNarratives,
+      findingsNarrative: phase3.findings,
+      recommendationsNarrative: phase3.recommendations,
+      risksNarrative: phase3.risks
+    },
+
+    // Company info
+    company: {
+      id: idm.metadata.companyId,
+      name: idm.metadata.companyName,
+      industry: idm.metadata.industry || 'Technology',
+      revenue: idm.metadata.revenue || 0,
+      employees: idm.metadata.employees || 0
+    },
+
+    // Report metadata
+    metadata: {
+      runId,
+      generatedAt: new Date().toISOString(),
+      brand: options.brand || DEFAULT_BRAND_CONFIG,
+      options: options.reportOptions
+    }
+  };
+}
+
+/**
+ * Calculate quality metrics for generated HTML
+ */
+function calculateQualityMetrics(html: string): QualityMetrics {
+  const svgCount = (html.match(/<svg/g) || []).length;
+  const boldCount = (html.match(/<strong>/g) || []).length;
+  const dividerCount = (html.match(/<hr/g) || []).length;
+  const listItemCount = (html.match(/<li>/g) || []).length;
+  const tableCount = (html.match(/<table/g) || []).length;
+  const wordCount = estimateWordCount(html);
+  const pageEstimate = Math.ceil(wordCount / 400);  // ~400 words per page
+
+  return {
+    svgCount,
+    boldCount,
+    dividerCount,
+    listItemCount,
+    tableCount,
+    wordCount,
+    pageEstimate,
+    meetsTargets: {
+      visualizations: svgCount >= 10,
+      boldElements: boldCount >= 50,
+      dividers: dividerCount >= 5
+    }
+  };
+}
+
+/**
+ * Estimate word count from HTML
+ */
+function estimateWordCount(html: string): number {
+  // Strip HTML tags
+  const text = html.replace(/<[^>]*>/g, ' ');
+  
+  // Count words
+  const words = text.trim().split(/\s+/);
+  
+  return words.length;
+}
+\`\`\`
 
 ---
 
-## Code Quality Analysis
+*Continuing with more sections...*
 
-### TypeScript Configuration
+## 13. Recent Fixes & Evolution (December 10, 2025)
 
-**Strict Mode Enabled:** `tsconfig.json` enforces maximum type safety
+This section documents all fixes applied on December 10, 2025, during comprehensive report generation debugging.
 
-```json
+### 13.1 Compilation Errors Fixed
+
+**Problem**: Phase 5 compilation errors due to branch merges and duplicate declarations
+**Root Cause**: Conflicting code from multiple development branches merged together
+
+#### Fix 1: Duplicate Function Removal in owners-report.builder.ts
+
+**File**: `src/orchestration/reports/owners-report.builder.ts`
+**Line**: 174
+**Error**: `Duplicate function implementation: safeQuickRef`
+
+**Before (BROKEN):**
+\`\`\`typescript
+// Line 50
+function safeQuickRef(qw: any): QuickWin {
+  return {
+    id: qw.id || '',
+    title: qw.title || '',
+    // ... rest of implementation
+  };
+}
+
+// Line 174 - DUPLICATE!
+function safeQuickRef(qw: any, index: number): QuickWin {
+  return {
+    id: qw.id || \`qw_\${index}\`,
+    title: qw.title || '',
+    // ... different implementation
+  };
+}
+\`\`\`
+
+**After (FIXED):**
+\`\`\`typescript
+// Line 50 - KEPT (original implementation)
+function safeQuickRef(qw: any): QuickWin {
+  return {
+    id: qw.id || '',
+    title: qw.title || '',
+    description: qw.description || '',
+    dimensionCode: qw.dimensionCode || '',
+    effort: qw.effort || 'Medium',
+    impact: qw.impact || 'Medium',
+    timeline: qw.timeline || '30 days',
+    steps: qw.steps || [],
+    expectedOutcome: qw.expectedOutcome || ''
+  };
+}
+
+// Line 174 - REMOVED (duplicate deleted)
+\`\`\`
+
+#### Fix 2: Duplicate Function Removal in recipe-report.builder.ts
+
+**File**: `src/orchestration/reports/recipe-report.builder.ts`
+**Line**: 965
+**Error**: `Duplicate function implementation: getScoreColor`
+
+**Before (BROKEN):**
+\`\`\`typescript
+// Line 200
+function getScoreColor(score: number): string {
+  if (score >= 80) return '#28a745';
+  if (score >= 60) return '#969423';
+  if (score >= 40) return '#ffc107';
+  return '#dc3545';
+}
+
+// Line 965 - DUPLICATE!
+function getScoreColor(score: number): string {
+  // ... same implementation
+}
+\`\`\`
+
+**After (FIXED):**
+\`\`\`typescript
+// Line 200 - KEPT
+function getScoreColor(score: number): string {
+  if (score >= 80) return '#28a745';  // green
+  if (score >= 60) return '#969423';  // yellow-green
+  if (score >= 40) return '#ffc107';  // yellow
+  return '#dc3545';  // red
+}
+
+// Line 965 - REMOVED
+\`\`\`
+
+#### Fix 3: Duplicate Exports Removal in utils/index.ts
+
+**File**: `src/orchestration/reports/utils/index.ts`
+**Lines**: 345-347
+**Error**: `Export 'filterRecommendationsByDimensions' has already been declared`
+
+**Before (BROKEN):**
+\`\`\`typescript
+// Lines 50-52 - First export from idm-extractors.js
+export {
+  filterQuickWinsByDimensions,
+  filterRisksByDimensions,
+  filterRecommendationsByDimensions,
+  computeDepartmentHealthScore,
+  getDimensionFromChapters,
+  getDimensionName,
+  getScoreBandFromScore
+} from './idm-extractors.js';
+
+// Lines 345-347 - DUPLICATE export from dimension-filters.js
+export {
+  filterRecommendationsByDimensions,  // ← DUPLICATE!
+  filterQuickWinsByDimensions,        // ← DUPLICATE!
+  filterRisksByDimensions,            // ← DUPLICATE!
+  // other exports...
+} from './dimension-filters.js';
+\`\`\`
+
+**After (FIXED):**
+\`\`\`typescript
+// Lines 50-52 - KEPT (canonical source)
+export {
+  filterQuickWinsByDimensions,
+  filterRisksByDimensions,
+  filterRecommendationsByDimensions,
+  computeDepartmentHealthScore,
+  getDimensionFromChapters,
+  getDimensionName,
+  getScoreBandFromScore
+} from './idm-extractors.js';
+
+// Lines 345-347 - REMOVED duplicate exports, kept unique ones
+export {
+  // Removed: filterRecommendationsByDimensions (duplicate)
+  // Removed: filterQuickWinsByDimensions (duplicate)
+  // Removed: filterRisksByDimensions (duplicate)
+  // Kept other unique exports...
+} from './dimension-filters.js';
+\`\`\`
+
+#### Fix 4: Wrong Function Name in recipe-report.builder.ts
+
+**File**: `src/orchestration/reports/recipe-report.builder.ts`
+**Multiple Lines**: Import + usage sites
+**Error**: `Cannot find name 'ensureString'`
+
+**Before (BROKEN):**
+\`\`\`typescript
+// Line 15 - Import
+import {
+  // ...
+  ensureString,  // ← WRONG NAME!
+  type DimensionCode,
+} from './utils/index.js';
+
+// Usage sites (multiple lines)
+const title = ensureString(rec.title);
+const description = ensureString(rec.description);
+\`\`\`
+
+**After (FIXED):**
+\`\`\`typescript
+// Line 15 - Import
+import {
+  // ...
+  safeString,  // ← CORRECT NAME!
+  type DimensionCode,
+} from './utils/index.js';
+
+// Usage sites (all updated)
+const title = safeString(rec.title);
+const description = safeString(rec.description);
+\`\`\`
+
+**Note**: The actual function in `utils/index.ts` is named `safeString`, not `ensureString`. This was a naming mismatch from the merge.
+
+### 13.2 Runtime Errors Fixed
+
+**Problem**: Comprehensive report failing during generation with undefined property errors
+**Root Cause**: Missing null safety checks for optional IDM fields
+
+#### Fix 5: Null Safety in generateExecutiveMetricsDashboard
+
+**File**: `src/orchestration/reports/comprehensive-report.builder.ts`
+**Line**: 1874
+**Error**: `Cannot read properties of undefined (reading 'score')`
+
+**Before (BROKEN):**
+\`\`\`typescript
+function generateExecutiveMetricsDashboard(ctx: ReportContext): string {
+  const metrics = [
+    {
+      label: 'Overall Health',
+      value: ctx.overallHealth.score,  // ← CRASH if ctx.overallHealth is undefined
+      unit: '/100',
+      status: getScoreBand(ctx.overallHealth.score),
+      trend: ctx.overallHealth.trajectory === 'Improving' ? 'up' : 'flat'
+    },
+    ...ctx.chapters.map(chapter => ({  // ← CRASH if ctx.chapters is undefined
+      label: chapter.name,
+      value: chapter.score,
+      unit: '/100',
+      status: getScoreBand(chapter.score)
+    }))
+  ];
+
+  return renderKPIDashboard({ metrics, columns: 4 });
+}
+\`\`\`
+
+**After (FIXED):**
+\`\`\`typescript
+function generateExecutiveMetricsDashboard(ctx: ReportContext): string {
+  // Null safety check
+  if (!ctx.overallHealth || !ctx.chapters) {
+    return '<div class="metrics-unavailable">Executive metrics unavailable</div>';
+  }
+
+  const metrics = [
+    {
+      label: 'Overall Health',
+      value: ctx.overallHealth.score || 0,  // Default to 0 if missing
+      unit: '/100',
+      status: getScoreBand(ctx.overallHealth.score || 0),
+      trend: ctx.overallHealth.trajectory === 'Improving' ? 'up' as const :
+             ctx.overallHealth.trajectory === 'Declining' ? 'down' as const : 
+             'flat' as const
+    },
+    ...ctx.chapters.map(chapter => ({
+      label: chapter.name,
+      value: chapter.score || 0,  // Default to 0 if missing
+      unit: '/100',
+      status: getScoreBand(chapter.score || 0)
+    }))
+  ];
+
+  return renderKPIDashboard({
+    metrics,
+    columns: Math.min(4, metrics.length) as 2 | 3 | 4,
+    title: 'Critical Business Metrics',
+    showBorder: true
+  });
+}
+\`\`\`
+
+**Key Improvements:**
+1. Added null check for `ctx.overallHealth` and `ctx.chapters`
+2. Provide fallback UI when data is missing
+3. Use default values (`|| 0`) for optional numeric properties
+4. Explicit type assertions for TypeScript strictness
+
+#### Fix 6: Null Safety in generateKeyStatsRow
+
+**File**: `src/orchestration/reports/comprehensive-report.builder.ts`
+**Line**: 1937
+**Error**: `Cannot read properties of undefined (reading 'score')`
+
+**Before (BROKEN):**
+\`\`\`typescript
+function generateKeyStatsRow(ctx: ReportContext): string {
+  const score = ctx.overallHealth.score;  // ← CRASH if undefined
+  const statusColor = score >= 80 ? '#28a745' :
+                      score >= 60 ? '#969423' :
+                      score >= 40 ? '#ffc107' : '#dc3545';
+
+  return renderQuickStatsRow([
+    { label: 'Health Score', value: score, color: statusColor },
+    { label: 'Dimensions', value: ctx.dimensions.length },  // ← CRASH if undefined
+    { label: 'Findings', value: ctx.findings.length },      // ← CRASH if undefined
+    { label: 'Recommendations', value: ctx.recommendations.length },  // ← CRASH
+    { label: 'Quick Wins', value: ctx.quickWins.length, color: '#28a745' }  // ← CRASH
+  ]);
+}
+\`\`\`
+
+**After (FIXED):**
+\`\`\`typescript
+function generateKeyStatsRow(ctx: ReportContext): string {
+  // Comprehensive null safety check
+  if (!ctx.overallHealth || !ctx.dimensions || !ctx.findings || 
+      !ctx.recommendations || !ctx.quickWins) {
+    return '<div class="stats-unavailable">Statistics unavailable</div>';
+  }
+
+  const score = ctx.overallHealth.score || 0;
+  const statusColor = score >= 80 ? '#28a745' :
+                      score >= 60 ? '#969423' :
+                      score >= 40 ? '#ffc107' : '#dc3545';
+
+  return renderQuickStatsRow([
+    { label: 'Health Score', value: score, color: statusColor },
+    { label: 'Dimensions', value: ctx.dimensions.length },
+    { label: 'Findings', value: ctx.findings.length },
+    { label: 'Recommendations', value: ctx.recommendations.length },
+    { label: 'Quick Wins', value: ctx.quickWins.length, color: '#28a745' }
+  ]);
+}
+\`\`\`
+
+#### Fix 7: Function Signature Mismatch (Agent Fix)
+
+**File**: `src/orchestration/reports/comprehensive-report.builder.ts`
+**Multiple Lines**: Function definition and call site
+**Error**: `chaptersToScorecardItems` called with wrong number of arguments
+
+**Problem**: Function was defined to accept one parameter but was being called with two parameters.
+
+**Before (BROKEN):**
+\`\`\`typescript
+// Function definition (expecting 1 parameter)
+function chaptersToScorecardItems(chapters: Chapter[]): ScorecardItem[] {
+  return chapters.map(chapter => ({
+    label: chapter.name,
+    score: chapter.score,
+    status: getScoreBand(chapter.score)
+  }));
+}
+
+// Function call (passing 2 parameters)
+const scorecardItems = chaptersToScorecardItems(ctx.chapters, ctx.benchmarks);  // ← WRONG!
+\`\`\`
+
+**After (FIXED):**
+\`\`\`typescript
+// Function definition updated to accept both parameters
+function chaptersToScorecardItems(
+  chapters: Chapter[], 
+  benchmarks?: Record<string, number>
+): ScorecardItem[] {
+  if (!chapters) return [];
+  
+  return chapters.map(chapter => ({
+    label: chapter.name,
+    score: chapter.score || 0,
+    status: getScoreBand(chapter.score || 0),
+    benchmark: benchmarks?.[chapter.code]
+  }));
+}
+
+// Function call (now matches signature)
+const scorecardItems = chaptersToScorecardItems(ctx.chapters, ctx.benchmarks);  // ✓ CORRECT
+\`\`\`
+
+#### Fix 8: Data Format Mismatch for Charts (Agent Fix)
+
+**File**: `src/orchestration/reports/comprehensive-report.builder.ts`
+**Function**: `generateDimensionBenchmarkBarsViz`
+**Error**: Chart generator expected different data format
+
+**Before (BROKEN):**
+\`\`\`typescript
+function generateDimensionBenchmarkBarsViz(dimensions: Dimension[]): string {
+  // Data format didn't match what generateHorizontalBarChartSVG expected
+  const data = dimensions.map(dim => ({
+    name: dim.name,        // ← WRONG KEY (should be 'label')
+    score: dim.score       // ← WRONG KEY (should be 'value')
+  }));
+
+  return generateHorizontalBarChartSVG(data);  // ← Incompatible format
+}
+\`\`\`
+
+**After (FIXED):**
+\`\`\`typescript
+function generateDimensionBenchmarkBarsViz(dimensions: Dimension[]): string {
+  if (!dimensions || dimensions.length === 0) {
+    return '<div class="no-data">No dimension data available</div>';
+  }
+
+  // Correct data format for chart generator
+  const data = dimensions.map(dim => ({
+    label: dim.name,         // ✓ CORRECT KEY
+    value: dim.score || 0,   // ✓ CORRECT KEY + null safety
+    color: getScoreColor(dim.score || 0),
+    unit: '/100'
+  }));
+
+  return generateHorizontalBarChartSVG({
+    data,
+    width: 600,
+    height: 40 * data.length,
+    showLabels: true,
+    showValues: true
+  });
+}
+\`\`\`
+
+### 13.3 Error Logging Improvements
+
+**File**: `src/orchestration/phase5-orchestrator.ts`
+**Enhancement**: Added stack trace logging for better debugging
+
+**Before:**
+\`\`\`typescript
+catch (error) {
+  console.error(\`Failed to generate \${config.name}\`, error.message);
+  throw error;
+}
+\`\`\`
+
+**After:**
+\`\`\`typescript
+catch (error) {
+  console.error(\`Failed to generate \${config.name}:\`);
+  console.error('Error message:', error.message);
+  console.error('Stack trace:', error.stack);  // ← Added for debugging
+  throw error;
+}
+\`\`\`
+
+### 13.4 Summary of Fixes
+
+| Fix # | File | Line(s) | Type | Impact |
+|-------|------|---------|------|--------|
+| 1 | owners-report.builder.ts | 174 | Compilation | Removed duplicate `safeQuickRef` |
+| 2 | recipe-report.builder.ts | 965 | Compilation | Removed duplicate `getScoreColor` |
+| 3 | utils/index.ts | 345-347 | Compilation | Removed duplicate exports |
+| 4 | recipe-report.builder.ts | Multiple | Compilation | Fixed `ensureString` → `safeString` |
+| 5 | comprehensive-report.builder.ts | 1874 | Runtime | Added null check for metrics dashboard |
+| 6 | comprehensive-report.builder.ts | 1937 | Runtime | Added null check for stats row |
+| 7 | comprehensive-report.builder.ts | Multiple | Runtime | Fixed function signature mismatch |
+| 8 | comprehensive-report.builder.ts | Multiple | Runtime | Fixed chart data format |
+
+**Result**: All 17 reports now generate successfully with 0 errors, 74 total visualizations, and comprehensive null safety.
+
+---
+
+## 14. Development Guidelines
+
+### 14.1 Setting Up Development Environment
+
+**Prerequisites:**
+\`\`\`bash
+- Node.js >= 18.0.0
+- npm >= 8.0.0
+- PostgreSQL >= 14.0 (optional, for database mode)
+- Git
+\`\`\`
+
+**Installation:**
+\`\`\`bash
+# Clone repository
+git clone <repository-url>
+cd workflow-export
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your Anthropic API key
+
+# Run type checking
+npm run typecheck
+
+# Run tests
+npm run test
+\`\`\`
+
+**Environment Variables:**
+\`\`\`bash
+# Required
+ANTHROPIC_API_KEY=sk-ant-...
+
+# Optional
+DATABASE_URL=postgresql://user:pass@localhost:5432/bizhealth
+LOG_LEVEL=info
+NODE_ENV=development
+\`\`\`
+
+### 14.2 Code Style and Conventions
+
+**TypeScript Configuration:**
+\`\`\`json
 {
   "compilerOptions": {
-    "strict": true,                          // Enable all strict checks
-    "noUnusedLocals": true,                  // Error on unused variables
-    "noUnusedParameters": true,              // Error on unused parameters
-    "noImplicitReturns": true,               // All code paths must return
-    "noFallthroughCasesInSwitch": true,      // Switch case fallthrough errors
-    "forceConsistentCasingInFileNames": true, // File name casing consistency
-    "isolatedModules": true                  // Each file can be transpiled independently
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "outDir": "./dist",
+    "rootDir": "./src"
   }
 }
-```
+\`\`\`
 
-**Type Safety Metrics:**
-- **100% type coverage** in core modules
-- **Zod validation** for all external data
-- **No `any` types** in production code (best practice)
-- **Strict null checks** prevent undefined errors
+**Naming Conventions:**
+- **Files**: kebab-case (`phase0-orchestrator.ts`, `comprehensive-report.builder.ts`)
+- **Functions**: camelCase (`executePhase0`, `buildReportContext`)
+- **Classes**: PascalCase (`ClaudeClient`, `DatabaseClient`)
+- **Constants**: UPPER_SNAKE_CASE (`TIER1_SYSTEM_PROMPT`, `DEFAULT_BRAND_CONFIG`)
+- **Interfaces/Types**: PascalCase (`ReportContext`, `IDM`, `Chapter`)
 
-### Code Metrics
+**Function Organization:**
+\`\`\`typescript
+// 1. Imports
+import { Something } from './somewhere';
 
-**Lines of Code by Module:**
+// 2. Type definitions
+interface LocalType {
+  // ...
+}
 
-| Module | LoC | Files | Complexity |
-|--------|-----|-------|------------|
-| IDM Types | 889 | 1 | Low |
-| Report Utils | ~2,500 | 18 | Medium |
-| Report Builders | ~3,000 | 8 | Medium-High |
-| Components | ~5,000 | 40 | Medium |
-| Phase Orchestrators | ~2,000 | 6 | Medium |
-| Pipeline Runner | 741 | 1 | Low-Medium |
-| Types (Other) | ~1,500 | 10 | Low |
-| Tests | ~5,000 | 50+ | Medium |
+// 3. Constants
+const CONSTANT_VALUE = 'value';
 
-**Estimated Total:** ~35,000 lines of TypeScript code
+// 4. Main exported function
+export async function mainFunction() {
+  // ...
+}
 
-### Code Quality Strengths
+// 5. Helper functions (not exported)
+function helperFunction() {
+  // ...
+}
+\`\`\`
 
-**1. Type Safety**
-- Comprehensive type definitions (889-line IDM)
-- Zod runtime validation
-- Strict compiler settings
-- No implicit any
-
-**2. Modularity**
-- Clear separation of concerns
-- 196 TypeScript files with focused responsibilities
-- Reusable component library (40 components)
-- Well-organized utility functions (18 modules)
-
-**3. Error Handling**
-- Try-catch blocks in all phase orchestrators
-- Graceful degradation (partial failures allowed)
-- Detailed error logging with Pino
-- Validation errors reported with context
-
-**4. Documentation**
-- JSDoc comments on public APIs
-- README with comprehensive usage guide
-- Type definitions serve as living documentation
-- Clear naming conventions
-
-**5. Testing**
-- Vitest test framework
-- Coverage tracking with @vitest/coverage-v8
-- QA automation scripts
-- Fixture-based testing
-
-### Code Quality Concerns
-
-**1. High Coupling in Report Utilities**
-- `utils/index.ts` exports 100+ functions
-- Used by all 8 report builders
-- Changes have high ripple effect
-- Recent duplicate export issues demonstrate fragility
-
-**2. String-Based Templating**
-- HTML generation via string concatenation
-- Risk of XSS if data not properly escaped
-- Difficult to unit test rendering logic
-- No template syntax validation
-
-**3. Long Functions**
-- Some report builders exceed 500 lines
-- Complex HTML generation logic
-- Difficult to maintain and test
-- Candidate for refactoring
-
-**4. Limited Test Coverage**
-- Not all components have tests
-- Integration tests missing for some phases
-- Visual regression testing not automated
-
-**5. Markdown Processing Complexity**
-- Multiple markdown parsers (`marked`, custom sanitizers)
-- Inconsistent handling across reports
-- Recent sanitization bugs indicate fragility
-
-### Technical Debt Score
-
-**Overall: Medium (6/10)**
-
-| Category | Score | Notes |
-|----------|-------|-------|
-| Type Safety | 9/10 | Excellent strict TypeScript usage |
-| Modularity | 7/10 | Good separation, some high coupling |
-| Testing | 5/10 | Basic tests, coverage gaps |
-| Documentation | 7/10 | Good types, adequate comments |
-| Error Handling | 8/10 | Robust error handling |
-| Performance | 7/10 | Efficient pipeline, some optimization opportunities |
-| Security | 6/10 | Template injection risks, no input sanitization audit |
-| Maintainability | 6/10 | Long functions, string templates |
-
----
-
-## Technical Debt & Known Issues
-
-### High Priority Issues
-
-**1. Owner Report Failure (QUICK_REFS.scorecard)**
-- **File:** `src/orchestration/reports/owners-report.builder.ts`
-- **Error:** `QUICK_REFS.scorecard is not a function`
-- **Cause:** Reference object structure mismatch
-- **Impact:** Owner report (1 of 17) not generating
-- **Fix Complexity:** Medium
-- **Recommendation:** Audit QUICK_REFS usage and ensure proper function references
-
-**2. Employees Report Failure (text.replace)**
-- **File:** `src/orchestration/reports/recipe-report.builder.ts`
-- **Error:** `text.replace is not a function`
-- **Cause:** Non-string value passed to string method
-- **Impact:** Employees report (1 of 17) not generating
-- **Fix Complexity:** Low
-- **Recommendation:** Add type guard before string operations
-
-### Medium Priority Issues
-
-**3. Template Injection Risk**
-- **Files:** All report builders
-- **Issue:** HTML generation via string concatenation without consistent escaping
-- **Impact:** Potential XSS vulnerabilities
-- **Fix Complexity:** High
-- **Recommendation:** Implement HTML escaping utility, audit all data insertion points
-
-**4. Duplicate Code in Report Builders**
-- **Files:** All 8 report builders
-- **Issue:** Similar patterns repeated across builders (cover pages, headers, footers)
-- **Impact:** Maintenance burden, inconsistency risk
-- **Fix Complexity:** Medium
-- **Recommendation:** Extract common patterns to shared builder utilities
-
-**5. Quality Metrics Thresholds Not Met**
-- **Issue:** Comprehensive report fails visualization, bold, divider targets
-- **Impact:** Report quality below standards
-- **Fix Complexity:** Medium
-- **Recommendation:** Increase visualizations, reduce bold usage, simplify structure
-
-**Example:**
-```json
-{
-  "comprehensive": {
-    "meetsTargets": {
-      "visualizations": false,  // 15 vs 50+ target
-      "boldElements": false,    // 1154 vs <200 target
-      "dividers": false         // 108 vs <30 target
-    }
+**Error Handling Pattern:**
+\`\`\`typescript
+export async function someOperation(): Promise<Result> {
+  try {
+    // Operation logic
+    const result = await performOperation();
+    return result;
+    
+  } catch (error) {
+    // Log error with context
+    logger.error('Operation failed', error);
+    
+    // Wrap in domain-specific error
+    throw new PipelineError(
+      'Failed to perform operation',
+      'phase_name',
+      'ERROR_CODE',
+      { originalError: error }
+    );
   }
 }
-```
+\`\`\`
 
-### Low Priority Issues
+### 14.3 Adding New Report Types
 
-**6. Incomplete Test Coverage**
-- **Files:** Various
-- **Issue:** Many components lack unit tests
-- **Impact:** Regression risk
-- **Fix Complexity:** High (ongoing)
-- **Recommendation:** Incremental test addition, focus on critical paths
+**Step 1: Create Report Builder**
 
-**7. Markdown Processing Fragmentation**
-- **Files:** `markdown-sanitizer.ts`, `markdown-parser.ts`, `voice-transformer.ts`
-- **Issue:** Multiple overlapping markdown processing utilities
-- **Impact:** Inconsistent behavior, maintenance burden
-- **Fix Complexity:** Medium
-- **Recommendation:** Consolidate into single markdown processing pipeline
+Create new file: `src/orchestration/reports/my-new-report.builder.ts`
 
-**8. Large Bundle Size**
-- **Issue:** D3.js and Chart.js add significant bundle weight
-- **Impact:** Slower execution, larger deployments
-- **Fix Complexity:** Medium
-- **Recommendation:** Tree-shake unused D3 modules, lazy load charts
+\`\`\`typescript
+import { ReportContext } from '../../types/report.types';
+import { renderHTMLTemplate } from './html-template';
 
-**9. Missing Error Recovery**
-- **Issue:** Some phase failures stop entire pipeline
-- **Impact:** All-or-nothing processing
-- **Fix Complexity:** Medium
-- **Recommendation:** Add checkpoint/resume capability
+export async function buildMyNewReport(
+  ctx: ReportContext
+): Promise<string> {
+  // Build sections
+  const sections = [
+    buildSection1(ctx),
+    buildSection2(ctx),
+    buildSection3(ctx)
+  ];
 
-**10. Hardcoded Configuration**
-- **Issue:** Many constants embedded in code rather than config files
-- **Impact:** Difficult to customize without code changes
-- **Fix Complexity:** Low
-- **Recommendation:** Extract to configuration files
+  // Compose HTML
+  const body = sections.join('\\n\\n');
 
----
+  // Return complete HTML document
+  return renderHTMLTemplate({
+    title: 'My New Report',
+    styles: getMyReportStyles(),
+    body
+  });
+}
 
-## Development Patterns
+function buildSection1(ctx: ReportContext): string {
+  // Section implementation
+  return '<div class="section1">...</div>';
+}
 
-### Common Patterns
-
-**1. Factory Pattern (Orchestrators)**
-```typescript
-export function createPhase1Orchestrator(config: Phase1Config): Phase1Orchestrator {
-  return {
-    async executePhase1(payload: WebhookPayload): Promise<Phase1Results> {
-      // Implementation
+function getMyReportStyles(): string {
+  return \`
+    /* Custom styles for this report */
+    .section1 {
+      /* ... */
     }
-  };
+  \`;
 }
-```
+\`\`\`
 
-**2. Builder Pattern (Reports)**
-```typescript
-export function buildComprehensiveReport(
-  context: ReportContext,
-  options: ReportRenderOptions
-): string {
-  const sections = buildSections(context);
-  return assembleReport(sections, options);
-}
-```
+**Step 2: Register in Configuration**
 
-**3. Strategy Pattern (Report Types)**
-```typescript
-const REPORT_BUILDERS: Record<Phase5ReportType, ReportBuilder> = {
-  comprehensive: buildComprehensiveReport,
-  owner: buildOwnersReport,
-  // ... different strategies for different report types
-};
+Edit: `src/config/reports.config.ts`
 
-function generateReport(type: Phase5ReportType, context: ReportContext): string {
-  const builder = REPORT_BUILDERS[type];
-  return builder(context);
-}
-```
+\`\`\`typescript
+import { buildMyNewReport } from '../orchestration/reports/my-new-report.builder';
 
-**4. Mapper Pattern (Data Transformation)**
-```typescript
-function mapDimensionToGauge(dimension: Dimension): GaugeProps {
-  return {
-    score: dimension.score,
-    label: dimension.name,
-    band: getScoreBand(dimension.score),
-    color: getScoreColor(dimension.score),
-  };
-}
-```
-
-**5. Pipeline Pattern (Phase Execution)**
-```typescript
-const phaseExecutors = [
-  () => executePhase0(payload),
-  () => executePhase1(payload),
-  () => executePhase2(),
-  () => executePhase3(),
-  () => executePhase4(),
-  () => executePhase5(),
+export const REPORT_CONFIGS: ReportConfig[] = [
+  // ... existing reports
+  {
+    type: 'myNewReport',
+    name: 'My New Report',
+    description: 'Description of what this report does',
+    builder: buildMyNewReport,
+    enabled: true,
+    audience: ['target', 'audience'],
+    estimatedPages: '10-20',
+    priority: 18  // After existing 17 reports
+  }
 ];
+\`\`\`
 
-for (let phase = startPhase; phase <= endPhase; phase++) {
-  const result = await phaseExecutors[phase]();
-  if (result.status === 'failed') break;
-}
-```
+**Step 3: Update Types**
+
+Edit: `src/types/report.types.ts`
+
+\`\`\`typescript
+export type ReportType =
+  | 'comprehensive'
+  | 'owner'
+  // ... existing types
+  | 'myNewReport';  // Add new type
+\`\`\`
+
+**Step 4: Test Report Generation**
+
+\`\`\`bash
+# Run Phase 5 only to test report
+node --import tsx src/run-pipeline.ts sample_webhook.json --phase=5 --skip-db
+
+# Check output
+ls -lh output/reports/*/myNewReport.html
+\`\`\`
+
+### 14.4 Testing Guidelines
+
+**Unit Tests:**
+\`\`\`typescript
+// src/__tests__/my-feature.test.ts
+import { describe, it, expect } from '@jest/globals';
+import { myFunction } from '../my-module';
+
+describe('myFunction', () => {
+  it('should handle normal case', () => {
+    const result = myFunction(input);
+    expect(result).toEqual(expectedOutput);
+  });
+
+  it('should handle null input', () => {
+    const result = myFunction(null);
+    expect(result).toEqual(defaultValue);
+  });
+
+  it('should throw on invalid input', () => {
+    expect(() => myFunction(invalidInput)).toThrow();
+  });
+});
+\`\`\`
+
+**Report Snapshot Tests:**
+\`\`\`typescript
+// src/__tests__/reports/my-report.test.ts
+import { buildMyNewReport } from '../../orchestration/reports/my-new-report.builder';
+import { mockReportContext } from '../fixtures/mock-context';
+
+describe('MyNewReport', () => {
+  it('should match snapshot', async () => {
+    const html = await buildMyNewReport(mockReportContext);
+    expect(html).toMatchSnapshot();
+  });
+
+  it('should include required sections', async () => {
+    const html = await buildMyNewReport(mockReportContext);
+    
+    expect(html).toContain('section1');
+    expect(html).toContain('section2');
+    expect(html).toContain('section3');
+  });
+
+  it('should handle missing data gracefully', async () => {
+    const incompleteContext = { ...mockReportContext, chapters: [] };
+    const html = await buildMyNewReport(incompleteContext);
+    
+    expect(html).toContain('No data available');
+  });
+});
+\`\`\`
+
+**Running Tests:**
+\`\`\`bash
+# All tests
+npm run test
+
+# Specific test file
+npm run test -- my-feature.test.ts
+
+# Watch mode
+npm run test:watch
+
+# Coverage
+npm run test:coverage
+\`\`\`
+
+### 14.5 Debugging Tips
+
+**Enable Verbose Logging:**
+\`\`\`bash
+LOG_LEVEL=debug node --import tsx src/run-pipeline.ts sample_webhook.json
+\`\`\`
+
+**Inspect Phase Outputs:**
+\`\`\`bash
+# Pretty-print JSON output
+cat output/phase4_output.json | jq .
+
+# Check specific field
+cat output/idm_output.json | jq '.overallHealth'
+
+# Count items
+cat output/idm_output.json | jq '.findings | length'
+\`\`\`
+
+**Debug Report Generation:**
+\`\`\`bash
+# Generate single report type
+node --import tsx src/run-pipeline.ts --phase=5 --skip-db 2>&1 | tee /tmp/phase5.log
+
+# Check for errors
+grep -i error /tmp/phase5.log
+
+# Check generated files
+ls -lh output/reports/*/
+\`\`\`
+
+**Common Issues:**
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| `Cannot read property 'score'` | Missing null check | Add `|| 0` or null guard |
+| `Duplicate function` | Merge conflict | Remove duplicate declaration |
+| `Module not found` | Wrong import path | Check import path, add `.js` extension |
+| `Batch API timeout` | Batch not complete | Wait 24 hours or check batch status |
+| `Type error` | Missing type definition | Add type import or define locally |
+
+### 14.6 Performance Optimization
+
+**Monitoring Token Usage:**
+\`\`\`typescript
+// Track API costs during development
+const usage = response.usage;
+console.log(\`Input tokens: \${usage.input_tokens}\`);
+console.log(\`Output tokens: \${usage.output_tokens}\`);
+console.log(\`Cost: $\${calculateCost(usage)}\`);
+\`\`\`
+
+**Optimizing Prompts:**
+1. Remove unnecessary context
+2. Use structured output schemas (JSON)
+3. Batch similar requests together
+4. Cache repeated prompt components
+
+**Optimizing Report Generation:**
+1. Generate reports in parallel (already implemented)
+2. Reuse compiled templates
+3. Cache SVG chart generation
+4. Minimize HTML size (remove whitespace in production)
+
+### 14.7 Git Workflow
+
+**Branch Naming:**
+\`\`\`
+feature/add-new-report-type
+fix/comprehensive-report-null-safety
+refactor/phase4-consolidation
+docs/update-architecture-guide
+\`\`\`
+
+**Commit Messages:**
+\`\`\`
+feat: Add quarterly performance report builder
+fix: Add null safety checks to comprehensive report
+refactor: Extract chart generation to separate module
+docs: Update API integration documentation
+test: Add snapshot tests for executive brief
+\`\`\`
+
+**Pre-Commit Checklist:**
+- [ ] TypeScript compiles without errors (`npm run typecheck`)
+- [ ] All tests pass (`npm run test`)
+- [ ] Code follows style guide
+- [ ] New features have tests
+- [ ] Documentation updated if needed
 
 ---
 
-## Performance Characteristics
+## 15. Appendices
 
-### Pipeline Performance
+### 15.1 Complete File Inventory
 
-**Measured Execution Times (Sample Run):**
+**Phase Orchestrators (6 files):**
+- `src/orchestration/phase0-orchestrator.ts` - Data normalization
+- `src/orchestration/phase1-orchestrator.ts` - Tier 1 analysis (Batch API)
+- `src/orchestration/phase2-orchestrator.ts` - Tier 2 synthesis
+- `src/orchestration/phase3-orchestrator.ts` - Tier 3 narrative (Batch API)
+- `src/orchestration/phase4-orchestrator.ts` - IDM generation
+- `src/orchestration/phase5-orchestrator.ts` - Report generation
 
-| Phase | Operation | Duration | Tokens Used | Cost (Approx) |
-|-------|-----------|----------|-------------|---------------|
-| 0 | Normalization | 67ms | 0 | $0.00 |
-| 1 | 10 Batch Analyses | 45-60s | ~300K | $4.50 |
-| 2 | 4 Deep Dives | 25-35s | ~100K | $1.50 |
-| 3 | Executive Synthesis | 15-25s | ~50K | $0.75 |
-| 4 | IDM Compilation | 192ms | 0 | $0.00 |
-| 5 | 17 Reports | 259ms | 0 | $0.00 |
-| **Total** | **Full Pipeline** | **90-120s** | **~450K** | **~$6.75** |
+**Report Builders (9 files):**
+- `comprehensive-report.builder.ts` (3,224 lines) - Complete 360° analysis
+- `owners-report.builder.ts` (1,780 lines) - Business owner executive report
+- `recipe-report.builder.ts` (1,494 lines) - 6 recipe-based reports
+- `executive-brief.builder.ts` (1,322 lines) - One-page executive summary
+- `visualization-renderer.service.ts` (620 lines) - Chart rendering service
+- `manager-report.builder.ts` (610 lines) - Manager-specific reports
+- `deep-dive-report.builder.ts` (482 lines) - 4 dimensional deep dives
+- `financial-report.builder.ts` (398 lines) - Financial impact analysis
+- `risk-report.builder.ts` (382 lines) - Risk assessment
+- `roadmap-report.builder.ts` (346 lines) - Implementation roadmap
+- `quick-wins-report.builder.ts` (300 lines) - Quick wins action plan
 
-**Cost Breakdown:**
-- Phase 1 (Batch API): ~$4.50 (66%)
-- Phase 2 (Deep Dive): ~$1.50 (22%)
-- Phase 3 (Synthesis): ~$0.75 (11%)
-- Phase 4-5: Free (no API calls)
+**Type Definitions (10 files):**
+- `idm.types.ts` - IDM structure (most important)
+- `report.types.ts` - Report configurations and context
+- `report-content.types.ts` - Content structures
+- `webhook.types.ts` - Webhook payload structure
+- `normalized.types.ts` - Phase 0 output
+- `recipe.types.ts` - Recipe system
+- `visualization.types.ts` - Chart types
+- `questionnaire.types.ts` - Questionnaire structures
+- `company-profile.types.ts` - Company information
+- `raw-input.types.ts` - Raw input formats
 
-### Performance Optimizations
+### 15.2 API Cost Breakdown
 
-**1. Batch API Usage (Phase 1)**
-- Parallel execution of 10 analyses
-- ~10x faster than sequential API calls
-- Cost-effective with batch pricing
+**Per-Run Costs (using Claude Sonnet 4.0):**
 
-**2. No API Calls in Phase 4-5**
-- Pure data transformation
-- Sub-second execution
-- Deterministic output
+| Phase | Mode | Input Tokens | Output Tokens | Cost |
+|-------|------|--------------|---------------|------|
+| Phase 0 | Sync | 0 | 0 | $0.00 |
+| Phase 1 | Batch | ~40,000 | ~16,000 | $0.36 |
+| Phase 2 | Sync | ~20,000 | ~8,000 | $0.18 |
+| Phase 3 | Batch | ~60,000 | ~112,000 | $1.86 |
+| Phase 4 | - | 0 | 0 | $0.00 |
+| Phase 5 | - | 0 | 0 | $0.00 |
+| **TOTAL** | | ~120,000 | ~136,000 | **~$2.40** |
 
-**3. File-Based Caching**
-- Each phase writes output JSON
-- Enables phase skipping (e.g., `--phase=5` only)
-- Debug-friendly: inspect intermediate results
+**Batch API Savings:**
+- Synchronous pricing: $3.00 input / $15.00 output per 1M tokens
+- Batch API pricing: $1.50 input / $7.50 output per 1M tokens
+- **Savings: 50% on batch operations**
 
-**4. Lazy Loading**
-- Components loaded on-demand
-- Report builders imported dynamically
-- Reduces memory footprint
+### 15.3 Output Specifications
 
----
+**Generated Reports (17 types):**
 
-## Testing Strategy
+| # | Report Type | Audience | Pages | Size |
+|---|-------------|----------|-------|------|
+| 1 | Comprehensive | Executives, Board | 200-400 | ~1MB |
+| 2 | Business Owner | CEO, Owner | 40-80 | ~200KB |
+| 3 | Executive Brief | C-suite | 15-25 | ~150KB |
+| 4 | Quick Wins | Management | 10-20 | ~100KB |
+| 5 | Risk Assessment | Risk Officers | 15-30 | ~120KB |
+| 6 | Roadmap | Project Managers | 15-30 | ~130KB |
+| 7 | Financial Impact | CFO, Finance | 15-30 | ~140KB |
+| 8 | Growth Engine DD | Sales/Marketing | 20-40 | ~180KB |
+| 9 | Performance DD | Operations | 20-40 | ~170KB |
+| 10 | People DD | HR, Leadership | 20-40 | ~170KB |
+| 11 | Resilience DD | Risk, Compliance | 20-40 | ~180KB |
+| 12 | Employee Summary | All Employees | 10-20 | ~80KB |
+| 13 | Operations Mgr | Ops Managers | 15-30 | ~120KB |
+| 14 | Sales/Marketing Mgr | Sales/Mkt Mgrs | 15-30 | ~130KB |
+| 15 | Financials Mgr | Finance Mgrs | 15-30 | ~125KB |
+| 16 | Strategy Mgr | Strategy Mgrs | 15-30 | ~130KB |
+| 17 | IT/Tech Mgr | IT Managers | 15-30 | ~140KB |
 
-### Test Framework
-
-**Primary Framework:** Vitest 1.1.0
-- Fast execution (native ESM support)
-- Snapshot testing
-- Coverage reporting with @vitest/coverage-v8
-- DOM simulation with jsdom
-
-### Test Organization
-
-```
-tests/
-├── recipe.test.ts                # Recipe-based report tests
-src/
-├── __tests__/                    # General tests
-│   ├── phase5-visual-validation.test.ts
-│   └── reports/                  # Report-specific tests
-├── orchestration/reports/config/__tests__/
-│   └── section-mapping.test.ts   # Section mapping tests
-└── qa/
-    ├── __tests__/                # QA tests
-    │   ├── formatting-equivalency.test.ts
-    │   └── css-usage.test.ts
-    ├── scripts/                  # QA automation
-    │   ├── generate-test-reports.ts
-    │   └── generate-qa-samples.ts
-    └── fixtures/                 # Test data
-        └── phase4/
-```
-
----
-
-## Security Considerations
-
-### Current Security Measures
-
-**1. Input Validation**
-- Zod schema validation for all webhook inputs
-- Type safety prevents injection attacks at compile time
-- Null/undefined handling prevents runtime errors
-
-**2. API Key Management**
-- Environment variable configuration
-- No hardcoded secrets
-- .env file excluded from version control
-
-**3. Limited External Dependencies**
-- Minimal dependency tree
-- Well-maintained packages (Anthropic, Zod, Pino)
-- Regular security audits recommended
-
-### Security Risks
-
-**1. Template Injection (XSS)**
-- **Risk:** HTML generation via string concatenation
-- **Attack Vector:** Malicious data in company name, narratives
-- **Impact:** XSS in generated reports
-- **Mitigation:** Implement HTML escaping utility
-- **Priority:** High
-
-**2. File Path Traversal**
-- **Risk:** User-controlled file paths in report generation
-- **Attack Vector:** Malicious runId or report type
-- **Impact:** Read/write arbitrary files
-- **Mitigation:** Validate and sanitize all file paths
-- **Priority:** Medium
-
-**3. Denial of Service**
-- **Risk:** Unbounded report generation
-- **Attack Vector:** Extremely large questionnaire responses
-- **Impact:** Memory exhaustion, slow execution
-- **Mitigation:** Implement size limits, rate limiting
-- **Priority:** Low (internal tool)
-
----
-
-## Future Architecture Recommendations
-
-### Short-term Improvements (1-3 months)
-
-**1. Fix Remaining Report Failures**
-- Owner report (QUICK_REFS.scorecard)
-- Employees report (text.replace)
-- **Effort:** 1-2 days
-- **Impact:** 100% report generation success
-
-**2. Improve Quality Metrics**
-- Increase visualizations in comprehensive report
-- Reduce excessive bold elements
-- Simplify divider usage
-- **Effort:** 1 week
-- **Impact:** Meet quality targets
-
-**3. Enhance Test Coverage**
-- Add unit tests for report builders
-- Integration tests for all phases
-- Visual regression tests
-- **Effort:** 2-3 weeks
-- **Impact:** Reduce regression risk
-
-**4. Security Hardening**
-- Implement HTML escaping utility
-- Audit file path operations
-- Add CSP headers
-- **Effort:** 1 week
-- **Impact:** Mitigate XSS and path traversal risks
-
-### Medium-term Enhancements (3-6 months)
-
-**5. Template Engine Migration**
-- Replace string concatenation with template engine (e.g., Handlebars)
-- Separate logic from presentation
-- **Effort:** 1 month
-- **Impact:** Cleaner code, easier maintenance
-
-**6. Performance Optimization**
-- Implement prompt caching (50% token reduction)
-- Parallel report generation
-- Optimize HTML bundle size
-- **Effort:** 2-3 weeks
-- **Impact:** 40-50% faster execution, lower costs
-
-**7. Monitoring & Observability**
-- Add structured logging throughout pipeline
-- Implement performance metrics tracking
-- Error tracking and alerting
-- **Effort:** 2 weeks
-- **Impact:** Better operational visibility
-
-### Long-term Vision (6-12 months)
-
-**8. Microservices Architecture**
-- Separate phase orchestrators into independent services
-- Enable horizontal scaling
-- **Effort:** 2-3 months
-- **Impact:** Scalability, reliability
-
-**9. Real-time Streaming**
-- Stream Phase 1-3 results as they complete
-- Progressive report generation
-- **Effort:** 1-2 months
-- **Impact:** Faster time-to-first-report
-
-**10. Multi-tenant Support**
-- White-label branding per tenant
-- Isolated data storage
-- Usage tracking and billing
-- **Effort:** 2 months
-- **Impact:** SaaS readiness
+**Total Output per Run:**
+- HTML Files: 17 × ~150KB avg = ~2.5MB
+- Metadata Files: 17 × ~5KB = ~85KB
+- Manifest: ~5KB
+- **Total: ~3MB per complete run**
 
 ---
 
 ## Conclusion
 
-The BizHealth AI Assessment Pipeline is a **well-architected, type-safe system** with strong foundations in TypeScript, Zod validation, and modular design. The 6-phase pipeline successfully processes business assessments through AI analysis to generate 17 comprehensive reports.
+This codebase represents a sophisticated enterprise-grade business intelligence pipeline that:
 
-### Strengths
-- Strong type safety (strict TypeScript + Zod)
-- Clean phase-based architecture
-- Rich component library (40 components)
-- Comprehensive IDM (889-line canonical data model)
-- Good error handling and logging
+1. **Processes** raw questionnaire data through 6 phases
+2. **Leverages** AI (Claude Sonnet 4.0) for deep business analysis
+3. **Generates** 17 audience-specific HTML reports (~3MB total)
+4. **Optimizes** costs through Batch API ($2.40 per run)
+5. **Ensures** quality through comprehensive validation and safety patches
 
-### Areas for Improvement
-- Fix 2 remaining report failures (owner, employees)
-- Reduce template injection risk (HTML escaping)
-- Improve test coverage
-- Optimize quality metrics (visualizations, bold usage)
-- Refactor string-based templates
+The architecture is designed for:
+- **Resilience**: File-based phase communication, comprehensive error handling
+- **Scalability**: Parallel report generation, batch processing
+- **Maintainability**: Strong typing, modular design, clear separation of concerns
+- **Debuggability**: Extensive logging, quality metrics, phase output artifacts
 
-### Recommended Next Steps
-1. **Week 1:** Fix owner and employees report failures
-2. **Week 2:** Implement HTML escaping and security audit
-3. **Week 3-4:** Add test coverage for report builders
-4. **Month 2:** Migrate to template engine
-5. **Month 3:** Performance optimization (prompt caching)
-
-With focused effort on addressing technical debt and security concerns, this codebase is well-positioned for production deployment and future enhancements.
+**Key Metrics:**
+- Total codebase: ~50,000 lines of TypeScript
+- Largest file: comprehensive-report.builder.ts (3,224 lines)
+- Report builders: 9 files generating 17 report types
+- Average pipeline run time: 24-48 hours (due to Batch API)
+- Average cost per run: ~$2.40
+- Quality: 74 SVG visualizations, 0 errors, comprehensive null safety
 
 ---
 
-**End of Codebase Analysis**
+**Document Version**: 1.0.0
+**Last Updated**: December 10, 2025
+**Maintained By**: Development Team
+**Contact**: See README.md for support information
