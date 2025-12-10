@@ -293,3 +293,52 @@ export {
 // IDM DATA EXTRACTION UTILITIES (Phase 1 Bug Fixes)
 // NOTE: All IDM extractor exports are already included above in lines 33-48
 // ============================================================================
+
+// ============================================================================
+// MANAGER REPORT UTILITIES (Phase 1 Enhancement)
+// ============================================================================
+
+// Safe extraction utilities - prevent undefined/null in rendered output
+export {
+  safeExtractValue,
+  safeStringValue,
+  safeNumber,
+  safeScore,
+  safeArray,
+  safeGetPath,
+  safeScoreBand,
+  safeScoreBandClass,
+  safeScoreBandColor,
+  safeEffortLevel,
+  safeImpactLevel,
+  safeSeverity,
+  safePercentage,
+  safeDelta,
+  safeDate,
+  safeTruncate as safeTruncateManager,
+  safeAttr,
+  safeHtml,
+  safeBoolean,
+  safeFirst,
+  safeCount,
+  safeObject,
+  createSafeExtractor,
+} from './safe-extract.js';
+
+// Dimension filter utilities - filter content by manager type
+export {
+  MANAGER_DIMENSIONS,
+  MANAGER_TITLES,
+  DIMENSION_CHAPTER_MAP,
+  DIMENSION_KEYWORDS,
+  getDimensionsForManager,
+  filterFindingsByDimensions,
+  filterRecommendationsByDimensions,
+  filterQuickWinsByDimensions,
+  filterRisksByDimensions,
+  filterRoadmapByDimensions,
+  calculateDepartmentScore,
+  getDepartmentData,
+} from './dimension-filters.js';
+
+export type { ManagerType, ManagerDimensionMap } from './dimension-filters.js';
