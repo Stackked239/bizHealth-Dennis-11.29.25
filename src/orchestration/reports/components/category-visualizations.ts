@@ -41,10 +41,87 @@ function getScoreColor(score: number): string {
 }
 
 /**
- * Truncate text to max length
+ * Truncate text to max length (for non-SWOT uses)
  */
 function truncateText(text: string, maxLength: number): string {
-  return text.length > maxLength ? text.substring(0, maxLength - 3) + '...' : text;
+  return text.length > maxLength ? text.substring(0, maxLength - 1) + '…' : text;
+}
+
+/**
+ * Wraps text for SVG rendering with proper line breaks
+ * @param text - Original text string
+ * @param maxCharsPerLine - Maximum characters per line (default 28)
+ * @param maxLines - Maximum number of lines (default 3)
+ * @returns Array of line strings, truncated if necessary
+ */
+function wrapSvgText(
+  text: string,
+  maxCharsPerLine: number = 28,
+  maxLines: number = 3
+): string[] {
+  if (!text) return [''];
+
+  const words = text.split(' ');
+  const lines: string[] = [];
+  let currentLine = '';
+
+  for (const word of words) {
+    const testLine = currentLine ? `${currentLine} ${word}` : word;
+
+    if (testLine.length <= maxCharsPerLine) {
+      currentLine = testLine;
+    } else {
+      if (lines.length < maxLines - 1) {
+        if (currentLine) lines.push(currentLine);
+        currentLine = word.length > maxCharsPerLine
+          ? word.substring(0, maxCharsPerLine - 1) + '…'
+          : word;
+      } else {
+        // Final line - truncate with ellipsis
+        const remaining = currentLine ? `${currentLine} ${word}` : word;
+        lines.push(
+          remaining.length > maxCharsPerLine
+            ? remaining.substring(0, maxCharsPerLine - 1) + '…'
+            : remaining
+        );
+        return lines;
+      }
+    }
+  }
+
+  if (currentLine) lines.push(currentLine);
+  return lines;
+}
+
+/**
+ * Generates SVG tspan elements for wrapped text
+ * @param text - Original text string
+ * @param x - X coordinate for text
+ * @param startY - Starting Y coordinate
+ * @param lineHeight - Height between lines (default 14)
+ * @param fontSize - Font size (default 10)
+ * @param fill - Text color (default bizNavy)
+ * @returns SVG text element string with tspan children
+ */
+function renderWrappedSvgText(
+  text: string,
+  x: number,
+  startY: number,
+  lineHeight: number = 14,
+  fontSize: number = 10,
+  fill: string = '#212653'
+): string {
+  const lines = wrapSvgText(text);
+
+  if (lines.length === 1) {
+    return `<text x="${x}" y="${startY}" font-size="${fontSize}" fill="${fill}" font-family="Open Sans, sans-serif">${escapeHtml(lines[0])}</text>`;
+  }
+
+  return `<text x="${x}" y="${startY}" font-size="${fontSize}" fill="${fill}" font-family="Open Sans, sans-serif">
+    ${lines.map((line, index) =>
+      `<tspan x="${x}" dy="${index === 0 ? 0 : lineHeight}">${escapeHtml(line)}</tspan>`
+    ).join('\n    ')}
+  </text>`;
 }
 
 /**
@@ -421,6 +498,7 @@ export interface SWOTOptions {
 
 /**
  * Generate a SWOT analysis diagram for a single category
+ * Uses multi-line text wrapping for better readability
  */
 export function generateSWOTQuadrant(
   categoryAnalysis: CategoryAnalysis,
@@ -435,12 +513,29 @@ export function generateSWOTQuadrant(
   const opportunities = categoryAnalysis.quickWins.slice(0, 3);
   const threats = categoryAnalysis.categoryRisks.slice(0, 3);
 
-  function renderItems(items: { title: string }[], x: number, y: number, itemHeight: number): string {
-    return items.map((item, idx) => `
-      <text x="${x + 10}" y="${y + 25 + idx * itemHeight}" font-size="10" fill="${COLORS.bizNavy}">
-        ${escapeHtml(truncateText(item.title, 35))}
-      </text>
-    `).join('');
+  // Calculate item height based on maximum lines needed (3 lines max, 14px line height)
+  const maxLinesPerItem = 3;
+  const lineHeight = 14;
+  const itemSpacing = maxLinesPerItem * lineHeight + 8; // Extra padding between items
+
+  /**
+   * Render SWOT items with proper text wrapping
+   * Uses bullet points and multi-line text for better readability
+   */
+  function renderWrappedItems(
+    items: { title: string }[],
+    x: number,
+    baseY: number,
+    textColor: string
+  ): string {
+    return items.map((item, idx) => {
+      const itemY = baseY + idx * itemSpacing;
+      // Add bullet point
+      const bullet = `<text x="${x + 8}" y="${itemY}" font-size="10" fill="${textColor}" font-family="Open Sans, sans-serif">•</text>`;
+      // Wrapped text starts after bullet
+      const wrappedText = renderWrappedSvgText(item.title, x + 20, itemY, lineHeight, 10, textColor);
+      return bullet + '\n      ' + wrappedText;
+    }).join('\n      ');
   }
 
   return `
@@ -456,23 +551,23 @@ export function generateSWOTQuadrant(
 
       <!-- Strengths (Top Left) -->
       <rect x="10" y="40" width="${quadrantWidth}" height="${quadrantHeight}" fill="#d4edda" rx="8" />
-      <text x="20" y="60" font-size="12" font-weight="bold" fill="#155724">STRENGTHS</text>
-      ${renderItems(strengths, 10, 50, 20)}
+      <text x="20" y="58" font-size="11" font-weight="bold" fill="#155724" font-family="Montserrat, sans-serif">STRENGTHS</text>
+      ${renderWrappedItems(strengths, 10, 76, '#155724')}
 
       <!-- Weaknesses (Top Right) -->
       <rect x="${quadrantWidth + 10}" y="40" width="${quadrantWidth}" height="${quadrantHeight}" fill="#f8d7da" rx="8" />
-      <text x="${quadrantWidth + 20}" y="60" font-size="12" font-weight="bold" fill="#721c24">WEAKNESSES</text>
-      ${renderItems(weaknesses, quadrantWidth + 10, 50, 20)}
+      <text x="${quadrantWidth + 20}" y="58" font-size="11" font-weight="bold" fill="#721c24" font-family="Montserrat, sans-serif">WEAKNESSES</text>
+      ${renderWrappedItems(weaknesses, quadrantWidth + 10, 76, '#721c24')}
 
       <!-- Opportunities (Bottom Left) -->
       <rect x="10" y="${quadrantHeight + 50}" width="${quadrantWidth}" height="${quadrantHeight}" fill="#cce5ff" rx="8" />
-      <text x="20" y="${quadrantHeight + 70}" font-size="12" font-weight="bold" fill="#004085">OPPORTUNITIES</text>
-      ${renderItems(opportunities, 10, quadrantHeight + 60, 20)}
+      <text x="20" y="${quadrantHeight + 68}" font-size="11" font-weight="bold" fill="#004085" font-family="Montserrat, sans-serif">OPPORTUNITIES</text>
+      ${renderWrappedItems(opportunities, 10, quadrantHeight + 86, '#004085')}
 
       <!-- Threats (Bottom Right) -->
       <rect x="${quadrantWidth + 10}" y="${quadrantHeight + 50}" width="${quadrantWidth}" height="${quadrantHeight}" fill="#fff3cd" rx="8" />
-      <text x="${quadrantWidth + 20}" y="${quadrantHeight + 70}" font-size="12" font-weight="bold" fill="#856404">RISKS</text>
-      ${renderItems(threats, quadrantWidth + 10, quadrantHeight + 60, 20)}
+      <text x="${quadrantWidth + 20}" y="${quadrantHeight + 68}" font-size="11" font-weight="bold" fill="#856404" font-family="Montserrat, sans-serif">RISKS</text>
+      ${renderWrappedItems(threats, quadrantWidth + 10, quadrantHeight + 86, '#856404')}
     </svg>
   `.trim();
 }
