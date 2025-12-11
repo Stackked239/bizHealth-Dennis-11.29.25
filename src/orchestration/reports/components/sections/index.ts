@@ -14,4 +14,5 @@ export {
   renderRiskOverviewSection,
   renderMetricsDashboardSection,
   renderManagerClosingSection,
+  renderCategoryAnalysisSection,
 } from './manager-sections.js';
