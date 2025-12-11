@@ -1,6 +1,6 @@
 {
   "version": "v1.0.0",
-  "last_updated": "2025-12-09T03:13:14.827Z",
+  "last_updated": "2025-12-11T04:30:13.524Z",
   "entries": {
     "86a66ed1-6c1a-4733-b862-350680f45471": {
       "assessment_run_id": "86a66ed1-6c1a-4733-b862-350680f45471",
@@ -50,6 +50,125 @@
         "normalized_company_profile": "data/normalized/6852b241-4634-4d3e-9098-b47bced1335a/cp-ba553d0e-aa6b-4f46-8991-cb7305e6f5f1.json",
         "normalized_questionnaire_responses": "data/normalized/ewm-global-478cbd43/qr-493ec10e-94f7-4d9a-90ac-204ebeef0adc.json",
         "benchmark_data": "data/normalized/ewm-global-478cbd43/benchmark-493ec10e-94f7-4d9a-90ac-204ebeef0adc.json"
+      },
+      "status": "ready_for_analysis"
+    },
+    "1b449422-26e5-42a2-80d4-5d281add0fd6": {
+      "assessment_run_id": "1b449422-26e5-42a2-80d4-5d281add0fd6",
+      "company_profile_id": "ewm-global-478cbd43",
+      "cp_snapshot_id": "c17fb777-93ef-446a-b273-083caa774497",
+      "created_at": "2025-12-10T07:59:53.416Z",
+      "questionnaire_version": "v2025-09-16",
+      "cp_version": "v2025-09-16",
+      "cp_transformation_version": "v1.0.0",
+      "qr_transformation_version": "v1.0.0",
+      "paths": {
+        "raw_assessment": "data/raw/ewm-global-478cbd43/1b449422-26e5-42a2-80d4-5d281add0fd6.json",
+        "normalized_company_profile": "data/normalized/ce43c2d1-98e9-494f-9f69-a53f88f757f0/cp-c17fb777-93ef-446a-b273-083caa774497.json",
+        "normalized_questionnaire_responses": "data/normalized/ewm-global-478cbd43/qr-1b449422-26e5-42a2-80d4-5d281add0fd6.json",
+        "benchmark_data": "data/normalized/ewm-global-478cbd43/benchmark-1b449422-26e5-42a2-80d4-5d281add0fd6.json"
+      },
+      "status": "ready_for_analysis"
+    },
+    "2ce8b2cd-a21f-4748-9176-bead67290e57": {
+      "assessment_run_id": "2ce8b2cd-a21f-4748-9176-bead67290e57",
+      "company_profile_id": "ewm-global-478cbd43",
+      "cp_snapshot_id": "6e3e926b-7d7c-4bb5-be6a-2781b5dfe952",
+      "created_at": "2025-12-10T08:00:23.237Z",
+      "questionnaire_version": "v2025-09-16",
+      "cp_version": "v2025-09-16",
+      "cp_transformation_version": "v1.0.0",
+      "qr_transformation_version": "v1.0.0",
+      "paths": {
+        "raw_assessment": "data/raw/ewm-global-478cbd43/2ce8b2cd-a21f-4748-9176-bead67290e57.json",
+        "normalized_company_profile": "data/normalized/cb0b155a-2693-40e2-a1fd-9d91627a188d/cp-6e3e926b-7d7c-4bb5-be6a-2781b5dfe952.json",
+        "normalized_questionnaire_responses": "data/normalized/ewm-global-478cbd43/qr-2ce8b2cd-a21f-4748-9176-bead67290e57.json",
+        "benchmark_data": "data/normalized/ewm-global-478cbd43/benchmark-2ce8b2cd-a21f-4748-9176-bead67290e57.json"
+      },
+      "status": "ready_for_analysis"
+    },
+    "e7eeb77b-ca4c-4555-a348-93e6b1eec8cb": {
+      "assessment_run_id": "e7eeb77b-ca4c-4555-a348-93e6b1eec8cb",
+      "company_profile_id": "ewm-global-478cbd43",
+      "cp_snapshot_id": "982efcb1-c78a-4be6-b740-12e8d5901695",
+      "created_at": "2025-12-11T03:26:56.169Z",
+      "questionnaire_version": "v2025-09-16",
+      "cp_version": "v2025-09-16",
+      "cp_transformation_version": "v1.0.0",
+      "qr_transformation_version": "v1.0.0",
+      "paths": {
+        "raw_assessment": "data/raw/ewm-global-478cbd43/e7eeb77b-ca4c-4555-a348-93e6b1eec8cb.json",
+        "normalized_company_profile": "data/normalized/c4b28b97-e1ea-4148-a3be-e7c028786e91/cp-982efcb1-c78a-4be6-b740-12e8d5901695.json",
+        "normalized_questionnaire_responses": "data/normalized/ewm-global-478cbd43/qr-e7eeb77b-ca4c-4555-a348-93e6b1eec8cb.json",
+        "benchmark_data": "data/normalized/ewm-global-478cbd43/benchmark-e7eeb77b-ca4c-4555-a348-93e6b1eec8cb.json"
+      },
+      "status": "ready_for_analysis"
+    },
+    "de266181-c2d5-47f2-9e13-d5e374aa2a77": {
+      "assessment_run_id": "de266181-c2d5-47f2-9e13-d5e374aa2a77",
+      "company_profile_id": "ewm-global-478cbd43",
+      "cp_snapshot_id": "f796a3a3-3db6-47cf-8860-b58ac1a2ee63",
+      "created_at": "2025-12-11T03:40:02.614Z",
+      "questionnaire_version": "v2025-09-16",
+      "cp_version": "v2025-09-16",
+      "cp_transformation_version": "v1.0.0",
+      "qr_transformation_version": "v1.0.0",
+      "paths": {
+        "raw_assessment": "data/raw/ewm-global-478cbd43/de266181-c2d5-47f2-9e13-d5e374aa2a77.json",
+        "normalized_company_profile": "data/normalized/de078b45-4de5-429e-b185-13647bbc3e74/cp-f796a3a3-3db6-47cf-8860-b58ac1a2ee63.json",
+        "normalized_questionnaire_responses": "data/normalized/ewm-global-478cbd43/qr-de266181-c2d5-47f2-9e13-d5e374aa2a77.json",
+        "benchmark_data": "data/normalized/ewm-global-478cbd43/benchmark-de266181-c2d5-47f2-9e13-d5e374aa2a77.json"
+      },
+      "status": "ready_for_analysis"
+    },
+    "ea49fdde-c397-4522-8605-f7353687959e": {
+      "assessment_run_id": "ea49fdde-c397-4522-8605-f7353687959e",
+      "company_profile_id": "ewm-global-478cbd43",
+      "cp_snapshot_id": "f3dd7b25-d39e-4b5f-bf2d-248041ff5afb",
+      "created_at": "2025-12-11T03:57:46.106Z",
+      "questionnaire_version": "v2025-09-16",
+      "cp_version": "v2025-09-16",
+      "cp_transformation_version": "v1.0.0",
+      "qr_transformation_version": "v1.0.0",
+      "paths": {
+        "raw_assessment": "data/raw/ewm-global-478cbd43/ea49fdde-c397-4522-8605-f7353687959e.json",
+        "normalized_company_profile": "data/normalized/96052385-291e-4409-a05b-881007eca4b2/cp-f3dd7b25-d39e-4b5f-bf2d-248041ff5afb.json",
+        "normalized_questionnaire_responses": "data/normalized/ewm-global-478cbd43/qr-ea49fdde-c397-4522-8605-f7353687959e.json",
+        "benchmark_data": "data/normalized/ewm-global-478cbd43/benchmark-ea49fdde-c397-4522-8605-f7353687959e.json"
+      },
+      "status": "ready_for_analysis"
+    },
+    "9e916fa5-ab8c-4b5b-85d9-554b3eec7461": {
+      "assessment_run_id": "9e916fa5-ab8c-4b5b-85d9-554b3eec7461",
+      "company_profile_id": "ewm-global-478cbd43",
+      "cp_snapshot_id": "7bdc9f2c-3d42-40f3-9425-7dc98f295308",
+      "created_at": "2025-12-11T04:13:11.203Z",
+      "questionnaire_version": "v2025-09-16",
+      "cp_version": "v2025-09-16",
+      "cp_transformation_version": "v1.0.0",
+      "qr_transformation_version": "v1.0.0",
+      "paths": {
+        "raw_assessment": "data/raw/ewm-global-478cbd43/9e916fa5-ab8c-4b5b-85d9-554b3eec7461.json",
+        "normalized_company_profile": "data/normalized/ffc914fb-c452-40ce-a5f4-5a04d4cb5498/cp-7bdc9f2c-3d42-40f3-9425-7dc98f295308.json",
+        "normalized_questionnaire_responses": "data/normalized/ewm-global-478cbd43/qr-9e916fa5-ab8c-4b5b-85d9-554b3eec7461.json",
+        "benchmark_data": "data/normalized/ewm-global-478cbd43/benchmark-9e916fa5-ab8c-4b5b-85d9-554b3eec7461.json"
+      },
+      "status": "ready_for_analysis"
+    },
+    "497b50aa-abb7-4173-b4f8-b1ec81547979": {
+      "assessment_run_id": "497b50aa-abb7-4173-b4f8-b1ec81547979",
+      "company_profile_id": "ewm-global-478cbd43",
+      "cp_snapshot_id": "1e4f5d68-8847-42d6-a6ac-c9a859626f14",
+      "created_at": "2025-12-11T04:30:13.522Z",
+      "questionnaire_version": "v2025-09-16",
+      "cp_version": "v2025-09-16",
+      "cp_transformation_version": "v1.0.0",
+      "qr_transformation_version": "v1.0.0",
+      "paths": {
+        "raw_assessment": "data/raw/ewm-global-478cbd43/497b50aa-abb7-4173-b4f8-b1ec81547979.json",
+        "normalized_company_profile": "data/normalized/6c03153d-9b3c-4432-aa99-4ce0201f21d9/cp-1e4f5d68-8847-42d6-a6ac-c9a859626f14.json",
+        "normalized_questionnaire_responses": "data/normalized/ewm-global-478cbd43/qr-497b50aa-abb7-4173-b4f8-b1ec81547979.json",
+        "benchmark_data": "data/normalized/ewm-global-478cbd43/benchmark-497b50aa-abb7-4173-b4f8-b1ec81547979.json"
       },
       "status": "ready_for_analysis"
     }

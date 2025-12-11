@@ -3,6 +3,19 @@
   "status": "success",
   "deliverablesGenerated": 9,
   "validationPassed": true,
-  "generatedAt": "2025-12-09T03:18:51.087Z",
-  "durationMs": 0
+  "deliverables": {
+    "comprehensive": "output/deliverables/comprehensive.html",
+    "owner": "output/deliverables/owner.html",
+    "executiveBrief": "output/deliverables/executiveBrief.html",
+    "salesMarketingManager": "output/deliverables/salesMarketingManager.html",
+    "operationsManager": "output/deliverables/operationsManager.html",
+    "financialsManager": "output/deliverables/financialsManager.html",
+    "itTechnologyManager": "output/deliverables/itTechnologyManager.html",
+    "strategyLeadershipManager": "output/deliverables/strategyLeadershipManager.html",
+    "employees": "output/deliverables/employees.html"
+  },
+  "outputDir": "output/deliverables",
+  "transformationsApplied": 23,
+  "generatedAt": "2025-12-09T03:31:20.386Z",
+  "durationMs": 15
 }

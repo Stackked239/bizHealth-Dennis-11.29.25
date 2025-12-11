@@ -1,0 +1,40 @@
+{
+  "reportType": "employees",
+  "reportName": "Employee Business Health Summary",
+  "generatedAt": "2025-12-11T06:02:58.335Z",
+  "companyName": "EWM Global",
+  "runId": "497b50aa-abb7-4173-b4f8-b1ec81547979",
+  "healthScore": 53,
+  "healthBand": "Attention",
+  "pageSuggestionEstimate": 6,
+  "sections": [
+    {
+      "id": "welcome",
+      "title": "Our Business Health Journey"
+    },
+    {
+      "id": "what_we_do_well",
+      "title": "What We Do Well"
+    },
+    {
+      "id": "where_we_grow",
+      "title": "Where We're Growing"
+    },
+    {
+      "id": "team_focus",
+      "title": "How We Can All Contribute"
+    },
+    {
+      "id": "culture_spotlight",
+      "title": "Culture & People Focus"
+    },
+    {
+      "id": "whats_next",
+      "title": "What's Next"
+    }
+  ],
+  "brand": {
+    "primaryColor": "#212653",
+    "accentColor": "#969423"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "reportType": "roadmap",
+  "reportName": "Implementation Roadmap",
+  "generatedAt": "2025-12-11T06:02:58.314Z",
+  "companyName": "EWM Global",
+  "runId": "497b50aa-abb7-4173-b4f8-b1ec81547979",
+  "healthScore": 53,
+  "healthBand": "Attention",
+  "pageSuggestionEstimate": 7,
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Roadmap Overview"
+    },
+    {
+      "id": "timeline",
+      "title": "Timeline Visualization"
+    },
+    {
+      "id": "phase-1",
+      "title": "Phase 1: Foundation & Quick Wins"
+    },
+    {
+      "id": "phase-2",
+      "title": "Phase 2: Core Capability Building"
+    },
+    {
+      "id": "phase-3",
+      "title": "Phase 3: Strategic Transformation"
+    },
+    {
+      "id": "resources",
+      "title": "Resource Planning"
+    },
+    {
+      "id": "next-steps",
+      "title": "Next Steps"
+    }
+  ],
+  "brand": {
+    "primaryColor": "#212653",
+    "accentColor": "#969423"
+  }
+}

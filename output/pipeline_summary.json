@@ -1,8 +1,8 @@
 {
   "config": {
-    "webhookPath": "./sample_webhook.json",
+    "webhookPath": "sample_webhook.json",
     "outputDir": "./output",
-    "startPhase": 5,
+    "startPhase": 4,
     "endPhase": 5,
     "skipDatabase": true,
     "generateReports": true,
@@ -12,24 +12,43 @@
       "quick_wins_report"
     ],
     "renderPDF": false,
-    "phase5Stage": "5c"
+    "skipPhase15": false
   },
   "results": [
     {
+      "phase": 4,
+      "status": "success",
+      "duration_ms": 253335,
+      "output_path": "output/phase4_output.json",
+      "details": {
+        "status": "complete",
+        "health_score": 72,
+        "health_descriptor": "Stable - Requires Strategic Attention",
+        "reports_generated": 3,
+        "report_types": [
+          "comprehensive_report",
+          "owners_report",
+          "quick_wins_report"
+        ],
+        "report_tokens": {
+          "input": 5518,
+          "output": 21606
+        }
+      }
+    },
+    {
       "phase": 5,
       "status": "success",
-      "duration_ms": 0,
-      "output_path": "output/phase5c_output.json",
+      "duration_ms": 326,
+      "output_path": "output/phase5_output.json",
       "details": {
-        "stage": "5C",
-        "status": "success",
-        "deliverablesGenerated": 9,
-        "validationPassed": true,
-        "generatedAt": "2025-12-09T03:18:51.087Z",
-        "durationMs": 0
+        "status": "complete",
+        "reports_generated": 17,
+        "output_dir": "output/reports/497b50aa-abb7-4173-b4f8-b1ec81547979",
+        "manifest": "output/reports/497b50aa-abb7-4173-b4f8-b1ec81547979/manifest.json"
       }
     }
   ],
-  "total_duration_ms": 1,
-  "completed_at": "2025-12-09T03:18:51.088Z"
+  "total_duration_ms": 253664,
+  "completed_at": "2025-12-11T06:02:58.362Z"
 }

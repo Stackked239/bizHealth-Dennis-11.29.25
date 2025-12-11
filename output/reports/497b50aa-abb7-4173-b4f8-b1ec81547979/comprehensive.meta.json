@@ -1,0 +1,76 @@
+{
+  "reportType": "comprehensive",
+  "reportName": "Comprehensive Assessment Report",
+  "generatedAt": "2025-12-11T06:02:58.274Z",
+  "companyName": "EWM Global",
+  "runId": "497b50aa-abb7-4173-b4f8-b1ec81547979",
+  "healthScore": 53,
+  "healthBand": "Attention",
+  "pageSuggestionEstimate": 336,
+  "sections": [
+    {
+      "id": "executive-summary",
+      "title": "Executive Summary"
+    },
+    {
+      "id": "category-overview",
+      "title": "Category Health Overview"
+    },
+    {
+      "id": "scorecard",
+      "title": "Business Health Scorecard"
+    },
+    {
+      "id": "chapter-growth-engine",
+      "title": "Chapter 1: Growth Engine Deep Dive"
+    },
+    {
+      "id": "chapter-performance-health",
+      "title": "Chapter 2: Performance & Health Deep Dive"
+    },
+    {
+      "id": "chapter-people-leadership",
+      "title": "Chapter 3: People & Leadership Deep Dive"
+    },
+    {
+      "id": "chapter-resilience-safeguards",
+      "title": "Chapter 4: Resilience & Safeguards Deep Dive"
+    },
+    {
+      "id": "cross-dimensional",
+      "title": "Cross-Dimensional Synthesis"
+    },
+    {
+      "id": "strategic-recommendations",
+      "title": "Strategic Recommendations"
+    },
+    {
+      "id": "risk-assessment",
+      "title": "Risk Assessment"
+    },
+    {
+      "id": "growth",
+      "title": "Growth Opportunities"
+    },
+    {
+      "id": "implementation-roadmap",
+      "title": "Implementation Roadmap"
+    },
+    {
+      "id": "findings",
+      "title": "Detailed Findings"
+    },
+    {
+      "id": "quick-wins",
+      "title": "Quick Wins"
+    },
+    {
+      "id": "financial-impact",
+      "title": "Financial Impact Analysis"
+    }
+  ],
+  "brand": {
+    "primaryColor": "#212653",
+    "accentColor": "#969423"
+  }
+}
