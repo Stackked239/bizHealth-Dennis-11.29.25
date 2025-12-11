@@ -153,6 +153,9 @@ import {
   generatePriorityMatrix,
 } from './components/category-visualizations.js';
 
+// Phase 1.5 Premium Content Styles
+import { getAllPhase15Styles } from './styles/index.js';
+
 // Phase 0: Premium Report Quality Enhancement imports
 import {
   generateCoverPage,
@@ -199,6 +202,14 @@ export async function buildComprehensiveReport(
     { id: 'chapter-performance-health', title: 'Chapter 2: Performance & Health Deep Dive' },
     { id: 'chapter-people-leadership', title: 'Chapter 3: People & Leadership Deep Dive' },
     { id: 'chapter-resilience-safeguards', title: 'Chapter 4: Resilience & Safeguards Deep Dive' },
+    // Phase 1.5: Cross-Category Insights (only if data is available)
+    ...(ctx.crossCategoryInsights ? [
+      { id: 'cross-category-insights', title: 'Cross-Category Analysis' },
+    ] : []),
+    // Phase 1.5: Category Deep Dives (only if data is available)
+    ...(ctx.categoryAnalyses && ctx.categoryAnalyses.length > 0 ? [
+      { id: 'category-deep-dives', title: 'Category Deep Dives' },
+    ] : []),
     { id: 'cross-dimensional', title: 'Cross-Dimensional Synthesis' },
     { id: 'strategic-recommendations', title: 'Strategic Recommendations' },
     { id: 'risk-assessment', title: 'Risk Assessment' },
@@ -386,6 +397,20 @@ export async function buildComprehensiveReport(
       <section id="chapter-resilience-safeguards" class="section page-break">${generateNarrativeSection('Chapter 4: Resilience & Safeguards Deep Dive', narratives.phase1.tier1.complianceSustainability, getChapterScore(ctx, 'RS'), 'RS', ctx, chapterDimensionCharts['RS'])}</section>
     ` : '',
 
+    // Phase 1.5: Cross-Category Insights Section (systemic patterns, cascade risks, priority table)
+    generateCrossCategoryInsightsSection(ctx, options),
+
+    // Phase 1.5: Category Deep Dives (SWOT, strengths, weaknesses, benchmarks per category)
+    ctx.categoryAnalyses && ctx.categoryAnalyses.length > 0 ? `
+      <section id="category-deep-dives" class="section page-break">
+        <div class="section-header">
+          <h2>Category Deep Dives</h2>
+          <p class="section-subtitle" style="color: #666; margin-top: 0.5rem;">Comprehensive analysis of all 12 business dimensions with SWOT, benchmarks, and actionable insights</p>
+        </div>
+        ${ctx.categoryAnalyses.map(cat => generateCategoryDeepDiveSection(cat, options)).join('')}
+      </section>
+    ` : '',
+
     // Cross-Dimensional Synthesis (Phase 2) with Phase 5 visualizations
     narratives ? `
       <section id="cross-dimensional" class="section page-break">${generateNarrativeSection('Cross-Dimensional Strategic Synthesis', narratives.phase2.crossDimensional, null)}</section>
@@ -446,10 +471,13 @@ export async function buildComprehensiveReport(
     generateReportFooterWithStats(ctx, narratives),
   ];
 
+  // Combine narrative styles with Phase 1.5 premium styles
+  const combinedStyles = `${narrativeStyles}\n${getAllPhase15Styles()}`;
+
   const rawHtml = wrapHtmlDocument(contentSections.join('\n'), {
     title: `${reportName} - ${ctx.companyProfile.name}`,
     brand: options.brand,
-    customCSS: narrativeStyles,
+    customCSS: combinedStyles,
     legalAccess: ctx.legalAccess,
     ctx: ctx,
   });
@@ -3439,4 +3467,519 @@ function generateCategorySummaryCards(
   html += `</div>`;
 
   return html;
+}
+
+// ============================================================================
+// Phase 1.5: Cross-Category Insights Section
+// ============================================================================
+
+/**
+ * Generate Cross-Category Insights Section
+ * Displays systemic patterns, cascade risks, and prioritization matrix
+ */
+function generateCrossCategoryInsightsSection(
+  ctx: ReportContext,
+  options: ReportRenderOptions
+): string {
+  // Skip if no cross-category insights data
+  if (!ctx.crossCategoryInsights) {
+    return '';
+  }
+
+  const insights = ctx.crossCategoryInsights;
+  const primaryColor = options.brand.primaryColor;
+  const accentColor = options.brand.accentColor;
+
+  // Get category name helper
+  const getCategoryName = (code: string): string => {
+    const analysis = ctx.categoryAnalyses?.find(ca => ca.categoryCode === code);
+    return analysis?.categoryName || code;
+  };
+
+  // Get priority class helper
+  const getPriorityClass = (score: number): string => {
+    if (score >= 8) return 'priority-critical';
+    if (score >= 6) return 'priority-high';
+    if (score >= 4) return 'priority-medium';
+    return 'priority-low';
+  };
+
+  return `
+    <section id="cross-category-insights" class="section page-break phase15-cross-category-insights">
+      <h2 style="color: ${primaryColor}; border-bottom: 3px solid ${accentColor}; padding-bottom: 10px; margin-bottom: 1.5rem; font-family: 'Montserrat', sans-serif;">
+        Cross-Category Analysis
+      </h2>
+      <p class="phase15-section-intro" style="color: #666; margin-bottom: 2rem; font-size: 1rem; line-height: 1.6;">
+        Understanding how business categories interact reveals systemic patterns and helps
+        prioritize improvements for maximum organizational impact. This analysis identifies
+        recurring themes, cascade risks, and optimal improvement sequencing.
+      </p>
+
+      <!-- Systemic Patterns -->
+      ${insights.systemicPatterns && insights.systemicPatterns.length > 0 ? `
+        <div class="systemic-patterns" style="margin-bottom: 2.5rem;">
+          <h3 style="color: ${primaryColor}; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">
+            Systemic Patterns Identified
+          </h3>
+          <p class="phase15-subsection-intro" style="color: #666; margin-bottom: 1rem; font-size: 0.95rem;">
+            These patterns represent recurring themes that affect multiple areas of the business.
+            Addressing systemic issues creates broad organizational benefits.
+          </p>
+          <div class="phase15-patterns-grid">
+            ${insights.systemicPatterns.map(pattern => `
+              <div class="phase15-pattern-card" style="
+                padding: 1.25rem;
+                background: white;
+                border-radius: 8px;
+                border-left: 4px solid ${primaryColor};
+                margin-bottom: 1rem;
+              ">
+                <h4 style="margin: 0 0 0.5rem 0; color: ${primaryColor}; font-size: 1.1rem;">
+                  ${escapeHtml(pattern.pattern)}
+                </h4>
+                <p style="color: #333; line-height: 1.6; margin-bottom: 0.75rem;">
+                  ${escapeHtml(pattern.description)}
+                </p>
+                <div class="phase15-affected-categories" style="margin-top: 0.75rem;">
+                  <span style="font-weight: 600; font-size: 0.8rem; color: #666; display: block; margin-bottom: 0.25rem;">
+                    Affected Categories:
+                  </span>
+                  <div class="phase15-category-tags" style="display: flex; gap: 0.25rem; flex-wrap: wrap;">
+                    ${pattern.affectedCategories.map(c => `
+                      <span class="phase15-category-tag" style="
+                        padding: 0.2rem 0.5rem;
+                        background: ${primaryColor};
+                        color: white;
+                        border-radius: 4px;
+                        font-size: 0.75rem;
+                        font-weight: 600;
+                      ">${getCategoryName(c)}</span>
+                    `).join('')}
+                  </div>
+                </div>
+                <div class="phase15-pattern-recommendation" style="
+                  margin-top: 0.75rem;
+                  padding: 0.75rem;
+                  background: #e8f5e9;
+                  border-radius: 4px;
+                ">
+                  <span style="font-weight: 600; color: #2e7d32; font-size: 0.8rem; display: block; margin-bottom: 0.25rem;">
+                    Recommendation:
+                  </span>
+                  <p style="margin: 0; color: #333; font-size: 0.9rem; line-height: 1.5;">
+                    ${escapeHtml(pattern.recommendation)}
+                  </p>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      <!-- Cascade Risks -->
+      ${insights.interdependencyAnalysis?.cascadeRisks && insights.interdependencyAnalysis.cascadeRisks.length > 0 ? `
+        <div class="cascade-risks" style="margin-bottom: 2.5rem;">
+          <h3 style="color: ${primaryColor}; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">
+            Cascade Risk Alerts
+          </h3>
+          <p class="phase15-subsection-intro" style="color: #666; margin-bottom: 1rem; font-size: 0.95rem;">
+            These alerts identify categories where poor performance may negatively impact other areas.
+            Addressing trigger categories first prevents downstream issues.
+          </p>
+          <div class="phase15-cascade-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+            ${insights.interdependencyAnalysis.cascadeRisks.map(risk => `
+              <div class="phase15-cascade-card" style="
+                padding: 1rem;
+                background: white;
+                border-radius: 8px;
+                border: 1px solid #f8d7da;
+                text-align: center;
+              ">
+                <div class="trigger" style="margin-bottom: 0.5rem;">
+                  <span style="font-weight: 600; font-size: 0.8rem; color: #666; display: block; margin-bottom: 0.25rem;">
+                    Trigger Category:
+                  </span>
+                  <span class="phase15-category-tag trigger" style="
+                    padding: 0.3rem 0.75rem;
+                    background: #dc3545;
+                    color: white;
+                    border-radius: 4px;
+                    font-size: 0.85rem;
+                    font-weight: 600;
+                  ">${getCategoryName(risk.triggerCategory)}</span>
+                </div>
+                <div class="phase15-cascade-arrow" style="font-size: 1.5rem; color: #dc3545; margin: 0.5rem 0;">
+                  ↓
+                </div>
+                <div class="affected" style="margin-bottom: 0.75rem;">
+                  <span style="font-weight: 600; font-size: 0.8rem; color: #666; display: block; margin-bottom: 0.25rem;">
+                    At Risk Categories:
+                  </span>
+                  <div class="phase15-category-tags" style="display: flex; gap: 0.25rem; flex-wrap: wrap; justify-content: center;">
+                    ${risk.affectedCategories.map(c => `
+                      <span class="phase15-category-tag affected" style="
+                        padding: 0.2rem 0.5rem;
+                        background: #fd7e14;
+                        color: white;
+                        border-radius: 4px;
+                        font-size: 0.75rem;
+                        font-weight: 600;
+                      ">${getCategoryName(c)}</span>
+                    `).join('')}
+                  </div>
+                </div>
+                <p class="phase15-risk-description" style="
+                  margin-top: 0.75rem;
+                  font-size: 0.9rem;
+                  color: #555;
+                  text-align: left;
+                  line-height: 1.5;
+                ">
+                  ${escapeHtml(risk.riskDescription)}
+                </p>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      <!-- Prioritization Matrix Table -->
+      ${insights.prioritizationMatrix && insights.prioritizationMatrix.length > 0 ? `
+        <div class="prioritization-section" style="margin-bottom: 2rem;">
+          <h3 style="color: ${primaryColor}; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">
+            Improvement Prioritization Matrix
+          </h3>
+          <p class="phase15-subsection-intro" style="color: #666; margin-bottom: 1rem; font-size: 0.95rem;">
+            Categories are ranked by a composite score considering urgency, potential impact, and implementation effort.
+            Focus on high-priority categories for maximum ROI.
+          </p>
+          <div style="overflow-x: auto;">
+            <table class="phase15-priority-table" style="
+              width: 100%;
+              border-collapse: collapse;
+              margin: 1rem 0;
+            ">
+              <thead>
+                <tr>
+                  <th style="background: ${primaryColor}; color: white; padding: 0.75rem; text-align: left; font-weight: 600;">Rank</th>
+                  <th style="background: ${primaryColor}; color: white; padding: 0.75rem; text-align: left; font-weight: 600;">Category</th>
+                  <th style="background: ${primaryColor}; color: white; padding: 0.75rem; text-align: center; font-weight: 600;">Urgency</th>
+                  <th style="background: ${primaryColor}; color: white; padding: 0.75rem; text-align: center; font-weight: 600;">Impact</th>
+                  <th style="background: ${primaryColor}; color: white; padding: 0.75rem; text-align: center; font-weight: 600;">Effort</th>
+                  <th style="background: ${primaryColor}; color: white; padding: 0.75rem; text-align: center; font-weight: 600;">Priority</th>
+                  <th style="background: ${primaryColor}; color: white; padding: 0.75rem; text-align: left; font-weight: 600;">Recommendation</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${insights.prioritizationMatrix
+                  .sort((a, b) => b.priorityScore - a.priorityScore)
+                  .map((item, index) => {
+                    const priorityClass = getPriorityClass(item.priorityScore);
+                    const bgColor = priorityClass === 'priority-critical' ? '#f8d7da' :
+                                    priorityClass === 'priority-high' ? '#fff3cd' :
+                                    priorityClass === 'priority-medium' ? '#d1ecf1' : '#f8f9fa';
+                    return `
+                      <tr style="background: ${bgColor};">
+                        <td style="padding: 0.75rem; border-bottom: 1px solid #dee2e6; font-weight: 700; color: ${primaryColor};">
+                          ${index + 1}
+                        </td>
+                        <td style="padding: 0.75rem; border-bottom: 1px solid #dee2e6;">
+                          <strong>${escapeHtml(item.categoryCode)}</strong>
+                          <span style="display: block; font-size: 0.8rem; color: #666;">
+                            ${getCategoryName(item.categoryCode)}
+                          </span>
+                        </td>
+                        <td style="padding: 0.75rem; border-bottom: 1px solid #dee2e6; text-align: center;">
+                          ${item.urgency}/10
+                        </td>
+                        <td style="padding: 0.75rem; border-bottom: 1px solid #dee2e6; text-align: center;">
+                          ${item.impact}/10
+                        </td>
+                        <td style="padding: 0.75rem; border-bottom: 1px solid #dee2e6; text-align: center;">
+                          ${item.effort}/10
+                        </td>
+                        <td style="padding: 0.75rem; border-bottom: 1px solid #dee2e6; text-align: center; font-weight: 700; color: ${primaryColor};">
+                          ${item.priorityScore.toFixed(1)}
+                        </td>
+                        <td style="padding: 0.75rem; border-bottom: 1px solid #dee2e6; font-size: 0.9rem;">
+                          ${escapeHtml(item.recommendation)}
+                        </td>
+                      </tr>
+                    `;
+                  }).join('')}
+              </tbody>
+            </table>
+          </div>
+          <div style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.85rem;">
+            <span style="display: flex; align-items: center; gap: 0.25rem;">
+              <span style="width: 16px; height: 16px; background: #f8d7da; border-radius: 3px;"></span>
+              Critical Priority (8-10)
+            </span>
+            <span style="display: flex; align-items: center; gap: 0.25rem;">
+              <span style="width: 16px; height: 16px; background: #fff3cd; border-radius: 3px;"></span>
+              High Priority (6-8)
+            </span>
+            <span style="display: flex; align-items: center; gap: 0.25rem;">
+              <span style="width: 16px; height: 16px; background: #d1ecf1; border-radius: 3px;"></span>
+              Medium Priority (4-6)
+            </span>
+            <span style="display: flex; align-items: center; gap: 0.25rem;">
+              <span style="width: 16px; height: 16px; background: #f8f9fa; border-radius: 3px;"></span>
+              Low Priority (0-4)
+            </span>
+          </div>
+        </div>
+      ` : ''}
+
+      <!-- Chapter Summaries from Phase 1.5 -->
+      ${ctx.chapterSummaries && ctx.chapterSummaries.length > 0 ? `
+        <div class="chapter-summaries-section" style="margin-top: 2.5rem;">
+          <h3 style="color: ${primaryColor}; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">
+            Chapter-Level Strategic Insights
+          </h3>
+          <p class="phase15-subsection-intro" style="color: #666; margin-bottom: 1.5rem; font-size: 0.95rem;">
+            Each chapter represents a strategic area of the business. These summaries highlight
+            the key strengths, challenges, and priority actions for each domain.
+          </p>
+          ${ctx.chapterSummaries.map(chapter => `
+            <div class="chapter-summary-card" style="
+              margin-bottom: 1.5rem;
+              padding: 1.5rem;
+              background: white;
+              border-radius: 12px;
+              border: 1px solid #e0e0e0;
+              box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            ">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h4 style="margin: 0; color: ${primaryColor}; font-family: 'Montserrat', sans-serif; font-size: 1.1rem;">
+                  ${escapeHtml(chapter.chapterName)}
+                </h4>
+                <div style="
+                  background: ${chapter.overallScore >= 80 ? '#28a745' : chapter.overallScore >= 60 ? accentColor : chapter.overallScore >= 40 ? '#f0ad4e' : '#dc3545'};
+                  color: white;
+                  padding: 0.4rem 1rem;
+                  border-radius: 20px;
+                  font-weight: 600;
+                ">${chapter.overallScore}/100</div>
+              </div>
+
+              ${chapter.executiveSummary ? `
+                <p style="color: #333; line-height: 1.6; margin-bottom: 1rem; font-size: 0.95rem;">
+                  ${escapeHtml(chapter.executiveSummary)}
+                </p>
+              ` : ''}
+
+              <div class="phase15-chapter-insights-grid" style="
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1rem;
+                margin-top: 1rem;
+              ">
+                <div class="phase15-insight-panel strengths" style="padding: 1rem; border-radius: 8px; background: #d4edda;">
+                  <h5 style="margin: 0 0 0.5rem 0; font-size: 0.85rem; color: #155724;">Key Strengths</h5>
+                  <ul style="margin: 0; padding-left: 1rem; font-size: 0.85rem; color: #155724;">
+                    ${(chapter.keyStrengths || []).slice(0, 3).map(s => `<li style="margin-bottom: 0.25rem;">${escapeHtml(s)}</li>`).join('') || '<li>No critical strengths identified</li>'}
+                  </ul>
+                </div>
+                <div class="phase15-insight-panel weaknesses" style="padding: 1rem; border-radius: 8px; background: #f8d7da;">
+                  <h5 style="margin: 0 0 0.5rem 0; font-size: 0.85rem; color: #721c24;">Key Challenges</h5>
+                  <ul style="margin: 0; padding-left: 1rem; font-size: 0.85rem; color: #721c24;">
+                    ${(chapter.keyWeaknesses || []).slice(0, 3).map(w => `<li style="margin-bottom: 0.25rem;">${escapeHtml(w)}</li>`).join('') || '<li>No critical challenges identified</li>'}
+                  </ul>
+                </div>
+                <div class="phase15-insight-panel actions" style="padding: 1rem; border-radius: 8px; background: #cce5ff;">
+                  <h5 style="margin: 0 0 0.5rem 0; font-size: 0.85rem; color: #004085;">Priority Actions</h5>
+                  <ol style="margin: 0; padding-left: 1.25rem; font-size: 0.85rem; color: #004085;">
+                    ${(chapter.priorityActions || []).slice(0, 3).map(a => `<li style="margin-bottom: 0.25rem;">${escapeHtml(a)}</li>`).join('') || '<li>Continue current trajectory</li>'}
+                  </ol>
+                </div>
+              </div>
+
+              <!-- Category Scores Bar -->
+              ${chapter.categoryScores && chapter.categoryScores.length > 0 ? `
+                <div style="margin-top: 1rem;">
+                  <h5 style="margin: 0 0 0.75rem 0; font-size: 0.85rem; color: ${primaryColor};">Category Performance</h5>
+                  <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    ${chapter.categoryScores.map(cs => {
+                      const fillColor = cs.score >= 80 ? '#28a745' : cs.score >= 60 ? accentColor : cs.score >= 40 ? '#f0ad4e' : '#dc3545';
+                      return `
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                          <span style="width: 40px; font-weight: 600; color: ${primaryColor}; font-size: 0.8rem;">${cs.categoryCode}</span>
+                          <div style="flex: 1; height: 16px; background: #e9ecef; border-radius: 8px; overflow: hidden;">
+                            <div style="width: ${cs.score}%; height: 100%; background: ${fillColor}; border-radius: 8px;"></div>
+                          </div>
+                          <span style="width: 30px; text-align: right; font-weight: 600; font-size: 0.8rem;">${cs.score}</span>
+                        </div>
+                      `;
+                    }).join('')}
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
+    </section>
+  `;
+}
+
+// ============================================================================
+// Phase 1.5: Enhanced Category Deep-Dive with SWOT and Full Narratives
+// ============================================================================
+
+/**
+ * Generate Enhanced Category Deep-Dive with SWOT and Full Narratives
+ * Displays full narrative content including SWOT, strengths, weaknesses, etc.
+ * @param categoryAnalysis - The category analysis data from Phase 1.5
+ * @param options - Report render options
+ * @returns HTML string for the category deep-dive section
+ */
+function generateCategoryDeepDiveSection(
+  categoryAnalysis: any,
+  options: ReportRenderOptions
+): string {
+  const primaryColor = options.brand.primaryColor;
+  const accentColor = options.brand.accentColor;
+  const cat = categoryAnalysis;
+
+  const getScoreColor = (score: number): string => {
+    if (score >= 80) return '#28a745';
+    if (score >= 60) return '#5cb85c';
+    if (score >= 40) return '#f0ad4e';
+    if (score >= 20) return '#d9534f';
+    return '#c9302c';
+  };
+
+  const scoreColor = getScoreColor(cat.overallScore);
+
+  return `
+    <div class="phase15-category-section" id="category-${cat.categoryCode}" style="margin: 2rem 0; padding: 1.5rem; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); page-break-inside: avoid;">
+      <div class="phase15-category-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 2px solid ${primaryColor};">
+        <div>
+          <h3 style="margin: 0; color: ${primaryColor}; font-family: 'Montserrat', sans-serif;">${escapeHtml(cat.categoryName)}</h3>
+          <span style="font-size: 0.9rem; color: #666;">Category Code: ${cat.categoryCode}</span>
+        </div>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <span style="padding: 0.4rem 0.8rem; border-radius: 20px; font-weight: 600; font-size: 0.9rem; color: white; background: ${scoreColor};">${cat.overallScore}/100</span>
+          <span style="padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 500; background: ${cat.status === 'Critical' ? '#f8d7da' : cat.status === 'Excellent' ? '#d4edda' : '#fff3cd'}; color: ${cat.status === 'Critical' ? '#721c24' : cat.status === 'Excellent' ? '#155724' : '#856404'};">${cat.status}</span>
+        </div>
+      </div>
+
+      ${cat.executiveSummary ? `<div style="margin-bottom: 1.5rem;"><p style="font-size: 1.05rem; color: #333; line-height: 1.7;">${escapeHtml(cat.executiveSummary)}</p></div>` : ''}
+
+      <div style="margin: 1.5rem 0; page-break-inside: avoid;">
+        <h4 style="color: ${primaryColor}; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">SWOT Analysis</h4>
+        <div style="display: flex; justify-content: center; padding: 1rem 0;">${generateSWOTQuadrant(cat)}</div>
+      </div>
+
+      ${cat.detailedAnalysis ? `
+        <div style="margin: 1.5rem 0; padding: 1.5rem; background: #f8f9fa; border-radius: 8px; border-left: 4px solid ${primaryColor};">
+          <h4 style="color: ${primaryColor}; margin: 0 0 1rem 0; font-family: 'Montserrat', sans-serif;">Detailed Analysis</h4>
+          <div>${cat.detailedAnalysis.split('\n').filter((p: string) => p.trim()).map((p: string) => `<p style="color: #333; line-height: 1.7; margin-bottom: 1rem;">${escapeHtml(p)}</p>`).join('')}</div>
+        </div>
+      ` : ''}
+
+      ${cat.strengths && cat.strengths.length > 0 ? `
+        <div style="margin: 1.5rem 0;">
+          <h4 style="color: ${primaryColor}; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid #e9ecef; font-family: 'Montserrat', sans-serif;">Key Strengths</h4>
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            ${cat.strengths.map((s: any) => `
+              <div style="padding: 1rem; border-radius: 8px; background: #f8f9fa; border-left: 4px solid #28a745;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                  <h5 style="margin: 0; color: ${primaryColor}; font-size: 1rem;">${escapeHtml(s.title)}</h5>
+                  <span style="padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; background: ${accentColor}; color: white;">${s.impactLevel || 'medium'} impact</span>
+                </div>
+                <p style="color: #333; line-height: 1.6; margin: 0.5rem 0;">${escapeHtml(s.description)}</p>
+                ${s.evidence && s.evidence.length > 0 ? `<div style="margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px solid #dee2e6; font-size: 0.85rem;"><span style="font-weight: 600; color: #666; font-size: 0.8rem;">Evidence:</span><ul style="margin: 0.25rem 0 0 1rem; padding: 0; color: #555;">${s.evidence.map((e: string) => `<li style="margin-bottom: 0.25rem;">${escapeHtml(e)}</li>`).join('')}</ul></div>` : ''}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      ${cat.weaknesses && cat.weaknesses.length > 0 ? `
+        <div style="margin: 1.5rem 0;">
+          <h4 style="color: ${primaryColor}; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid #e9ecef; font-family: 'Montserrat', sans-serif;">Areas for Improvement</h4>
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            ${cat.weaknesses.map((w: any) => `
+              <div style="padding: 1rem; border-radius: 8px; background: #f8f9fa; border-left: 4px solid ${w.severity === 'critical' ? '#dc3545' : w.severity === 'high' ? '#fd7e14' : '#f0ad4e'};">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                  <h5 style="margin: 0; color: ${primaryColor}; font-size: 1rem;">${escapeHtml(w.title)}</h5>
+                  <span style="padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; background: ${w.severity === 'critical' ? '#dc3545' : w.severity === 'high' ? '#fd7e14' : '#f0ad4e'}; color: ${w.severity === 'medium' ? '#333' : 'white'};">${w.severity || 'medium'}</span>
+                </div>
+                <p style="color: #333; line-height: 1.6; margin: 0.5rem 0;">${escapeHtml(w.description)}</p>
+                ${w.rootCause ? `<div style="margin-top: 0.75rem; padding: 0.75rem; background: #fff3cd; border-radius: 4px;"><span style="font-weight: 600; color: #856404; font-size: 0.8rem; display: block; margin-bottom: 0.25rem;">Root Cause:</span><p style="margin: 0; color: #333; line-height: 1.5;">${escapeHtml(w.rootCause)}</p></div>` : ''}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      ${cat.benchmarkComparisons && cat.benchmarkComparisons.length > 0 ? `
+        <div style="margin: 1.5rem 0;">
+          <h4 style="color: ${primaryColor}; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">Industry Benchmarking</h4>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+            ${cat.benchmarkComparisons.map((bm: any) => {
+              const position = bm.position || (bm.gap > 10 ? 'excellent' : bm.gap > 0 ? 'good' : bm.gap > -10 ? 'average' : 'poor');
+              const borderColor = position === 'excellent' ? '#28a745' : position === 'good' ? accentColor : position === 'average' ? '#f0ad4e' : '#dc3545';
+              return `
+                <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px; border-left: 4px solid ${borderColor};">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                    <span style="font-weight: 600; color: ${primaryColor};">${escapeHtml(bm.metricName)}</span>
+                    <span style="padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; background: ${borderColor}; color: white;">${position}</span>
+                  </div>
+                  <div style="font-size: 0.9rem; margin-bottom: 0.75rem;">
+                    <div style="display: flex; justify-content: space-between; padding: 0.25rem 0; border-bottom: 1px solid #e9ecef;"><span>Your Value:</span><strong>${bm.companyValue ?? 'N/A'}</strong></div>
+                    <div style="display: flex; justify-content: space-between; padding: 0.25rem 0; border-bottom: 1px solid #e9ecef;"><span>Industry Avg:</span><span>${bm.industryAverage ?? 'N/A'}</span></div>
+                    <div style="display: flex; justify-content: space-between; padding: 0.25rem 0; font-weight: 600;"><span>Gap:</span><span style="color: ${bm.gap >= 0 ? '#28a745' : '#dc3545'};">${bm.gap !== undefined ? (bm.gap >= 0 ? '+' : '') + bm.gap : 'N/A'}</span></div>
+                  </div>
+                  ${bm.gapInterpretation ? `<div style="padding: 0.75rem; background: white; border-radius: 4px; font-size: 0.85rem; font-style: italic; color: #555; line-height: 1.5;">${escapeHtml(bm.gapInterpretation)}</div>` : ''}
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      ${cat.quickWins && cat.quickWins.length > 0 ? `
+        <div style="margin: 1.5rem 0;">
+          <h4 style="color: ${primaryColor}; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">Quick Wins for ${escapeHtml(cat.categoryName)}</h4>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+            ${cat.quickWins.map((qw: any) => `
+              <div style="padding: 1rem; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 8px; border: 1px solid #dee2e6;">
+                <h5 style="margin: 0 0 0.5rem 0; color: ${primaryColor}; font-size: 0.95rem;">${escapeHtml(qw.title)}</h5>
+                <p style="color: #333; line-height: 1.5; font-size: 0.9rem; margin: 0.5rem 0;">${escapeHtml(qw.description)}</p>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.75rem;">
+                  <span style="padding: 0.2rem 0.5rem; background: white; border-radius: 4px; font-size: 0.75rem;">Effort: ${qw.effort || 'medium'}</span>
+                  <span style="padding: 0.2rem 0.5rem; background: white; border-radius: 4px; font-size: 0.75rem;">Impact: ${qw.impact || 'medium'}</span>
+                </div>
+                ${qw.estimatedROI ? `<div style="margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px dashed #dee2e6;"><span style="color: #666; font-size: 0.8rem;">Expected ROI: </span><span style="color: #28a745; font-weight: 600;">${escapeHtml(qw.estimatedROI)}</span></div>` : ''}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      ${cat.categoryRisks && cat.categoryRisks.length > 0 ? `
+        <div style="margin: 1.5rem 0;">
+          <h4 style="color: ${primaryColor}; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">Risk Factors</h4>
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            ${cat.categoryRisks.map((r: any) => `
+              <div style="padding: 1rem; background: #fff5f5; border-radius: 8px; border-left: 4px solid #dc3545;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                  <h5 style="margin: 0; color: ${primaryColor}; font-size: 0.95rem;">${escapeHtml(r.title)}</h5>
+                  <div style="display: flex; gap: 0.5rem; font-size: 0.75rem;">
+                    <span style="padding: 0.2rem 0.5rem; background: white; border-radius: 4px;">Likelihood: ${r.likelihood || 'medium'}</span>
+                    <span style="padding: 0.2rem 0.5rem; background: white; border-radius: 4px;">Impact: ${r.impact || 'medium'}</span>
+                  </div>
+                </div>
+                <p style="color: #333; line-height: 1.5; margin: 0.5rem 0; font-size: 0.9rem;">${escapeHtml(r.description)}</p>
+                ${r.mitigation ? `<div style="margin-top: 0.75rem; padding: 0.75rem; background: #e8f5e9; border-radius: 4px;"><span style="font-weight: 600; color: #2e7d32; font-size: 0.8rem; display: block; margin-bottom: 0.25rem;">Mitigation:</span><p style="margin: 0; color: #333; font-size: 0.9rem; line-height: 1.5;">${escapeHtml(r.mitigation)}</p></div>` : ''}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+    </div>
+  `;
 }

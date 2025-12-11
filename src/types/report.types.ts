@@ -484,6 +484,25 @@ export interface ReportManifest {
     pdf?: string;
     meta: string;
   }>;
+
+  /**
+   * Phase 1.5 Integration Status
+   * Tracks whether Phase 1.5 data was available and integrated into reports
+   */
+  phase1_5Integration?: {
+    /** Whether Phase 1.5 data was available */
+    available: boolean;
+    /** Number of categories with narrative content */
+    categoriesWithNarratives: number;
+    /** Number of chapters with narrative content */
+    chaptersWithNarratives: number;
+    /** List of visualizations included from Phase 1.5 */
+    visualizationsIncluded: string[];
+    /** Whether cross-category insights were available */
+    crossCategoryInsightsAvailable: boolean;
+    /** Whether full narrative content was surfaced */
+    narrativeContentSurfaced: boolean;
+  };
 }
 
 // ============================================================================
