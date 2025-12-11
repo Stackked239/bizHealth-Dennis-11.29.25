@@ -17,8 +17,16 @@ import type {
   MetricsDashboardSection,
   ManagerClosingSection,
   QuickWinsHighlightSection,
+  CategoryAnalysisSection,
   ManagerReportRecipe,
 } from '../../config/section-types.js';
+
+// Phase 1.5 Category Visualization Components
+import {
+  generateCategoryRadarChart,
+  generateSWOTQuadrant,
+  generateCategoryBenchmarkBars,
+} from '../category-visualizations.js';
 import {
   safeStringValue,
   safeScore,
@@ -1074,6 +1082,193 @@ function getClosingContent(managerType: string, companyName: string): ClosingCon
   };
 
   return contentMap[managerType] || contentMap.operations;
+}
+
+// ============================================================================
+// PHASE 1.5 CATEGORY ANALYSIS SECTION
+// ============================================================================
+
+/**
+ * Get score band for CSS class assignment
+ */
+function getCategoryScoreBand(score: number): string {
+  if (score >= 80) return 'excellent';
+  if (score >= 60) return 'good';
+  if (score >= 40) return 'developing';
+  if (score >= 20) return 'needs-improvement';
+  return 'critical';
+}
+
+/**
+ * Render Phase 1.5 Category Analysis section for Manager Reports
+ */
+export function renderCategoryAnalysisSection(
+  ctx: ReportContext,
+  section: CategoryAnalysisSection
+): string {
+  // Graceful fallback if Phase 1.5 data unavailable
+  if (!ctx.categoryAnalyses || ctx.categoryAnalyses.length === 0) {
+    return renderEmptySection(section, 'Category analysis data is not available for this assessment.');
+  }
+
+  // Filter to categories relevant to this manager
+  const relevantCategories = ctx.categoryAnalyses.filter(
+    cat => section.categoryCodes.includes(cat.categoryCode)
+  );
+
+  if (relevantCategories.length === 0) {
+    return renderEmptySection(section, 'No category data available for your department focus areas.');
+  }
+
+  // Generate visualizations
+  const radarChart = section.showRadarChart !== false
+    ? generateCategoryRadarChart(relevantCategories, { showBenchmark: true, showScoreValues: true })
+    : '';
+
+  const benchmarkBars = section.showBenchmarks !== false
+    ? generateCategoryBenchmarkBars(relevantCategories)
+    : '';
+
+  // Generate category detail cards
+  const categoryCards = relevantCategories.map(cat => {
+    const scoreBand = getCategoryScoreBand(cat.overallScore);
+    const topStrength = cat.strengths?.[0]?.title || 'N/A';
+    const topGap = cat.weaknesses?.[0]?.title || 'N/A';
+    const topQuickWin = cat.quickWins?.[0]?.title || 'N/A';
+
+    // Generate SWOT if enabled
+    const swotDiagram = section.showSWOT !== false
+      ? generateSWOTQuadrant(cat, { width: 400, height: 300 })
+      : '';
+
+    return `
+      <div class="category-detail-card" style="
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-left: 4px solid ${cat.overallScore >= 60 ? '#059669' : cat.overallScore >= 40 ? '#d97706' : '#dc2626'};
+        border-radius: 0 8px 8px 0;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        page-break-inside: avoid;
+      ">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h3 style="
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #212653;
+            margin: 0;
+          ">${safeHtml(cat.categoryName)} (${safeHtml(cat.categoryCode)})</h3>
+          <div style="
+            background: ${cat.overallScore >= 60 ? '#059669' : cat.overallScore >= 40 ? '#d97706' : '#dc2626'};
+            color: white;
+            padding: 0.375rem 0.875rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+          ">${cat.overallScore}/100</div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-bottom: 1rem; font-size: 0.875rem;">
+          <span><strong>Status:</strong> ${safeHtml(cat.status)}</span>
+          ${cat.confidenceLevel ? `<span><strong>Confidence:</strong> ${safeHtml(cat.confidenceLevel)}</span>` : ''}
+        </div>
+
+        ${cat.executiveSummary ? `
+          <p style="color: #374151; line-height: 1.6; margin: 0 0 1rem 0;">
+            ${safeHtml(cat.executiveSummary)}
+          </p>
+        ` : ''}
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1rem;">
+          <div style="background: #d1fae5; padding: 0.75rem; border-radius: 6px;">
+            <div style="font-size: 0.75rem; color: #059669; text-transform: uppercase; margin-bottom: 0.25rem;">Top Strength</div>
+            <div style="font-size: 0.875rem; color: #065f46; font-weight: 500;">${safeHtml(topStrength)}</div>
+          </div>
+          <div style="background: #fee2e2; padding: 0.75rem; border-radius: 6px;">
+            <div style="font-size: 0.75rem; color: #dc2626; text-transform: uppercase; margin-bottom: 0.25rem;">Priority Gap</div>
+            <div style="font-size: 0.875rem; color: #991b1b; font-weight: 500;">${safeHtml(topGap)}</div>
+          </div>
+          <div style="background: #dbeafe; padding: 0.75rem; border-radius: 6px;">
+            <div style="font-size: 0.75rem; color: #2563eb; text-transform: uppercase; margin-bottom: 0.25rem;">Quick Win</div>
+            <div style="font-size: 0.875rem; color: #1e40af; font-weight: 500;">${safeHtml(topQuickWin)}</div>
+          </div>
+        </div>
+
+        ${swotDiagram ? `
+          <div style="margin-top: 1rem; background: #f9fafb; padding: 1rem; border-radius: 8px;">
+            <h4 style="font-size: 0.875rem; color: #374151; margin: 0 0 0.75rem 0;">SWOT Analysis</h4>
+            <div style="display: flex; justify-content: center;">
+              ${swotDiagram}
+            </div>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <section id="${section.id}" class="report-section category-analysis-section" style="padding: 2rem; margin-bottom: 2rem;">
+      <h2 style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #212653;
+        margin: 0 0 1.5rem 0;
+        padding-bottom: 0.5rem;
+        border-bottom: 3px solid #969423;
+      ">${safeHtml(section.title)}</h2>
+
+      <p style="color: #374151; line-height: 1.6; margin-bottom: 1.5rem;">
+        This section provides detailed analysis of the ${relevantCategories.length} business categories
+        most relevant to your functional responsibilities. Use these insights to prioritize improvement efforts.
+      </p>
+
+      ${radarChart ? `
+        <div style="margin-bottom: 2rem; background: #f9fafb; padding: 1.5rem; border-radius: 8px;">
+          <h3 style="
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #212653;
+            margin: 0 0 1rem 0;
+          ">Department Category Radar</h3>
+          <div style="display: flex; justify-content: center;">
+            ${radarChart}
+          </div>
+          <p style="text-align: center; color: #6b7280; font-size: 0.85rem; margin-top: 0.75rem;">
+            Your performance across department-relevant categories vs. industry benchmarks
+          </p>
+        </div>
+      ` : ''}
+
+      ${benchmarkBars ? `
+        <div style="margin-bottom: 2rem; background: #f9fafb; padding: 1.5rem; border-radius: 8px;">
+          <h3 style="
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #212653;
+            margin: 0 0 1rem 0;
+          ">Benchmark Comparison</h3>
+          <div style="overflow-x: auto;">
+            ${benchmarkBars}
+          </div>
+        </div>
+      ` : ''}
+
+      <div class="category-details">
+        <h3 style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.125rem;
+          font-weight: 600;
+          color: #212653;
+          margin: 0 0 1rem 0;
+        ">Category Deep Dives</h3>
+        ${categoryCards}
+      </div>
+    </section>
+  `;
 }
 
 // ============================================================================

@@ -1692,6 +1692,267 @@ button:focus {
 }
 
 /* ========================================================================
+   PHASE 1.5 CATEGORY ANALYSIS STYLES
+   ======================================================================== */
+
+/* Section Containers */
+.category-analysis-overview,
+.cross-category-insights,
+.department-category-analysis,
+.category-analysis-section {
+  margin: 2rem 0;
+  padding: 1rem 0;
+}
+
+.section-intro {
+  font-size: 1.05rem;
+  color: #555;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+/* Visualization Containers */
+.visualization-container {
+  background: ${BRAND_COLORS.lightBg};
+  border: 1px solid ${BRAND_COLORS.border};
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+
+.visualization-container h3 {
+  color: ${primaryColor};
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid ${accentColor};
+}
+
+.visualization-row {
+  margin: 1.5rem 0;
+}
+
+.visualization-row.two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+/* Category Card Grid */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.category-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  border-left: 4px solid ${accentColor};
+}
+
+.category-card.score-excellent { border-left-color: ${BRAND_COLORS.bandExcellence}; }
+.category-card.score-good { border-left-color: ${accentColor}; }
+.category-card.score-developing { border-left-color: ${BRAND_COLORS.bandAttention}; }
+.category-card.score-needs-improvement { border-left-color: #fd7e14; }
+.category-card.score-critical { border-left-color: ${BRAND_COLORS.bandCritical}; }
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.category-header h4 {
+  margin: 0;
+  color: ${primaryColor};
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+}
+
+/* Score Badges */
+.score-badge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  background: ${primaryColor};
+  color: white;
+}
+
+.score-badge.score-excellent { background: ${BRAND_COLORS.bandExcellence}; }
+.score-badge.score-good { background: ${accentColor}; }
+.score-badge.score-developing { background: ${BRAND_COLORS.bandAttention}; color: #212529; }
+.score-badge.score-needs-improvement { background: #fd7e14; }
+.score-badge.score-critical { background: ${BRAND_COLORS.bandCritical}; }
+
+/* Category Highlights */
+.category-highlights {
+  margin: 1rem 0;
+  padding: 0.75rem;
+  background: ${BRAND_COLORS.lightBg};
+  border-radius: 4px;
+}
+
+.category-highlights .highlight {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.category-highlights .strength { color: ${BRAND_COLORS.bandExcellence}; }
+.category-highlights .gap { color: ${BRAND_COLORS.bandCritical}; }
+.category-highlights .quick-win { color: ${primaryColor}; }
+
+/* Cross Reference */
+.cross-reference {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed #ddd;
+}
+
+/* Systemic Patterns */
+.systemic-patterns {
+  margin: 1.5rem 0;
+}
+
+.pattern-card {
+  background: #fff9e6;
+  border: 1px solid ${accentColor};
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  margin: 0.75rem 0;
+}
+
+.pattern-card h4 {
+  color: ${primaryColor};
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+}
+
+.pattern-card .recommendation {
+  background: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  margin-top: 0.75rem;
+}
+
+.pattern-card .affected-categories {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+/* Prioritization Table */
+.prioritization-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+
+.prioritization-table th {
+  background: ${primaryColor};
+  color: white;
+  padding: 0.75rem;
+  text-align: left;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.prioritization-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.prioritization-table .priority-score {
+  font-size: 1.1rem;
+  color: ${primaryColor};
+}
+
+/* Category Detail Cards (Manager Reports) */
+.category-detail {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  border-left: 4px solid ${primaryColor};
+  background: #fafafa;
+}
+
+.category-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.category-detail-header h3 {
+  margin: 0;
+  color: ${primaryColor};
+  font-family: 'Montserrat', sans-serif;
+}
+
+.score-context {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+/* Phase 1.5 Print Optimizations */
+@media print {
+  .category-analysis-overview,
+  .cross-category-insights,
+  .department-category-analysis,
+  .category-analysis-section {
+    page-break-inside: avoid;
+  }
+
+  .category-card,
+  .category-detail,
+  .category-detail-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .visualization-container {
+    background: white !important;
+    border: 1px solid #ccc !important;
+  }
+
+  .visualization-row.two-column {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Phase 1.5 Responsive Adjustments */
+@media (max-width: 768px) {
+  .visualization-row.two-column {
+    grid-template-columns: 1fr;
+  }
+
+  .category-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .category-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+/* ========================================================================
    PHASE 4 VISUAL PATTERNS (Integrated 2025-12-05)
    ======================================================================== */
 ${getAllPhase4Styles()}

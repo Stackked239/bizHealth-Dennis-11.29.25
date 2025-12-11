@@ -38,7 +38,10 @@ import {
   renderRiskOverviewSection,
   renderMetricsDashboardSection,
   renderManagerClosingSection,
+  renderCategoryAnalysisSection,
 } from './components/sections/index.js';
+
+import type { CategoryAnalysisSection } from './config/section-types.js';
 import {
   wrapHtmlDocument,
   escapeHtml,
@@ -80,6 +83,9 @@ function renderSection(
 
     case 'managerClosing':
       return renderManagerClosingSection(ctx, section, recipe);
+
+    case 'categoryAnalysis':
+      return renderCategoryAnalysisSection(ctx, section as CategoryAnalysisSection);
 
     case 'recommendationsSummary':
     case 'findingsOverview':

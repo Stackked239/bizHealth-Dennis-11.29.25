@@ -108,6 +108,15 @@ import {
 // Import risk heatmap for enhanced risk visualization
 import { renderRiskHeatmapFromRisks } from './components/visual/risk-heatmap.component.js';
 
+// Phase 1.5 Category Visualization Components
+import {
+  generateCategoryRadarChart,
+  generateChapterHeatmap,
+  generateCategoryBenchmarkBars,
+  generateInterdependencyNetwork,
+  generateSWOTQuadrant,
+} from './components/category-visualizations.js';
+
 // ============================================================================
 // SAFETY WRAPPERS FOR QUICK_REFS
 // ============================================================================
@@ -189,6 +198,254 @@ function buildOwnerInsightCards(ctx: ReportContext, maxCards: number = 6): strin
     <div class="insight-cards-container">
       ${cards.join('\n')}
     </div>
+  `;
+}
+
+// ============================================================================
+// PHASE 1.5 CATEGORY ANALYSIS SECTIONS
+// ============================================================================
+
+/**
+ * Get score band for CSS class assignment
+ */
+function getPhase15ScoreBand(score: number): string {
+  if (score >= 80) return 'excellent';
+  if (score >= 60) return 'good';
+  if (score >= 40) return 'developing';
+  if (score >= 20) return 'needs-improvement';
+  return 'critical';
+}
+
+/**
+ * Build Category Analysis Overview section for Owner's Report
+ * Displays Phase 1.5 visualizations with category-level insights
+ */
+function buildCategoryAnalysisOverview(
+  ctx: ReportContext,
+  options: ReportRenderOptions
+): string {
+  // Graceful fallback if Phase 1.5 data unavailable
+  if (!ctx.categoryAnalyses || ctx.categoryAnalyses.length === 0) {
+    logger.info('Phase 1.5 category data not available for owner report');
+    return '';
+  }
+
+  const primaryColor = options.brand.primaryColor;
+  const accentColor = options.brand.accentColor;
+
+  // Generate visualizations
+  const radarChart = generateCategoryRadarChart(ctx.categoryAnalyses, {
+    showBenchmark: true,
+    showScoreValues: true
+  });
+
+  const heatmap = ctx.chapterSummaries && ctx.chapterSummaries.length > 0
+    ? generateChapterHeatmap(ctx.categoryAnalyses, ctx.chapterSummaries)
+    : '';
+
+  const benchmarkBars = generateCategoryBenchmarkBars(ctx.categoryAnalyses);
+
+  // Generate category quick insight cards (top 6 most relevant)
+  const sortedCategories = [...ctx.categoryAnalyses].sort((a, b) => {
+    // Prioritize categories that need attention (lower scores first)
+    const aUrgency = a.overallScore < 60 ? (60 - a.overallScore) : 0;
+    const bUrgency = b.overallScore < 60 ? (60 - b.overallScore) : 0;
+    return bUrgency - aUrgency;
+  });
+
+  const categoryCards = sortedCategories.slice(0, 6).map(cat => {
+    const scoreBand = getPhase15ScoreBand(cat.overallScore);
+    const topStrength = cat.strengths?.[0]?.title || 'N/A';
+    const topGap = cat.weaknesses?.[0]?.title || 'N/A';
+    const topQuickWin = cat.quickWins?.[0]?.title || 'N/A';
+
+    return `
+      <div class="category-card score-${scoreBand}">
+        <div class="category-header">
+          <h4>${escapeHtml(cat.categoryName)} (${escapeHtml(cat.categoryCode)})</h4>
+          <div class="score-badge score-${scoreBand}">${cat.overallScore}/100</div>
+        </div>
+        <p class="status"><strong>Status:</strong> ${escapeHtml(cat.status)}</p>
+        <p class="executive-summary">${escapeHtml((cat.executiveSummary || '').substring(0, 150))}${(cat.executiveSummary || '').length > 150 ? '...' : ''}</p>
+
+        <div class="category-highlights">
+          <div class="highlight strength">
+            <strong>&#10003; Top Strength:</strong> ${escapeHtml(topStrength)}
+          </div>
+          <div class="highlight gap">
+            <strong>&#9888; Priority Gap:</strong> ${escapeHtml(topGap)}
+          </div>
+          <div class="highlight quick-win">
+            <strong>&#9889; Quick Win:</strong> ${escapeHtml(topQuickWin)}
+          </div>
+        </div>
+
+        <p class="cross-reference">
+          <em>See Comprehensive Report for detailed ${escapeHtml(cat.categoryName)} analysis.</em>
+        </p>
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <section class="section page-break" id="category-analysis-overview">
+      ${renderOwnerSectionHeader('Category-Level Performance Analysis', 'How is each area of my business performing?')}
+
+      <p class="section-intro">
+        This section provides a granular view of your business health across all 12 assessment
+        categories, enabling you to target improvement efforts where they'll have the most impact.
+      </p>
+
+      <div class="visualization-container" style="margin: 1.5rem 0;">
+        <h3 style="color: ${primaryColor}; font-family: 'Montserrat', sans-serif; margin-bottom: 1rem;">12-Category Health Radar</h3>
+        <div style="display: flex; justify-content: center; background: #f8f9fa; padding: 20px; border-radius: 8px;">
+          ${radarChart}
+        </div>
+        <p style="text-align: center; color: #666; font-size: 0.85rem; margin-top: 0.75rem;">
+          Your performance across all business categories compared to industry benchmarks
+        </p>
+      </div>
+
+      <div class="visualization-row two-column" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0;">
+        ${heatmap ? `
+        <div class="visualization-container">
+          <h3 style="color: ${primaryColor}; font-family: 'Montserrat', sans-serif; margin-bottom: 1rem;">Chapter Performance Heatmap</h3>
+          <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+            ${heatmap}
+          </div>
+        </div>
+        ` : ''}
+
+        <div class="visualization-container">
+          <h3 style="color: ${primaryColor}; font-family: 'Montserrat', sans-serif; margin-bottom: 1rem;">Industry Benchmark Comparison</h3>
+          <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; overflow-x: auto;">
+            ${benchmarkBars}
+          </div>
+        </div>
+      </div>
+
+      <div class="category-summaries" style="margin-top: 2rem;">
+        <h3 style="color: ${primaryColor}; font-family: 'Montserrat', sans-serif; margin-bottom: 1rem;">Category Quick Insights</h3>
+        <p style="color: #666; margin-bottom: 1rem; font-size: 0.95rem;">
+          Key insights from your most critical categories. Categories requiring attention are prioritized.
+        </p>
+        <div class="category-grid">
+          ${categoryCards}
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+/**
+ * Build Cross-Category Insights section for Owner's Report
+ * Displays systemic patterns and prioritization matrix
+ */
+function buildCrossCategoryInsights(
+  ctx: ReportContext,
+  options: ReportRenderOptions
+): string {
+  // Graceful fallback if data unavailable
+  if (!ctx.crossCategoryInsights) {
+    return '';
+  }
+
+  const insights = ctx.crossCategoryInsights;
+  const primaryColor = options.brand.primaryColor;
+  const accentColor = options.brand.accentColor;
+
+  // Generate interdependency network if category analyses available
+  const networkDiagram = ctx.categoryAnalyses && ctx.categoryAnalyses.length > 0
+    ? generateInterdependencyNetwork(insights)
+    : '';
+
+  // Generate systemic patterns HTML
+  const systemicPatternsHtml = insights.systemicPatterns?.length > 0
+    ? insights.systemicPatterns.slice(0, 4).map(pattern => `
+        <div class="pattern-card">
+          <h4>${escapeHtml(pattern.pattern)}</h4>
+          <p>${escapeHtml(pattern.description)}</p>
+          <p class="recommendation"><strong>Recommendation:</strong> ${escapeHtml(pattern.recommendation)}</p>
+          <p class="affected-categories">
+            <em>Affected Categories: ${pattern.affectedCategories?.join(', ') || 'N/A'}</em>
+          </p>
+        </div>
+      `).join('')
+    : '<p style="color: #666; font-style: italic;">No systemic patterns identified in this assessment.</p>';
+
+  // Generate prioritization table HTML
+  const prioritizationTableHtml = insights.prioritizationMatrix?.length > 0
+    ? `
+      <div class="table-responsive">
+        <table class="prioritization-table">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Urgency</th>
+              <th>Impact</th>
+              <th>Effort</th>
+              <th>Priority Score</th>
+              <th>Recommendation</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${insights.prioritizationMatrix.slice(0, 8).map(item => {
+              const scoreBand = getPhase15ScoreBand(item.priorityScore * 10);
+              return `
+              <tr class="priority-${scoreBand}">
+                <td><strong>${escapeHtml(item.categoryCode)}</strong></td>
+                <td>${item.urgency}/10</td>
+                <td>${item.impact}/10</td>
+                <td>${item.effort}/10</td>
+                <td class="priority-score"><strong>${item.priorityScore.toFixed(1)}</strong></td>
+                <td>${escapeHtml((item.recommendation || '').substring(0, 80))}${(item.recommendation || '').length > 80 ? '...' : ''}</td>
+              </tr>
+            `;}).join('')}
+          </tbody>
+        </table>
+      </div>
+    `
+    : '<p style="color: #666; font-style: italic;">Prioritization matrix data unavailable.</p>';
+
+  return `
+    <section class="section page-break" id="cross-category-insights">
+      ${renderOwnerSectionHeader('Strategic Interdependencies & Priorities', 'How do my business areas affect each other?')}
+
+      <p class="section-intro">
+        Understanding how your business categories influence each other enables strategic resource allocation
+        and helps prevent cascading failures from unaddressed weaknesses.
+      </p>
+
+      ${networkDiagram ? `
+      <div class="visualization-container" style="margin: 1.5rem 0;">
+        <h3 style="color: ${primaryColor}; font-family: 'Montserrat', sans-serif; margin-bottom: 1rem;">Category Interdependency Network</h3>
+        <p style="color: #666; margin-bottom: 15px; font-size: 0.9rem;">
+          This diagram shows how different business categories influence each other.
+          Strong connections indicate where improvements can have cascading positive effects.
+        </p>
+        <div style="display: flex; justify-content: center; background: #f8f9fa; padding: 20px; border-radius: 8px;">
+          ${networkDiagram}
+        </div>
+      </div>
+      ` : ''}
+
+      <div class="systemic-patterns" style="margin: 1.5rem 0;">
+        <h3 style="color: ${primaryColor}; font-family: 'Montserrat', sans-serif; margin-bottom: 1rem;">Systemic Patterns Identified</h3>
+        <p style="color: #666; margin-bottom: 1rem; font-size: 0.9rem;">
+          These patterns span multiple categories and represent opportunities for high-leverage improvements.
+        </p>
+        ${systemicPatternsHtml}
+      </div>
+
+      <div class="prioritization-matrix" style="margin: 1.5rem 0;">
+        <h3 style="color: ${primaryColor}; font-family: 'Montserrat', sans-serif; margin-bottom: 1rem;">Category Improvement Prioritization</h3>
+        <p class="matrix-explanation" style="color: #666; margin-bottom: 1rem; font-size: 0.9rem;">
+          Categories ranked by combination of urgency, potential impact, and implementation effort.
+          Higher priority scores indicate categories that should be addressed first.
+        </p>
+        ${prioritizationTableHtml}
+      </div>
+    </section>
   `;
 }
 
@@ -548,6 +805,18 @@ export async function buildOwnersReport(
         ${safeQuickRef('scorecard', 'chapter-performance')}
       </section>
     ` : ''}
+
+    <!-- ================================================================
+         SECTION: Phase 1.5 Category Analysis Overview
+         12-category radar, heatmap, and benchmark visualizations
+         ================================================================ -->
+    ${buildCategoryAnalysisOverview(ctx, options)}
+
+    <!-- ================================================================
+         SECTION: Phase 1.5 Cross-Category Insights
+         Interdependency network and prioritization matrix
+         ================================================================ -->
+    ${buildCrossCategoryInsights(ctx, options)}
 
     <!-- ================================================================
          SECTION: Your Critical Priorities

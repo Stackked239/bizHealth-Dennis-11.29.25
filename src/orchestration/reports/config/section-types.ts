@@ -174,6 +174,22 @@ export interface GenericSection extends BaseRecipeSection {
   dataSource?: string;
 }
 
+/**
+ * Phase 1.5 Category Analysis section
+ * Department-specific category analysis with visualizations
+ */
+export interface CategoryAnalysisSection extends BaseRecipeSection {
+  type: 'categoryAnalysis';
+  /** Category codes relevant to this department */
+  categoryCodes: string[];
+  /** Show radar chart */
+  showRadarChart?: boolean;
+  /** Show SWOT analysis */
+  showSWOT?: boolean;
+  /** Show benchmark comparisons */
+  showBenchmarks?: boolean;
+}
+
 // ============================================================================
 // DISCRIMINATED UNION TYPE
 // ============================================================================
@@ -191,6 +207,7 @@ export type ManagerRecipeSection =
   | QuickWinsHighlightSection
   | RecommendationsSummarySection
   | FindingsOverviewSection
+  | CategoryAnalysisSection
   | GenericSection;
 
 // ============================================================================
@@ -297,4 +314,11 @@ export function isRecommendationsSummarySection(section: ManagerRecipeSection): 
  */
 export function isFindingsOverviewSection(section: ManagerRecipeSection): section is FindingsOverviewSection {
   return section.type === 'findingsOverview';
+}
+
+/**
+ * Type guard for CategoryAnalysisSection
+ */
+export function isCategoryAnalysisSection(section: ManagerRecipeSection): section is CategoryAnalysisSection {
+  return section.type === 'categoryAnalysis';
 }
