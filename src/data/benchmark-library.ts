@@ -530,10 +530,10 @@ export const BENCHMARK_LIBRARY: BenchmarkData[] = [
   },
 
   // =========================================================================
-  // IT, DATA & SYSTEMS BENCHMARKS
+  // IT & DATA SECURITY BENCHMARKS (Canonical code: ITD)
   // =========================================================================
   {
-    categoryCode: 'IDS',
+    categoryCode: 'ITD',
     metricKey: 'system_uptime',
     metricName: 'IT System Uptime',
     unit: 'percentage',
@@ -545,7 +545,7 @@ export const BENCHMARK_LIBRARY: BenchmarkData[] = [
     lastUpdated: '2025-01'
   },
   {
-    categoryCode: 'IDS',
+    categoryCode: 'ITD',
     metricKey: 'cybersecurity_score',
     metricName: 'Cybersecurity Preparedness Score',
     unit: 'score',
@@ -557,7 +557,7 @@ export const BENCHMARK_LIBRARY: BenchmarkData[] = [
     lastUpdated: '2025-01'
   },
   {
-    categoryCode: 'IDS',
+    categoryCode: 'ITD',
     metricKey: 'data_backup_rpo',
     metricName: 'Recovery Point Objective (Hours)',
     unit: 'ratio',

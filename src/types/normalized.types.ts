@@ -72,7 +72,8 @@ export type DimensionCode =
   | 'HRS' // Human Resources
   | 'LDG' // Leadership & Governance
   | 'TIN' // Technology & Innovation
-  | 'IDS' // IT, Data & Systems
+  | 'ITD' // IT & Data Security (canonical code for Phase 1.5+)
+  | 'IDS' // IT, Data & Systems (legacy code - maps to ITD)
   | 'RMS' // Risk Management & Sustainability
   | 'CMP'; // Compliance & Legal
 
@@ -104,7 +105,8 @@ export const DIMENSION_NAMES: Record<DimensionCode, string> = {
   HRS: 'Human Resources',
   LDG: 'Leadership & Governance',
   TIN: 'Technology & Innovation',
-  IDS: 'IT, Data & Systems',
+  ITD: 'IT & Data Security',
+  IDS: 'IT, Data & Systems', // Legacy code - maps to ITD
   RMS: 'Risk Management & Sustainability',
   CMP: 'Compliance & Legal',
 };
@@ -116,7 +118,7 @@ export const CHAPTER_DIMENSIONS: Record<ChapterCode, DimensionCode[]> = {
   GE: ['STR', 'SAL', 'MKT', 'CXP'],
   PH: ['OPS', 'FIN'],
   PL: ['HRS', 'LDG'],
-  RS: ['TIN', 'IDS', 'RMS', 'CMP'],
+  RS: ['TIN', 'ITD', 'RMS', 'CMP'], // Using ITD (canonical code for Phase 1.5+)
 };
 
 /**

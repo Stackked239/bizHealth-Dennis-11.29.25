@@ -63,11 +63,46 @@ function escapeXml(text: string): string {
 }
 
 /**
- * Truncate text with ellipsis
+ * Intentional abbreviations for chapter and dimension labels
+ * These are designed to be readable without ellipsis truncation
  */
-function truncateText(text: string, maxLength: number): string {
+const LABEL_ABBREVIATIONS: Record<string, string> = {
+  // Chapter names (full -> short)
+  'Growth Engine': 'Growth',
+  'Performance & Health': 'Performance',
+  'People & Leadership': 'People',
+  'Resilience & Safeguards': 'Resilience',
+  // Common dimension names
+  'Customer Experience': 'Customer Exp',
+  'Leadership & Governance': 'Leadership',
+  'Technology & Innovation': 'Tech & Innov',
+  'IT & Data Security': 'IT & Data',
+  'Risk Management & Sustainability': 'Risk Mgmt',
+  'Human Resources': 'HR',
+  'Compliance & Legal': 'Compliance',
+};
+
+/**
+ * Get abbreviated label for a dimension or chapter
+ * Uses intentional abbreviations when available, otherwise truncates
+ */
+function getAbbreviatedLabel(text: string, maxLength: number): string {
+  // Check if we have an intentional abbreviation
+  if (LABEL_ABBREVIATIONS[text]) {
+    return LABEL_ABBREVIATIONS[text];
+  }
+  // Otherwise truncate if needed
   if (text.length <= maxLength) return text;
   return text.substring(0, maxLength - 2) + '...';
+}
+
+/**
+ * Truncate text with ellipsis
+ * @deprecated Use getAbbreviatedLabel for better results
+ */
+function truncateText(text: string, maxLength: number): string {
+  // Use abbreviated label if available
+  return getAbbreviatedLabel(text, maxLength);
 }
 
 /**

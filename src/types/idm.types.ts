@@ -6,9 +6,12 @@
  *
  * Framework Structure:
  * - 4 Chapters: GE (Growth Engine), PH (Performance Health), PL (People & Leadership), RS (Resilience & Safeguards)
- * - 12 Dimensions: STR, SAL, MKT, CXP, OPS, FIN, HRS, LDG, TIN, IDS, RMS, CMP
+ * - 12 Dimensions: STR, SAL, MKT, CXP, OPS, FIN, HRS, LDG, TIN, ITD, RMS, CMP
  * - 3-5 Sub-indicators per dimension
  * - 87 questionnaire questions mapped to dimensions
+ *
+ * NOTE: IT & Data dimension uses canonical code 'ITD' (Phase 1.5+).
+ * Legacy code 'IDS' is still supported for backward compatibility.
  */
 
 import { z } from 'zod';
@@ -40,6 +43,7 @@ export const CHAPTER_NAMES: Record<ChapterCode, string> = {
 
 /**
  * Dimension codes representing the 12 assessment dimensions
+ * NOTE: Both ITD (canonical) and IDS (legacy) are accepted for backward compatibility
  */
 export const DimensionCodeSchema = z.enum([
   'STR', // Strategy
@@ -51,11 +55,29 @@ export const DimensionCodeSchema = z.enum([
   'HRS', // Human Resources
   'LDG', // Leadership & Governance
   'TIN', // Technology & Innovation
-  'IDS', // IT, Data & Systems
+  'ITD', // IT & Data Security (canonical code for Phase 1.5+)
+  'IDS', // IT, Data & Systems (legacy code - maps to ITD)
   'RMS', // Risk Management & Sustainability
   'CMP'  // Compliance
 ]);
 export type DimensionCode = z.infer<typeof DimensionCodeSchema>;
+
+/**
+ * Canonical dimension codes (excludes legacy IDS code)
+ */
+export const CANONICAL_DIMENSION_CODES = [
+  'STR', 'SAL', 'MKT', 'CXP', 'OPS', 'FIN',
+  'HRS', 'LDG', 'TIN', 'ITD', 'RMS', 'CMP'
+] as const;
+
+/**
+ * Normalize a dimension code to its canonical form
+ * Maps legacy IDS → ITD
+ */
+export function normalizeDimensionCode(code: string): DimensionCode {
+  if (code === 'IDS') return 'ITD';
+  return code as DimensionCode;
+}
 
 /**
  * Dimension metadata including name, description, and chapter mapping
@@ -106,9 +128,14 @@ export const DIMENSION_METADATA: Record<DimensionCode, { name: string; descripti
     description: 'Technology adoption, innovation culture, and digital transformation',
     chapter: 'RS'
   },
+  ITD: {
+    name: 'IT & Data Security',
+    description: 'IT infrastructure, data management, and cybersecurity',
+    chapter: 'RS'
+  },
   IDS: {
     name: 'IT, Data & Systems',
-    description: 'IT infrastructure, data management, and cybersecurity',
+    description: 'IT infrastructure, data management, and cybersecurity (legacy code - use ITD)',
     chapter: 'RS'
   },
   RMS: {

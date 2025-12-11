@@ -18,9 +18,10 @@ const UuidSchema = z.string().uuid();
 // Dimension and Chapter Codes
 // ============================================================================
 
+// NOTE: Both ITD (canonical) and IDS (legacy) are accepted for backward compatibility
 export const DimensionCodeSchema = z.enum([
   'STR', 'SAL', 'MKT', 'CXP', 'OPS', 'FIN',
-  'HRS', 'LDG', 'TIN', 'IDS', 'RMS', 'CMP',
+  'HRS', 'LDG', 'TIN', 'ITD', 'IDS', 'RMS', 'CMP',
 ]);
 
 export const ChapterCodeSchema = z.enum(['GE', 'PH', 'PL', 'RS']);

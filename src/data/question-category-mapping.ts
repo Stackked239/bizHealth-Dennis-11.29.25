@@ -1197,3 +1197,70 @@ export function getQuestionCountByChapter(): Record<ChapterCode, number> {
   }
   return counts as Record<ChapterCode, number>;
 }
+
+// ============================================================================
+// CATEGORY CODE NORMALIZATION
+// ============================================================================
+
+/**
+ * Legacy code mappings for backward compatibility
+ * Maps deprecated codes to canonical codes
+ */
+const LEGACY_CODE_MAP: Record<string, CategoryCode> = {
+  'IDS': 'ITD',  // Legacy: IT, Data & Systems → Canonical: IT & Data Security
+  'IT': 'ITD',   // Alternate shorthand
+};
+
+/**
+ * Normalize a category code to its canonical form
+ * Handles legacy codes (IDS → ITD) for backward compatibility
+ *
+ * @param code - The category code to normalize (may be legacy or canonical)
+ * @returns The canonical category code
+ */
+export function normalizeCategoryCode(code: string): CategoryCode {
+  // Check if it's a legacy code that needs mapping
+  const mappedCode = LEGACY_CODE_MAP[code];
+  if (mappedCode) {
+    return mappedCode;
+  }
+
+  // Verify it's a valid canonical code
+  if (CATEGORY_CODES_ORDERED.includes(code as CategoryCode)) {
+    return code as CategoryCode;
+  }
+
+  // Return as-is (may be invalid, let caller handle)
+  return code as CategoryCode;
+}
+
+/**
+ * Check if a code is a valid category code (canonical or legacy)
+ */
+export function isValidCategoryCode(code: string): boolean {
+  return CATEGORY_CODES_ORDERED.includes(code as CategoryCode) ||
+         Object.keys(LEGACY_CODE_MAP).includes(code);
+}
+
+/**
+ * Get all legacy codes for a canonical code
+ * Useful for lookups that need to match both legacy and canonical codes
+ */
+export function getLegacyCodes(canonicalCode: CategoryCode): string[] {
+  const legacyCodes: string[] = [];
+  for (const [legacy, canonical] of Object.entries(LEGACY_CODE_MAP)) {
+    if (canonical === canonicalCode) {
+      legacyCodes.push(legacy);
+    }
+  }
+  return legacyCodes;
+}
+
+/**
+ * Get all codes (canonical + legacy) for a category
+ * Useful for finding items that may use either code
+ */
+export function getAllCodesForCategory(categoryCode: CategoryCode): string[] {
+  const normalizedCode = normalizeCategoryCode(categoryCode);
+  return [normalizedCode, ...getLegacyCodes(normalizedCode)];
+}

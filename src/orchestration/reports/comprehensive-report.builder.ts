@@ -562,8 +562,8 @@ function generateExecutiveSummaryWithNarrative(ctx: ReportContext, narratives: a
   // Generate overall benchmark callout
   const overallBenchmarkHtml = generateOverallBenchmarkCallout(ctx);
 
+  // NOTE: Removed <section> wrapper - the calling code wraps this in a section
   return `
-    <section class="section">
       <div class="section-header">
         <h2>Executive Summary</h2>
       </div>
@@ -674,7 +674,6 @@ function generateExecutiveSummaryWithNarrative(ctx: ReportContext, narratives: a
           </ul>
         </div>
       ` : ''}
-    </section>
   `;
 }
 
@@ -776,8 +775,8 @@ function generateNarrativeSection(
     }
   }
 
+  // NOTE: Removed <section> wrapper - the calling code wraps this in a section
   return `
-    <section class="section page-break">
       ${headerHtml}
       ${benchmarkHtml}
       ${chapterOpeningNarrativeHtml}
@@ -790,7 +789,6 @@ function generateNarrativeSection(
       <div class="narrative-content">
         ${narrativeHtml}
       </div>
-    </section>
   `;
 }
 
@@ -2045,8 +2043,8 @@ function generateRiskAssessmentWithHeatmap(
     ? generateRiskMatrix(risksToMatrixItems(ctx.risks))
     : '');
 
+  // NOTE: Removed <section> wrapper - the calling code wraps this in a section
   return `
-    <section class="section page-break">
       <div class="section-header">
         <h2>Risk Assessment</h2>
       </div>
@@ -2077,7 +2075,6 @@ function generateRiskAssessmentWithHeatmap(
           ${sanitizedNarrative}
         </div>
       ` : structuredRisks}
-    </section>
   `;
 }
 
@@ -2101,8 +2098,8 @@ function generateImplementationRoadmapWithTimeline(
   // P2: Generate 90-Day Priority Actions table from recommendations
   const ninetyDayActionsTable = buildNinetyDayActionsTable(ctx);
 
+  // NOTE: Removed <section> wrapper - the calling code wraps this in a section
   return `
-    <section class="section page-break">
       <div class="section-header">
         <h2>Implementation Roadmap</h2>
       </div>
@@ -2133,7 +2130,6 @@ function generateImplementationRoadmapWithTimeline(
           ${sanitizedNarrative}
         </div>
       ` : structuredRoadmap}
-    </section>
   `;
 }
 

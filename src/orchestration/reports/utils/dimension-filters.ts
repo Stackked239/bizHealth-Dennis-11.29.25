@@ -66,13 +66,14 @@ export interface DepartmentData {
  * Dimension codes relevant to each manager type
  * These determine which areas of the business each manager report focuses on
  */
+// NOTE: Using ITD (canonical code for Phase 1.5+) for IT & Data dimension
 export const MANAGER_DIMENSIONS: Record<ManagerType, DimensionCode[]> = {
   operations: ['OPS', 'TIN'],
   salesMarketing: ['STR', 'SAL', 'MKT', 'CXP'],
   financials: ['FIN', 'RMS', 'CMP'],
   strategy: ['STR', 'LDG', 'RMS'],
-  itTechnology: ['TIN', 'IDS', 'RMS'],
-  employees: ['STR', 'SAL', 'MKT', 'CXP', 'OPS', 'FIN', 'HRS', 'LDG', 'TIN', 'IDS', 'RMS', 'CMP'],
+  itTechnology: ['TIN', 'ITD', 'RMS'],
+  employees: ['STR', 'SAL', 'MKT', 'CXP', 'OPS', 'FIN', 'HRS', 'LDG', 'TIN', 'ITD', 'RMS', 'CMP'],
 };
 
 /**
@@ -88,7 +89,8 @@ export const DIMENSION_CHAPTER_MAP: Record<DimensionCode, ChapterCode> = {
   HRS: 'PL',
   LDG: 'PL',
   TIN: 'RS',
-  IDS: 'RS',
+  ITD: 'RS', // Canonical code for Phase 1.5+
+  IDS: 'RS', // Legacy alias
   RMS: 'RS',
   CMP: 'RS',
 };
@@ -119,7 +121,8 @@ export const DIMENSION_KEYWORDS: Record<DimensionCode, string[]> = {
   HRS: ['hr', 'human resources', 'employee', 'talent', 'hiring', 'recruitment', 'culture'],
   LDG: ['leadership', 'governance', 'management', 'decision', 'executive', 'board'],
   TIN: ['technology', 'innovation', 'digital', 'automation', 'transformation', 'ai'],
-  IDS: ['it', 'data', 'security', 'systems', 'infrastructure', 'cyber', 'network'],
+  ITD: ['it', 'data', 'security', 'systems', 'infrastructure', 'cyber', 'network'], // Canonical
+  IDS: ['it', 'data', 'security', 'systems', 'infrastructure', 'cyber', 'network'], // Legacy alias
   RMS: ['risk', 'sustainability', 'compliance', 'mitigation', 'continuity', 'resilience'],
   CMP: ['compliance', 'regulatory', 'legal', 'audit', 'policy', 'governance', 'ethics'],
 };

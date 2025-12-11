@@ -478,7 +478,6 @@ export function generateClickwrapModal(config: ClickwrapConfig, legalContent: st
         }
       })();
     </script>
-    </script>
   `;
 }
 

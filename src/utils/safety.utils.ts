@@ -202,7 +202,8 @@ export function isNumber(value: unknown): value is number {
 }
 
 export function isValidDimensionCode(value: unknown): value is string {
-  const valid = ['STR', 'SAL', 'MKT', 'CXP', 'OPS', 'FIN', 'HRS', 'LDG', 'TIN', 'IDS', 'RMS', 'CMP'];
+  // NOTE: Both ITD (canonical) and IDS (legacy) are accepted for backward compatibility
+  const valid = ['STR', 'SAL', 'MKT', 'CXP', 'OPS', 'FIN', 'HRS', 'LDG', 'TIN', 'ITD', 'IDS', 'RMS', 'CMP'];
   return typeof value === 'string' && valid.includes(value);
 }
 
