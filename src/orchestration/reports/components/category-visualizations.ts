@@ -656,6 +656,246 @@ export function generatePriorityMatrix(
 }
 
 // ============================================================================
+// IMPACT/EFFORT MATRIX (2x2 QUADRANT)
+// Per North Star: "Visual 2x2 matrix showing actions by Impact/Effort"
+// ============================================================================
+
+export interface ImpactEffortMatrixOptions {
+  width?: number;
+  height?: number;
+  title?: string;
+}
+
+export interface RecommendationItem {
+  id?: string;
+  title?: string;
+  shortTitle?: string;
+  impact?: number;
+  impactScore?: number;
+  effort?: number;
+  effortScore?: number;
+  category?: string;
+  dimensionCode?: string;
+}
+
+/**
+ * Generate Impact/Effort Quadrant Matrix SVG
+ * Shows recommendations plotted by impact (Y-axis) vs effort (X-axis)
+ * P1 ENHANCEMENT: Adds visual prioritization matrix to Owner's Report
+ */
+export function generateImpactEffortMatrix(
+  recommendations: RecommendationItem[],
+  options: ImpactEffortMatrixOptions = {}
+): string {
+  const { width = 600, height = 500, title = 'Impact/Effort Prioritization Matrix' } = options;
+
+  const padding = { top: 60, right: 40, bottom: 60, left: 60 };
+  const chartWidth = width - padding.left - padding.right;
+  const chartHeight = height - padding.top - padding.bottom;
+  const midX = padding.left + chartWidth / 2;
+  const midY = padding.top + chartHeight / 2;
+
+  // Quadrant definitions
+  const quadrants = [
+    {
+      name: 'Quick Wins',
+      subtitle: 'Start Immediately',
+      x: padding.left,
+      y: padding.top,
+      w: chartWidth / 2,
+      h: chartHeight / 2,
+      fill: 'rgba(40, 167, 69, 0.15)',
+      border: '#28a745'
+    },
+    {
+      name: 'Major Initiatives',
+      subtitle: 'Phase Over Time',
+      x: midX,
+      y: padding.top,
+      w: chartWidth / 2,
+      h: chartHeight / 2,
+      fill: 'rgba(0, 123, 255, 0.15)',
+      border: '#007bff'
+    },
+    {
+      name: 'Fill-Ins',
+      subtitle: 'If Resources Allow',
+      x: padding.left,
+      y: midY,
+      w: chartWidth / 2,
+      h: chartHeight / 2,
+      fill: 'rgba(108, 117, 125, 0.1)',
+      border: '#6c757d'
+    },
+    {
+      name: 'Reconsider',
+      subtitle: 'Low Priority',
+      x: midX,
+      y: midY,
+      w: chartWidth / 2,
+      h: chartHeight / 2,
+      fill: 'rgba(220, 53, 69, 0.1)',
+      border: '#dc3545'
+    }
+  ];
+
+  // Plot data points (limit to 12 for readability)
+  const dataPoints = recommendations.slice(0, 12).map((rec, i) => {
+    // Normalize scores to chart coordinates
+    // Impact: 0-100 maps to bottom-top (inverted Y)
+    // Effort: 0-100 maps to left-right
+    const impact = rec.impact || rec.impactScore || 50;
+    const effort = rec.effort || rec.effortScore || 50;
+
+    const x = padding.left + (effort / 100) * chartWidth;
+    const y = padding.top + chartHeight - (impact / 100) * chartHeight;
+
+    // Determine quadrant color
+    const isHighImpact = impact >= 50;
+    const isLowEffort = effort < 50;
+    let color = '#6c757d'; // default gray
+    if (isHighImpact && isLowEffort) color = '#28a745'; // Quick Win
+    else if (isHighImpact && !isLowEffort) color = '#007bff'; // Major Initiative
+    else if (!isHighImpact && isLowEffort) color = '#6c757d'; // Fill-In
+    else color = '#dc3545'; // Reconsider
+
+    return {
+      x,
+      y,
+      color,
+      label: rec.shortTitle || rec.title?.substring(0, 15) || `Item ${i + 1}`,
+      rec
+    };
+  });
+
+  // Build SVG
+  return `
+    <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"
+         xmlns="http://www.w3.org/2000/svg"
+         style="font-family: 'Open Sans', Arial, sans-serif; max-width: 100%; height: auto;">
+
+      <!-- Background -->
+      <rect width="${width}" height="${height}" fill="#fafbfc" rx="8"/>
+
+      <!-- Title -->
+      <text x="${width / 2}" y="30" text-anchor="middle"
+            font-family="'Montserrat', sans-serif" font-size="16" font-weight="600" fill="${COLORS.bizNavy}">
+        ${title}
+      </text>
+
+      <!-- Quadrants -->
+      ${quadrants.map(q => `
+        <rect x="${q.x}" y="${q.y}" width="${q.w}" height="${q.h}"
+              fill="${q.fill}" stroke="${q.border}" stroke-width="1"/>
+        <text x="${q.x + q.w / 2}" y="${q.y + 20}" text-anchor="middle"
+              font-size="12" font-weight="600" fill="${q.border}">${q.name}</text>
+        <text x="${q.x + q.w / 2}" y="${q.y + 35}" text-anchor="middle"
+              font-size="9" fill="#666">${q.subtitle}</text>
+      `).join('')}
+
+      <!-- Axis Labels -->
+      <text x="${width / 2}" y="${height - 15}" text-anchor="middle"
+            font-size="11" fill="${COLORS.bizNavy}" font-weight="500">
+        Implementation Effort →
+      </text>
+      <text x="15" y="${height / 2}" text-anchor="middle"
+            font-size="11" fill="${COLORS.bizNavy}" font-weight="500"
+            transform="rotate(-90, 15, ${height / 2})">
+        ← Business Impact
+      </text>
+
+      <!-- Axis markers -->
+      <text x="${padding.left}" y="${height - 40}" font-size="9" fill="#999">Low</text>
+      <text x="${width - padding.right}" y="${height - 40}" text-anchor="end" font-size="9" fill="#999">High</text>
+      <text x="${padding.left - 5}" y="${padding.top + 10}" text-anchor="end" font-size="9" fill="#999">High</text>
+      <text x="${padding.left - 5}" y="${height - padding.bottom}" text-anchor="end" font-size="9" fill="#999">Low</text>
+
+      <!-- Center lines -->
+      <line x1="${midX}" y1="${padding.top}" x2="${midX}" y2="${height - padding.bottom}"
+            stroke="#dee2e6" stroke-width="2" stroke-dasharray="4,4"/>
+      <line x1="${padding.left}" y1="${midY}" x2="${width - padding.right}" y2="${midY}"
+            stroke="#dee2e6" stroke-width="2" stroke-dasharray="4,4"/>
+
+      <!-- Data Points -->
+      ${dataPoints.map((pt, i) => `
+        <g class="data-point">
+          <circle cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="18" fill="${pt.color}" opacity="0.9"/>
+          <text x="${pt.x.toFixed(1)}" y="${(pt.y + 4).toFixed(1)}" text-anchor="middle"
+                font-size="9" font-weight="600" fill="white">${i + 1}</text>
+        </g>
+      `).join('')}
+
+      <!-- Legend -->
+      <g transform="translate(${width - 180}, ${height - 55})">
+        ${dataPoints.slice(0, 6).map((pt, i) => `
+          <g transform="translate(${(i % 2) * 90}, ${Math.floor(i / 2) * 14})">
+            <circle cx="6" cy="6" r="5" fill="${pt.color}"/>
+            <text x="14" y="10" font-size="8" fill="#333">${i + 1}. ${escapeHtml(truncateText(pt.label, 10))}</text>
+          </g>
+        `).join('')}
+      </g>
+    </svg>
+  `.trim();
+}
+
+// ============================================================================
+// NULL-SAFE VISUALIZATION HELPERS
+// P1: Handle categories with no data properly
+// ============================================================================
+
+/**
+ * Check if category has valid data for visualization
+ */
+export function hasValidCategoryData(category: CategoryAnalysis): boolean {
+  if (!category) return false;
+  if (category.overallScore === null || category.overallScore === undefined) return false;
+  if (isNaN(category.overallScore)) return false;
+  return true;
+}
+
+/**
+ * Get display score with no-data handling
+ */
+export function getDisplayScore(category: CategoryAnalysis): { value: number | null; display: string; hasData: boolean } {
+  if (!hasValidCategoryData(category)) {
+    return { value: null, display: 'N/A', hasData: false };
+  }
+  return { value: category.overallScore, display: String(category.overallScore), hasData: true };
+}
+
+/**
+ * SVG pattern definition for no-data cells (diagonal stripes)
+ */
+export const NO_DATA_PATTERN_DEF = `
+  <defs>
+    <pattern id="noDataPattern" patternUnits="userSpaceOnUse" width="8" height="8">
+      <rect width="8" height="8" fill="#E0E0E0"/>
+      <path d="M-2,2 l4,-4 M0,8 l8,-8 M6,10 l4,-4"
+            stroke="#BDBDBD" stroke-width="1"/>
+    </pattern>
+  </defs>
+`;
+
+/**
+ * Get cell style for heatmap with no-data handling
+ */
+export function getCellStyle(category: CategoryAnalysis): { fill: string; textColor: string; label: string } {
+  if (!hasValidCategoryData(category)) {
+    return {
+      fill: 'url(#noDataPattern)',
+      textColor: '#666',
+      label: `${category?.categoryCode || '—'}\n(No Data)`
+    };
+  }
+
+  const score = category.overallScore;
+  const fill = getScoreColor(score);
+  const textColor = score < 50 ? COLORS.white : COLORS.bizNavy;
+
+  return { fill, textColor, label: `${category.categoryCode}` };
+}
+
+// ============================================================================
 // EXPORTS
 // ============================================================================
 
@@ -665,7 +905,12 @@ export const CategoryVisualizations = {
   generateCategoryBenchmarkBars,
   generateSWOTQuadrant,
   generateInterdependencyNetwork,
-  generatePriorityMatrix
+  generatePriorityMatrix,
+  generateImpactEffortMatrix,
+  hasValidCategoryData,
+  getDisplayScore,
+  getCellStyle,
+  NO_DATA_PATTERN_DEF
 };
 
 export default CategoryVisualizations;

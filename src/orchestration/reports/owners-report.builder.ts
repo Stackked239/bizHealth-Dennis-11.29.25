@@ -115,7 +115,15 @@ import {
   generateCategoryBenchmarkBars,
   generateInterdependencyNetwork,
   generateSWOTQuadrant,
+  // P1: Impact/Effort Matrix for prioritization visualization
+  generateImpactEffortMatrix,
 } from './components/category-visualizations.js';
+
+// P1: Terminology sanitization for client-facing content
+import {
+  sanitizeClientTerminology,
+  sanitizeObjectTerminology,
+} from './utils/data-sanitizer.js';
 
 // ============================================================================
 // SAFETY WRAPPERS FOR QUICK_REFS
@@ -465,8 +473,10 @@ export async function buildOwnersReport(
 
   logger.info('Building owners report with narrative integration and cross-references');
 
-  // Get narrative content from context
-  const narratives = ctx.narrativeContent;
+  // Get narrative content from context and sanitize terminology
+  // P1 FIX: Remove internal pipeline references from client-facing content
+  const rawNarratives = ctx.narrativeContent;
+  const narratives = rawNarratives ? sanitizeObjectTerminology(rawNarratives) : rawNarratives;
   const hasNarratives = narratives && narratives.metadata?.contentSufficient;
 
   // Apply owner report constraints for abbreviated content
@@ -819,7 +829,8 @@ export async function buildOwnersReport(
     ${buildCrossCategoryInsights(ctx, options)}
 
     <!-- ================================================================
-         SECTION: Your Critical Priorities
+         SECTION: Your Critical Priorities (P0 ENHANCED)
+         Now with Critical Path Actions and implementation tables
          ================================================================ -->
     <section class="section page-break" id="critical-priorities">
       ${renderOwnerSectionHeader('Your Critical Priorities', 'What must I focus on?')}
@@ -827,19 +838,29 @@ export async function buildOwnersReport(
       <!-- Visual Insight Cards -->
       ${insightCardsHtml}
 
-      <div class="grid grid-2">
+      <div class="grid grid-2" style="margin-bottom: 2rem;">
         <div>
           <h3 style="color: #28a745;">Your Top Strengths</h3>
-          ${strengths.length > 0 ? `
-            <ul>
-              ${strengths.map(s => `
-                <li>
-                  <strong>${escapeHtml(s.shortLabel)}</strong>
-                  <br><small>${escapeHtml(s.dimensionName)}</small>
-                </li>
-              `).join('')}
-            </ul>
-          ` : '<p>Your business shows balanced performance across all areas.</p>'}
+          ${(() => {
+            const strengthCount = countStrengths(ctx);
+            if (strengthCount.count > 0) {
+              return `
+                <p style="font-size: 0.95rem; color: #555; margin-bottom: 1rem;">
+                  <strong>${strengthCount.display} key strengths</strong> identified across your business:
+                </p>
+                <ul>
+                  ${strengths.slice(0, 5).map(s => `
+                    <li>
+                      <strong>${escapeHtml(s.shortLabel)}</strong>
+                      <br><small>${escapeHtml(s.dimensionName)}</small>
+                    </li>
+                  `).join('')}
+                </ul>
+              `;
+            } else {
+              return '<p>Your business shows balanced performance across all areas.</p>';
+            }
+          })()}
         </div>
         <div>
           <h3 style="color: #dc3545;">Your Priority Areas</h3>
@@ -854,6 +875,17 @@ export async function buildOwnersReport(
             </ul>
           ` : '<p>No critical priorities identified.</p>'}
         </div>
+      </div>
+
+      <!-- P0 FIX: Critical Path Actions with Implementation Tables -->
+      <div class="critical-path-actions" style="margin-top: 2rem;">
+        <h3 style="color: ${options.brand.primaryColor}; font-family: 'Montserrat', sans-serif; margin-bottom: 1rem; font-size: 1.2rem;">
+          Your Critical Path Actions
+        </h3>
+        <p style="font-size: 0.95rem; color: #666; margin-bottom: 1.5rem;">
+          These are your highest-priority initiatives with step-by-step implementation plans:
+        </p>
+        ${renderCriticalPathActions(ctx, options.brand.primaryColor)}
       </div>
 
       ${safeQuickRef('strategicRecommendations', 'critical-priorities')}
@@ -895,6 +927,31 @@ export async function buildOwnersReport(
         </div>
       `}
 
+      <!-- P1 ENHANCEMENT: Impact/Effort Prioritization Matrix -->
+      ${ctx.recommendations && ctx.recommendations.length > 0 ? `
+        <div class="impact-effort-matrix-section" style="margin: 2rem 0;">
+          <h3 style="font-family: 'Montserrat', sans-serif; color: ${options.brand.primaryColor}; margin-bottom: 1rem; font-size: 1.1rem;">
+            Prioritization Matrix
+          </h3>
+          <p style="font-size: 0.9rem; color: #666; margin-bottom: 1rem;">
+            Your recommendations plotted by business impact and implementation effort.
+            Items in the <strong style="color: #28a745;">Quick Wins</strong> quadrant (high impact, low effort) are your best starting points.
+          </p>
+          <div style="display: flex; justify-content: center; overflow-x: auto;">
+            ${generateImpactEffortMatrix(
+              ctx.recommendations.map(r => ({
+                id: r.id,
+                title: r.theme,
+                impactScore: r.impactScore,
+                effortScore: r.effortScore,
+                dimensionCode: r.dimensionCode
+              })),
+              { width: 550, height: 450 }
+            )}
+          </div>
+        </div>
+      ` : ''}
+
       ${safeQuickRef('financialImpact', 'investment-roi')}
     </section>
 
@@ -915,35 +972,23 @@ export async function buildOwnersReport(
     ` : ''}
 
     <!-- ================================================================
-         SECTION: Quick Wins - Start Today
+         SECTION: Quick Wins - Start Today (P0 ENHANCED)
          ================================================================ -->
-    ${quickWins.length > 0 ? `
       <section class="section" id="quick-wins">
         ${renderOwnerSectionHeader('Quick Wins - Start Today', 'What can I do right now?')}
-        <p class="section-intro">These high-impact, low-effort improvements can be implemented within 90 days:</p>
+        <p class="section-intro">These high-impact, low-effort improvements can be started within 7 days and completed within 90 days:</p>
 
-        <!-- World-Class: Quick Wins Cards -->
-        ${worldClassQuickWinsCards ? `
-          <div class="world-class-quick-wins-section" style="margin: 1.5rem 0;">
-            ${worldClassQuickWinsCards}
-          </div>
-        ` : quickWins.map(qw => `
-          <div class="quick-win-card">
-            <div class="title">${escapeHtml(qw.theme)}</div>
-            <p>${escapeHtml(qw.expectedOutcomes)}</p>
-            <div class="metrics">
-              <span>Impact: ${qw.impactScore}/100</span>
-              <span>Effort: ${qw.effortScore}/100</span>
-              <span>ROI: ${calculateROI(qw.impactScore, qw.effortScore)}x</span>
-            </div>
-          </div>
-        `).join('')}
+        <!-- P0 FIX: Tactical Quick Wins with Implementation Steps -->
+        <div class="tactical-quick-wins-section" style="margin: 1.5rem 0;">
+          ${renderTacticalQuickWins(ctx, options.brand.primaryColor)}
+        </div>
+
+        ${safeQuickRef('recommendations', 'quick-wins')}
       </section>
-    ` : ''}
 
     <!-- ================================================================
-         SECTION: Key Risks to Your Business
-         Enhanced with Risk Heatmap Visualization
+         SECTION: Key Risks to Your Business (P0 ENHANCED)
+         Now with complete mitigation strategies
          ================================================================ -->
     <section class="section" id="key-risks">
       ${renderOwnerSectionHeader('Key Risks to Your Business', 'What could hurt my business?')}
@@ -964,50 +1009,13 @@ export async function buildOwnersReport(
         </div>
       ` : ''}
 
-      <!-- Top Risks List -->
-      ${topRisks && topRisks.length > 0 ? `
-        <div class="critical-risks-list" style="margin: 1.5rem 0;">
-          <h4 style="font-family: 'Montserrat', sans-serif; color: #dc3545; margin-bottom: 1rem;">
-            &#9888;&#65039; Priority Risks Requiring Attention
-          </h4>
-          <div style="display: grid; gap: 0.75rem;">
-            ${topRisks.slice(0, 5).map((risk, i) => `
-              <div style="
-                background: #fff;
-                border-left: 4px solid ${risk.severity === 'critical' ? '#dc3545' : risk.severity === 'high' ? '#fd7e14' : '#ffc107'};
-                padding: 1rem;
-                border-radius: 0 8px 8px 0;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-              ">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-                  <strong style="color: ${options.brand.primaryColor};">${i + 1}. ${escapeHtml(risk.title || risk.narrative || 'Risk')}</strong>
-                  <span style="
-                    padding: 2px 8px;
-                    border-radius: 4px;
-                    font-size: 0.75rem;
-                    font-weight: 600;
-                    text-transform: uppercase;
-                    background: ${risk.severity === 'critical' ? '#dc3545' : risk.severity === 'high' ? '#fd7e14' : '#ffc107'};
-                    color: ${risk.severity === 'critical' || risk.severity === 'high' ? '#fff' : '#000'};
-                  ">${escapeHtml(risk.severity || 'medium')}</span>
-                </div>
-                <p style="font-size: 0.9rem; color: #555; margin: 0; line-height: 1.5;">
-                  ${escapeHtml(truncateToSentences(risk.narrative || risk.description || '', 2))}
-                </p>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      ` : ''}
-
-      ${narratives?.phase2?.consolidatedRisks ? `
-        <div class="narrative-content">
-          ${parseMarkdownToHTML(truncateToSentences(narratives.phase2.consolidatedRisks, 12), {
-            maxBoldPerParagraph: 2,
-            maxListItems: 6
-          })}
-        </div>
-      ` : ''}
+      <!-- P0 FIX: Enhanced Risks with Mitigation Strategies -->
+      <div class="enhanced-risks-section" style="margin: 1.5rem 0;">
+        <h4 style="font-family: 'Montserrat', sans-serif; color: #dc3545; margin-bottom: 1rem;">
+          ⚠️ Priority Risks with Mitigation Strategies
+        </h4>
+        ${renderEnhancedRisks(ctx, options.brand.primaryColor)}
+      </div>
 
       ${safeQuickRef('riskAssessment', 'key-risks')}
     </section>
@@ -1213,6 +1221,682 @@ function generateOwnerReportFooter(ctx: ReportContext, narratives: any): string 
       ${wordCount > 0 ? `<p>Narrative Content: ${wordCount.toLocaleString()} words</p>` : ''}
     </footer>
   `;
+}
+
+// ============================================================================
+// PHASE 2: P0 CONTENT FIX UTILITIES
+// Owner's Report Enhanced Data Extraction
+// ============================================================================
+
+/**
+ * Interface for tactical quick win with implementation steps
+ */
+interface TacticalQuickWin {
+  title: string;
+  description: string;
+  category: string;
+  categoryCode?: string;
+  timeframe: string;
+  owner: string;
+  steps: string[];
+  expectedOutcome?: string;
+  impact: string;
+  effort: string;
+  roi?: string;
+}
+
+/**
+ * Interface for risk with mitigation strategies
+ */
+interface EnhancedRisk {
+  id: string;
+  title: string;
+  description: string;
+  severity: string;
+  likelihood: string;
+  category: string;
+  mitigationStrategies: Array<{
+    strategy: string;
+    timeline?: string;
+    investment?: string;
+    expectedImpact?: string;
+  }>;
+  monitoringIndicators?: string[];
+}
+
+/**
+ * Interface for Critical Path Action
+ */
+interface CriticalPathAction {
+  id: string;
+  title: string;
+  description: string;
+  rationale: string;
+  priority: number;
+  implementationSteps: Array<{
+    week: string;
+    action: string;
+    owner: string;
+    deliverable: string;
+  }>;
+  monitoringIndicators: string[];
+  expectedOutcome: string;
+  category: string;
+}
+
+/**
+ * Extract tactical quick wins from categoryAnalyses (not generic recommendations)
+ * P0 FIX: Get actual actionable quick wins with implementation steps
+ */
+function extractTacticalQuickWins(ctx: ReportContext): TacticalQuickWin[] {
+  const tacticalWins: TacticalQuickWin[] = [];
+
+  // Source 1: Category-level quick wins (most specific and actionable)
+  if (ctx.categoryAnalyses && ctx.categoryAnalyses.length > 0) {
+    for (const category of ctx.categoryAnalyses) {
+      if (category.quickWins && category.quickWins.length > 0) {
+        for (const qw of category.quickWins) {
+          // Skip generic "improvement initiative" titles
+          if (qw.title?.toLowerCase().includes('improvement initiative')) {
+            continue;
+          }
+
+          tacticalWins.push({
+            title: qw.title || 'Quick Win',
+            description: qw.description || qw.rationale || '',
+            category: category.categoryName || category.categoryCode || 'General',
+            categoryCode: category.categoryCode,
+            timeframe: qw.timeframe || qw.timeline || '30 days',
+            owner: qw.owner || qw.responsibility || mapDimensionToOwner(category.categoryCode),
+            steps: qw.implementationSteps || qw.steps || [],
+            expectedOutcome: qw.expectedOutcome || qw.impact,
+            impact: qw.impactLevel || qw.impact || 'High',
+            effort: qw.effortLevel || qw.effort || 'Low',
+            roi: qw.roi
+          });
+        }
+      }
+    }
+  }
+
+  // Source 2: Context quick wins if category-level didn't provide enough
+  if (tacticalWins.length < 3 && ctx.quickWins && ctx.quickWins.length > 0) {
+    for (const qw of ctx.quickWins) {
+      // Skip generic titles
+      if (qw.theme?.toLowerCase().includes('improvement initiative')) {
+        continue;
+      }
+
+      // Avoid duplicates
+      const isDuplicate = tacticalWins.some(tw =>
+        tw.title.toLowerCase() === (qw.theme || qw.title || '').toLowerCase()
+      );
+
+      if (!isDuplicate) {
+        tacticalWins.push({
+          title: qw.theme || qw.title || 'Quick Win',
+          description: qw.expectedOutcomes || qw.description || '',
+          category: getDimensionName(qw.dimensionCode) || 'General',
+          categoryCode: qw.dimensionCode,
+          timeframe: qw.timeframe || '90 days',
+          owner: mapDimensionToOwner(qw.dimensionCode),
+          steps: qw.actionSteps || [],
+          expectedOutcome: qw.expectedOutcomes,
+          impact: qw.impactScore >= 70 ? 'High' : qw.impactScore >= 40 ? 'Medium' : 'Low',
+          effort: qw.effortScore <= 40 ? 'Low' : qw.effortScore <= 70 ? 'Medium' : 'High',
+          roi: qw.estimatedROI ? `${qw.estimatedROI.toFixed(1)}x` : undefined
+        });
+      }
+    }
+  }
+
+  // Sort by impact/effort ratio (highest first)
+  return tacticalWins
+    .filter(w => w.title && w.title.length > 0)
+    .sort((a, b) => {
+      const impactScore = (i: string) => i === 'High' ? 3 : i === 'Medium' ? 2 : 1;
+      const effortScore = (e: string) => e === 'High' ? 3 : e === 'Medium' ? 2 : 1;
+      const aScore = impactScore(a.impact) / effortScore(a.effort);
+      const bScore = impactScore(b.impact) / effortScore(b.effort);
+      return bScore - aScore;
+    })
+    .slice(0, 5);
+}
+
+/**
+ * Map dimension code to owner role
+ */
+function mapDimensionToOwner(dimension?: string): string {
+  if (!dimension) return 'Owner/CEO';
+
+  const ownerMap: Record<string, string> = {
+    STR: 'CEO / Strategy Lead',
+    SAL: 'VP Sales / Sales Manager',
+    MKT: 'Marketing Director / CMO',
+    CXP: 'Customer Success Lead',
+    OPS: 'COO / Operations Manager',
+    FIN: 'CFO / Finance Director',
+    HRS: 'HR Director / CHRO',
+    LDG: 'CEO / Board',
+    TIN: 'CTO / Innovation Lead',
+    IDS: 'IT Director / CIO',
+    RMS: 'Risk Manager / COO',
+    CMP: 'General Counsel / Compliance',
+  };
+
+  return ownerMap[dimension.toUpperCase()] || 'Owner/CEO';
+}
+
+/**
+ * Get dimension display name from code
+ */
+function getDimensionName(code?: string): string {
+  if (!code) return 'General';
+
+  const nameMap: Record<string, string> = {
+    STR: 'Strategy',
+    SAL: 'Sales',
+    MKT: 'Marketing',
+    CXP: 'Customer Experience',
+    OPS: 'Operations',
+    FIN: 'Financial Health',
+    HRS: 'Human Resources',
+    LDG: 'Leadership & Governance',
+    TIN: 'Technology & Innovation',
+    IDS: 'IT & Data Security',
+    RMS: 'Risk Management',
+    CMP: 'Compliance',
+  };
+
+  return nameMap[code.toUpperCase()] || code;
+}
+
+/**
+ * Extract enhanced risks with mitigation strategies from categoryAnalyses
+ * P0 FIX: Get actual mitigation content for risk display
+ */
+function extractEnhancedRisks(ctx: ReportContext): EnhancedRisk[] {
+  const enhancedRisks: EnhancedRisk[] = [];
+
+  // Source 1: Category-level risks with rich mitigation data
+  if (ctx.categoryAnalyses && ctx.categoryAnalyses.length > 0) {
+    for (const category of ctx.categoryAnalyses) {
+      if (category.categoryRisks && category.categoryRisks.length > 0) {
+        for (const risk of category.categoryRisks) {
+          enhancedRisks.push({
+            id: risk.id || `risk-${category.categoryCode}-${enhancedRisks.length}`,
+            title: risk.title || risk.riskTitle || 'Identified Risk',
+            description: risk.description || risk.riskDescription || '',
+            severity: risk.severity || risk.impact || 'medium',
+            likelihood: risk.likelihood || risk.probability || 'medium',
+            category: category.categoryName || category.categoryCode || 'General',
+            mitigationStrategies: risk.mitigationStrategies || risk.mitigation ?
+              (Array.isArray(risk.mitigationStrategies) ?
+                risk.mitigationStrategies.map((m: any, idx: number) => ({
+                  strategy: typeof m === 'string' ? m : m.strategy || m.description || m.action,
+                  timeline: m.timeline || m.timeframe,
+                  investment: m.investment || m.cost,
+                  expectedImpact: m.expectedImpact || m.impact
+                })) :
+                [{ strategy: risk.mitigation || 'Develop mitigation plan' }]
+              ) :
+              [{ strategy: 'See Comprehensive Report for detailed mitigation strategies' }],
+            monitoringIndicators: risk.monitoringIndicators || risk.kpis || []
+          });
+        }
+      }
+    }
+  }
+
+  // Source 2: Context risks as fallback
+  if (enhancedRisks.length < 2 && ctx.risks && ctx.risks.length > 0) {
+    for (const risk of ctx.risks) {
+      const isDuplicate = enhancedRisks.some(er =>
+        er.title.toLowerCase() === (risk.title || risk.narrative || '').toLowerCase()
+      );
+
+      if (!isDuplicate) {
+        enhancedRisks.push({
+          id: risk.id || `risk-${enhancedRisks.length}`,
+          title: risk.title || risk.narrative?.substring(0, 50) || 'Risk',
+          description: risk.narrative || risk.description || '',
+          severity: String(risk.severity) || 'medium',
+          likelihood: String(risk.likelihood) || 'medium',
+          category: risk.category || getDimensionName(risk.dimensionCode) || 'General',
+          mitigationStrategies: risk.mitigationSummary ?
+            [{ strategy: risk.mitigationSummary }] :
+            [{ strategy: 'See Comprehensive Report for detailed mitigation strategies' }],
+          monitoringIndicators: []
+        });
+      }
+    }
+  }
+
+  // Sort by severity and likelihood
+  const severityOrder: Record<string, number> = { critical: 4, high: 3, medium: 2, low: 1 };
+  return enhancedRisks
+    .sort((a, b) => {
+      const aScore = (severityOrder[a.severity.toLowerCase()] || 2) * (severityOrder[a.likelihood.toLowerCase()] || 2);
+      const bScore = (severityOrder[b.severity.toLowerCase()] || 2) * (severityOrder[b.likelihood.toLowerCase()] || 2);
+      return bScore - aScore;
+    })
+    .slice(0, 5);
+}
+
+/**
+ * Build Critical Path Actions from roadmap phases and recommendations
+ * P0 FIX: Generate complete CPA content with implementation tables
+ */
+function buildCriticalPathActions(ctx: ReportContext): CriticalPathAction[] {
+  const cpas: CriticalPathAction[] = [];
+
+  // Get top priority recommendations
+  const topRecs = [...(ctx.recommendations || [])].sort((a, b) => a.priorityRank - b.priorityRank).slice(0, 3);
+
+  // Get roadmap phases
+  const roadmap = ctx.roadmap || { phases: [] };
+
+  // Build CPAs from roadmap phases combined with recommendations
+  for (let i = 0; i < Math.min(3, Math.max(topRecs.length, roadmap.phases?.length || 0)); i++) {
+    const rec = topRecs[i];
+    const phase = roadmap.phases?.[i];
+
+    if (rec || phase) {
+      const title = rec?.theme || phase?.name || `Critical Initiative ${i + 1}`;
+      const description = rec?.expectedOutcomes || phase?.narrative || '';
+
+      // Generate implementation steps based on action steps or phase milestones
+      const actionSteps = rec?.actionSteps || phase?.keyMilestones || [];
+      const implementationSteps = actionSteps.length > 0 ?
+        actionSteps.slice(0, 4).map((step: string, idx: number) => ({
+          week: `Week ${(idx * 2) + 1}-${(idx + 1) * 2}`,
+          action: step,
+          owner: mapDimensionToOwner(rec?.dimensionCode),
+          deliverable: idx === actionSteps.length - 1 ? 'Implementation complete' : `${step.split(' ').slice(0, 3).join(' ')}... completed`
+        })) :
+        [
+          { week: 'Week 1-2', action: 'Assessment and planning', owner: mapDimensionToOwner(rec?.dimensionCode), deliverable: 'Action plan documented' },
+          { week: 'Week 3-4', action: 'Initial implementation', owner: mapDimensionToOwner(rec?.dimensionCode), deliverable: 'Core changes deployed' },
+          { week: 'Week 5-6', action: 'Refinement and optimization', owner: mapDimensionToOwner(rec?.dimensionCode), deliverable: 'System operational' },
+          { week: 'Week 7-8', action: 'Monitoring and adjustment', owner: mapDimensionToOwner(rec?.dimensionCode), deliverable: 'KPIs on track' }
+        ];
+
+      cpas.push({
+        id: `cpa-${String(i + 1).padStart(2, '0')}`,
+        title: title.replace(/improvement initiative/gi, 'Strategic Action'),
+        description,
+        rationale: rec ?
+          `Addresses critical gap in ${getDimensionName(rec.dimensionCode)} with projected score improvement from current levels.` :
+          `Part of the ${phase?.timeHorizon || '0-90 day'} transformation roadmap.`,
+        priority: i + 1,
+        implementationSteps,
+        monitoringIndicators: [
+          `Track progress against ${getDimensionName(rec?.dimensionCode)} KPIs`,
+          'Weekly status updates to leadership',
+          'Monthly ROI assessment'
+        ],
+        expectedOutcome: description || `Improved ${getDimensionName(rec?.dimensionCode)} performance`,
+        category: getDimensionName(rec?.dimensionCode) || 'Strategic'
+      });
+    }
+  }
+
+  return cpas;
+}
+
+/**
+ * Count strengths from findings and category analyses
+ * P0 FIX: Properly count strengths, never show "0"
+ */
+function countStrengths(ctx: ReportContext): { count: number; display: string } {
+  let count = 0;
+
+  // Count from findings
+  if (ctx.findings && ctx.findings.length > 0) {
+    count = ctx.findings.filter(f => f.type === 'strength').length;
+  }
+
+  // Count from category analyses if findings don't have enough
+  if (count === 0 && ctx.categoryAnalyses && ctx.categoryAnalyses.length > 0) {
+    for (const cat of ctx.categoryAnalyses) {
+      count += (cat.strengths?.length || 0);
+    }
+  }
+
+  // Return count or placeholder
+  if (count > 0) {
+    return { count, display: String(count) };
+  }
+
+  // If genuinely 0, show contextual message instead of "0"
+  return { count: 0, display: '—' };
+}
+
+/**
+ * Get canonical chapter scores - SINGLE SOURCE OF TRUTH
+ * P0 FIX: All visualizations must use this function for consistency
+ */
+function getCanonicalChapterScores(ctx: ReportContext): Array<{ code: string; name: string; score: number; benchmark?: number }> {
+  // Priority 1: Use chapters from context directly
+  if (ctx.chapters && ctx.chapters.length >= 4) {
+    return ctx.chapters.map(ch => ({
+      code: ch.code,
+      name: ch.name,
+      score: ch.score,
+      benchmark: ch.benchmark?.peerPercentile
+    }));
+  }
+
+  // Priority 2: Calculate from category analyses
+  if (ctx.categoryAnalyses && ctx.categoryAnalyses.length > 0) {
+    const chapterMap = new Map<string, number[]>();
+    const chapterMapping: Record<string, string> = {
+      'STR': 'GE', 'SAL': 'GE', 'MKT': 'GE', 'CXP': 'GE',
+      'OPS': 'PH', 'FIN': 'PH',
+      'HRS': 'PL', 'LDG': 'PL',
+      'TIN': 'RS', 'IDS': 'RS', 'RMS': 'RS', 'CMP': 'RS'
+    };
+
+    for (const cat of ctx.categoryAnalyses) {
+      const chapterCode = chapterMapping[cat.categoryCode] || 'GE';
+      if (!chapterMap.has(chapterCode)) {
+        chapterMap.set(chapterCode, []);
+      }
+      chapterMap.get(chapterCode)!.push(cat.overallScore || 0);
+    }
+
+    const average = (nums: number[]): number => {
+      if (nums.length === 0) return 0;
+      return Math.round(nums.reduce((a, b) => a + b, 0) / nums.length);
+    };
+
+    return [
+      { code: 'GE', name: 'Growth Engine', score: average(chapterMap.get('GE') || []) },
+      { code: 'PH', name: 'Performance & Health', score: average(chapterMap.get('PH') || []) },
+      { code: 'PL', name: 'People & Leadership', score: average(chapterMap.get('PL') || []) },
+      { code: 'RS', name: 'Resilience & Safeguards', score: average(chapterMap.get('RS') || []) },
+    ];
+  }
+
+  // Priority 3: Use chapter summaries
+  if (ctx.chapterSummaries && ctx.chapterSummaries.length > 0) {
+    return ctx.chapterSummaries.map(cs => ({
+      code: cs.chapterCode,
+      name: cs.chapterName || cs.chapterCode,
+      score: cs.overallScore || 0
+    }));
+  }
+
+  // Fallback
+  logger.warn('[Owner Report] No chapter score data available');
+  return [];
+}
+
+/**
+ * Render tactical quick wins section with implementation steps
+ * P0 FIX: Show actionable steps, not just generic titles
+ */
+function renderTacticalQuickWins(ctx: ReportContext, primaryColor: string): string {
+  const quickWins = extractTacticalQuickWins(ctx);
+
+  if (quickWins.length === 0) {
+    return `
+      <div class="comprehensive-reference">
+        <span class="ref-icon">📋</span>
+        <span class="ref-text">
+          Quick wins are being finalized. See <strong>Comprehensive Report</strong> → <em>Prioritized Recommendations</em>
+        </span>
+      </div>
+    `;
+  }
+
+  return quickWins.map((win, index) => `
+    <div class="quick-win-card tactical" style="
+      background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+      border-left: 4px solid ${primaryColor};
+      padding: 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+    ">
+      <div class="quick-win-header" style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 0.75rem;">
+        <span class="quick-win-number" style="
+          background: ${primaryColor};
+          color: white;
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+          font-size: 0.9rem;
+          flex-shrink: 0;
+        ">${index + 1}</span>
+        <div class="quick-win-title-block" style="flex: 1;">
+          <div class="title" style="font-weight: 600; color: ${primaryColor}; font-size: 1.05rem; margin-bottom: 0.25rem;">
+            ${escapeHtml(win.title)}
+          </div>
+          <span class="quick-win-category" style="
+            font-size: 0.8rem;
+            color: #666;
+            background: #e9ecef;
+            padding: 2px 8px;
+            border-radius: 4px;
+          ">${escapeHtml(win.category)}</span>
+        </div>
+      </div>
+
+      <p class="quick-win-description" style="color: #555; margin: 0.75rem 0; line-height: 1.5;">
+        ${escapeHtml(win.description)}
+      </p>
+
+      ${win.steps && win.steps.length > 0 ? `
+        <div class="quick-win-steps" style="margin: 1rem 0; padding: 0.75rem; background: #fafbfc; border-radius: 6px;">
+          <strong style="color: ${primaryColor}; font-size: 0.9rem;">How to Implement:</strong>
+          <ol class="implementation-steps" style="margin: 0.5rem 0 0 1.25rem; padding: 0; font-size: 0.9rem; color: #444;">
+            ${win.steps.slice(0, 4).map(step => `<li style="margin: 0.3rem 0;">${escapeHtml(step)}</li>`).join('')}
+          </ol>
+        </div>
+      ` : ''}
+
+      <div class="quick-win-meta" style="display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.85rem; color: #666; margin-top: 0.75rem;">
+        <span>⏱️ ${escapeHtml(win.timeframe)}</span>
+        <span>👤 ${escapeHtml(win.owner)}</span>
+        ${win.expectedOutcome ? `<span>🎯 ${escapeHtml(win.expectedOutcome.substring(0, 50))}${win.expectedOutcome.length > 50 ? '...' : ''}</span>` : ''}
+      </div>
+
+      <div class="metrics" style="display: flex; gap: 1.5rem; font-size: 0.85rem; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #e9ecef;">
+        <span style="color: ${win.impact === 'High' ? '#28a745' : win.impact === 'Medium' ? '#ffc107' : '#6c757d'};">
+          <strong>Impact:</strong> ${win.impact}
+        </span>
+        <span style="color: ${win.effort === 'Low' ? '#28a745' : win.effort === 'Medium' ? '#ffc107' : '#dc3545'};">
+          <strong>Effort:</strong> ${win.effort}
+        </span>
+        ${win.roi ? `<span><strong>ROI:</strong> ${win.roi}</span>` : ''}
+      </div>
+    </div>
+  `).join('\n');
+}
+
+/**
+ * Render Critical Path Actions with implementation tables
+ * P0 FIX: Complete CPA content with implementation steps and monitoring
+ */
+function renderCriticalPathActions(ctx: ReportContext, primaryColor: string): string {
+  const cpas = buildCriticalPathActions(ctx);
+
+  if (cpas.length === 0) {
+    return `
+      <div class="comprehensive-reference">
+        <span class="ref-icon">📋</span>
+        <span class="ref-text">
+          Critical path actions are detailed in <strong>Comprehensive Report</strong> → <em>Strategic Recommendations</em>
+        </span>
+      </div>
+    `;
+  }
+
+  return cpas.map((cpa, index) => `
+    <div class="cpa-section" style="margin-bottom: 2rem; page-break-inside: avoid;">
+      <h3 style="
+        color: ${primaryColor};
+        font-family: 'Montserrat', sans-serif;
+        margin-bottom: 0.75rem;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      ">
+        <span style="
+          background: ${primaryColor};
+          color: white;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+          font-size: 0.9rem;
+        ">CPA</span>
+        CPA-${String(index + 1).padStart(2, '0')}: ${escapeHtml(cpa.title)}
+      </h3>
+
+      ${cpa.description ? `<p style="color: #555; margin: 0.5rem 0; line-height: 1.5;">${escapeHtml(cpa.description)}</p>` : ''}
+
+      <p style="color: #666; margin: 0.75rem 0; font-style: italic;">
+        <strong style="color: ${primaryColor};">Why This Matters:</strong> ${escapeHtml(cpa.rationale)}
+      </p>
+
+      <div class="table-responsive" style="margin: 1rem 0;">
+        <table class="bh-table" style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+          <thead>
+            <tr style="background: ${primaryColor}; color: white;">
+              <th style="padding: 0.75rem; text-align: left;">Timeframe</th>
+              <th style="padding: 0.75rem; text-align: left;">Action</th>
+              <th style="padding: 0.75rem; text-align: left;">Owner</th>
+              <th style="padding: 0.75rem; text-align: left;">Deliverable</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${cpa.implementationSteps.map(step => `
+              <tr style="border-bottom: 1px solid #e0e0e0;">
+                <td style="padding: 0.75rem; font-weight: 500; color: ${primaryColor};">${escapeHtml(step.week)}</td>
+                <td style="padding: 0.75rem;">${escapeHtml(step.action)}</td>
+                <td style="padding: 0.75rem;">${escapeHtml(step.owner)}</td>
+                <td style="padding: 0.75rem;">${escapeHtml(step.deliverable)}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+
+      ${cpa.monitoringIndicators && cpa.monitoringIndicators.length > 0 ? `
+        <div style="margin-top: 0.75rem;">
+          <strong style="color: ${primaryColor}; font-size: 0.9rem;">Monitoring Indicators:</strong>
+          <ul style="margin: 0.5rem 0; padding-left: 1.25rem; font-size: 0.9rem; color: #555;">
+            ${cpa.monitoringIndicators.map(ind => `<li style="margin: 0.25rem 0;">${escapeHtml(ind)}</li>`).join('')}
+          </ul>
+        </div>
+      ` : ''}
+    </div>
+  `).join('\n');
+}
+
+/**
+ * Render enhanced risks with mitigation strategies
+ * P0 FIX: Complete risk content with mitigation tables
+ */
+function renderEnhancedRisks(ctx: ReportContext, primaryColor: string): string {
+  const risks = extractEnhancedRisks(ctx);
+
+  if (risks.length === 0) {
+    return `
+      <div class="comprehensive-reference">
+        <span class="ref-icon">📋</span>
+        <span class="ref-text">
+          Detailed risk analysis available in <strong>Comprehensive Report</strong> → <em>Comprehensive Risk Assessment</em>
+        </span>
+      </div>
+    `;
+  }
+
+  return risks.map((risk, index) => {
+    const severityColor = risk.severity.toLowerCase() === 'critical' ? '#dc3545' :
+                          risk.severity.toLowerCase() === 'high' ? '#fd7e14' : '#ffc107';
+
+    return `
+      <div class="risk-detail" style="
+        margin-bottom: 1.5rem;
+        background: #fff;
+        border-left: 4px solid ${severityColor};
+        padding: 1.25rem;
+        border-radius: 0 8px 8px 0;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      ">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+          <h4 style="color: ${primaryColor}; margin: 0; font-size: 1rem; font-family: 'Montserrat', sans-serif;">
+            Risk #${index + 1}: ${escapeHtml(risk.title)}
+          </h4>
+          <span style="
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            background: ${severityColor};
+            color: ${risk.severity.toLowerCase() === 'critical' || risk.severity.toLowerCase() === 'high' ? '#fff' : '#000'};
+          ">${escapeHtml(risk.severity)}</span>
+        </div>
+
+        <p style="color: #555; margin: 0.5rem 0; font-size: 0.95rem; line-height: 1.5;">
+          ${escapeHtml(risk.description)}
+        </p>
+
+        <p style="color: #666; margin: 0.5rem 0; font-size: 0.85rem;">
+          <strong>Category:</strong> ${escapeHtml(risk.category)}
+          <span style="margin-left: 1rem;"><strong>Likelihood:</strong> ${escapeHtml(risk.likelihood)}</span>
+        </p>
+
+        ${risk.mitigationStrategies && risk.mitigationStrategies.length > 0 ? `
+          <div style="margin-top: 1rem;">
+            <strong style="color: ${primaryColor}; font-size: 0.9rem;">Mitigation Strategies:</strong>
+            <div class="table-responsive" style="margin-top: 0.5rem;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                <thead>
+                  <tr style="background: #f8f9fa;">
+                    <th style="padding: 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6;">#</th>
+                    <th style="padding: 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6;">Strategy</th>
+                    <th style="padding: 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6;">Timeline</th>
+                    <th style="padding: 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6;">Expected Impact</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${risk.mitigationStrategies.map((strategy, sIdx) => `
+                    <tr style="border-bottom: 1px solid #e0e0e0;">
+                      <td style="padding: 0.5rem; font-weight: 500;">${sIdx + 1}</td>
+                      <td style="padding: 0.5rem;">${escapeHtml(strategy.strategy)}</td>
+                      <td style="padding: 0.5rem;">${escapeHtml(strategy.timeline || '—')}</td>
+                      <td style="padding: 0.5rem;">${escapeHtml(strategy.expectedImpact || '—')}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        ` : ''}
+
+        ${risk.monitoringIndicators && risk.monitoringIndicators.length > 0 ? `
+          <div style="margin-top: 0.75rem;">
+            <strong style="color: ${primaryColor}; font-size: 0.85rem;">Monitoring Indicators:</strong>
+            <ul style="margin: 0.25rem 0; padding-left: 1.25rem; font-size: 0.85rem; color: #555;">
+              ${risk.monitoringIndicators.map(ind => `<li>${escapeHtml(ind)}</li>`).join('')}
+            </ul>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('\n');
 }
 
 /**

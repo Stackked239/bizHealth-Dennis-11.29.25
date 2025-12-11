@@ -365,6 +365,90 @@ export function formatImpactEffort(
   return 'Pending';
 }
 
+// ============================================================================
+// TERMINOLOGY SANITIZATION
+// P1: Remove internal pipeline references from client-facing content
+// ============================================================================
+
+/**
+ * Internal pipeline terminology replacements
+ * These terms should not appear in client-facing reports
+ */
+const TERMINOLOGY_REPLACEMENTS: Array<[RegExp, string]> = [
+  [/Phase\s*2\s*analyses?/gi, 'Comprehensive Diagnostic Analysis'],
+  [/Phase\s*1\.5\s*(analysis)?/gi, 'Strategic Assessment'],
+  [/Phase\s*1\s*([Aa]nalysis)?/gi, 'Initial Assessment'],
+  [/Phase\s*3\s*([Ss]ynthesis)?/gi, 'Strategic Synthesis'],
+  [/Phase\s*4\s*([Ii]ntegration)?/gi, 'Integration Assessment'],
+  [/Phase\s*5\s*([Gg]eneration)?/gi, 'Report Generation'],
+  [/Tier\s*1\s*analysis/gi, 'foundational analysis'],
+  [/Tier\s*2\s*synthesis/gi, 'cross-functional synthesis'],
+  [/IDM\s*consolidation/gi, 'insights integration'],
+  [/IDM\s*output/gi, 'diagnostic insights'],
+  [/master[-_]?analysis/gi, 'comprehensive analysis'],
+  [/Phase\s*\d+\s*output/gi, 'assessment output'],
+  [/pre[-_]?seeded/gi, 'prepared'],
+  [/pipeline\s*run/gi, 'assessment process'],
+  [/orchestrat(or|ion)/gi, 'coordination'],
+];
+
+/**
+ * Sanitize narrative content to remove internal terminology
+ * P1 FIX: Ensure no internal pipeline references appear in client-facing reports
+ *
+ * @param content - The narrative content to sanitize
+ * @returns Sanitized content with client-friendly terminology
+ */
+export function sanitizeClientTerminology(content: string): string {
+  if (!content || typeof content !== 'string') {
+    return content;
+  }
+
+  let sanitized = content;
+  for (const [pattern, replacement] of TERMINOLOGY_REPLACEMENTS) {
+    sanitized = sanitized.replace(pattern, replacement);
+  }
+  return sanitized;
+}
+
+/**
+ * Sanitize an object's string fields for client-facing terminology
+ * Recursively processes all string values in the object
+ */
+export function sanitizeObjectTerminology<T extends object>(obj: T): T {
+  if (obj === null || obj === undefined) {
+    return obj;
+  }
+
+  const sanitized = JSON.parse(JSON.stringify(obj));
+
+  function walk(node: any): any {
+    if (node === null || node === undefined) {
+      return node;
+    }
+
+    if (typeof node === 'string') {
+      return sanitizeClientTerminology(node);
+    }
+
+    if (Array.isArray(node)) {
+      return node.map(item => walk(item));
+    }
+
+    if (typeof node === 'object') {
+      const result: Record<string, any> = {};
+      for (const [key, value] of Object.entries(node)) {
+        result[key] = walk(value);
+      }
+      return result;
+    }
+
+    return node;
+  }
+
+  return walk(sanitized);
+}
+
 export default {
   sanitizeForTemplate,
   resolveDimensionName,
@@ -373,5 +457,7 @@ export default {
   sanitizeRecommendations,
   safeGet,
   formatScore,
-  formatImpactEffort
+  formatImpactEffort,
+  sanitizeClientTerminology,
+  sanitizeObjectTerminology
 };
