@@ -1,0 +1,48 @@
+{
+  "reportType": "managersStrategy",
+  "reportName": "Strategy & Leadership Manager Report",
+  "generatedAt": "2025-12-11T18:38:42.622Z",
+  "companyName": "EWM Global",
+  "runId": "f96d04ed-4717-4e2b-8521-c0c7f9637240",
+  "healthScore": 53,
+  "healthBand": "Attention",
+  "pageSuggestionEstimate": 15,
+  "sections": [
+    {
+      "id": "company-snapshot",
+      "title": "Company Health Snapshot"
+    },
+    {
+      "id": "category-analysis",
+      "title": "Strategic Leadership Categories"
+    },
+    {
+      "id": "deep-dive",
+      "title": "Strategy & Leadership Deep Dive"
+    },
+    {
+      "id": "quick-wins",
+      "title": "Strategic Quick Wins"
+    },
+    {
+      "id": "roadmap",
+      "title": "Strategic Initiatives Roadmap"
+    },
+    {
+      "id": "risks",
+      "title": "Strategic & Governance Risks"
+    },
+    {
+      "id": "metrics",
+      "title": "Strategic Performance Metrics"
+    },
+    {
+      "id": "closing",
+      "title": "Next Steps & Resources"
+    }
+  ],
+  "brand": {
+    "primaryColor": "#212653",
+    "accentColor": "#969423"
+  }
+}

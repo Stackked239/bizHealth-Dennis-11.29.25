@@ -1,0 +1,64 @@
+{
+  "reportType": "owner",
+  "reportName": "Business Owner Report",
+  "generatedAt": "2025-12-11T07:53:13.159Z",
+  "companyName": "Hopcraft Brewing Co",
+  "runId": "d8af6bb8-9ead-4e58-8d30-620983705802",
+  "healthScore": 44,
+  "healthBand": "Attention",
+  "pageSuggestionEstimate": 7,
+  "sections": [
+    {
+      "id": "owner-dashboard",
+      "title": "Owner Health Dashboard"
+    },
+    {
+      "id": "health-overview",
+      "title": "Your Business Health at a Glance"
+    },
+    {
+      "id": "what-this-means",
+      "title": "What This Means for You as the Owner"
+    },
+    {
+      "id": "chapter-performance",
+      "title": "Your Chapter Performance Breakdown"
+    },
+    {
+      "id": "critical-priorities",
+      "title": "Your Critical Priorities"
+    },
+    {
+      "id": "investment-roi",
+      "title": "Investment & ROI Overview"
+    },
+    {
+      "id": "execution-overview",
+      "title": "Your Execution Overview"
+    },
+    {
+      "id": "quick-wins",
+      "title": "Quick Wins - Start Today"
+    },
+    {
+      "id": "key-risks",
+      "title": "Key Risks to Your Business"
+    },
+    {
+      "id": "where-to-go",
+      "title": "Where to Go for Detail"
+    },
+    {
+      "id": "owner-decisions",
+      "title": "Owner's Decision Agenda"
+    },
+    {
+      "id": "next-steps",
+      "title": "Your Next Steps"
+    }
+  ],
+  "brand": {
+    "primaryColor": "#212653",
+    "accentColor": "#969423"
+  }
+}

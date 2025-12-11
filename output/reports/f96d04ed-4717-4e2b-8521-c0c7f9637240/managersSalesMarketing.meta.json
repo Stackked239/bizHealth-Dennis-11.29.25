@@ -1,0 +1,48 @@
+{
+  "reportType": "managersSalesMarketing",
+  "reportName": "Sales & Marketing Manager Report",
+  "generatedAt": "2025-12-11T18:38:42.608Z",
+  "companyName": "EWM Global",
+  "runId": "f96d04ed-4717-4e2b-8521-c0c7f9637240",
+  "healthScore": 53,
+  "healthBand": "Attention",
+  "pageSuggestionEstimate": 12,
+  "sections": [
+    {
+      "id": "company-snapshot",
+      "title": "Company Health Snapshot"
+    },
+    {
+      "id": "category-analysis",
+      "title": "Revenue Engine Categories"
+    },
+    {
+      "id": "deep-dive",
+      "title": "Growth Engine Deep Dive"
+    },
+    {
+      "id": "quick-wins",
+      "title": "Revenue Quick Wins"
+    },
+    {
+      "id": "roadmap",
+      "title": "Revenue Growth Roadmap"
+    },
+    {
+      "id": "risks",
+      "title": "Market & Revenue Risks"
+    },
+    {
+      "id": "metrics",
+      "title": "Sales & Marketing KPIs"
+    },
+    {
+      "id": "closing",
+      "title": "Next Steps & Resources"
+    }
+  ],
+  "brand": {
+    "primaryColor": "#212653",
+    "accentColor": "#969423"
+  }
+}

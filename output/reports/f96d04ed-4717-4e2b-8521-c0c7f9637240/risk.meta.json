@@ -1,0 +1,36 @@
+{
+  "reportType": "risk",
+  "reportName": "Risk Assessment Report",
+  "generatedAt": "2025-12-11T18:38:42.527Z",
+  "companyName": "EWM Global",
+  "runId": "f96d04ed-4717-4e2b-8521-c0c7f9637240",
+  "healthScore": 53,
+  "healthBand": "Attention",
+  "pageSuggestionEstimate": 4,
+  "sections": [
+    {
+      "id": "dashboard",
+      "title": "Risk Summary Dashboard"
+    },
+    {
+      "id": "matrix",
+      "title": "Risk Matrix"
+    },
+    {
+      "id": "critical",
+      "title": "Critical Risks"
+    },
+    {
+      "id": "detailed",
+      "title": "Detailed Risk Analysis"
+    },
+    {
+      "id": "monitoring",
+      "title": "Risk Monitoring"
+    }
+  ],
+  "brand": {
+    "primaryColor": "#212653",
+    "accentColor": "#969423"
+  }
+}

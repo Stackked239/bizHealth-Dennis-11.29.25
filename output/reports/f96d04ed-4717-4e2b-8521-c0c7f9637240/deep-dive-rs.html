@@ -1,0 +1,4949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="BizHealth.ai Report Generator v2.0">
+  <title>Resilience &amp; Safeguards Deep Dive - EWM Global</title>
+  <style>
+    /* Base Styles */
+    
+    /* Base Reset and Typography */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      font-family: 'Open Sans', Arial, sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #333;
+      background: #fff;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+      color: #212653;
+      margin-bottom: 0.5em;
+      line-height: 1.3;
+    }
+
+    h1 { font-size: 2.5rem; font-weight: 700; }
+    h2 { font-size: 2rem; font-weight: 600; page-break-before: always; }
+    h2:first-of-type { page-break-before: auto; }
+    h3 { font-size: 1.5rem; font-weight: 600; }
+    h4 { font-size: 1.25rem; font-weight: 500; }
+    h5 { font-size: 1.1rem; font-weight: 500; }
+
+    p {
+      margin-bottom: 1em;
+    }
+
+    /* Links */
+    a {
+      color: #969423;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Lists */
+    ul, ol {
+      margin-left: 1.5em;
+      margin-bottom: 1em;
+    }
+
+    li {
+      margin-bottom: 0.5em;
+    }
+
+    /* Page Layout */
+    .report-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .page {
+      padding: 2rem 0;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    /* Header */
+    .report-header {
+      text-align: center;
+      padding: 2rem 0;
+      border-bottom: 4px solid #212653;
+      margin-bottom: 2rem;
+    }
+
+    .report-header .logo {
+      max-height: 60px;
+      margin-bottom: 1rem;
+    }
+
+    .report-header h1 {
+      margin-bottom: 0.5rem;
+    }
+
+    .report-header .subtitle {
+      font-size: 1.25rem;
+      color: #666;
+    }
+
+    .report-header .company-name {
+      font-size: 1.5rem;
+      color: #969423;
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+
+    .report-header .date {
+      font-size: 0.9rem;
+      color: #888;
+      margin-top: 0.5rem;
+    }
+
+    /* Footer */
+    .report-footer {
+      text-align: center;
+      padding: 1rem 0;
+      border-top: 2px solid #eee;
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    @media print {
+      .report-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    }
+
+    /* Section Styles */
+    .section {
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #969423;
+    }
+
+    .section-icon {
+      font-size: 1.5rem;
+      margin-right: 0.75rem;
+    }
+
+    /* Score Cards */
+    .score-card {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #212653 0%, #212653dd 100%);
+      color: #fff;
+      min-width: 150px;
+    }
+
+    .score-card .score-value {
+      font-size: 3rem;
+      font-weight: 700;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    .score-card .score-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .score-card.small {
+      padding: 0.75rem;
+      min-width: 100px;
+    }
+
+    .score-card.small .score-value {
+      font-size: 1.75rem;
+    }
+
+    /* Health Score Display */
+    .health-score-display {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+    }
+
+    .health-score-circle {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #212653 0%, #212653cc 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    .health-score-circle .score {
+      font-size: 3.5rem;
+      font-weight: 700;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+      line-height: 1;
+    }
+
+    .health-score-circle .out-of {
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    .health-score-details {
+      text-align: left;
+    }
+
+    .health-score-details .status {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .health-score-details .trajectory {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      color: #666;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    th {
+      background: #212653;
+      color: #fff;
+      font-weight: 600;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    tr:hover {
+      background: #f0f0f0;
+    }
+
+    /* Score Table */
+    .score-table th:first-child {
+      width: 40%;
+    }
+
+    .score-table td.score {
+      font-weight: 600;
+      font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+    }
+
+    /* Band Badge */
+    .band-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .band-badge.Excellence { background: #d4edda; color: #155724; }
+    .band-badge.Proficiency { background: #fff3cd; color: #856404; }
+    .band-badge.Attention { background: #ffeeba; color: #856404; }
+    .band-badge.Critical { background: #f8d7da; color: #721c24; }
+
+    /* Priority Badge */
+    .priority-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .priority-badge.high { background: #dc3545; color: #fff; }
+    .priority-badge.medium { background: #ffc107; color: #333; }
+    .priority-badge.low { background: #28a745; color: #fff; }
+
+    /* Cards */
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #212653;
+      margin: 0;
+    }
+
+    .card-body {
+      font-size: 0.95rem;
+    }
+
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+    @media (max-width: 768px) {
+      .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Flex Layout */
+    .flex { display: flex; }
+    .flex-wrap { flex-wrap: wrap; }
+    .flex-center { align-items: center; justify-content: center; }
+    .flex-between { justify-content: space-between; }
+    .gap-1 { gap: 0.5rem; }
+    .gap-2 { gap: 1rem; }
+    .gap-3 { gap: 1.5rem; }
+
+    /* Utility Classes */
+    .text-center { text-align: center; }
+    .text-right { text-align: right; }
+    .mt-1 { margin-top: 0.5rem; }
+    .mt-2 { margin-top: 1rem; }
+    .mt-3 { margin-top: 1.5rem; }
+    .mb-1 { margin-bottom: 0.5rem; }
+    .mb-2 { margin-bottom: 1rem; }
+    .mb-3 { margin-bottom: 1.5rem; }
+    .p-1 { padding: 0.5rem; }
+    .p-2 { padding: 1rem; }
+    .p-3 { padding: 1.5rem; }
+
+    /* Quick Win Card */
+    .quick-win-card {
+      background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+      border-left: 4px solid #969423;
+      padding: 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+    }
+
+    .quick-win-card .title {
+      font-weight: 600;
+      color: #212653;
+      margin-bottom: 0.5rem;
+    }
+
+    .quick-win-card .metrics {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.75rem;
+    }
+
+    .quick-win-card .metrics span {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* Risk Card */
+    .risk-card {
+      border-left: 4px solid #dc3545;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .risk-card.high { border-left-color: #dc3545; }
+    .risk-card.medium { border-left-color: #ffc107; }
+    .risk-card.low { border-left-color: #28a745; }
+
+    .risk-card .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .risk-card .category {
+      font-weight: 600;
+      color: #212653;
+    }
+
+    /* Finding Card */
+    .finding-card {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+    }
+
+    .finding-card.strength { background: #d4edda; border-left: 4px solid #28a745; }
+    .finding-card.gap { background: #f8d7da; border-left: 4px solid #dc3545; }
+    .finding-card.risk { background: #ffeeba; border-left: 4px solid #ffc107; }
+    .finding-card.opportunity { background: #cce5ff; border-left: 4px solid #0d6efd; }
+
+    .finding-card .label {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .finding-card .dimension {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Roadmap Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.5rem;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: #212653;
+      border-radius: 3px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 1.5rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -1.75rem;
+      top: 0.5rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #969423;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 3px #212653;
+    }
+
+    .timeline-item .phase-name {
+      font-weight: 600;
+      color: #212653;
+      font-size: 1.1rem;
+    }
+
+    .timeline-item .time-horizon {
+      font-size: 0.9rem;
+      color: #969423;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Callout Box */
+    .callout {
+      padding: 1.25rem;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+    }
+
+    .callout.info {
+      background: #e7f3ff;
+      border-left: 4px solid #0d6efd;
+    }
+
+    .callout.success {
+      background: #d4edda;
+      border-left: 4px solid #28a745;
+    }
+
+    .callout.warning {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+    }
+
+    .callout.danger {
+      background: #f8d7da;
+      border-left: 4px solid #dc3545;
+    }
+
+    .callout .title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      height: 24px;
+      background: #e9ecef;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .progress-bar .fill {
+      height: 100%;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: width 0.3s ease;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        font-size: 11pt;
+      }
+
+      .report-container {
+        max-width: none;
+        padding: 0;
+      }
+
+      .page-break {
+        page-break-before: always;
+      }
+
+      h2 {
+        page-break-before: always;
+      }
+
+      h2:first-of-type {
+        page-break-before: auto;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+    }
+  
+
+    /* Unified CSS Framework (Phase 4/5 Consolidation) */
+    
+/* ============================================================
+   BIZHEALTH.AI UNIFIED CSS FRAMEWORK
+   Phase 4 Styling Patterns for Phase 5 Report Generation
+   Generated: 2025-12-11
+   ============================================================ */
+
+/* ===== BRAND COLOR VARIABLES ===== */
+:root {
+  --biz-navy: #212653;
+  --biz-green: #969423;
+  --biz-grey: #7C7C7C;
+  --biz-white: #FFFFFF;
+  --biz-light-bg: #f8f9fa;
+  --biz-border: #e9ecef;
+
+  /* Score Band Colors */
+  --band-excellence: #28a745;
+  --band-proficiency: #0d6efd;
+  --band-attention: #ffc107;
+  --band-critical: #dc3545;
+
+  /* Spacing Scale (8px base) */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-xxl: 48px;
+}
+
+/* ===== CRITICAL FIX 1: Cover Page Background Override ===== */
+/* Issue: .page class white background overrides .cover-page BizNavy */
+.cover-page {
+  background: #212653 !important;
+  background-color: #212653 !important;
+}
+
+.page.cover-page {
+  background: #212653 !important;
+  background-color: #212653 !important;
+}
+
+/* ===== CRITICAL FIX 2: Dark Section Text Visibility ===== */
+/* Issue: Only strong/em styled in Phase 5; regular p text inherits dark color */
+.dark-section,
+.dark-section p,
+.dark-section span,
+.dark-section li,
+.dark-section strong,
+.dark-section em,
+.dark-section a,
+.dark-section h1,
+.dark-section h2,
+.dark-section h3,
+.dark-section h4,
+.dark-section h5,
+.dark-section h6,
+.dark-section label,
+.dark-section td,
+.dark-section th {
+  color: #FFFFFF !important;
+}
+
+.cover-page,
+.cover-page p,
+.cover-page span,
+.cover-page h1,
+.cover-page h2,
+.cover-page h3,
+.cover-page .subtitle,
+.cover-page .tagline {
+  color: #FFFFFF !important;
+}
+
+/* ===== CRITICAL FIX 3: Remove Problematic Overlays ===== */
+/* Issue: Light gradient overlays (5-8% opacity) reducing legibility */
+.cover-page::before,
+.cover-page::after,
+.dark-section::before,
+.dark-section::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* ===== FIX 4: Typography Hierarchy ===== */
+body {
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', 'Open Sans', Arial, sans-serif;
+  color: #212653;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+h1 { font-size: 2.5rem; font-weight: 700; }
+h2 { font-size: 2rem; font-weight: 600; border-bottom: 2px solid #969423; padding-bottom: 0.5rem; }
+h3 { font-size: 1.5rem; font-weight: 600; }
+h4 { font-size: 1.25rem; font-weight: 500; }
+
+/* ===== FIX 5: Score Display Contrast ===== */
+.score-value {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 3.5rem;
+  color: inherit;
+}
+
+.score-denominator,
+.score-out-of {
+  color: #CCCCCC; /* Intentional subtle hierarchy - not a bug */
+  font-size: 1.5rem;
+}
+
+.health-score-circle {
+  width: 180px;
+  height: 180px;
+  background: linear-gradient(135deg, #212653 0%, #212653cc 100%);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  color: #FFFFFF;
+}
+
+.health-score-circle .score {
+  font-size: 3.5rem;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+  line-height: 1;
+  color: #FFFFFF;
+}
+
+.health-score-circle .out-of {
+  font-size: 1rem;
+  opacity: 0.8;
+  color: #FFFFFF;
+}
+
+/* ===== FIX 6: Information Box Consistency ===== */
+.strength-box,
+.box-strength {
+  background: rgba(150, 148, 35, 0.1);
+  border-left: 4px solid #969423;
+  padding: 15px 20px;
+  margin: 15px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.gap-box,
+.risk-box,
+.box-gap,
+.box-risk {
+  background: rgba(211, 47, 47, 0.1);
+  border-left: 4px solid #D32F2F;
+  padding: 15px 20px;
+  margin: 15px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.action-box,
+.box-action,
+.recommendation-box {
+  background: rgba(33, 38, 83, 0.05);
+  border-left: 4px solid #212653;
+  padding: 15px 20px;
+  margin: 15px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.opportunity-box,
+.box-opportunity {
+  background: rgba(13, 110, 253, 0.1);
+  border-left: 4px solid #0d6efd;
+  padding: 15px 20px;
+  margin: 15px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+/* ===== FIX 7: Score Tile Cards ===== */
+.score-tile,
+.score-card {
+  background: #FFFFFF;
+  border-left: 4px solid #969423;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 16px;
+}
+
+.score-card .score-value {
+  font-size: 3rem;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.score-card .score-label {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== FIX 8: Score Band Badges ===== */
+.band-badge,
+.score-band {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.band-badge.Excellence,
+.score-band.excellence {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.band-badge.Proficiency,
+.score-band.proficiency {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.band-badge.Attention,
+.score-band.attention {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.band-badge.Critical,
+.score-band.critical {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* ===== FIX 9: Key Takeaways Box (Dark Section) ===== */
+.key-takeaways {
+  background: #212653 !important;
+  color: #FFFFFF !important;
+  padding: 24px;
+  border-radius: 8px;
+  margin: 24px 0;
+}
+
+.key-takeaways h3,
+.key-takeaways h4,
+.key-takeaways p,
+.key-takeaways li,
+.key-takeaways span,
+.key-takeaways .takeaway-title,
+.key-takeaways .takeaway-text {
+  color: #FFFFFF !important;
+}
+
+.key-takeaways .takeaway-icon {
+  color: #969423 !important;
+}
+
+/* ===== FIX 10: Table Styling ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+}
+
+th {
+  background-color: #212653;
+  color: #FFFFFF;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+}
+
+td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+/* ===== FIX 11: Interactive Table of Contents ===== */
+.table-of-contents {
+  background: #f8f9fa;
+  padding: 24px;
+  border-radius: 8px;
+  margin: 24px 0;
+}
+
+.table-of-contents h3 {
+  color: #212653;
+  margin-bottom: 1rem;
+}
+
+.table-of-contents ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.table-of-contents li {
+  margin: 8px 0;
+}
+
+.table-of-contents a {
+  color: #212653;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.table-of-contents a:hover {
+  background-color: #e9ecef;
+  color: #969423;
+}
+
+.table-of-contents .section-icon {
+  margin-right: 12px;
+  color: #969423;
+}
+
+/* Nested TOC items */
+.table-of-contents ul ul {
+  padding-left: 24px;
+  margin-top: 4px;
+}
+
+.table-of-contents ul ul a {
+  font-size: 0.9rem;
+  padding: 6px 12px;
+}
+
+/* ===== FIX 12: Cross-Reference Links ===== */
+.cross-reference,
+.see-comprehensive,
+.comprehensive-reference {
+  background: rgba(150, 148, 35, 0.1);
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin: 16px 0;
+  font-style: italic;
+  border-left: 3px solid #969423;
+}
+
+.cross-reference a,
+.see-comprehensive a,
+.comprehensive-reference a {
+  color: #969423;
+  font-weight: 600;
+}
+
+/* ===== FIX 13: Print Optimization ===== */
+@media print {
+  body {
+    font-size: 12pt;
+    line-height: 1.4;
+    max-width: none;
+    padding: 0;
+  }
+
+  .cover-page {
+    background: #212653 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .key-takeaways {
+    background: #212653 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .key-takeaways,
+  .key-takeaways * {
+    color: #FFFFFF !important;
+  }
+
+  h2 {
+    page-break-before: always;
+  }
+
+  h2:first-of-type {
+    page-break-before: auto;
+  }
+
+  .score-card,
+  .score-tile,
+  .insight-card,
+  .recommendation-box,
+  .risk-box,
+  .strength-box,
+  .gap-box {
+    page-break-inside: avoid;
+  }
+
+  .svg-chart-container,
+  .chart-container {
+    page-break-inside: avoid;
+  }
+
+  .table-of-contents {
+    page-break-after: always;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  th {
+    background-color: #212653 !important;
+    color: #FFFFFF !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .band-badge.Excellence { background-color: #d4edda !important; color: #155724 !important; }
+  .band-badge.Proficiency { background-color: #cce5ff !important; color: #004085 !important; }
+  .band-badge.Attention { background-color: #fff3cd !important; color: #856404 !important; }
+  .band-badge.Critical { background-color: #f8d7da !important; color: #721c24 !important; }
+}
+
+/* ===== FIX 14: Responsive Design ===== */
+@media (max-width: 768px) {
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+
+  .executive-highlights,
+  .insight-cards-container,
+  .owner-implications-grid,
+  .financial-summary-grid,
+  .bundle-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .health-score-circle {
+    width: 140px;
+    height: 140px;
+  }
+
+  .score-value {
+    font-size: 2.5rem;
+  }
+
+  .dashboard-row,
+  .chart-grid {
+    flex-direction: column;
+  }
+
+  table {
+    font-size: 0.875rem;
+  }
+
+  th, td {
+    padding: 8px 12px;
+  }
+}
+
+/* ===== FIX 15: Accessibility Enhancements ===== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus states for keyboard navigation */
+a:focus,
+button:focus {
+  outline: 3px solid #969423;
+  outline-offset: 2px;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ===== ADDITIONAL COMPONENT STYLES ===== */
+
+/* Finding Cards */
+.finding-card {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  border-left: 4px solid;
+}
+
+.finding-card.strength { background: #d4edda; border-left-color: #28a745; }
+.finding-card.gap { background: #f8d7da; border-left-color: #dc3545; }
+.finding-card.risk { background: #ffeeba; border-left-color: #ffc107; }
+.finding-card.opportunity { background: #cce5ff; border-left-color: #0d6efd; }
+
+.finding-card .label {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.finding-card .dimension {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+/* Quick Win Cards */
+.quick-win-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+  border-left: 4px solid #969423;
+  padding: 1.25rem;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 1rem;
+}
+
+.quick-win-card .title {
+  font-weight: 600;
+  color: #212653;
+  margin-bottom: 0.5rem;
+}
+
+.quick-win-card .metrics {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.75rem;
+}
+
+.quick-win-card .metrics span {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Risk Cards */
+.risk-card {
+  border-left: 4px solid #dc3545;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.risk-card.high { border-left-color: #dc3545; }
+.risk-card.medium { border-left-color: #ffc107; }
+.risk-card.low { border-left-color: #28a745; }
+
+.risk-card .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.risk-card .category {
+  font-weight: 600;
+  color: #212653;
+}
+
+/* Timeline/Roadmap */
+.timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0.5rem;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #212653;
+  border-radius: 3px;
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 1.5rem;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -1.75rem;
+  top: 0.5rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #969423;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 3px #212653;
+}
+
+.timeline-item .phase-name {
+  font-weight: 600;
+  color: #212653;
+  font-size: 1.1rem;
+}
+
+.timeline-item .time-horizon {
+  font-size: 0.9rem;
+  color: #969423;
+  margin-bottom: 0.5rem;
+}
+
+/* Callout Boxes */
+.callout {
+  padding: 1.25rem;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+.callout.info {
+  background: #e7f3ff;
+  border-left: 4px solid #0d6efd;
+}
+
+.callout.success {
+  background: #d4edda;
+  border-left: 4px solid #28a745;
+}
+
+.callout.warning {
+  background: #fff3cd;
+  border-left: 4px solid #ffc107;
+}
+
+.callout.danger {
+  background: #f8d7da;
+  border-left: 4px solid #dc3545;
+}
+
+.callout .title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* Insight Cards */
+.insight-card {
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0.75rem 0;
+  border-left: 4px solid;
+}
+
+.insight-card.strength { background: #d4edda; border-left-color: #28a745; }
+.insight-card.strength .insight-label { color: #155724; }
+
+.insight-card.weakness,
+.insight-card.gap { background: #f8d7da; border-left-color: #dc3545; }
+.insight-card.weakness .insight-label,
+.insight-card.gap .insight-label { color: #721c24; }
+
+.insight-card.opportunity { background: #cce5ff; border-left-color: #0d6efd; }
+.insight-card.opportunity .insight-label { color: #004085; }
+
+.insight-card.warning,
+.insight-card.risk { background: #fff3cd; border-left-color: #ffc107; }
+.insight-card.warning .insight-label,
+.insight-card.risk .insight-label { color: #856404; }
+
+.insight-card .insight-label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
+}
+
+.insight-card .insight-title {
+  font-weight: 600;
+  color: #212653;
+  margin-bottom: 0.5rem;
+}
+
+.insight-card .insight-detail {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+/* Grid Layouts */
+.insight-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.insight-cards-container .insight-card {
+  margin: 0;
+}
+
+/* Progress Bar */
+.progress-bar {
+  height: 24px;
+  background: #e9ecef;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.progress-bar .fill {
+  height: 100%;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: width 0.3s ease;
+}
+
+/* Benchmark Callouts */
+.benchmark-callout {
+  background: #e7f3ff;
+  border: 1px solid #b8daff;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.benchmark-callout .benchmark-icon {
+  font-size: 2rem;
+  color: #212653;
+}
+
+.benchmark-callout .benchmark-content { flex: 1; }
+
+.benchmark-callout .benchmark-label {
+  font-size: 0.85rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.benchmark-callout .benchmark-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #212653;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.benchmark-callout .benchmark-context {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Evidence Citations */
+.evidence-citation {
+  background: #f8f9fa;
+  border-left: 4px solid #969423;
+  border-radius: 0 8px 8px 0;
+  padding: 0.75rem 1rem;
+  margin: 0.75rem 0 1.25rem 0;
+  font-size: 0.9rem;
+}
+
+.evidence-citation .citation-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #212653;
+  margin-bottom: 0.5rem;
+}
+
+.evidence-citation .citation-icon {
+  color: #969423;
+}
+
+.evidence-citation .question-ref {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.evidence-citation .response-text {
+  color: #333;
+  font-style: italic;
+  margin: 0.5rem 0;
+  padding-left: 1rem;
+  border-left: 2px solid #ddd;
+}
+
+.evidence-citation .benchmark-comparison {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e0e0e0;
+  font-size: 0.85rem;
+}
+
+.evidence-citation .benchmark-comparison.above { color: #28a745; }
+.evidence-citation .benchmark-comparison.below { color: #dc3545; }
+.evidence-citation .benchmark-comparison.at { color: #6c757d; }
+
+/* Bundle Grid (Owner Report) */
+.bundle-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.bundle-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+}
+
+.bundle-item.primary {
+  border-left: 3px solid #212653;
+}
+
+.bundle-item a {
+  color: #212653;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.bundle-item a:hover {
+  color: #969423;
+}
+
+.bundle-item p {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0.25rem 0 0 0;
+}
+
+/* ========================================================================
+   PHASE 5 VISUAL COMPONENTS (Added 2025-12-06)
+   Visual components from visual-components.ts
+   ======================================================================== */
+
+/* ===== SCORECARD GRID ===== */
+.scorecard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-lg);
+  margin: var(--space-lg) 0;
+}
+
+.scorecard-item {
+  background: var(--biz-light-bg);
+  border: 1px solid var(--biz-border);
+  border-radius: 8px;
+  padding: var(--space-lg);
+  text-align: center;
+  transition: box-shadow 0.2s ease;
+}
+
+.scorecard-item:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.scorecard-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  color: #212653;
+  margin-bottom: var(--space-sm);
+}
+
+.scorecard-score {
+  font-size: 2.5em;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+  margin: var(--space-sm) 0;
+}
+
+.scorecard-benchmark {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: var(--space-xs);
+}
+
+/* Score Colors */
+.score-excellence { color: var(--band-excellence); }
+.score-proficiency { color: var(--band-proficiency); }
+.score-attention { color: var(--band-attention); }
+.score-critical { color: var(--band-critical); }
+
+/* ===== STATUS BADGES ===== */
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-excellence { background: #d4edda; color: #155724; }
+.status-proficiency { background: #cce5ff; color: #004085; }
+.status-attention { background: #fff3cd; color: #856404; }
+.status-critical { background: #f8d7da; color: #721c24; }
+
+/* ===== DIMENSION DETAIL CARDS ===== */
+.dimension-detail {
+  background: var(--biz-white);
+  border: 1px solid var(--biz-border);
+  border-radius: 8px;
+  margin: var(--space-md) 0;
+  padding: var(--space-lg);
+}
+
+.dimension-detail .dimension-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--biz-border);
+}
+
+.dimension-detail .dimension-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.dimension-benchmark {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: var(--space-sm);
+}
+
+.sub-indicators {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-sm) var(--space-md);
+  font-size: 0.9em;
+}
+
+.sub-indicator-name {
+  padding: var(--space-xs) 0;
+  color: #555;
+}
+
+.sub-indicator-score {
+  font-weight: 600;
+  text-align: right;
+  padding: var(--space-xs) 0;
+}
+
+/* ===== FINDINGS GRID ===== */
+.findings-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+  margin: var(--space-lg) 0;
+}
+
+@media (max-width: 900px) {
+  .findings-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.findings-category {
+  background: var(--biz-light-bg);
+  border: 1px solid var(--biz-border);
+  border-radius: 8px;
+  padding: var(--space-lg);
+}
+
+.findings-category h4 {
+  color: #212653;
+  margin-bottom: var(--space-md);
+  font-size: 1.1em;
+}
+
+.findings-category.strengths {
+  background: #d4edda;
+  border-color: var(--band-excellence);
+}
+
+.findings-category.gaps {
+  background: #fff3cd;
+  border-color: var(--band-attention);
+}
+
+.findings-category.risks {
+  background: #f8d7da;
+  border-color: var(--band-critical);
+}
+
+.finding-item {
+  margin: var(--space-sm) 0;
+  padding: var(--space-sm);
+  background: var(--biz-white);
+  border-radius: 4px;
+  border-left: 4px solid #ccc;
+}
+
+.finding-item.strength { border-left-color: var(--band-excellence); }
+.finding-item.gap { border-left-color: var(--band-attention); }
+.finding-item.risk { border-left-color: var(--band-critical); }
+
+.finding-dimension {
+  font-size: 0.8em;
+  color: #666;
+  margin-left: var(--space-xs);
+}
+
+.findings-more {
+  font-size: 0.9em;
+  color: #666;
+  font-style: italic;
+  margin-top: var(--space-sm);
+}
+
+/* ===== RISK MATRIX ===== */
+.risk-matrix {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-md);
+  margin: var(--space-lg) 0;
+}
+
+.risk-item {
+  background: var(--biz-white);
+  border-left: 5px solid var(--band-critical);
+  border-radius: 0 8px 8px 0;
+  padding: var(--space-md);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.risk-item.critical { border-left-color: var(--band-critical); background: #fef8f8; }
+.risk-item.high { border-left-color: #e67e22; background: #fef9f3; }
+.risk-item.medium { border-left-color: var(--band-attention); background: #fefdf3; }
+.risk-item.low { border-left-color: var(--band-excellence); background: #f3fef6; }
+
+.risk-title {
+  font-weight: 600;
+  color: #212653;
+  margin-bottom: var(--space-xs);
+}
+
+.risk-dimension {
+  font-size: 0.8em;
+  color: #666;
+  margin-bottom: var(--space-xs);
+}
+
+.risk-meta {
+  font-size: 0.85em;
+  color: #666;
+  margin-bottom: var(--space-sm);
+}
+
+.risk-meta span {
+  margin-right: var(--space-md);
+}
+
+.risk-description {
+  font-size: 0.9em;
+  color: #555;
+}
+
+.risk-mitigation {
+  margin-top: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 1px dashed var(--biz-border);
+  font-size: 0.85em;
+}
+
+/* ===== RECOMMENDATION CARDS ===== */
+.recommendations-list {
+  margin: var(--space-lg) 0;
+}
+
+.recommendation-item {
+  background: var(--biz-light-bg);
+  border: 1px solid var(--biz-border);
+  border-radius: 8px;
+  margin: var(--space-md) 0;
+  padding: var(--space-lg);
+}
+
+.recommendation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-md);
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.recommendation-title {
+  font-weight: 600;
+  font-size: 1.1em;
+  color: #212653;
+}
+
+.quick-win-badge {
+  background: var(--band-excellence);
+  color: white;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.75em;
+  font-weight: 600;
+  margin-left: var(--space-sm);
+}
+
+.horizon-badge {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  font-weight: 500;
+}
+
+.horizon-90 { background: #ff6b6b; color: white; }
+.horizon-12 { background: #4ecdc4; color: white; }
+
+.recommendation-meta {
+  margin: var(--space-sm) 0;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.action-steps {
+  margin: var(--space-md) 0;
+}
+
+.action-steps ul {
+  margin-left: var(--space-lg);
+  margin-top: var(--space-xs);
+}
+
+.action-steps li {
+  margin: var(--space-xs) 0;
+}
+
+.expected-outcome {
+  background: #e8f5e9;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: 4px;
+  margin-top: var(--space-sm);
+  font-style: italic;
+  font-size: 0.95em;
+}
+
+/* ===== ROADMAP TIMELINE ===== */
+.roadmap-timeline {
+  margin: var(--space-lg) 0;
+  position: relative;
+}
+
+.roadmap-phase {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+  position: relative;
+}
+
+.roadmap-phase-marker {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #212653;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+  flex-shrink: 0;
+}
+
+.roadmap-phase-content {
+  flex: 1;
+  background: var(--biz-light-bg);
+  border: 1px solid var(--biz-border);
+  border-radius: 8px;
+  padding: var(--space-lg);
+}
+
+.roadmap-phase-content h4 {
+  color: #212653;
+  margin: 0 0 var(--space-xs) 0;
+  font-size: 1.2em;
+}
+
+.roadmap-timeframe {
+  color: #969423;
+  font-weight: 600;
+  font-size: 0.9em;
+  margin-bottom: var(--space-sm);
+}
+
+.roadmap-description {
+  color: #666;
+  font-style: italic;
+  margin-bottom: var(--space-md);
+}
+
+.roadmap-investment {
+  background: #e8f5e9;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 4px;
+  display: inline-block;
+  margin-bottom: var(--space-sm);
+}
+
+.roadmap-items ul {
+  margin-left: var(--space-lg);
+  margin-top: var(--space-xs);
+}
+
+/* ===== EXECUTIVE HIGHLIGHTS ===== */
+.executive-highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-md);
+  margin: var(--space-lg) 0;
+}
+
+.highlight-card {
+  background: var(--biz-light-bg);
+  border-radius: 8px;
+  padding: var(--space-md);
+  text-align: center;
+  border-top: 4px solid #212653;
+}
+
+.highlight-icon {
+  font-size: 1.5rem;
+  margin-bottom: var(--space-xs);
+}
+
+.highlight-value {
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+  color: #212653;
+}
+
+.highlight-label {
+  font-size: 0.85rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== CHAPTER SUMMARY ===== */
+.chapter-summary {
+  background: var(--biz-white);
+  border: 1px solid var(--biz-border);
+  border-radius: 8px;
+  margin: var(--space-md) 0;
+  padding: var(--space-lg);
+}
+
+.chapter-summary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+.chapter-summary-header h3 {
+  margin: 0;
+}
+
+.chapter-summary-stats {
+  display: flex;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+  color: #212653;
+}
+
+.stat-item.stat-positive .stat-value { color: var(--band-excellence); }
+.stat-item.stat-negative .stat-value { color: var(--band-critical); }
+
+.stat-label {
+  font-size: 0.8rem;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.chapter-summary-highlights .highlight {
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 4px;
+  margin: var(--space-xs) 0;
+  font-size: 0.9em;
+}
+
+.chapter-summary-highlights .highlight.strength {
+  background: #d4edda;
+  color: #155724;
+}
+
+.chapter-summary-highlights .highlight.gap {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* ===== QUICK WINS SUMMARY ===== */
+.quick-wins-summary {
+  margin: var(--space-lg) 0;
+}
+
+.quick-wins-summary h4 {
+  color: #212653;
+  margin-bottom: var(--space-md);
+}
+
+.quick-win-card {
+  display: flex;
+  gap: var(--space-md);
+  background: var(--biz-light-bg);
+  border-left: 4px solid var(--band-excellence);
+  padding: var(--space-md);
+  border-radius: 0 8px 8px 0;
+  margin-bottom: var(--space-sm);
+}
+
+.quick-win-rank {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--band-excellence);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.quick-win-title {
+  font-weight: 600;
+  color: #212653;
+  margin-bottom: var(--space-xs);
+}
+
+.quick-win-meta {
+  font-size: 0.85em;
+  color: #666;
+}
+
+/* ===== BENCHMARK COMPARISON TABLE ===== */
+.benchmark-comparison-table {
+  margin: var(--space-lg) 0;
+  overflow-x: auto;
+}
+
+.benchmark-comparison-table .score-cell {
+  font-weight: 600;
+}
+
+.benchmark-comparison-table .benchmark-cell {
+  color: #666;
+}
+
+.benchmark-comparison-table .delta-cell {
+  font-weight: 600;
+}
+
+.benchmark-comparison-table .delta-cell.positive { color: var(--band-excellence); }
+.benchmark-comparison-table .delta-cell.negative { color: var(--band-critical); }
+.benchmark-comparison-table .delta-cell.neutral { color: #666; }
+
+/* ===== BH PARAGRAPH STYLES ===== */
+.bh-paragraph {
+  margin-bottom: 1em;
+  line-height: 1.7;
+}
+
+.bh-emphasis {
+  color: #212653;
+  font-weight: 600;
+}
+
+.bh-section-heading {
+  color: #212653;
+  border-bottom: 2px solid #969423;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.bh-subsection-heading {
+  color: #212653;
+  margin-top: 1.25em;
+}
+
+.bh-list {
+  margin-left: var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+.bh-list-item {
+  margin-bottom: var(--space-xs);
+  line-height: 1.6;
+}
+
+.bh-list-more {
+  color: #666;
+  font-style: italic;
+}
+
+.bh-list-consolidated {
+  border-left: 3px solid #969423;
+  padding-left: var(--space-md);
+}
+
+/* ===== SVG CHART CONTAINER ===== */
+.svg-chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem 0;
+  page-break-inside: avoid;
+}
+
+.svg-chart-container svg {
+  max-width: 100%;
+  height: auto;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+}
+
+.chart-caption {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.5rem;
+  text-align: center;
+  font-style: italic;
+}
+
+/* ===== VISUAL SAFETY NETS ===== */
+/* Ensure chart containers are always visible for debugging and graceful degradation */
+
+.svg-chart-container {
+  min-height: 150px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 1.5rem 0;
+}
+
+.svg-chart-container:empty::before {
+  content: "Chart loading...";
+  color: #6c757d;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+}
+
+/* Quick Win cards - ensure data visibility */
+.quick-win-card {
+  border-left: 4px solid #969423;
+  background: #ffffff;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0 8px 8px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.quick-win-meta {
+  font-size: 0.875rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+.quick-win-meta span {
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+
+/* Recommendation cards - consistent with Quick Wins */
+.recommendation-item {
+  border-left: 4px solid #212653;
+  background: #ffffff;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0 8px 8px 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* Finding items - visual accent */
+.finding-item {
+  border-left: 4px solid #212653;
+  padding-left: 1rem;
+  margin-bottom: 1rem;
+}
+
+.finding-item.strength {
+  border-left-color: #969423;
+}
+
+.finding-item.weakness,
+.finding-item.gap {
+  border-left-color: #dc3545;
+}
+
+/* Empty state styling */
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* Print safety - ensure backgrounds print */
+@media print {
+  .svg-chart-container {
+    background: #f8f9fa !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .quick-win-card,
+  .recommendation-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
+/* ===== PRINT OPTIMIZATIONS FOR NEW COMPONENTS ===== */
+@media print {
+  .scorecard-grid,
+  .findings-grid,
+  .risk-matrix,
+  .executive-highlights {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .svg-chart-container {
+    page-break-inside: avoid;
+  }
+
+  .recommendation-item,
+  .dimension-detail,
+  .roadmap-phase,
+  .chapter-summary {
+    page-break-inside: avoid;
+  }
+
+  .quick-win-badge {
+    background: var(--band-excellence) !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+/* ===== RESPONSIVE ADJUSTMENTS ===== */
+@media (max-width: 768px) {
+  .scorecard-grid,
+  .findings-grid,
+  .risk-matrix,
+  .executive-highlights {
+    grid-template-columns: 1fr;
+  }
+
+  .dimension-detail .dimension-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  .recommendation-header {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .chapter-summary-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  .chapter-summary-stats {
+    flex-wrap: wrap;
+  }
+}
+
+/* ========================================================================
+   PHASE 1.5 CATEGORY ANALYSIS STYLES
+   ======================================================================== */
+
+/* Section Containers */
+.category-analysis-overview,
+.cross-category-insights,
+.department-category-analysis,
+.category-analysis-section {
+  margin: 2rem 0;
+  padding: 1rem 0;
+}
+
+.section-intro {
+  font-size: 1.05rem;
+  color: #555;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+/* Visualization Containers */
+.visualization-container {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+
+.visualization-container h3 {
+  color: #212653;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #969423;
+}
+
+.visualization-row {
+  margin: 1.5rem 0;
+}
+
+.visualization-row.two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+/* Category Card Grid */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.category-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  border-left: 4px solid #969423;
+}
+
+.category-card.score-excellent { border-left-color: #28a745; }
+.category-card.score-good { border-left-color: #969423; }
+.category-card.score-developing { border-left-color: #ffc107; }
+.category-card.score-needs-improvement { border-left-color: #fd7e14; }
+.category-card.score-critical { border-left-color: #dc3545; }
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.category-header h4 {
+  margin: 0;
+  color: #212653;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+}
+
+/* Score Badges */
+.score-badge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  background: #212653;
+  color: white;
+}
+
+.score-badge.score-excellent { background: #28a745; }
+.score-badge.score-good { background: #969423; }
+.score-badge.score-developing { background: #ffc107; color: #212529; }
+.score-badge.score-needs-improvement { background: #fd7e14; }
+.score-badge.score-critical { background: #dc3545; }
+
+/* Category Highlights */
+.category-highlights {
+  margin: 1rem 0;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.category-highlights .highlight {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.category-highlights .strength { color: #28a745; }
+.category-highlights .gap { color: #dc3545; }
+.category-highlights .quick-win { color: #212653; }
+
+/* Cross Reference */
+.cross-reference {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed #ddd;
+}
+
+/* Systemic Patterns */
+.systemic-patterns {
+  margin: 1.5rem 0;
+}
+
+.pattern-card {
+  background: #fff9e6;
+  border: 1px solid #969423;
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  margin: 0.75rem 0;
+}
+
+.pattern-card h4 {
+  color: #212653;
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+}
+
+.pattern-card .recommendation {
+  background: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  margin-top: 0.75rem;
+}
+
+.pattern-card .affected-categories {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+/* Prioritization Table */
+.prioritization-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+
+.prioritization-table th {
+  background: #212653;
+  color: white;
+  padding: 0.75rem;
+  text-align: left;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.prioritization-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.prioritization-table .priority-score {
+  font-size: 1.1rem;
+  color: #212653;
+}
+
+/* Category Detail Cards (Manager Reports) */
+.category-detail {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  border-left: 4px solid #212653;
+  background: #fafafa;
+}
+
+.category-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.category-detail-header h3 {
+  margin: 0;
+  color: #212653;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.score-context {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+/* Phase 1.5 Print Optimizations */
+@media print {
+  .category-analysis-overview,
+  .cross-category-insights,
+  .department-category-analysis,
+  .category-analysis-section {
+    page-break-inside: avoid;
+  }
+
+  .category-card,
+  .category-detail,
+  .category-detail-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .visualization-container {
+    background: white !important;
+    border: 1px solid #ccc !important;
+  }
+
+  .visualization-row.two-column {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Phase 1.5 Responsive Adjustments */
+@media (max-width: 768px) {
+  .visualization-row.two-column {
+    grid-template-columns: 1fr;
+  }
+
+  .category-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .category-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+/* ========================================================================
+   PHASE 4 VISUAL PATTERNS (Integrated 2025-12-05)
+   ======================================================================== */
+
+    .health-score-section {
+      background: linear-gradient(135deg, #f7fafc, #edf2f7);
+      padding: 25px;
+      border-radius: 8px;
+      border-left: 5px solid var(--band-critical);
+      margin-bottom: 30px;
+    }
+
+    .health-score {
+      background: linear-gradient(135deg, var(--band-critical), var(--band-attention));
+      color: white;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .health-score.excellence {
+      background: linear-gradient(135deg, var(--band-excellence), #1e8449);
+    }
+
+    .health-score.proficiency {
+      background: linear-gradient(135deg, var(--band-proficiency), #1a5276);
+    }
+
+    .health-score.attention {
+      background: linear-gradient(135deg, var(--band-attention), #e67e22);
+    }
+
+    .health-score.critical {
+      background: linear-gradient(135deg, var(--band-critical), #c0392b);
+    }
+
+    .score-circle {
+      display: inline-block;
+      width: 120px;
+      height: 120px;
+      border: 8px solid white;
+      border-radius: 50%;
+      line-height: 104px;
+      text-align: center;
+      font-size: 32px;
+      font-weight: bold;
+      background: rgba(255,255,255,0.2);
+      margin-bottom: 10px;
+    }
+
+    .score-number {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .score-status {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  
+
+    .chapter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .chapter-scores {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .chapter-card, .chapter-item {
+      padding: 25px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      border: 2px solid transparent;
+      background: white;
+    }
+
+    .chapter-card.excellence, .chapter-item.excellence {
+      background: linear-gradient(135deg, var(--band-excellence), #1e8449);
+      color: white;
+      border-color: #1e8449;
+    }
+
+    .chapter-card.proficiency, .chapter-item.proficiency {
+      background: linear-gradient(135deg, var(--band-proficiency), #1a5276);
+      color: white;
+      border-color: #1a5276;
+    }
+
+    .chapter-card.attention, .chapter-item.attention {
+      background: linear-gradient(135deg, var(--band-attention), #e67e22);
+      color: white;
+      border-color: #d68910;
+    }
+
+    .chapter-card.critical, .chapter-item.critical {
+      background: linear-gradient(135deg, var(--band-critical), #c0392b);
+      color: white;
+      border-color: #a93226;
+    }
+
+    .chapter-title, .chapter-name {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .chapter-score {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+  
+
+    .dimension-table, .recommendations-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .dimension-table th, .recommendations-table th {
+      background: var(--biz-navy);
+      color: white;
+      padding: 15px;
+      font-weight: 600;
+      text-align: left;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .dimension-table td, .recommendations-table td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #eee;
+      background: white;
+      vertical-align: top;
+    }
+
+    .dimension-table tr:hover td, .recommendations-table tr:hover td {
+      background: #f8f9fa;
+    }
+
+    .dimension-table tr:last-child td, .recommendations-table tr:last-child td {
+      border-bottom: none;
+    }
+  
+
+    .score-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+      text-align: center;
+      min-width: 60px;
+      display: inline-block;
+      font-size: 14px;
+    }
+
+    .score-badge.excellence, .score-excellence {
+      background: #d5f4e6;
+      color: #1e8449;
+    }
+
+    .score-badge.proficiency, .score-proficiency {
+      background: #d4e6f1;
+      color: #1a5276;
+    }
+
+    .score-badge.attention, .score-attention {
+      background: #fef9e7;
+      color: #9a7d0a;
+    }
+
+    .score-badge.critical, .score-critical {
+      background: #fdedec;
+      color: #922b21;
+    }
+
+    .quick-win-badge {
+      background: var(--band-excellence);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 15px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+
+    .horizon-badge {
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .horizon-90, .horizon-immediate {
+      background: #ff6b6b;
+      color: white;
+    }
+
+    .horizon-12, .horizon-medium {
+      background: #4ecdc4;
+      color: white;
+    }
+
+    .horizon-24, .horizon-long {
+      background: #45b7d1;
+      color: white;
+    }
+  
+
+    .findings-section {
+      margin: 40px 0;
+    }
+
+    .findings-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .findings-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .findings-card {
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .strengths-card, .strengths-priorities {
+      background: linear-gradient(135deg, #d4edda, #c3e6cb);
+      border-left: 5px solid var(--band-excellence);
+    }
+
+    .gaps-card, .priorities {
+      background: linear-gradient(135deg, #fff3cd, #ffeeba);
+      border-left: 5px solid var(--band-attention);
+    }
+
+    .risks-card {
+      background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+      border-left: 5px solid var(--band-critical);
+    }
+
+    .finding-item {
+      margin: 15px 0;
+      padding: 15px;
+      background: white;
+      border-radius: 8px;
+      border-left: 4px solid;
+    }
+
+    .finding-item.strength {
+      border-left-color: var(--band-excellence);
+    }
+
+    .finding-item.gap {
+      border-left-color: var(--band-attention);
+    }
+
+    .finding-item.risk {
+      border-left-color: var(--band-critical);
+    }
+
+    .finding-title {
+      font-weight: 600;
+      color: var(--biz-navy);
+      margin-bottom: 5px;
+    }
+
+    .finding-description {
+      color: #555;
+      font-size: 14px;
+    }
+  
+
+    .two-column {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+
+    @media (max-width: 768px) {
+      .two-column {
+        grid-template-columns: 1fr;
+      }
+    }
+  
+
+    .roadmap-timeline {
+      margin: 30px 0;
+    }
+
+    .timeline-phase {
+      background: white;
+      border: 2px solid #dee2e6;
+      border-radius: 12px;
+      margin: 20px 0;
+      padding: 25px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      position: relative;
+    }
+
+    .phase-header {
+      background: var(--biz-green);
+      color: white;
+      padding: 15px 25px;
+      margin: -25px -25px 20px -25px;
+      border-radius: 10px 10px 0 0;
+      font-size: 18px;
+      font-weight: 600;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .phase-description {
+      color: #666;
+      margin-bottom: 15px;
+      font-style: italic;
+    }
+
+    .action-list {
+      list-style: none;
+      margin-top: 10px;
+      padding: 0;
+    }
+
+    .action-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+    }
+
+    .action-list li:last-child {
+      border-bottom: none;
+    }
+
+    .action-list li:before {
+      content: "▶";
+      color: var(--biz-green);
+      margin-right: 8px;
+    }
+  
+
+    .risk-matrix {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    @media (max-width: 900px) {
+      .risk-matrix {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .risk-item {
+      background: white;
+      border-left: 5px solid var(--band-critical);
+      padding: 20px;
+      border-radius: 0 10px 10px 0;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    .risk-title {
+      font-weight: 600;
+      color: var(--band-critical);
+      margin-bottom: 10px;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .risk-severity {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-right: 5px;
+    }
+
+    .severity-critical {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .severity-high {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .likelihood-high {
+      background: #f8d7da;
+      color: #721c24;
+    }
+  
+
+    .executive-summary {
+      background: #f8f9fa;
+      border-left: 5px solid var(--biz-green);
+      padding: 30px;
+      margin-bottom: 40px;
+      border-radius: 0 10px 10px 0;
+    }
+
+    .executive-summary p {
+      margin-bottom: 15px;
+    }
+
+    .executive-summary p:last-child {
+      margin-bottom: 0;
+    }
+
+    .executive-recommendation {
+      background: var(--biz-navy);
+      color: white;
+      padding: 20px;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .executive-recommendation h3 {
+      color: white;
+      margin-bottom: 15px;
+    }
+  
+
+    .financial-projections {
+      background: linear-gradient(135deg, var(--biz-navy), #34495e);
+      color: white;
+      padding: 30px;
+      border-radius: 12px;
+      margin: 30px 0;
+    }
+
+    .financial-projections h2, .financial-projections h3 {
+      color: white;
+    }
+
+    .projections-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .projections-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .projection-item {
+      text-align: center;
+      padding: 15px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 8px;
+    }
+
+    .projection-value {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .projection-label {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .financial-box {
+      background: #e6fffa;
+      border: 1px solid var(--band-excellence);
+      padding: 20px;
+      border-radius: 5px;
+      margin: 20px 0;
+    }
+  
+
+    .quick-wins {
+      background: #f0fff4;
+      border: 1px solid var(--band-excellence);
+      padding: 20px;
+      border-radius: 5px;
+    }
+
+    .quick-win-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .quick-win-item:last-child {
+      border-bottom: none;
+    }
+
+    .impact-score {
+      background: var(--band-excellence);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 3px;
+      font-weight: bold;
+      font-size: 12px;
+    }
+
+    .impact-bar {
+      height: 8px;
+      background: #e9ecef;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 5px;
+    }
+
+    .impact-fill {
+      height: 100%;
+      border-radius: 4px;
+    }
+
+    .impact-fill.high {
+      background: var(--band-excellence);
+    }
+
+    .impact-fill.medium {
+      background: var(--band-attention);
+    }
+
+    .impact-fill.low {
+      background: #6c757d;
+    }
+  
+
+    .header {
+      text-align: center;
+      border-bottom: 3px solid var(--biz-navy);
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      color: var(--biz-navy);
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .header h2 {
+      color: #4a5568;
+      font-size: 18px;
+      font-weight: normal;
+    }
+
+    .section {
+      margin-bottom: 30px;
+    }
+
+    .section h3 {
+      color: var(--biz-navy);
+      font-size: 20px;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 5px;
+    }
+
+    .section-break, .page-break {
+      page-break-before: always;
+    }
+
+    .cover-page {
+      text-align: center;
+      padding: 100px 0;
+      border-bottom: 3px solid var(--biz-navy);
+      margin-bottom: 60px;
+    }
+
+    .company-title {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--biz-navy);
+      margin-bottom: 20px;
+    }
+
+    .report-title {
+      font-size: 32px;
+      color: #34495e;
+      margin-bottom: 40px;
+    }
+
+    .report-meta {
+      background: #f8f9fa;
+      padding: 30px;
+      border-radius: 10px;
+      display: inline-block;
+    }
+  
+
+    .urgency-high {
+      color: var(--band-critical);
+      font-weight: bold;
+    }
+
+    .urgency-medium {
+      color: var(--band-attention);
+      font-weight: bold;
+    }
+
+    .urgency-low {
+      color: var(--band-proficiency);
+      font-weight: bold;
+    }
+  
+
+    .list-item {
+      margin-bottom: 10px;
+      padding-left: 15px;
+      position: relative;
+    }
+
+    .list-item:before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #4a5568;
+      font-weight: bold;
+    }
+
+    .imperatives-list {
+      list-style: none;
+      margin-top: 15px;
+      padding: 0;
+    }
+
+    .imperatives-list li {
+      background: #fee;
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid var(--band-critical);
+      font-weight: 500;
+    }
+
+    .key-imperatives {
+      background: white;
+      border: 2px solid var(--band-critical);
+      border-radius: 10px;
+      padding: 30px;
+    }
+  
+
+
+    /* Content Gate Styles (Beta/Production Mode) */
+    
+    /* BizHealth Production Mode: Content gating active */
+    .report-content-gated {
+      filter: blur(8px);
+      pointer-events: none;
+      user-select: none;
+      opacity: 0.7;
+      transition: all 0.4s ease;
+    }
+
+    .report-content-gated.terms-accepted {
+      filter: none;
+      pointer-events: auto;
+      user-select: auto;
+      opacity: 1;
+    }
+
+    .clickwrap-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(33, 38, 83, 0.95);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .clickwrap-overlay.hidden {
+      display: none;
+    }
+
+    @media print {
+      .clickwrap-overlay {
+        display: none !important;
+      }
+      .report-content-gated {
+        filter: none !important;
+        opacity: 1 !important;
+      }
+    }
+  
+
+    /* Report-Specific Custom Styles */
+    
+  </style>
+</head>
+<body>
+  
+  
+    <!-- Clickwrap Modal Overlay -->
+    <div id="clickwrap-modal-f96d04ed-4717-4e2b-8521-c0c7f9637240" class="clickwrap-overlay" role="dialog" aria-modal="true" aria-labelledby="clickwrap-title">
+      <div class="clickwrap-modal">
+        <!-- Header -->
+        <div class="clickwrap-header">
+          <div class="clickwrap-logo">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="40" height="40" rx="8" fill="#212653"/>
+              <text x="20" y="26" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="16" font-weight="700" fill="white">BH</text>
+            </svg>
+          </div>
+          <div class="clickwrap-title-block">
+            <h2 id="clickwrap-title">Assessment Report Terms &amp; Conditions</h2>
+            <p class="clickwrap-subtitle">EWM Global — All Report</p>
+          </div>
+        </div>
+
+        <!-- Terms Container -->
+        <div class="clickwrap-terms-container" id="terms-container-f96d04ed-4717-4e2b-8521-c0c7f9637240">
+          <div class="clickwrap-terms-content">
+            
+    <h3>Professional Services Disclaimer</h3>
+    <p>This Report is provided for general informational and educational purposes only. It is designed to offer insights into your business operations based on the data you have provided. The Report does not constitute professional advice of any kind, including but not limited to legal, financial, tax, accounting, investment, or business consulting advice.</p>
+    <p>BizHealth.ai is not a law firm, accounting firm, financial advisory firm, or professional consulting practice. The information contained in this Report should not be relied upon as a substitute for consultation with qualified professionals who can provide advice tailored to your specific circumstances.</p>
+
+    <h3>Data Accuracy &amp; Limitations</h3>
+    <p>The analyses, scores, recommendations, and other outputs in this Report are based solely on the information you provided through the assessment questionnaire. BizHealth.ai does not independently verify the accuracy, completeness, or reliability of the data you submitted.</p>
+    <p>If any information provided was inaccurate, incomplete, or outdated, the findings and recommendations in this Report may not accurately reflect your business situation.</p>
+
+    <h3>No Guarantee of Outcomes</h3>
+    <p>Any projections, forecasts, potential savings, ROI estimates, or expected outcomes presented in this Report are illustrative only and based on assumptions that may not hold true in your specific circumstances. Actual results may vary significantly.</p>
+
+    <h3>Limitation of Liability</h3>
+    <p>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL BIZHEALTH.AI, ITS AFFILIATES, OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, LICENSORS, OR SERVICE PROVIDERS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, PUNITIVE, OR EXEMPLARY DAMAGES, INCLUDING BUT NOT LIMITED TO DAMAGES FOR LOSS OF PROFITS, GOODWILL, USE, DATA, OR OTHER INTANGIBLE LOSSES.</p>
+
+    <h3>Intellectual Property</h3>
+    <p>This Report, including all content, analyses, scores, recommendations, formatting, design, graphics, and presentation, constitutes proprietary intellectual property of BizHealth.ai. All rights, title, and interest in and to the Report remain exclusively with BizHealth.ai.</p>
+    <p>You are granted a limited, non-exclusive, non-transferable license to use this Report solely for your internal business purposes.</p>
+
+    <h3>Indemnification</h3>
+    <p>You agree to indemnify, defend, and hold harmless BizHealth.ai from any claims, damages, losses, liabilities, costs, and expenses arising out of or relating to your use of this Report or any decisions made based on its contents.</p>
+
+    <h3>Confidentiality</h3>
+    <p>This Report contains confidential information about your business. You agree to maintain the confidentiality of this Report and not disclose its contents to third parties without prior written consent, except as required by law or to your professional advisors.</p>
+
+    <h3>Governing Law</h3>
+    <p>These terms shall be governed by and construed in accordance with the laws of the State of Delaware, without regard to its conflict of laws principles.</p>
+
+    <h3>Force Majeure</h3>
+    <p>BizHealth.ai shall not be liable for any failure or delay in performance due to circumstances beyond its reasonable control, including but not limited to acts of God, natural disasters, war, terrorism, or government actions.</p>
+
+    <h3>Entire Agreement</h3>
+    <p>These terms, together with any applicable service agreements, constitute the entire agreement between you and BizHealth.ai regarding this Report and supersede all prior agreements and understandings.</p>
+  
+          </div>
+          <div class="scroll-indicator" id="scroll-indicator-f96d04ed-4717-4e2b-8521-c0c7f9637240">
+            <span>↓ Scroll to read all terms</span>
+          </div>
+        </div>
+
+        <!-- Acceptance Section -->
+        <div class="clickwrap-acceptance">
+          <label class="clickwrap-checkbox-label">
+            <input type="checkbox" id="terms-checkbox-f96d04ed-4717-4e2b-8521-c0c7f9637240" class="clickwrap-checkbox" />
+            <span class="checkmark"></span>
+            <span class="checkbox-text">
+              I have read, understand, and agree to these Terms &amp; Conditions governing my use of this Assessment Report.
+            </span>
+          </label>
+
+          <button id="accept-terms-btn-f96d04ed-4717-4e2b-8521-c0c7f9637240" class="clickwrap-accept-btn" disabled>
+            Accept &amp; View Report
+          </button>
+
+          <p class="clickwrap-footer-note">
+            Terms Version: 2025.1 |
+            Report Generated: December 11, 2025
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clickwrap Styles -->
+    <style>
+      /* Overlay */
+      .clickwrap-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(33, 38, 83, 0.95);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        opacity: 1;
+        transition: opacity 0.3s ease;
+      }
+
+      .clickwrap-overlay.hidden {
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+      }
+
+      .clickwrap-overlay.removed {
+        display: none !important;
+        visibility: hidden !important;
+        z-index: -1 !important;
+      }
+
+      /* Modal Container */
+      .clickwrap-modal {
+        background: #ffffff;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 700px;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+      }
+
+      /* Header */
+      .clickwrap-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem;
+        background: linear-gradient(135deg, #212653 0%, #2a3070 100%);
+        color: white;
+      }
+
+      .clickwrap-title-block h2 {
+        margin: 0;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: white;
+      }
+
+      .clickwrap-subtitle {
+        margin: 0.25rem 0 0 0;
+        font-size: 0.875rem;
+        opacity: 0.8;
+      }
+
+      /* Terms Container */
+      .clickwrap-terms-container {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        position: relative;
+        max-height: 400px;
+        border-top: 1px solid #e9ecef;
+        border-bottom: 1px solid #e9ecef;
+      }
+
+      .clickwrap-terms-content {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0.875rem;
+        line-height: 1.6;
+        color: #333;
+      }
+
+      .clickwrap-terms-content h3 {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #212653;
+        margin: 1.5rem 0 0.75rem 0;
+        padding-top: 1rem;
+        border-top: 1px solid #dee2e6;
+      }
+
+      .clickwrap-terms-content h3:first-child {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+      }
+
+      .clickwrap-terms-content p {
+        margin-bottom: 0.75rem;
+      }
+
+      .clickwrap-terms-content ul {
+        margin: 0.5rem 0 1rem 1.5rem;
+      }
+
+      .clickwrap-terms-content li {
+        margin-bottom: 0.25rem;
+      }
+
+      /* Scroll Indicator */
+      .scroll-indicator {
+        position: sticky;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+        padding: 0.75rem;
+        background: linear-gradient(transparent, #f8f9fa 50%);
+        color: #969423;
+        font-size: 0.8rem;
+        font-weight: 600;
+        transition: opacity 0.3s ease;
+      }
+
+      .scroll-indicator.hidden {
+        opacity: 0;
+      }
+
+      /* Acceptance Section */
+      .clickwrap-acceptance {
+        padding: 1.5rem;
+        background: white;
+      }
+
+      .clickwrap-checkbox-label {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        cursor: pointer;
+        margin-bottom: 1.25rem;
+      }
+
+      .clickwrap-checkbox {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+      }
+
+      .checkmark {
+        flex-shrink: 0;
+        width: 24px;
+        height: 24px;
+        border: 2px solid #212653;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+      }
+
+      .clickwrap-checkbox:checked + .checkmark {
+        background: #212653;
+      }
+
+      .clickwrap-checkbox:checked + .checkmark::after {
+        content: '✓';
+        color: white;
+        font-weight: bold;
+        font-size: 14px;
+      }
+
+      .clickwrap-checkbox:focus + .checkmark {
+        box-shadow: 0 0 0 3px rgba(150, 148, 35, 0.3);
+      }
+
+      .checkbox-text {
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: #333;
+      }
+
+      /* Accept Button */
+      .clickwrap-accept-btn {
+        width: 100%;
+        padding: 1rem 2rem;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: white;
+        background: linear-gradient(135deg, #969423 0%, #7a7a1c 100%);
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .clickwrap-accept-btn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+
+      .clickwrap-accept-btn:not(:disabled):hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(150, 148, 35, 0.4);
+      }
+
+      .clickwrap-footer-note {
+        margin-top: 1rem;
+        font-size: 0.75rem;
+        color: #888;
+        text-align: center;
+      }
+
+      /* Report Content - Hidden Until Accepted */
+      .report-content-gated {
+        filter: blur(10px);
+        pointer-events: none;
+        user-select: none;
+      }
+
+      .report-content-visible {
+        filter: none;
+        pointer-events: auto;
+        user-select: auto;
+      }
+
+      /* Print: Hide modal entirely */
+      @media print {
+        .clickwrap-overlay {
+          display: none !important;
+        }
+      }
+    </style>
+
+    <!-- Clickwrap JavaScript -->
+    <script>
+      // Ensure DOM is fully loaded before running
+      (function() {
+        function initClickwrapModal() {
+          console.log('[Clickwrap] Starting initialization...');
+          
+          const modal = document.getElementById('clickwrap-modal-f96d04ed-4717-4e2b-8521-c0c7f9637240');
+          const termsContainer = document.getElementById('terms-container-f96d04ed-4717-4e2b-8521-c0c7f9637240');
+          const scrollIndicator = document.getElementById('scroll-indicator-f96d04ed-4717-4e2b-8521-c0c7f9637240');
+          const checkbox = document.getElementById('terms-checkbox-f96d04ed-4717-4e2b-8521-c0c7f9637240');
+          const acceptBtn = document.getElementById('accept-terms-btn-f96d04ed-4717-4e2b-8521-c0c7f9637240');
+          const reportContent = document.querySelector('.report-container');
+
+          console.log('[Clickwrap] Found elements:', {
+            modal: !!modal,
+            termsContainer: !!termsContainer,
+            scrollIndicator: !!scrollIndicator,
+            checkbox: !!checkbox,
+            acceptBtn: !!acceptBtn,
+            reportContent: !!reportContent
+          });
+
+          if (!modal || !checkbox || !acceptBtn) {
+            console.error('[Clickwrap] CRITICAL: Missing required elements!');
+            return;
+          }
+
+          // Check if already accepted (session storage)
+          const acceptanceKey = 'bizhealth_terms_accepted_f96d04ed-4717-4e2b-8521-c0c7f9637240';
+          const previousAcceptance = sessionStorage.getItem(acceptanceKey);
+
+          if (previousAcceptance) {
+            console.log('[Clickwrap] Previous acceptance found, showing report');
+            // Already accepted this session - show report immediately
+            modal.classList.add('removed');
+            if (reportContent) reportContent.classList.remove('report-content-gated');
+            if (reportContent) reportContent.classList.add('report-content-visible');
+            return; // Exit early
+          } else {
+            console.log('[Clickwrap] No previous acceptance, gating content');
+            // Gate the report content
+            if (reportContent) reportContent.classList.add('report-content-gated');
+          }
+
+          // Scroll indicator visibility
+          if (termsContainer) {
+            termsContainer.addEventListener('scroll', function() {
+              const isNearBottom = termsContainer.scrollHeight - termsContainer.scrollTop <= termsContainer.clientHeight + 50;
+              if (isNearBottom) {
+                scrollIndicator.classList.add('hidden');
+              }
+            });
+          }
+
+          // Checkbox enables button
+          if (checkbox) {
+            checkbox.addEventListener('change', function() {
+              console.log('[Clickwrap] Checkbox changed:', this.checked);
+              acceptBtn.disabled = !this.checked;
+            });
+          }
+
+          // Accept button handler
+          if (acceptBtn) {
+            console.log('[Clickwrap] Attaching click handler to accept button');
+            acceptBtn.addEventListener('click', function(event) {
+              console.log('[Clickwrap] ACCEPT BUTTON CLICKED!');
+              console.log('[Clickwrap] Checkbox state:', checkbox.checked);
+              
+              if (!checkbox.checked) {
+                console.log('[Clickwrap] Checkbox not checked, aborting');
+                return;
+              }
+
+              // Record acceptance
+              const acceptance = {
+                reportId: 'f96d04ed-4717-4e2b-8521-c0c7f9637240',
+                reportType: 'all',
+                termsVersion: '2025.1',
+                acceptedAt: new Date().toISOString(),
+                userAgent: navigator.userAgent
+              };
+
+              console.log('[Clickwrap] Recording acceptance:', acceptance);
+
+              // Store in session (prevents re-prompt on refresh)
+              sessionStorage.setItem(acceptanceKey, JSON.stringify(acceptance));
+
+              console.log('[Clickwrap] Revealing report content...');
+              // Reveal report content first
+              if (reportContent) {
+                reportContent.classList.remove('report-content-gated');
+                reportContent.classList.add('report-content-visible');
+                console.log('[Clickwrap] Report content revealed');
+              }
+
+              console.log('[Clickwrap] Hiding modal...');
+              // Hide modal with animation
+              modal.classList.add('hidden');
+              
+              setTimeout(function() {
+                console.log('[Clickwrap] Removing modal from DOM...');
+                modal.classList.add('removed');
+                
+                // Aggressively remove modal from DOM flow
+                if (modal && modal.style) {
+                  modal.style.display = 'none';
+                  modal.style.visibility = 'hidden';
+                  modal.style.zIndex = '-9999';
+                  modal.style.position = 'absolute';
+                  modal.style.top = '-9999px';
+                  console.log('[Clickwrap] Modal styles updated');
+                }
+                
+                // As a last resort, remove from DOM entirely
+                if (modal && modal.parentNode) {
+                  modal.parentNode.removeChild(modal);
+                  console.log('[Clickwrap] Modal removed from DOM completely');
+                }
+              }, 300);
+            });
+            console.log('[Clickwrap] Click handler attached successfully');
+          } else {
+            console.error('[Clickwrap] Accept button not found!');
+          }
+        }
+
+        // Run when DOM is ready
+        if (document.readyState === 'loading') {
+          console.log('[Clickwrap] Waiting for DOMContentLoaded...');
+          document.addEventListener('DOMContentLoaded', initClickwrapModal);
+        } else {
+          console.log('[Clickwrap] DOM already loaded, initializing immediately');
+          initClickwrapModal();
+        }
+      })();
+    </script>
+    </script>
+  
+  <div class="report-container report-content-gated">
+    
+    <style>
+      /* Chart styles */
+      
+    
+    .svg-chart-container {
+      display: flex;
+      justify-content: center;
+      margin: 1rem 0;
+      page-break-inside: avoid;
+    }
+
+    .svg-chart-container svg {
+      max-width: 100%;
+      height: auto;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+    }
+
+    @media print {
+      .svg-chart-container {
+        page-break-inside: avoid;
+      }
+
+      .svg-chart-container svg {
+        box-shadow: none;
+        border: 1px solid #e0e0e0;
+      }
+    }
+  
+
+    /* Executive Dashboard Styles */
+    .executive-dashboard {
+      margin: 2rem 0;
+    }
+
+    .dashboard-row {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .dashboard-main {
+      flex: 2;
+      min-width: 350px;
+    }
+
+    .dashboard-side {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .dashboard-full {
+      width: 100%;
+    }
+
+    /* Chart grid layout */
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .chart-cell {
+      background: #FFFFFF;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Chart error fallback */
+    .chart-error,
+    .chart-fallback {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: #f8f9fa;
+      border: 2px dashed #dee2e6;
+      border-radius: 8px;
+      color: #6c757d;
+      min-height: 200px;
+      text-align: center;
+    }
+
+    .chart-fallback-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    @media print {
+      .executive-dashboard,
+      .chart-grid,
+      .svg-chart-container {
+        page-break-inside: avoid;
+      }
+
+      .chart-cell {
+        box-shadow: none;
+        border: 1px solid #dee2e6;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-row {
+        flex-direction: column;
+      }
+
+      .dashboard-main,
+      .dashboard-side {
+        min-width: 100%;
+      }
+
+      .chart-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  
+
+      .deepdive-chart-section {
+        margin: 2rem 0;
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .deepdive-chart-section .chart-wrapper {
+        flex: 1;
+        min-width: 300px;
+        max-width: 550px;
+      }
+    </style>
+
+    
+    <header class="report-header">
+      <h1>Resilience &amp; Safeguards Deep Dive</h1>
+      <p class="subtitle">Technology, IT, Risk &amp; Compliance</p>
+      <p class="company-name">EWM Global</p>
+      <p class="date">Assessment Date: December 11, 2025</p>
+    </header>
+  
+
+    <section class="section">
+      <!-- World-Class: Enhanced Chapter Header with Percentile (Phase 1.5-2) -->
+      
+    <div class="section-header-enhanced " style="
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16pt;
+      padding: 20pt 28pt;
+      background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+      border-left: 8px solid #0d6efd;
+      border-radius: 0 16pt 16pt 0;
+      margin: 40pt 0 28pt 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      page-break-inside: avoid;
+    ">
+      <!-- Left Section: Icon + Title -->
+      <div style="display: flex; align-items: center; gap: 20pt;">
+        <span style="
+          font-size: 40pt;
+          line-height: 1;
+        ">🛡️</span>
+        <div>
+          <div class="section-header-title" style="
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 24pt;
+            font-weight: 700;
+            color: #212653;
+            margin: 0;
+            line-height: 1.2;
+          ">Resilience &amp; Safeguards</div>
+          
+            <span style="
+              font-size: 10pt;
+              color: #999;
+              text-transform: uppercase;
+              letter-spacing: 1.5px;
+              font-family: 'Open Sans', Arial, sans-serif;
+            ">RS</span>
+          
+        </div>
+      </div>
+
+      <!-- Right Section: Percentile + Score + Band -->
+      <div style="display: flex; align-items: center; gap: 24pt; flex-wrap: wrap;">
+
+        
+          <!-- Percentile Badge -->
+          <div style="
+            padding: 8pt 18pt;
+            background: #ffc10715;
+            border: 2px solid #ffc107;
+            border-radius: 24pt;
+            text-align: center;
+          ">
+            <div style="
+              font-family: 'Montserrat', Arial, sans-serif;
+              font-size: 16pt;
+              font-weight: 700;
+              color: #ffc107;
+              line-height: 1;
+            ">49th</div>
+            <div style="
+              font-size: 9pt;
+              color: #ffc107;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+              margin-top: 2pt;
+            ">Percentile</div>
+          </div>
+        
+
+        <!-- Score Display -->
+        <div style="text-align: center;">
+          <div style="
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 36pt;
+            font-weight: 700;
+            color: #0d6efd;
+            line-height: 1;
+          ">70</div>
+          <div style="
+            font-size: 12pt;
+            color: #666;
+          ">/100</div>
+          
+        </div>
+
+        
+          <!-- Band Badge -->
+          <div style="
+            padding: 10pt 20pt;
+            background: #0d6efd;
+            border-radius: 8pt;
+            text-align: center;
+          ">
+            <div style="
+              font-family: 'Montserrat', Arial, sans-serif;
+              font-size: 12pt;
+              font-weight: 700;
+              color: white;
+              text-transform: uppercase;
+              letter-spacing: 1.5px;
+            ">Proficiency</div>
+            
+              <div style="
+                font-size: 8pt;
+                color: rgba(255,255,255,0.8);
+                margin-top: 2pt;
+              ">vs. General</div>
+            
+          </div>
+        
+
+      </div>
+    </div>
+  
+
+      <p class="mt-3">This chapter examines your organization's technological capabilities, IT infrastructure, risk management practices, and regulatory compliance status.</p>
+
+      <div class="callout success mt-3">
+        <div class="title">Chapter Assessment</div>
+        <p>
+          This chapter shows strong performance. Focus on maintaining excellence and optimizing for continued growth.
+        </p>
+      </div>
+
+      
+        <div class="deepdive-chart-section">
+          <div class="chart-wrapper">
+    <div class="svg-chart-container" role="figure" aria-label="Resilience &amp; Safeguards Dimensions">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 410" style="max-width: 100%; height: auto;"><rect width="380" height="410" fill="white" rx="4"/><text x="190" y="22" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Resilience &amp; Safeguards Dimensions</text><circle cx="190" cy="205" r="28" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="190" cy="205" r="56" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="190" cy="205" r="84" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="190" cy="205" r="112" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="190" cy="205" r="140" fill="none" stroke="#e0e0e0" stroke-width="1"/><line x1="190" y1="205" x2="190" y2="65" stroke="#e0e0e0" stroke-width="1"/><line x1="190" y1="205" x2="330" y2="205" stroke="#e0e0e0" stroke-width="1"/><line x1="190" y1="205" x2="190" y2="345" stroke="#e0e0e0" stroke-width="1"/><line x1="190" y1="205" x2="50" y2="205.00000000000003" stroke="#e0e0e0" stroke-width="1"/><polygon points="190,128 313.2,205 190,287.6 82.2,205" fill="#212653" fill-opacity="0.3" stroke="#212653" stroke-width="2"/><circle cx="190" cy="128" r="4" fill="#212653"/><circle cx="313.2" cy="205" r="4" fill="#212653"/><circle cx="190" cy="287.6" r="4" fill="#212653"/><circle cx="82.2" cy="205" r="4" fill="#212653"/><text x="190" y="40" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Technology... (55)</text><text x="355" y="205" text-anchor="start" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">IT, Data &amp;... (88)</text><text x="190" y="370" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Risk Manag... (59)</text><text x="25" y="205.00000000000003" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Compliance (77)</text></svg>
+    </div>
+  </div>
+          <div class="chart-wrapper">
+    <div class="svg-chart-container" role="figure" aria-label="Resilience &amp; Safeguards - Dimension Scores">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 232" style="max-width: 100%; height: auto;"><rect width="550" height="232" fill="white" rx="4"/><text x="275" y="28" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Resilience &amp; Safeguards - Dimension Scores</text><text x="132" y="70" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Technology &amp; Inn...</text><rect x="140" y="50" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="50" width="192.50000000000003" height="30" fill="#e67e22" rx="4"/><text x="340.5" y="70" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">55</text><text x="132" y="108" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">IT, Data &amp; Systems</text><rect x="140" y="88" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="88" width="308" height="30" fill="#27ae60" rx="4"/><text x="456" y="108" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">88</text><text x="132" y="146" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Risk Management ...</text><rect x="140" y="126" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="126" width="206.5" height="30" fill="#e67e22" rx="4"/><text x="354.5" y="146" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">59</text><text x="132" y="184" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Compliance</text><rect x="140" y="164" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="164" width="269.5" height="30" fill="#f39c12" rx="4"/><text x="417.5" y="184" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">77</text></svg>
+    </div>
+  </div>
+        </div>
+      
+    </section>
+
+    <section class="section page-break">
+      <h2>Dimension Scorecard</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>Score</th>
+            <th>Band</th>
+            <th>Progress</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+            <tr>
+              <td><strong>Technology &amp; Innovation</strong></td>
+              <td class="score">55/100</td>
+              <td><span class="band-badge Attention">Attention</span></td>
+              <td style="width: 200px;">
+    <div class="progress-bar">
+      <div class="fill" style="width: 55.00000000000001%; background: #ffc107;">
+        55%
+      </div>
+    </div>
+  </td>
+            </tr>
+          
+            <tr>
+              <td><strong>IT, Data &amp; Systems</strong></td>
+              <td class="score">88/100</td>
+              <td><span class="band-badge Excellence">Excellence</span></td>
+              <td style="width: 200px;">
+    <div class="progress-bar">
+      <div class="fill" style="width: 88%; background: #28a745;">
+        88%
+      </div>
+    </div>
+  </td>
+            </tr>
+          
+            <tr>
+              <td><strong>Risk Management &amp; Sustainability</strong></td>
+              <td class="score">59/100</td>
+              <td><span class="band-badge Attention">Attention</span></td>
+              <td style="width: 200px;">
+    <div class="progress-bar">
+      <div class="fill" style="width: 59%; background: #ffc107;">
+        59%
+      </div>
+    </div>
+  </td>
+            </tr>
+          
+            <tr>
+              <td><strong>Compliance</strong></td>
+              <td class="score">77/100</td>
+              <td><span class="band-badge Proficiency">Proficiency</span></td>
+              <td style="width: 200px;">
+    <div class="progress-bar">
+      <div class="fill" style="width: 77%; background: #969423;">
+        77%
+      </div>
+    </div>
+  </td>
+            </tr>
+          
+        </tbody>
+      </table>
+    </section>
+
+    
+      <section class="section page-break">
+        <!-- World-Class: Enhanced Dimension Header with Percentile (Phase 1.5-2) -->
+        
+    <div class="section-header-enhanced " style="
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16pt;
+      padding: 16pt 24pt;
+      background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+      border-left: 6px solid #0d6efd;
+      border-radius: 0 16pt 16pt 0;
+      margin: 40pt 0 28pt 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      page-break-inside: avoid;
+    ">
+      <!-- Left Section: Icon + Title -->
+      <div style="display: flex; align-items: center; gap: 20pt;">
+        <span style="
+          font-size: 32pt;
+          line-height: 1;
+        ">💻</span>
+        <div>
+          <div class="section-header-title" style="
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 18pt;
+            font-weight: 700;
+            color: #212653;
+            margin: 0;
+            line-height: 1.2;
+          ">Technology &amp; Innovation</div>
+          
+            <span style="
+              font-size: 10pt;
+              color: #999;
+              text-transform: uppercase;
+              letter-spacing: 1.5px;
+              font-family: 'Open Sans', Arial, sans-serif;
+            ">TIN</span>
+          
+        </div>
+      </div>
+
+      <!-- Right Section: Percentile + Score + Band -->
+      <div style="display: flex; align-items: center; gap: 24pt; flex-wrap: wrap;">
+
+        
+          <!-- Percentile Badge -->
+          <div style="
+            padding: 8pt 18pt;
+            background: #0d6efd15;
+            border: 2px solid #0d6efd;
+            border-radius: 24pt;
+            text-align: center;
+          ">
+            <div style="
+              font-family: 'Montserrat', Arial, sans-serif;
+              font-size: 14pt;
+              font-weight: 700;
+              color: #0d6efd;
+              line-height: 1;
+            ">58th</div>
+            <div style="
+              font-size: 9pt;
+              color: #0d6efd;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+              margin-top: 2pt;
+            ">Percentile</div>
+          </div>
+        
+
+        <!-- Score Display -->
+        <div style="text-align: center;">
+          <div style="
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 28pt;
+            font-weight: 700;
+            color: #0d6efd;
+            line-height: 1;
+          ">55</div>
+          <div style="
+            font-size: 12pt;
+            color: #666;
+          ">/100</div>
+          
+        </div>
+
+        
+          <!-- Band Badge -->
+          <div style="
+            padding: 10pt 20pt;
+            background: #0d6efd;
+            border-radius: 8pt;
+            text-align: center;
+          ">
+            <div style="
+              font-family: 'Montserrat', Arial, sans-serif;
+              font-size: 10pt;
+              font-weight: 700;
+              color: white;
+              text-transform: uppercase;
+              letter-spacing: 1.5px;
+            ">Proficiency</div>
+            
+              <div style="
+                font-size: 8pt;
+                color: rgba(255,255,255,0.8);
+                margin-top: 2pt;
+              ">vs. General</div>
+            
+          </div>
+        
+
+      </div>
+    </div>
+  
+
+        <p class="mb-3">Technology adoption, innovation culture, and digital transformation</p>
+
+        
+          <h3>Sub-Indicators</h3>
+          <table class="mb-3">
+            <thead>
+              <tr>
+                <th>Sub-Indicator</th>
+                <th>Score</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>Technology Investment</td>
+                  <td class="score">0/100</td>
+                  <td><span class="band-badge Critical">Critical</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Innovation Culture</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Technology Adoption</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Automation Utilization</td>
+                  <td class="score">50/100</td>
+                  <td><span class="band-badge Attention">Attention</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Innovation Impact</td>
+                  <td class="score">73/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+
+        
+
+        
+      </section>
+    
+      <section class="section page-break">
+        <!-- World-Class: Enhanced Dimension Header with Percentile (Phase 1.5-2) -->
+        
+    <div class="section-header-enhanced " style="
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16pt;
+      padding: 16pt 24pt;
+      background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+      border-left: 6px solid #28a745;
+      border-radius: 0 16pt 16pt 0;
+      margin: 40pt 0 28pt 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      page-break-inside: avoid;
+    ">
+      <!-- Left Section: Icon + Title -->
+      <div style="display: flex; align-items: center; gap: 20pt;">
+        <span style="
+          font-size: 32pt;
+          line-height: 1;
+        ">🖥️</span>
+        <div>
+          <div class="section-header-title" style="
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 18pt;
+            font-weight: 700;
+            color: #212653;
+            margin: 0;
+            line-height: 1.2;
+          ">IT, Data &amp; Systems</div>
+          
+            <span style="
+              font-size: 10pt;
+              color: #999;
+              text-transform: uppercase;
+              letter-spacing: 1.5px;
+              font-family: 'Open Sans', Arial, sans-serif;
+            ">IDS</span>
+          
+        </div>
+      </div>
+
+      <!-- Right Section: Percentile + Score + Band -->
+      <div style="display: flex; align-items: center; gap: 24pt; flex-wrap: wrap;">
+
+        
+          <!-- Percentile Badge -->
+          <div style="
+            padding: 8pt 18pt;
+            background: #28a74515;
+            border: 2px solid #28a745;
+            border-radius: 24pt;
+            text-align: center;
+          ">
+            <div style="
+              font-family: 'Montserrat', Arial, sans-serif;
+              font-size: 14pt;
+              font-weight: 700;
+              color: #28a745;
+              line-height: 1;
+            ">99th</div>
+            <div style="
+              font-size: 9pt;
+              color: #28a745;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+              margin-top: 2pt;
+            ">Percentile</div>
+          </div>
+        
+
+        <!-- Score Display -->
+        <div style="text-align: center;">
+          <div style="
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 28pt;
+            font-weight: 700;
+            color: #28a745;
+            line-height: 1;
+          ">88</div>
+          <div style="
+            font-size: 12pt;
+            color: #666;
+          ">/100</div>
+          
+        </div>
+
+        
+          <!-- Band Badge -->
+          <div style="
+            padding: 10pt 20pt;
+            background: #28a745;
+            border-radius: 8pt;
+            text-align: center;
+          ">
+            <div style="
+              font-family: 'Montserrat', Arial, sans-serif;
+              font-size: 10pt;
+              font-weight: 700;
+              color: white;
+              text-transform: uppercase;
+              letter-spacing: 1.5px;
+            ">Excellence</div>
+            
+              <div style="
+                font-size: 8pt;
+                color: rgba(255,255,255,0.8);
+                margin-top: 2pt;
+              ">vs. General</div>
+            
+          </div>
+        
+
+      </div>
+    </div>
+  
+
+        <p class="mb-3">IT infrastructure, data management, and cybersecurity</p>
+
+        
+          <h3>Sub-Indicators</h3>
+          <table class="mb-3">
+            <thead>
+              <tr>
+                <th>Sub-Indicator</th>
+                <th>Score</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>IT Infrastructure</td>
+                  <td class="score">90/100</td>
+                  <td><span class="band-badge Excellence">Excellence</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Network Effectiveness</td>
+                  <td class="score">100/100</td>
+                  <td><span class="band-badge Excellence">Excellence</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Cybersecurity</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Data Management</td>
+                  <td class="score">100/100</td>
+                  <td><span class="band-badge Excellence">Excellence</span></td>
+                </tr>
+              
+                <tr>
+                  <td>IT Scalability</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+          <h3>Key Strengths</h3>
+          <ul class="mb-3">
+            <li>IT, Data &amp; Systems Excellence</li><li>Strong IT Infrastructure</li><li>Strong Network Effectiveness</li>
+          </ul>
+        
+
+        
+
+        
+      </section>
+    
+      <section class="section page-break">
+        <!-- World-Class: Enhanced Dimension Header with Percentile (Phase 1.5-2) -->
+        
+    <div class="section-header-enhanced " style="
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16pt;
+      padding: 16pt 24pt;
+      background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+      border-left: 6px solid #0d6efd;
+      border-radius: 0 16pt 16pt 0;
+      margin: 40pt 0 28pt 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      page-break-inside: avoid;
+    ">
+      <!-- Left Section: Icon + Title -->
+      <div style="display: flex; align-items: center; gap: 20pt;">
+        <span style="
+          font-size: 32pt;
+          line-height: 1;
+        ">⚠️</span>
+        <div>
+          <div class="section-header-title" style="
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 18pt;
+            font-weight: 700;
+            color: #212653;
+            margin: 0;
+            line-height: 1.2;
+          ">Risk Management &amp; Sustainability</div>
+          
+            <span style="
+              font-size: 10pt;
+              color: #999;
+              text-transform: uppercase;
+              letter-spacing: 1.5px;
+              font-family: 'Open Sans', Arial, sans-serif;
+            ">RMS</span>
+          
+        </div>
+      </div>
+
+      <!-- Right Section: Percentile + Score + Band -->
+      <div style="display: flex; align-items: center; gap: 24pt; flex-wrap: wrap;">
+
+        
+          <!-- Percentile Badge -->
+          <div style="
+            padding: 8pt 18pt;
+            background: #0d6efd15;
+            border: 2px solid #0d6efd;
+            border-radius: 24pt;
+            text-align: center;
+          ">
+            <div style="
+              font-family: 'Montserrat', Arial, sans-serif;
+              font-size: 14pt;
+              font-weight: 700;
+              color: #0d6efd;
+              line-height: 1;
+            ">64th</div>
+            <div style="
+              font-size: 9pt;
+              color: #0d6efd;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+              margin-top: 2pt;
+            ">Percentile</div>
+          </div>
+        
+
+        <!-- Score Display -->
+        <div style="text-align: center;">
+          <div style="
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 28pt;
+            font-weight: 700;
+            color: #0d6efd;
+            line-height: 1;
+          ">59</div>
+          <div style="
+            font-size: 12pt;
+            color: #666;
+          ">/100</div>
+          
+        </div>
+
+        
+          <!-- Band Badge -->
+          <div style="
+            padding: 10pt 20pt;
+            background: #0d6efd;
+            border-radius: 8pt;
+            text-align: center;
+          ">
+            <div style="
+              font-family: 'Montserrat', Arial, sans-serif;
+              font-size: 10pt;
+              font-weight: 700;
+              color: white;
+              text-transform: uppercase;
+              letter-spacing: 1.5px;
+            ">Proficiency</div>
+            
+              <div style="
+                font-size: 8pt;
+                color: rgba(255,255,255,0.8);
+                margin-top: 2pt;
+              ">vs. General</div>
+            
+          </div>
+        
+
+      </div>
+    </div>
+  
+
+        <p class="mb-3">Risk identification, mitigation, and business continuity</p>
+
+        
+          <h3>Sub-Indicators</h3>
+          <table class="mb-3">
+            <thead>
+              <tr>
+                <th>Sub-Indicator</th>
+                <th>Score</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>Risk Outlook</td>
+                  <td class="score">50/100</td>
+                  <td><span class="band-badge Attention">Attention</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Risk Identification</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Risk Mitigation</td>
+                  <td class="score">50/100</td>
+                  <td><span class="band-badge Attention">Attention</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Business Continuity</td>
+                  <td class="score">69/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Strategic Adaptability</td>
+                  <td class="score">50/100</td>
+                  <td><span class="band-badge Attention">Attention</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+
+        
+
+        
+      </section>
+    
+      <section class="section page-break">
+        <!-- World-Class: Enhanced Dimension Header with Percentile (Phase 1.5-2) -->
+        
+    <div class="section-header-enhanced " style="
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16pt;
+      padding: 16pt 24pt;
+      background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+      border-left: 6px solid #28a745;
+      border-radius: 0 16pt 16pt 0;
+      margin: 40pt 0 28pt 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      page-break-inside: avoid;
+    ">
+      <!-- Left Section: Icon + Title -->
+      <div style="display: flex; align-items: center; gap: 20pt;">
+        <span style="
+          font-size: 32pt;
+          line-height: 1;
+        ">📋</span>
+        <div>
+          <div class="section-header-title" style="
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 18pt;
+            font-weight: 700;
+            color: #212653;
+            margin: 0;
+            line-height: 1.2;
+          ">Compliance</div>
+          
+            <span style="
+              font-size: 10pt;
+              color: #999;
+              text-transform: uppercase;
+              letter-spacing: 1.5px;
+              font-family: 'Open Sans', Arial, sans-serif;
+            ">CMP</span>
+          
+        </div>
+      </div>
+
+      <!-- Right Section: Percentile + Score + Band -->
+      <div style="display: flex; align-items: center; gap: 24pt; flex-wrap: wrap;">
+
+        
+          <!-- Percentile Badge -->
+          <div style="
+            padding: 8pt 18pt;
+            background: #28a74515;
+            border: 2px solid #28a745;
+            border-radius: 24pt;
+            text-align: center;
+          ">
+            <div style="
+              font-family: 'Montserrat', Arial, sans-serif;
+              font-size: 14pt;
+              font-weight: 700;
+              color: #28a745;
+              line-height: 1;
+            ">91st</div>
+            <div style="
+              font-size: 9pt;
+              color: #28a745;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+              margin-top: 2pt;
+            ">Percentile</div>
+          </div>
+        
+
+        <!-- Score Display -->
+        <div style="text-align: center;">
+          <div style="
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 28pt;
+            font-weight: 700;
+            color: #28a745;
+            line-height: 1;
+          ">77</div>
+          <div style="
+            font-size: 12pt;
+            color: #666;
+          ">/100</div>
+          
+        </div>
+
+        
+          <!-- Band Badge -->
+          <div style="
+            padding: 10pt 20pt;
+            background: #28a745;
+            border-radius: 8pt;
+            text-align: center;
+          ">
+            <div style="
+              font-family: 'Montserrat', Arial, sans-serif;
+              font-size: 10pt;
+              font-weight: 700;
+              color: white;
+              text-transform: uppercase;
+              letter-spacing: 1.5px;
+            ">Excellence</div>
+            
+              <div style="
+                font-size: 8pt;
+                color: rgba(255,255,255,0.8);
+                margin-top: 2pt;
+              ">vs. General</div>
+            
+          </div>
+        
+
+      </div>
+    </div>
+  
+
+        <p class="mb-3">Regulatory compliance, policy adherence, and legal requirements</p>
+
+        
+          <h3>Sub-Indicators</h3>
+          <table class="mb-3">
+            <thead>
+              <tr>
+                <th>Sub-Indicator</th>
+                <th>Score</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>Compliance Awareness</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Policy Adherence</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Compliance Monitoring</td>
+                  <td class="score">60/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Documentation</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Incident Reporting</td>
+                  <td class="score">100/100</td>
+                  <td><span class="band-badge Excellence">Excellence</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+          <h3>Key Strengths</h3>
+          <ul class="mb-3">
+            <li>Strong Incident Reporting</li>
+          </ul>
+        
+
+        
+
+        
+      </section>
+    
+
+    <section class="section page-break">
+      <h2>Chapter Findings Summary</h2>
+
+      <div class="grid grid-4 mb-3">
+        <div class="score-card small" style="background: linear-gradient(135deg, #28a745, #1e7e34);">
+          <div class="score-value">5</div>
+          <div class="score-label">Strengths</div>
+        </div>
+        <div class="score-card small" style="background: linear-gradient(135deg, #dc3545, #c82333);">
+          <div class="score-value">3</div>
+          <div class="score-label">Gaps</div>
+        </div>
+        <div class="score-card small" style="background: linear-gradient(135deg, #ffc107, #d39e00);">
+          <div class="score-value">0</div>
+          <div class="score-label">Risks</div>
+        </div>
+        <div class="score-card small" style="background: linear-gradient(135deg, #0d6efd, #0b5ed7);">
+          <div class="score-value">0</div>
+          <div class="score-label">Opportunities</div>
+        </div>
+      </div>
+
+      
+        <h3>Strengths</h3>
+        
+          <div class="finding-card strength">
+            <div class="label">IT, Data &amp; Systems Excellence</div>
+            <div class="dimension">IT, Data &amp; Systems</div>
+            <p>IT, Data &amp; Systems demonstrates strong performance at 88/100, placing it in the Excellence tier. This represents a competitive advantage.</p>
+          </div>
+        
+          <div class="finding-card strength">
+            <div class="label">Strong IT Infrastructure</div>
+            <div class="dimension">IT, Data &amp; Systems</div>
+            <p>IT Infrastructure within IT, Data &amp; Systems shows exceptional performance at 90/100.</p>
+          </div>
+        
+          <div class="finding-card strength">
+            <div class="label">Strong Network Effectiveness</div>
+            <div class="dimension">IT, Data &amp; Systems</div>
+            <p>Network Effectiveness within IT, Data &amp; Systems shows exceptional performance at 100/100.</p>
+          </div>
+        
+          <div class="finding-card strength">
+            <div class="label">Strong Data Management</div>
+            <div class="dimension">IT, Data &amp; Systems</div>
+            <p>Data Management within IT, Data &amp; Systems shows exceptional performance at 100/100.</p>
+          </div>
+        
+          <div class="finding-card strength">
+            <div class="label">Strong Incident Reporting</div>
+            <div class="dimension">Compliance</div>
+            <p>Incident Reporting within Compliance shows exceptional performance at 100/100.</p>
+          </div>
+        
+      
+
+      
+        <h3 class="mt-3">Gaps</h3>
+        
+          <div class="finding-card gap">
+            <div class="label">Technology &amp; Innovation Performance Gap</div>
+            <div class="dimension">Technology &amp; Innovation</div>
+            <p>Technology &amp; Innovation shows moderate performance at 55/100. This gap presents improvement opportunities that should be addressed within 6-12 months.</p>
+          </div>
+        
+          <div class="finding-card gap">
+            <div class="label">Technology Investment Gap</div>
+            <div class="dimension">Technology &amp; Innovation</div>
+            <p>Technology Investment within Technology &amp; Innovation requires attention with a score of 0/100.</p>
+          </div>
+        
+          <div class="finding-card gap">
+            <div class="label">Risk Management &amp; Sustainability Performance Gap</div>
+            <div class="dimension">Risk Management &amp; Sustainability</div>
+            <p>Risk Management &amp; Sustainability shows moderate performance at 59/100. This gap presents improvement opportunities that should be addressed within 6-12 months.</p>
+          </div>
+        
+      
+
+      
+
+      
+    </section>
+
+    
+      <section class="section page-break">
+        <h2>Chapter Recommendations</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Priority</th>
+              <th>Recommendation</th>
+              <th>Dimension</th>
+              <th>Timeline</th>
+              <th>ROI</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td><strong>#7</strong></td>
+                <td>
+                  Technology &amp; Innovation Improvement Initiative
+                  
+                </td>
+                <td>Technology &amp; Innovation</td>
+                <td>3-12 Months</td>
+                <td><strong>0.9x</strong></td>
+              </tr>
+            
+              <tr>
+                <td><strong>#8</strong></td>
+                <td>
+                  Risk Management &amp; Sustainability Improvement Initiative
+                  
+                </td>
+                <td>Risk Management &amp; Sustainability</td>
+                <td>3-12 Months</td>
+                <td><strong>0.82x</strong></td>
+              </tr>
+            
+          </tbody>
+        </table>
+
+        <h3 class="mt-3">Top Recommendation Details</h3>
+        
+          <div class="card mb-2">
+            <div class="card-header">
+              <span class="card-title">Technology &amp; Innovation Improvement Initiative</span>
+              <span class="band-badge Proficiency">
+                3-12 Months
+              </span>
+            </div>
+            <div class="card-body">
+              <div class="flex gap-3 mb-2">
+                <span><strong>Impact:</strong> 45/100</span>
+                <span><strong>Effort:</strong> 50/100</span>
+                <span><strong>ROI:</strong> 0.9x</span>
+              </div>
+
+              <h5>Action Steps:</h5>
+              <ol>
+                <li>Conduct detailed technology &amp; innovation assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
+              </ol>
+
+              <p class="mt-2"><strong>Expected Outcomes:</strong> Improve Technology &amp; Innovation score from 55 to 75 within the target horizon.</p>
+            </div>
+          </div>
+        
+          <div class="card mb-2">
+            <div class="card-header">
+              <span class="card-title">Risk Management &amp; Sustainability Improvement Initiative</span>
+              <span class="band-badge Proficiency">
+                3-12 Months
+              </span>
+            </div>
+            <div class="card-body">
+              <div class="flex gap-3 mb-2">
+                <span><strong>Impact:</strong> 41/100</span>
+                <span><strong>Effort:</strong> 50/100</span>
+                <span><strong>ROI:</strong> 0.82x</span>
+              </div>
+
+              <h5>Action Steps:</h5>
+              <ol>
+                <li>Conduct detailed risk management &amp; sustainability assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
+              </ol>
+
+              <p class="mt-2"><strong>Expected Outcomes:</strong> Improve Risk Management &amp; Sustainability score from 59 to 79 within the target horizon.</p>
+            </div>
+          </div>
+        
+      </section>
+    
+
+    
+
+    <section class="section">
+      <h2>Next Steps</h2>
+
+      <div class="callout success">
+        <div class="title">Recommended Actions for Resilience &amp; Safeguards</div>
+        <ol style="margin-bottom: 0;">
+          <li>Review the dimension analysis to understand specific strengths and gaps</li>
+          <li>Prioritize quick wins for immediate impact</li>
+          <li>Address critical risks within the next 30-90 days</li>
+          <li>Develop detailed implementation plans for top recommendations</li>
+          <li>Establish KPIs and tracking mechanisms for ongoing improvement</li>
+        </ol>
+      </div>
+    </section>
+
+    
+    <footer class="report-footer">
+      <p>&copy; 2025 BizHealth.ai - Confidential Business Assessment Report</p>
+      <p>Assessment ID: f96d04ed-4717-4e2b-8521-c0c7f9637240</p>
+    </footer>
+  
+  
+  </div>
+  
+    <!-- Report Metadata (for audit trail) -->
+    <script type="application/json" id="report-metadata">
+      {
+  "reportId": "f96d04ed-4717-4e2b-8521-c0c7f9637240",
+  "generatedAt": "2025-12-11T18:38:42.291Z",
+  "pipelineVersion": "1.0.0",
+  "betaMode": false,
+  "termsVersion": "2025.1"
+}
+    </script>
+  
+</body>
+</html>

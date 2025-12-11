@@ -1,6 +1,6 @@
 {
   "config": {
-    "webhookPath": "sample_webhook.json",
+    "webhookPath": "samples/webhook_010_brewery_craft.json",
     "outputDir": "./output",
     "startPhase": 4,
     "endPhase": 5,
@@ -18,7 +18,7 @@
     {
       "phase": 4,
       "status": "success",
-      "duration_ms": 253335,
+      "duration_ms": 249308,
       "output_path": "output/phase4_output.json",
       "details": {
         "status": "complete",
@@ -32,23 +32,23 @@
         ],
         "report_tokens": {
           "input": 5518,
-          "output": 21606
+          "output": 20831
         }
       }
     },
     {
       "phase": 5,
       "status": "success",
-      "duration_ms": 326,
+      "duration_ms": 602,
       "output_path": "output/phase5_output.json",
       "details": {
         "status": "complete",
         "reports_generated": 17,
-        "output_dir": "output/reports/497b50aa-abb7-4173-b4f8-b1ec81547979",
-        "manifest": "output/reports/497b50aa-abb7-4173-b4f8-b1ec81547979/manifest.json"
+        "output_dir": "output/reports/f96d04ed-4717-4e2b-8521-c0c7f9637240",
+        "manifest": "output/reports/f96d04ed-4717-4e2b-8521-c0c7f9637240/manifest.json"
       }
     }
   ],
-  "total_duration_ms": 253664,
-  "completed_at": "2025-12-11T06:02:58.362Z"
+  "total_duration_ms": 249913,
+  "completed_at": "2025-12-11T18:38:42.635Z"
 }

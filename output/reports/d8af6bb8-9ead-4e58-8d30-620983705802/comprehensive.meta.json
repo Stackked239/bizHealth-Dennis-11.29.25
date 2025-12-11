@@ -1,0 +1,76 @@
+{
+  "reportType": "comprehensive",
+  "reportName": "Comprehensive Assessment Report",
+  "generatedAt": "2025-12-11T07:53:13.137Z",
+  "companyName": "Hopcraft Brewing Co",
+  "runId": "d8af6bb8-9ead-4e58-8d30-620983705802",
+  "healthScore": 44,
+  "healthBand": "Attention",
+  "pageSuggestionEstimate": 321,
+  "sections": [
+    {
+      "id": "executive-summary",
+      "title": "Executive Summary"
+    },
+    {
+      "id": "category-overview",
+      "title": "Category Health Overview"
+    },
+    {
+      "id": "scorecard",
+      "title": "Business Health Scorecard"
+    },
+    {
+      "id": "chapter-growth-engine",
+      "title": "Chapter 1: Growth Engine Deep Dive"
+    },
+    {
+      "id": "chapter-performance-health",
+      "title": "Chapter 2: Performance & Health Deep Dive"
+    },
+    {
+      "id": "chapter-people-leadership",
+      "title": "Chapter 3: People & Leadership Deep Dive"
+    },
+    {
+      "id": "chapter-resilience-safeguards",
+      "title": "Chapter 4: Resilience & Safeguards Deep Dive"
+    },
+    {
+      "id": "cross-dimensional",
+      "title": "Cross-Dimensional Synthesis"
+    },
+    {
+      "id": "strategic-recommendations",
+      "title": "Strategic Recommendations"
+    },
+    {
+      "id": "risk-assessment",
+      "title": "Risk Assessment"
+    },
+    {
+      "id": "growth",
+      "title": "Growth Opportunities"
+    },
+    {
+      "id": "implementation-roadmap",
+      "title": "Implementation Roadmap"
+    },
+    {
+      "id": "findings",
+      "title": "Detailed Findings"
+    },
+    {
+      "id": "quick-wins",
+      "title": "Quick Wins"
+    },
+    {
+      "id": "financial-impact",
+      "title": "Financial Impact Analysis"
+    }
+  ],
+  "brand": {
+    "primaryColor": "#212653",
+    "accentColor": "#969423"
+  }
+}
