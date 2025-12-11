@@ -834,6 +834,28 @@ export class Phase5Orchestrator {
    * Generate report manifest
    */
   private generateManifest(ctx: ReportContext, reports: GeneratedReport[], runId: string): ReportManifest {
+    // Calculate Phase 1.5 integration status
+    const phase1_5Available = !!(ctx.categoryAnalyses && ctx.categoryAnalyses.length > 0);
+    const categoriesWithNarratives = ctx.categoryAnalyses?.filter(ca =>
+      ca.executiveSummary || ca.detailedAnalysis
+    ).length || 0;
+    const chaptersWithNarratives = ctx.chapterSummaries?.filter(cs =>
+      cs.executiveSummary || cs.keyStrengths?.length > 0
+    ).length || 0;
+
+    // Build visualizations list
+    const visualizationsIncluded: string[] = [];
+    if (phase1_5Available) {
+      visualizationsIncluded.push('categoryRadarChart');
+      visualizationsIncluded.push('chapterHeatmap');
+      visualizationsIncluded.push('benchmarkBars');
+      if (ctx.crossCategoryInsights) {
+        visualizationsIncluded.push('interdependencyNetwork');
+        visualizationsIncluded.push('priorityMatrix');
+      }
+      visualizationsIncluded.push('swotQuadrants');
+    }
+
     return {
       runId,
       companyName: ctx.companyProfile.name,
@@ -848,6 +870,15 @@ export class Phase5Orchestrator {
         pdf: r.pdfPath ? path.basename(r.pdfPath) : undefined,
         meta: path.basename(r.metaPath),
       })),
+      // Phase 1.5 Integration Status
+      phase1_5Integration: {
+        available: phase1_5Available,
+        categoriesWithNarratives,
+        chaptersWithNarratives,
+        visualizationsIncluded,
+        crossCategoryInsightsAvailable: !!ctx.crossCategoryInsights,
+        narrativeContentSurfaced: phase1_5Available && categoriesWithNarratives === 12,
+      },
     };
   }
 
