@@ -44,8 +44,36 @@ import {
 } from '../reports/report-generator.js';
 import { IDM } from '../types/idm.types.js';
 import { consolidateIDM, IDMConsolidatorInput } from './idm-consolidator.js';
+import type { Phase1_5Output } from '../types/phase1-5.types.js';
 
 const execAsync = promisify(exec);
+
+// ============================================================================
+// Phase 1.5 Loading Helper
+// ============================================================================
+
+/**
+ * Safely load Phase 1.5 output if available
+ */
+async function loadPhase1_5OutputSafe(outputDir: string = 'output'): Promise<Phase1_5Output | null> {
+  try {
+    const phase1_5Path = path.join(process.cwd(), outputDir, 'phase1_5_output.json');
+    const data = await fs.readFile(phase1_5Path, 'utf-8');
+    const parsed = JSON.parse(data) as Phase1_5Output;
+
+    // Validate basic structure
+    if (parsed.phase !== 'phase_1_5' || !Array.isArray(parsed.categoryAnalyses)) {
+      console.warn('Phase 1.5 output found but has invalid structure');
+      return null;
+    }
+
+    console.log(`✓ Phase 1.5 output loaded: ${parsed.categoryAnalyses.length} categories`);
+    return parsed;
+  } catch (error) {
+    console.warn('Phase 1.5 output not found; proceeding without category-level data');
+    return null;
+  }
+}
 
 // ============================================================================
 // Type Definitions
@@ -148,6 +176,12 @@ export interface Phase4Results {
       phase1: boolean;
       phase2: boolean;
       phase3: boolean;
+      phase1_5?: boolean;
+    };
+    phase1_5_integration?: {
+      categoriesIntegrated: number;
+      chaptersIntegrated: number;
+      healthScoreSource: 'phase1_5' | 'phase2';
     };
     report_generation?: {
       enabled: boolean;
@@ -261,6 +295,10 @@ export class Phase4Orchestrator {
         summaries = await this.compileTypeScript(phase1Path, phase2Path, phase3Path);
       }
 
+      // Load Phase 1.5 output if available
+      const phase1_5Output = await loadPhase1_5OutputSafe();
+
+      // Build results with Phase 1.5 integration
       const results: Phase4Results = {
         phase: 'phase_4',
         status: 'complete',
@@ -276,9 +314,40 @@ export class Phase4Orchestrator {
             phase1: true,
             phase2: true,
             phase3: true,
+            phase1_5: phase1_5Output !== null,
           },
         },
       };
+
+      // Integrate Phase 1.5 data into IDM if available
+      if (idm && phase1_5Output) {
+        this.logger.info('Integrating Phase 1.5 data into IDM...');
+
+        // Add Phase 1.5 category analyses to IDM
+        idm.categoryAnalyses = phase1_5Output.categoryAnalyses;
+        idm.chapterSummaries = phase1_5Output.chapterSummaries;
+        idm.crossCategoryInsights = phase1_5Output.crossCategoryInsights;
+
+        // Add enhanced health metrics from Phase 1.5
+        idm.phase15OverallHealth = {
+          score: phase1_5Output.overallSummary.healthScore,
+          status: phase1_5Output.overallSummary.healthStatus,
+          trajectory: phase1_5Output.overallSummary.trajectory
+        };
+
+        // Track Phase 1.5 integration in metadata
+        results.metadata.phase1_5_integration = {
+          categoriesIntegrated: phase1_5Output.categoryAnalyses.length,
+          chaptersIntegrated: phase1_5Output.chapterSummaries.length,
+          healthScoreSource: 'phase1_5'
+        };
+
+        this.logger.info({
+          categories: phase1_5Output.categoryAnalyses.length,
+          chapters: phase1_5Output.chapterSummaries.length,
+          healthScore: phase1_5Output.overallSummary.healthScore
+        }, '✓ Phase 1.5 data integrated into IDM');
+      }
 
       // ============================================================
       // DEPRECATED: Report generation moved exclusively to Phase 5

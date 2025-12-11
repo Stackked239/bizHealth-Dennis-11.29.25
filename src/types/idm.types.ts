@@ -12,6 +12,11 @@
  */
 
 import { z } from 'zod';
+import type {
+  CategoryAnalysis,
+  ChapterSummary,
+  CrossCategoryInsights
+} from './phase1-5.types.js';
 
 // ============================================================================
 // ENUMS AND CONSTANTS
@@ -506,7 +511,39 @@ export const IDMSchema = z.object({
    * These are the ONLY source for chart rendering in Phase 5.
    * ASCII visualizations are prohibited and will not appear here.
    */
-  visualizations: IDMVisualizationsSchema
+  visualizations: IDMVisualizationsSchema,
+
+  // ========================================================================
+  // Phase 1.5 Integration (optional for backward compatibility)
+  // ========================================================================
+
+  /**
+   * Category-level analyses from Phase 1.5.
+   * Provides granular insights for all 12 business dimensions.
+   */
+  categoryAnalyses: z.array(z.custom<CategoryAnalysis>()).optional(),
+
+  /**
+   * Chapter summaries aggregated from category analyses.
+   * Groups insights by the 4 main chapters (GE, PH, PL, RS).
+   */
+  chapterSummaries: z.array(z.custom<ChapterSummary>()).optional(),
+
+  /**
+   * Cross-category insights including systemic patterns,
+   * interdependency analysis, and prioritization matrix.
+   */
+  crossCategoryInsights: z.custom<CrossCategoryInsights>().optional(),
+
+  /**
+   * Overall health metrics from Phase 1.5 (more granular than scores_summary).
+   * Used when Phase 1.5 data is available for enhanced accuracy.
+   */
+  phase15OverallHealth: z.object({
+    score: z.number().min(0).max(100),
+    status: z.string(),
+    trajectory: z.enum(['Declining', 'Stable', 'Improving'])
+  }).optional()
 });
 export type IDM = z.infer<typeof IDMSchema>;
 

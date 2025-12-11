@@ -39,6 +39,8 @@ import { consolidateIDM, IDMConsolidatorInput } from './orchestration/idm-consol
 import { ReportType } from './reports/report-generator.js';
 import type { IDM } from './types/idm.types.js';
 import type { Phase5ReportType } from './types/report.types.js';
+import type { Phase1_5Output } from './types/phase1-5.types.js';
+import type { Phase0Output } from './types/normalized.types.js';
 
 // Load environment variables
 config();
@@ -49,11 +51,17 @@ const pipelineLogger = createLogger('pipeline');
 // Pipeline Configuration
 // ============================================================================
 
+/** Phase numbers including optional Phase 1.5 */
+type PhaseNumber = 0 | 1 | 1.5 | 2 | 3 | 4 | 5;
+
+/** Ordered sequence of phases */
+const PHASE_SEQUENCE: PhaseNumber[] = [0, 1, 1.5, 2, 3, 4, 5];
+
 interface PipelineConfig {
   webhookPath: string;
   outputDir: string;
-  startPhase: number;
-  endPhase: number;
+  startPhase: PhaseNumber;
+  endPhase: PhaseNumber;
   skipDatabase: boolean;
   generateReports: boolean;
   reportTypes: ReportType[];
@@ -64,6 +72,8 @@ interface PipelineConfig {
   renderPDF?: boolean;
   /** Phase 5 sub-stages: 5a, 5b, 5c */
   phase5Stage?: '5a' | '5b' | '5c' | 'all';
+  /** Skip Phase 1.5 (e.g. for faster pipeline) */
+  skipPhase15?: boolean;
 }
 
 function parseArgs(): PipelineConfig {
@@ -83,6 +93,7 @@ function parseArgs(): PipelineConfig {
     companyName: undefined,
     phase5ReportTypes: undefined, // undefined means all report types
     renderPDF: process.env.RENDER_PDF === 'true',
+    skipPhase15: false, // Default to include Phase 1.5
   };
 
   for (const arg of args) {
@@ -92,13 +103,19 @@ function parseArgs(): PipelineConfig {
       if (phases === '5a' || phases === '5b' || phases === '5c') {
         config.startPhase = config.endPhase = 5;
         config.phase5Stage = phases as '5a' | '5b' | '5c';
+      } else if (phases === '1.5') {
+        // Single Phase 1.5
+        config.startPhase = config.endPhase = 1.5;
       } else if (phases.includes('-')) {
         const [start, end] = phases.split('-').map(Number);
-        config.startPhase = start;
-        config.endPhase = end;
+        config.startPhase = start as PhaseNumber;
+        config.endPhase = end as PhaseNumber;
       } else {
-        config.startPhase = config.endPhase = Number(phases);
+        const phase = Number(phases) as PhaseNumber;
+        config.startPhase = config.endPhase = phase;
       }
+    } else if (arg === '--skip-phase15' || arg === '--skip-phase1.5') {
+      config.skipPhase15 = true;
     } else if (arg.startsWith('--output-dir=')) {
       config.outputDir = arg.replace('--output-dir=', '');
     } else if (arg.startsWith('--skip-db')) {
@@ -132,7 +149,7 @@ function parseArgs(): PipelineConfig {
 // ============================================================================
 
 interface PhaseResult {
-  phase: number;
+  phase: PhaseNumber;
   status: 'success' | 'failed' | 'skipped';
   duration_ms: number;
   output_path?: string;
@@ -243,6 +260,81 @@ async function executePhase1(
   } catch (error) {
     return {
       phase: 1,
+      status: 'failed',
+      duration_ms: Date.now() - startTime,
+      error: error instanceof Error ? error.message : String(error),
+    };
+  }
+}
+
+/**
+ * Phase 1.5: Category-Level Analysis
+ * Analyzes all 12 business categories with deep-dive insights
+ */
+async function executePhase1_5(
+  outputDir: string
+): Promise<PhaseResult> {
+  const startTime = Date.now();
+  pipelineLogger.info('Starting Phase 1.5: Category-Level Analysis');
+
+  if (!process.env.ANTHROPIC_API_KEY) {
+    return {
+      phase: 1.5,
+      status: 'failed',
+      duration_ms: Date.now() - startTime,
+      error: 'ANTHROPIC_API_KEY environment variable is required for Phase 1.5',
+    };
+  }
+
+  // Check for Phase 0 output
+  const phase0OutputPath = path.join(outputDir, 'phase0_output.json');
+  if (!fs.existsSync(phase0OutputPath)) {
+    return {
+      phase: 1.5,
+      status: 'failed',
+      duration_ms: Date.now() - startTime,
+      error: `Phase 0 output not found at ${phase0OutputPath}. Run Phase 0 first.`,
+    };
+  }
+
+  try {
+    const { executePhase1_5: runPhase1_5 } = await import('./orchestration/phase1-5-orchestrator.js');
+
+    // Load Phase 0 output
+    const phase0Data = JSON.parse(fs.readFileSync(phase0OutputPath, 'utf-8')) as Phase0Output;
+
+    const results = await runPhase1_5(phase0Data);
+
+    // Save Phase 1.5 output
+    const phase1_5OutputPath = path.join(outputDir, 'phase1_5_output.json');
+    fs.writeFileSync(phase1_5OutputPath, JSON.stringify(results, null, 2));
+
+    const successfulCategories = results.categoryAnalyses?.length || 0;
+    const healthScore = results.overallSummary?.healthScore || 0;
+
+    pipelineLogger.info({
+      categories: successfulCategories,
+      healthScore,
+      status: results.status
+    }, 'Phase 1.5 complete');
+
+    return {
+      phase: 1.5,
+      status: results.status === 'failed' ? 'failed' : 'success',
+      duration_ms: Date.now() - startTime,
+      output_path: phase1_5OutputPath,
+      details: {
+        status: results.status,
+        categories_analyzed: successfulCategories,
+        chapters_summarized: results.chapterSummaries?.length || 0,
+        overall_health_score: healthScore,
+        health_status: results.overallSummary?.healthStatus || 'Unknown',
+      },
+    };
+  } catch (error) {
+    pipelineLogger.error({ error }, 'Phase 1.5 failed');
+    return {
+      phase: 1.5,
       status: 'failed',
       duration_ms: Date.now() - startTime,
       error: error instanceof Error ? error.message : String(error),
@@ -1096,18 +1188,30 @@ async function runPipeline(config: PipelineConfig): Promise<void> {
     process.exit(1);
   }
 
-  // Execute phases
-  const phaseExecutors = [
-    () => executePhase0(webhookPayload, config.outputDir),
-    () => executePhase1(webhookPayload, config.outputDir),
-    () => executePhase2(config.outputDir),
-    () => executePhase3(config.outputDir),
-    () => executePhase4(config.outputDir, config),
-    () => executePhase5(config.outputDir, config),
-  ];
+  // Execute phases using a Map to support Phase 1.5
+  const phaseExecutors = new Map<PhaseNumber, () => Promise<PhaseResult>>([
+    [0, () => executePhase0(webhookPayload, config.outputDir)],
+    [1, () => executePhase1(webhookPayload, config.outputDir)],
+    [1.5, () => executePhase1_5(config.outputDir)],
+    [2, () => executePhase2(config.outputDir)],
+    [3, () => executePhase3(config.outputDir)],
+    [4, () => executePhase4(config.outputDir, config)],
+    [5, () => executePhase5(config.outputDir, config)],
+  ]);
 
-  for (let phase = config.startPhase; phase <= config.endPhase; phase++) {
-    if (phase < 0 || phase > 5) {
+  // Filter phases to execute based on start/end and skip settings
+  const phasesToExecute = PHASE_SEQUENCE.filter(phase => {
+    // Skip Phase 1.5 if explicitly disabled
+    if (phase === 1.5 && config.skipPhase15) {
+      return false;
+    }
+    // Only include phases in the requested range
+    return phase >= config.startPhase && phase <= config.endPhase;
+  });
+
+  for (const phase of phasesToExecute) {
+    const executor = phaseExecutors.get(phase);
+    if (!executor) {
       console.warn(`Skipping invalid phase: ${phase}`);
       continue;
     }
@@ -1116,7 +1220,7 @@ async function runPipeline(config: PipelineConfig): Promise<void> {
     console.log(`PHASE ${phase}`);
     console.log('─'.repeat(60));
 
-    const result = await phaseExecutors[phase]();
+    const result = await executor();
     results.push(result);
 
     // Print phase result
