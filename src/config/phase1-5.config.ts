@@ -39,7 +39,7 @@ const ALL_CATEGORY_CODES = [
 
 const DEFAULT_CONFIG: Phase15Config = {
   enabled: true,
-  maxBatchWaitMinutes: 60, // 1 hour default (can be up to 24 hours)
+  maxBatchWaitMinutes: 30, // 30 minutes default (increased from 15 to accommodate typical 17-min batch times)
   batchPollingIntervalMs: 30000, // 30 seconds
   retry: {
     enabled: true,
@@ -110,7 +110,7 @@ export function loadPhase15Config(env?: string): Phase15Config {
   // Environment-specific defaults
   if (env === 'development') {
     config.logging.level = 'debug';
-    config.maxBatchWaitMinutes = 15; // Faster feedback in dev
+    config.maxBatchWaitMinutes = 30; // Increased to accommodate typical 17-minute batch processing times
   }
 
   if (env === 'test') {
