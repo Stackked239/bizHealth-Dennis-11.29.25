@@ -53,16 +53,64 @@ import {
 } from '../types/phase1-5.types.js';
 import type { Phase0Output, NormalizedQuestionnaireResponses, NormalizedQuestionResponse } from '../types/normalized.types.js';
 
+// Phase 1.5 Integration Modules
+import {
+  validatePhase0ForPhase15,
+  assertPhase0ReadyForPhase15,
+  getTotalQuestionCount,
+  getCategoriesWithInsufficientData
+} from '../validation/phase0-to-phase15-bridge.js';
+import {
+  retryFailedCategoryRequest,
+  buildFallbackCategoryAnalysis,
+  logRecoverySummary,
+  getRecoveryStats,
+  type RecoveryResult,
+  type CategoryBatchRequest
+} from './phase1-5-batch-recovery.js';
+import {
+  validatePhase15ToPhase2Contract,
+  assertPhase15ContractSafe,
+  getContractValidationSummary
+} from '../types/phase1-5-to-phase2-contract.js';
+import {
+  loadPhase15Config,
+  logConfigSummary,
+  validateConfig,
+  isCategoryEnabled,
+  getEnabledCategories,
+  type Phase15Config
+} from '../config/phase1-5.config.js';
+import {
+  logPhase15ExecutionStart,
+  logPhase15ExecutionComplete,
+  trackPhase15Cost,
+  detectPhase15Anomalies
+} from '../monitoring/phase1-5-monitoring.js';
+
 // ============================================================================
 // CONFIGURATION
 // ============================================================================
 
-const CONFIG = {
+// Default static config (overridden by Phase15Config when loaded)
+const DEFAULT_MODEL_CONFIG = {
   model: 'claude-sonnet-4-20250514',
-  maxTokensPerCategory: 4000,
-  batchPollingIntervalMs: 30000,
-  maxBatchWaitTimeMs: 3600000  // 1 hour
+  maxTokensPerCategory: 4000
 };
+
+// Load Phase 1.5 configuration from environment
+let phase15Config: Phase15Config | null = null;
+
+function getConfig(): Phase15Config {
+  if (!phase15Config) {
+    phase15Config = loadPhase15Config(process.env.NODE_ENV);
+    const validation = validateConfig(phase15Config);
+    if (!validation.valid) {
+      logger.warn({ errors: validation.errors }, 'Phase 1.5 config validation warnings');
+    }
+  }
+  return phase15Config;
+}
 
 // ============================================================================
 // LOGGER
@@ -88,26 +136,64 @@ const logger = pino({
  */
 export async function executePhase1_5(
   phase0Output: Phase0Output,
-  options: { runParallelWithPhase1?: boolean; runId?: string } = {}
+  options: { runParallelWithPhase1?: boolean; runId?: string; skipValidation?: boolean } = {}
 ): Promise<Phase1_5Output> {
-  logger.info('=== PHASE 1.5: Category-Level Analysis ===');
-  logger.info(`Company: ${phase0Output.companyProfile.basic_information.company_name}`);
-  logger.info(`Categories to analyze: 12`);
-
+  const config = getConfig();
   const startTime = Date.now();
   const runId = options.runId || uuid();
   const anthropic = new Anthropic();
+  const recoveryResults: RecoveryResult[] = [];
+
+  // Log execution start with monitoring
+  logPhase15ExecutionStart({
+    companyId: phase0Output.companyProfile.metadata.profile_id,
+    companyName: phase0Output.companyProfile.basic_information.company_name,
+    runId,
+    categoryCount: getEnabledCategories(config).length
+  });
+
+  logger.info('=== PHASE 1.5: Category-Level Analysis ===');
+  logger.info(`Company: ${phase0Output.companyProfile.basic_information.company_name}`);
+  logger.info(`Categories to analyze: ${getEnabledCategories(config).length}`);
+
+  // Log configuration summary
+  logConfigSummary(config);
+
+  // Step 0: Validate Phase 0 output (Phase 0 → Phase 1.5 bridge)
+  if (config.validation.enablePhase0Bridge && !options.skipValidation) {
+    logger.info('Step 0: Validating Phase 0 output for Phase 1.5...');
+    const phase0Validation = validatePhase0ForPhase15(phase0Output);
+
+    if (!phase0Validation.isValid) {
+      logger.error({ errors: phase0Validation.errors }, 'Phase 0 validation failed');
+      throw new Error(`Phase 0 → Phase 1.5 validation failed:\n${phase0Validation.errors.join('\n')}`);
+    }
+
+    // Log warnings but continue
+    phase0Validation.warnings.forEach(w => logger.warn(w));
+
+    // Check for insufficient data
+    const insufficientCategories = getCategoriesWithInsufficientData(phase0Output);
+    if (insufficientCategories.length > 0) {
+      logger.warn({ categories: insufficientCategories }, 'Categories with insufficient data');
+    }
+
+    logger.info(`  Total questions: ${getTotalQuestionCount(phase0Output)}`);
+    logger.info('  ✓ Phase 0 validation passed');
+  }
 
   // Step 1: Extract and map responses by category
   logger.info('Step 1: Mapping questionnaire responses to categories...');
   const responsesByCategory = mapResponsesToCategories(phase0Output.questionnaireResponses);
 
-  // Step 2: Create batch requests for all 12 categories
-  logger.info('Step 2: Creating batch requests for 12 category analyses...');
+  // Step 2: Create batch requests for enabled categories only
+  const enabledCategories = getEnabledCategories(config);
+  logger.info(`Step 2: Creating batch requests for ${enabledCategories.length} category analyses...`);
   const batchRequests = createCategoryBatchRequests(
     responsesByCategory,
     phase0Output,
-    runId
+    runId,
+    enabledCategories
   );
 
   // Step 3: Submit batch to API
@@ -120,11 +206,49 @@ export async function executePhase1_5(
 
   // Step 4: Poll for completion
   logger.info('Step 4: Waiting for batch completion...');
-  const completedBatch = await pollBatchCompletion(anthropic, batch.id);
+  const completedBatch = await pollBatchCompletion(anthropic, batch.id, config);
 
-  // Step 5: Retrieve and parse results
+  // Step 5: Retrieve and parse results with recovery
   logger.info('Step 5: Retrieving batch results...');
-  const categoryAnalyses = await parseBatchResults(anthropic, completedBatch.id, phase0Output);
+  const { categoryAnalyses, failedRequests } = await parseBatchResultsWithRecovery(
+    anthropic,
+    completedBatch.id,
+    phase0Output,
+    batchRequests as CategoryBatchRequest[]
+  );
+
+  // Step 5.5: Retry failed requests if any
+  if (failedRequests.length > 0 && config.retry.enabled) {
+    logger.info(`Step 5.5: Recovering ${failedRequests.length} failed category requests...`);
+
+    for (const request of failedRequests) {
+      const { analysis, recoveryResult } = await retryFailedCategoryRequest(
+        request,
+        phase0Output,
+        {
+          maxAttempts: config.retry.maxAttempts,
+          backoffMs: config.retry.backoffMs,
+          backoffMultiplier: config.retry.backoffMultiplier
+        }
+      );
+
+      recoveryResults.push(recoveryResult);
+
+      if (analysis) {
+        categoryAnalyses.push(analysis);
+      }
+    }
+
+    // Log recovery summary
+    logRecoverySummary(recoveryResults);
+    const stats = getRecoveryStats(recoveryResults);
+    logger.info({ stats }, 'Recovery statistics');
+  }
+
+  // Sort by canonical category order
+  categoryAnalyses.sort((a, b) =>
+    CATEGORY_CODES_ORDERED.indexOf(a.categoryCode) - CATEGORY_CODES_ORDERED.indexOf(b.categoryCode)
+  );
 
   // Step 6: Generate chapter summaries
   logger.info('Step 6: Generating chapter summaries...');
@@ -161,13 +285,30 @@ export async function executePhase1_5(
     }
   };
 
-  // Step 10: Validate output
+  // Step 10: Validate output (internal validation)
   logger.info('Step 10: Validating output...');
   const validation = validatePhase1_5Output(output);
   if (!validation.isValid) {
     logger.error({ errors: validation.errors }, 'Validation errors');
   }
   logger.info(`  Completeness: ${validation.completeness.completionPercentage}%`);
+
+  // Step 10.5: Validate Phase 1.5 → Phase 2 contract
+  if (config.validation.enablePhase2Contract) {
+    logger.info('Step 10.5: Validating Phase 1.5 → Phase 2 contract...');
+    const contractValidation = validatePhase15ToPhase2Contract(output);
+
+    if (!contractValidation.isCompatible) {
+      const summary = getContractValidationSummary(contractValidation);
+      logger.warn({ issues: contractValidation.issues.length }, summary);
+      // Log individual issues at debug level
+      contractValidation.issues.forEach(issue => {
+        logger.debug({ path: issue.path, expected: issue.expectedType, actual: issue.actualType }, issue.message);
+      });
+    } else {
+      logger.info('  ✓ Phase 1.5 → Phase 2 contract valid');
+    }
+  }
 
   // Step 11: Write to disk
   const outputDir = path.join(process.cwd(), 'output');
@@ -177,11 +318,45 @@ export async function executePhase1_5(
     JSON.stringify(output, null, 2)
   );
 
+  // Step 12: Log monitoring metrics
+  const processingTimeMs = Date.now() - startTime;
+  logPhase15ExecutionComplete({
+    runId,
+    companyId: phase0Output.companyProfile.metadata.profile_id,
+    categoriesAnalyzed: categoryAnalyses.length,
+    healthScore: overallSummary.healthScore,
+    processingTimeMs,
+    tokenUsage: output.metadata.totalTokenUsage,
+    recoveryStats: recoveryResults.length > 0 ? getRecoveryStats(recoveryResults) : undefined
+  });
+
+  // Track cost if enabled
+  if (config.costTracking.enabled) {
+    trackPhase15Cost({
+      runId,
+      tokenUsage: output.metadata.totalTokenUsage,
+      categoriesAnalyzed: categoryAnalyses.length,
+      estimatedCostPerCategory: config.costTracking.estimatedCostPerCategory
+    });
+  }
+
+  // Detect anomalies
+  const anomalies = detectPhase15Anomalies(output, {
+    minExpectedCategories: 12,
+    maxProcessingTimeMs: config.maxBatchWaitMinutes * 60 * 1000,
+    minHealthScore: 0,
+    maxHealthScore: 100
+  });
+
+  if (anomalies.length > 0) {
+    logger.warn({ anomalies }, 'Phase 1.5 anomalies detected');
+  }
+
   logger.info('Phase 1.5 complete');
   logger.info(`  Categories analyzed: ${categoryAnalyses.length}`);
   logger.info(`  Overall Health Score: ${overallSummary.healthScore}/100`);
   logger.info(`  Status: ${overallSummary.healthStatus}`);
-  logger.info(`  Duration: ${Math.round((Date.now() - startTime) / 1000)}s`);
+  logger.info(`  Duration: ${Math.round(processingTimeMs / 1000)}s`);
 
   return output;
 }
@@ -253,16 +428,18 @@ function mapResponsesToCategories(
 // ============================================================================
 
 /**
- * Create batch requests for all 12 categories
+ * Create batch requests for enabled categories
  */
 function createCategoryBatchRequests(
   responsesByCategory: Map<CategoryCode, { question: QuestionMapping; response: NormalizedQuestionResponse }[]>,
   phase0: Phase0Output,
-  runId: string
+  runId: string,
+  enabledCategories?: string[]
 ): Anthropic.Beta.Messages.BatchCreateParams['requests'] {
   const requests: Anthropic.Beta.Messages.BatchCreateParams['requests'] = [];
+  const categoriesToProcess = enabledCategories || CATEGORY_CODES_ORDERED;
 
-  CATEGORY_CODES_ORDERED.forEach(categoryCode => {
+  categoriesToProcess.forEach(categoryCode => {
     const categoryName = getCategoryName(categoryCode);
     const responses = responsesByCategory.get(categoryCode) || [];
     const chapterCode = getChapterForCategory(categoryCode);
@@ -503,11 +680,13 @@ Generate 2-4 strengths, 2-4 weaknesses, 2-4 quick wins, 1-3 risks, and benchmark
  */
 async function pollBatchCompletion(
   anthropic: Anthropic,
-  batchId: string
+  batchId: string,
+  config: Phase15Config
 ): Promise<Anthropic.Beta.Messages.Batches.BetaMessageBatch> {
   const startTime = Date.now();
+  const maxWaitMs = config.maxBatchWaitMinutes * 60 * 1000;
 
-  while (Date.now() - startTime < CONFIG.maxBatchWaitTimeMs) {
+  while (Date.now() - startTime < maxWaitMs) {
     const batch = await anthropic.beta.messages.batches.retrieve(batchId);
 
     logger.info(`  Status: ${batch.processing_status} | Completed: ${batch.request_counts.succeeded}/${batch.request_counts.processing + batch.request_counts.succeeded}`);
@@ -516,10 +695,10 @@ async function pollBatchCompletion(
       return batch;
     }
 
-    await new Promise(resolve => setTimeout(resolve, CONFIG.batchPollingIntervalMs));
+    await new Promise(resolve => setTimeout(resolve, config.batchPollingIntervalMs));
   }
 
-  throw new Error(`Batch ${batchId} did not complete within timeout`);
+  throw new Error(`Batch ${batchId} did not complete within timeout (${config.maxBatchWaitMinutes} minutes)`);
 }
 
 // ============================================================================
@@ -527,18 +706,30 @@ async function pollBatchCompletion(
 // ============================================================================
 
 /**
- * Parse batch results into category analyses
+ * Parse batch results into category analyses with recovery support
+ * Returns both successful analyses and failed requests for retry
  */
-async function parseBatchResults(
+async function parseBatchResultsWithRecovery(
   anthropic: Anthropic,
   batchId: string,
-  _phase0: Phase0Output
-): Promise<CategoryAnalysis[]> {
-  const results: CategoryAnalysis[] = [];
+  _phase0: Phase0Output,
+  originalRequests: CategoryBatchRequest[]
+): Promise<{ categoryAnalyses: CategoryAnalysis[]; failedRequests: CategoryBatchRequest[] }> {
+  const categoryAnalyses: CategoryAnalysis[] = [];
+  const failedRequests: CategoryBatchRequest[] = [];
+  const processedCustomIds = new Set<string>();
+
+  // Create a map of original requests by custom_id
+  const requestMap = new Map<string, CategoryBatchRequest>();
+  originalRequests.forEach(req => {
+    requestMap.set(req.custom_id, req);
+  });
 
   // Stream results from batch
   const resultsDecoder = await anthropic.beta.messages.batches.results(batchId);
   for await (const result of resultsDecoder) {
+    processedCustomIds.add(result.custom_id);
+
     if (result.result.type === 'succeeded') {
       try {
         const content = result.result.message.content[0];
@@ -564,25 +755,53 @@ async function parseBatchResults(
             promptTokens: result.result.message.usage.input_tokens,
             completionTokens: result.result.message.usage.output_tokens,
             processingTimeMs: 0, // Not available from batch
-            modelUsed: CONFIG.model
+            modelUsed: DEFAULT_MODEL_CONFIG.model
           };
 
-          results.push(analysis);
+          categoryAnalyses.push(analysis);
         }
       } catch (error) {
         logger.error({ customId: result.custom_id, error }, `Failed to parse result`);
+        // Add to failed requests for retry
+        const originalRequest = requestMap.get(result.custom_id);
+        if (originalRequest) {
+          failedRequests.push(originalRequest);
+        }
       }
     } else {
       logger.error({ customId: result.custom_id, result: result.result }, `Request failed`);
+      // Add to failed requests for retry
+      const originalRequest = requestMap.get(result.custom_id);
+      if (originalRequest) {
+        failedRequests.push(originalRequest);
+      }
     }
   }
 
-  // Sort by canonical category order
-  results.sort((a, b) =>
-    CATEGORY_CODES_ORDERED.indexOf(a.categoryCode) - CATEGORY_CODES_ORDERED.indexOf(b.categoryCode)
-  );
+  // Check for any requests that didn't get processed at all
+  originalRequests.forEach(req => {
+    if (!processedCustomIds.has(req.custom_id)) {
+      logger.warn({ customId: req.custom_id }, 'Request not in batch results');
+      failedRequests.push(req);
+    }
+  });
 
-  return results;
+  logger.info(`  Parsed ${categoryAnalyses.length} successful, ${failedRequests.length} failed`);
+
+  return { categoryAnalyses, failedRequests };
+}
+
+/**
+ * Parse batch results into category analyses (legacy function)
+ * @deprecated Use parseBatchResultsWithRecovery instead
+ */
+async function parseBatchResults(
+  anthropic: Anthropic,
+  batchId: string,
+  phase0: Phase0Output
+): Promise<CategoryAnalysis[]> {
+  const { categoryAnalyses } = await parseBatchResultsWithRecovery(anthropic, batchId, phase0, []);
+  return categoryAnalyses;
 }
 
 // ============================================================================

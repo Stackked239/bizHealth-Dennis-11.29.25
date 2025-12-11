@@ -8,6 +8,11 @@
 
 import type { DimensionCode, ChapterCode } from './idm.types.js';
 import type { NarrativeContent } from '../services/narrative-extraction.service.js';
+import type {
+  CategoryAnalysis,
+  ChapterSummary,
+  CrossCategoryInsights
+} from './phase1-5.types.js';
 
 // ============================================================================
 // BRAND CONFIGURATION
@@ -343,6 +348,28 @@ export interface ReportContext {
 
   /** Legal and access control configuration */
   legalAccess?: LegalAccessConfig;
+
+  // ========================================================================
+  // Phase 1.5 Integration (Category-Level Analysis)
+  // ========================================================================
+
+  /**
+   * Category-level analyses from Phase 1.5.
+   * Provides granular insights for all 12 business dimensions.
+   */
+  categoryAnalyses?: CategoryAnalysis[];
+
+  /**
+   * Chapter summaries aggregated from category analyses.
+   * Groups insights by the 4 main chapters (GE, PH, PL, RS).
+   */
+  chapterSummaries?: ChapterSummary[];
+
+  /**
+   * Cross-category insights including systemic patterns,
+   * interdependency analysis, and prioritization matrix.
+   */
+  crossCategoryInsights?: CrossCategoryInsights;
 }
 
 // ============================================================================

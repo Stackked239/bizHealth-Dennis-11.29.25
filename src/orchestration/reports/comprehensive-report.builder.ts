@@ -143,6 +143,16 @@ import { renderKPIDashboard, renderQuickStatsRow } from './components/visual/kpi
 import { renderRoadmapTimeline, type RoadmapPhase } from './components/visual/roadmap-timeline.component.js';
 import { getScoreBand, type ScoreBand } from './utils/color-utils.js';
 
+// Phase 1.5 Category Visualization Components
+import {
+  generateCategoryRadarChart,
+  generateChapterHeatmap,
+  generateCategoryBenchmarkBars,
+  generateSWOTQuadrant,
+  generateInterdependencyNetwork,
+  generatePriorityMatrix,
+} from './components/category-visualizations.js';
+
 // Phase 0: Premium Report Quality Enhancement imports
 import {
   generateCoverPage,
@@ -180,6 +190,10 @@ export async function buildComprehensiveReport(
   // Define sections for TOC with anchor IDs matching section-mapping.ts
   const sections = [
     { id: 'executive-summary', title: 'Executive Summary' },
+    // Phase 1.5: Category Analysis Overview (only if data is available)
+    ...(ctx.categoryAnalyses && ctx.categoryAnalyses.length > 0 ? [
+      { id: 'category-overview', title: 'Category Health Overview' },
+    ] : []),
     { id: 'scorecard', title: 'Business Health Scorecard' },
     { id: 'chapter-growth-engine', title: 'Chapter 1: Growth Engine Deep Dive' },
     { id: 'chapter-performance-health', title: 'Chapter 2: Performance & Health Deep Dive' },
@@ -311,6 +325,9 @@ export async function buildComprehensiveReport(
 
     // Executive Summary with narrative and Phase 5 dashboard (with anchor ID for cross-references)
     `<section id="executive-summary" class="section">${generateExecutiveSummaryWithNarrative(ctx, narratives, phase5Visuals)}</section>`,
+
+    // Phase 1.5: Category Analysis Overview (only if data is available)
+    generateCategoryAnalysisOverviewSection(ctx, options),
 
     // Scorecard with visual charts and benchmark summary
     `<section id="scorecard" class="section page-break">
@@ -3221,4 +3238,205 @@ function generateROIProjectionBlock(
     </div>
   </div>
 </div>`;
+}
+
+// ============================================================================
+// Phase 1.5: Category Analysis Overview Section
+// ============================================================================
+
+/**
+ * Generate Category Analysis Overview Section
+ * Displays Phase 1.5 visualizations including radar chart, heatmap, and benchmark bars
+ */
+function generateCategoryAnalysisOverviewSection(
+  ctx: ReportContext,
+  options: ReportRenderOptions
+): string {
+  // Skip if no Phase 1.5 data
+  if (!ctx.categoryAnalyses || ctx.categoryAnalyses.length === 0) {
+    return '';
+  }
+
+  const primaryColor = options.brand.primaryColor;
+  const accentColor = options.brand.accentColor;
+
+  // Generate visualizations
+  const radarChart = generateCategoryRadarChart(ctx.categoryAnalyses, {
+    showBenchmark: true,
+    showScoreValues: true
+  });
+
+  const heatmap = ctx.chapterSummaries && ctx.chapterSummaries.length > 0
+    ? generateChapterHeatmap(ctx.categoryAnalyses, ctx.chapterSummaries)
+    : '';
+
+  const benchmarkBars = generateCategoryBenchmarkBars(ctx.categoryAnalyses);
+
+  const networkDiagram = ctx.crossCategoryInsights
+    ? generateInterdependencyNetwork(ctx.crossCategoryInsights)
+    : '';
+
+  const priorityMatrix = ctx.crossCategoryInsights
+    ? generatePriorityMatrix(ctx.crossCategoryInsights)
+    : '';
+
+  return `
+    <section id="category-overview" class="section page-break">
+      <h2 style="color: ${primaryColor}; border-bottom: 3px solid ${accentColor}; padding-bottom: 10px; margin-bottom: 1.5rem; font-family: 'Montserrat', sans-serif;">
+        Category Health Overview
+      </h2>
+
+      <p style="color: #666; margin-bottom: 2rem; font-size: 1rem; line-height: 1.6;">
+        This section provides a comprehensive view of performance across all 12 business categories,
+        grouped into 4 strategic chapters. The analysis reveals patterns, interdependencies, and
+        priority areas for improvement.
+      </p>
+
+      <div class="visualization-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 30px 0;">
+        <div class="viz-panel">
+          <h3 style="color: ${primaryColor}; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">12-Category Performance Radar</h3>
+          <div class="radar-container" style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+            ${radarChart}
+          </div>
+        </div>
+
+        ${heatmap ? `
+        <div class="viz-panel">
+          <h3 style="color: ${primaryColor}; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">Chapter & Category Heatmap</h3>
+          <div class="heatmap-container" style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+            ${heatmap}
+          </div>
+        </div>
+        ` : ''}
+      </div>
+
+      <div class="benchmark-section" style="margin: 30px 0;">
+        <h3 style="color: ${primaryColor}; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">Performance vs. Industry Benchmarks</h3>
+        <div class="benchmark-container" style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+          ${benchmarkBars}
+        </div>
+      </div>
+
+      ${networkDiagram ? `
+      <div class="interdependency-section" style="margin: 30px 0;">
+        <h3 style="color: ${primaryColor}; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">Category Interdependencies</h3>
+        <p style="color: #666; margin-bottom: 15px; font-size: 0.95rem;">
+          This diagram shows how different business categories influence each other.
+          Strong connections indicate where improvements can have cascading positive effects.
+        </p>
+        <div class="network-container" style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+          ${networkDiagram}
+        </div>
+      </div>
+      ` : ''}
+
+      ${priorityMatrix ? `
+      <div class="priority-section" style="margin: 30px 0;">
+        <h3 style="color: ${primaryColor}; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">Category Priority Matrix</h3>
+        <p style="color: #666; margin-bottom: 15px; font-size: 0.95rem;">
+          This matrix helps prioritize focus areas based on urgency and potential impact.
+          Categories in the upper-right quadrant require immediate attention.
+        </p>
+        <div class="priority-container" style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+          ${priorityMatrix}
+        </div>
+      </div>
+      ` : ''}
+
+      ${generateCategorySummaryCards(ctx, primaryColor, accentColor)}
+    </section>
+  `;
+}
+
+/**
+ * Generate summary cards for each category
+ */
+function generateCategorySummaryCards(
+  ctx: ReportContext,
+  primaryColor: string,
+  accentColor: string
+): string {
+  if (!ctx.categoryAnalyses || ctx.categoryAnalyses.length === 0) {
+    return '';
+  }
+
+  // Group categories by chapter
+  const chapterGroups: Record<string, typeof ctx.categoryAnalyses> = {};
+  for (const cat of ctx.categoryAnalyses) {
+    const chapter = cat.chapterCode || 'Other';
+    if (!chapterGroups[chapter]) {
+      chapterGroups[chapter] = [];
+    }
+    chapterGroups[chapter].push(cat);
+  }
+
+  const chapterNames: Record<string, string> = {
+    'GE': 'Growth Engine',
+    'PH': 'Performance & Health',
+    'PL': 'People & Leadership',
+    'RS': 'Resilience & Safeguards'
+  };
+
+  let html = `
+    <div class="category-summary-section" style="margin-top: 40px;">
+      <h3 style="color: ${primaryColor}; margin-bottom: 1.5rem; font-family: 'Montserrat', sans-serif;">Category Summaries by Chapter</h3>
+  `;
+
+  for (const [chapterCode, categories] of Object.entries(chapterGroups)) {
+    const chapterName = chapterNames[chapterCode] || chapterCode;
+
+    html += `
+      <div class="chapter-category-group" style="margin-bottom: 2rem; page-break-inside: avoid;">
+        <h4 style="color: ${primaryColor}; margin-bottom: 1rem; padding: 0.5rem 1rem; background: #f0f4f8; border-left: 4px solid ${accentColor};">
+          ${chapterName}
+        </h4>
+        <div class="category-cards" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+    `;
+
+    for (const cat of categories) {
+      const scoreColor = cat.overallScore >= 80 ? '#28a745' :
+                         cat.overallScore >= 60 ? '#5cb85c' :
+                         cat.overallScore >= 40 ? '#f0ad4e' :
+                         cat.overallScore >= 20 ? '#d9534f' : '#c9302c';
+
+      html += `
+          <div class="category-card" style="
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+          ">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <h5 style="margin: 0; color: ${primaryColor}; font-size: 1rem;">${escapeHtml(cat.categoryName)}</h5>
+              <div style="
+                background: ${scoreColor};
+                color: white;
+                padding: 0.25rem 0.75rem;
+                border-radius: 20px;
+                font-weight: bold;
+                font-size: 0.9rem;
+              ">${cat.overallScore}</div>
+            </div>
+            <div style="font-size: 0.85rem; color: #666; margin-bottom: 0.5rem;">
+              Status: <strong style="color: ${cat.status === 'Critical' ? '#c9302c' : cat.status === 'Excellent' ? '#28a745' : primaryColor};">${cat.status}</strong>
+            </div>
+            ${cat.executiveSummary ? `
+              <p style="font-size: 0.85rem; color: #555; line-height: 1.5; margin: 0.75rem 0 0 0;">
+                ${escapeHtml(cat.executiveSummary.substring(0, 200))}${cat.executiveSummary.length > 200 ? '...' : ''}
+              </p>
+            ` : ''}
+          </div>
+      `;
+    }
+
+    html += `
+        </div>
+      </div>
+    `;
+  }
+
+  html += `</div>`;
+
+  return html;
 }

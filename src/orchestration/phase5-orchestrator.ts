@@ -635,6 +635,16 @@ export class Phase5Orchestrator {
       this.logger.info({ runId }, '[Phase 5] Beta Mode: Clickwrap/blur DISABLED');
     }
 
+    // Phase 1.5 data from IDM (if available)
+    const hasPhase15Data = idm.categoryAnalyses && idm.categoryAnalyses.length > 0;
+    if (hasPhase15Data) {
+      this.logger.info({
+        categories: idm.categoryAnalyses?.length,
+        chapters: idm.chapterSummaries?.length,
+        hasInsights: Boolean(idm.crossCategoryInsights)
+      }, 'Phase 1.5 data available for report generation');
+    }
+
     return {
       runId,
       companyProfile: reportCompanyProfile,
@@ -660,6 +670,11 @@ export class Phase5Orchestrator {
       },
       narrativeContent,
       legalAccess, // Pass legal config to all report builders
+
+      // Phase 1.5 Integration (Category-Level Analysis)
+      categoryAnalyses: idm.categoryAnalyses,
+      chapterSummaries: idm.chapterSummaries,
+      crossCategoryInsights: idm.crossCategoryInsights,
     };
   }
 
