@@ -301,7 +301,10 @@ async function executePhase1_5(
     const { executePhase1_5: runPhase1_5 } = await import('./orchestration/phase1-5-orchestrator.js');
 
     // Load Phase 0 output
-    const phase0Data = JSON.parse(fs.readFileSync(phase0OutputPath, 'utf-8')) as Phase0Output;
+    const phase0FileData = JSON.parse(fs.readFileSync(phase0OutputPath, 'utf-8'));
+    // Phase 0 file has wrapper structure: { success, output: { companyProfile, ... } }
+    // Phase 1.5 expects just the output object
+    const phase0Data = phase0FileData.output as Phase0Output;
 
     const results = await runPhase1_5(phase0Data);
 
@@ -533,10 +536,7 @@ async function executePhase4(
             descriptor: idm.scores_summary.descriptor,
           }, 'IDM consolidated successfully');
 
-          // Save IDM to output
-          const idmOutputPath = path.join(outputDir, 'idm_output.json');
-          fs.writeFileSync(idmOutputPath, JSON.stringify(idm, null, 2));
-          pipelineLogger.info(`IDM saved to ${idmOutputPath}`);
+          // Note: IDM will be saved after Phase 4 integrates Phase 1.5 data
         } else {
           pipelineLogger.warn({
             errors: idmResult.validationErrors,
@@ -563,6 +563,14 @@ async function executePhase4(
     // Save Phase 4 output
     const phase4OutputPath = path.join(outputDir, 'phase4_output.json');
     fs.writeFileSync(phase4OutputPath, JSON.stringify(results, null, 2));
+
+    // Save IDM with Phase 1.5 integration to output
+    // This ensures Phase 5 gets the enhanced IDM with category analyses
+    if (results.idm) {
+      const idmOutputPath = path.join(outputDir, 'idm_output.json');
+      fs.writeFileSync(idmOutputPath, JSON.stringify(results.idm, null, 2));
+      pipelineLogger.info(`IDM with Phase 1.5 integration saved to ${idmOutputPath}`);
+    }
 
     // Build details for result
     const details: Record<string, unknown> = {

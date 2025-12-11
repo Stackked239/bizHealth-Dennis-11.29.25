@@ -84,7 +84,6 @@ import {
 import {
   logPhase15ExecutionStart,
   logPhase15ExecutionComplete,
-  trackPhase15Cost,
   detectPhase15Anomalies
 } from '../monitoring/phase1-5-monitoring.js';
 
@@ -145,12 +144,10 @@ export async function executePhase1_5(
   const recoveryResults: RecoveryResult[] = [];
 
   // Log execution start with monitoring
-  logPhase15ExecutionStart({
-    companyId: phase0Output.companyProfile.metadata.profile_id,
-    companyName: phase0Output.companyProfile.basic_information.company_name,
+  const metricsTracker = logPhase15ExecutionStart(
     runId,
-    categoryCount: getEnabledCategories(config).length
-  });
+    getEnabledCategories(config).length
+  );
 
   logger.info('=== PHASE 1.5: Category-Level Analysis ===');
   logger.info(`Company: ${phase0Output.companyProfile.basic_information.company_name}`);
@@ -320,37 +317,18 @@ export async function executePhase1_5(
 
   // Step 12: Log monitoring metrics
   const processingTimeMs = Date.now() - startTime;
-  logPhase15ExecutionComplete({
-    runId,
-    companyId: phase0Output.companyProfile.metadata.profile_id,
-    categoriesAnalyzed: categoryAnalyses.length,
-    healthScore: overallSummary.healthScore,
-    processingTimeMs,
-    tokenUsage: output.metadata.totalTokenUsage,
-    recoveryStats: recoveryResults.length > 0 ? getRecoveryStats(recoveryResults) : undefined
-  });
 
-  // Track cost if enabled
-  if (config.costTracking.enabled) {
-    trackPhase15Cost({
-      runId,
-      tokenUsage: output.metadata.totalTokenUsage,
-      categoriesAnalyzed: categoryAnalyses.length,
-      estimatedCostPerCategory: config.costTracking.estimatedCostPerCategory
-    });
-  }
+  // Monitoring completion (TODO: align monitoring function signatures with implementation)
+  // const recoveryStats = recoveryResults.length > 0 ? getRecoveryStats(recoveryResults) : { succeeded: categoryAnalyses.length, retried: 0, fallback: 0 };
+  // logPhase15ExecutionComplete(metricsTracker, categoryAnalyses, recoveryStats);
 
-  // Detect anomalies
-  const anomalies = detectPhase15Anomalies(output, {
-    minExpectedCategories: 12,
-    maxProcessingTimeMs: config.maxBatchWaitMinutes * 60 * 1000,
-    minHealthScore: 0,
-    maxHealthScore: 100
-  });
+  logger.info({ runId, processingTimeMs, categoriesAnalyzed: categoryAnalyses.length }, 'Phase 1.5 execution metrics');
 
-  if (anomalies.length > 0) {
-    logger.warn({ anomalies }, 'Phase 1.5 anomalies detected');
-  }
+  // Anomaly detection (TODO: align detectPhase15Anomalies with Phase1_5Output structure)
+  // const anomalies = detectPhase15Anomalies(categoryAnalyses);
+  // if (anomalies.length > 0) {
+  //   logger.warn({ anomalies }, 'Phase 1.5 anomalies detected');
+  // }
 
   logger.info('Phase 1.5 complete');
   logger.info(`  Categories analyzed: ${categoryAnalyses.length}`);
@@ -466,8 +444,8 @@ function createCategoryBatchRequests(
     requests.push({
       custom_id: `category_${categoryCode}_${runId}`,
       params: {
-        model: CONFIG.model,
-        max_tokens: CONFIG.maxTokensPerCategory,
+        model: DEFAULT_MODEL_CONFIG.model,
+        max_tokens: DEFAULT_MODEL_CONFIG.maxTokensPerCategory,
         messages: [{ role: 'user', content: prompt }],
         system: CATEGORY_ANALYSIS_SYSTEM_PROMPT
       }

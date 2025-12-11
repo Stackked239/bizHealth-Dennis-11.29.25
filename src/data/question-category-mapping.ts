@@ -6,7 +6,7 @@
  *
  * Framework Structure:
  * - 4 Chapters: GE (Growth Engine), PH (Performance & Health), PL (People & Leadership), RS (Resilience & Safeguards)
- * - 12 Categories: STR, SAL, MKT, CXP, OPS, FIN, HRS, LDG, TIN, IDS, RMS, CMP
+ * - 12 Categories: STR, SAL, MKT, CXP, OPS, FIN, HRS, LDG, TIN, ITD, RMS, CMP
  * - 87 Questions mapped to categories with weights and response types
  */
 
@@ -16,7 +16,7 @@
 
 /**
  * Canonical category codes used throughout the pipeline
- * NOTE: Uses IDS (not ITD) to align with existing IDM types
+ * NOTE: Uses ITD (IT & Data Security) as canonical code for Phase 1.5+
  */
 export const CANONICAL_CATEGORY_CODES = {
   STR: 'Strategy',
@@ -28,7 +28,7 @@ export const CANONICAL_CATEGORY_CODES = {
   HRS: 'Human Resources',
   LDG: 'Leadership & Governance',
   TIN: 'Technology & Innovation',
-  IDS: 'IT, Data & Systems',
+  ITD: 'IT & Data Security',
   RMS: 'Risk Management & Sustainability',
   CMP: 'Compliance - Legal & Regulatory'
 } as const;
@@ -40,7 +40,7 @@ export type CategoryCode = keyof typeof CANONICAL_CATEGORY_CODES;
  */
 export const CATEGORY_CODES_ORDERED: CategoryCode[] = [
   'STR', 'SAL', 'MKT', 'CXP', 'OPS', 'FIN',
-  'HRS', 'LDG', 'TIN', 'IDS', 'RMS', 'CMP'
+  'HRS', 'LDG', 'TIN', 'ITD', 'RMS', 'CMP'
 ];
 
 // ============================================================================
@@ -69,7 +69,7 @@ export const CHAPTER_CATEGORY_MAPPING = {
   RS: {
     name: 'Resilience & Safeguards',
     description: 'Long-term viability, adaptability, and compliance',
-    categories: ['TIN', 'IDS', 'RMS', 'CMP'] as CategoryCode[],
+    categories: ['TIN', 'ITD', 'RMS', 'CMP'] as CategoryCode[],
     questionRange: { start: 58, end: 87 } // Questions 58-87
   }
 } as const;
@@ -854,7 +854,7 @@ export const QUESTION_MAPPINGS: QuestionMapping[] = [
   {
     questionId: 'Q065',
     questionNumber: 65,
-    categoryCode: 'IDS',
+    categoryCode: 'ITD',
     chapterCode: 'RS',
     questionText: 'IT Infrastructure: On a scale of 1-5, how reliable is your IT infrastructure in terms of uptime?',
     responseType: 'scale_1_5',
@@ -865,7 +865,7 @@ export const QUESTION_MAPPINGS: QuestionMapping[] = [
   {
     questionId: 'Q066',
     questionNumber: 66,
-    categoryCode: 'IDS',
+    categoryCode: 'ITD',
     chapterCode: 'RS',
     questionText: 'Network Effectiveness: On a scale of 1-5, how effective is your network infrastructure?',
     responseType: 'scale_1_5',
@@ -876,7 +876,7 @@ export const QUESTION_MAPPINGS: QuestionMapping[] = [
   {
     questionId: 'Q067',
     questionNumber: 67,
-    categoryCode: 'IDS',
+    categoryCode: 'ITD',
     chapterCode: 'RS',
     questionText: 'Cybersecurity: On a scale of 1-5, how prepared is your business for cybersecurity threats?',
     responseType: 'scale_1_5',
@@ -887,7 +887,7 @@ export const QUESTION_MAPPINGS: QuestionMapping[] = [
   {
     questionId: 'Q068',
     questionNumber: 68,
-    categoryCode: 'IDS',
+    categoryCode: 'ITD',
     chapterCode: 'RS',
     questionText: 'Data Management: On a scale of 1-5, how robust are your data backup and recovery processes?',
     responseType: 'scale_1_5',
@@ -898,7 +898,7 @@ export const QUESTION_MAPPINGS: QuestionMapping[] = [
   {
     questionId: 'Q069',
     questionNumber: 69,
-    categoryCode: 'IDS',
+    categoryCode: 'ITD',
     chapterCode: 'RS',
     questionText: 'Data Governance & Compliance: On a scale of 1-5, how well-managed is your data quality and compliance?',
     responseType: 'scale_1_5',
@@ -909,7 +909,7 @@ export const QUESTION_MAPPINGS: QuestionMapping[] = [
   {
     questionId: 'Q070',
     questionNumber: 70,
-    categoryCode: 'IDS',
+    categoryCode: 'ITD',
     chapterCode: 'RS',
     questionText: 'IT & Network Systems Scalability: On a scale of 1-5, how scalable are your IT systems?',
     responseType: 'scale_1_5',
@@ -920,7 +920,7 @@ export const QUESTION_MAPPINGS: QuestionMapping[] = [
   {
     questionId: 'Q071',
     questionNumber: 71,
-    categoryCode: 'IDS',
+    categoryCode: 'ITD',
     chapterCode: 'RS',
     questionText: 'IT Support & Maintenance: On a scale of 1-5, how effective is your IT support strategy?',
     responseType: 'scale_1_5',
