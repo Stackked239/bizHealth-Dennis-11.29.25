@@ -48,12 +48,20 @@ class Phase4IDMCompiler:
     Implements the BizHealth.ai Analysis Architecture framework.
     """
 
-    def __init__(self, phase1_path: str, phase2_path: str, phase3_path: str, webhook_path: Optional[str] = None):
+    def __init__(self, phase1_path: str, phase2_path: str, phase3_path: str,
+                 phase1_5_path: Optional[str] = None, webhook_path: Optional[str] = None):
         """Initialize with paths to analysis files"""
         self.phase1 = self._load_json(phase1_path)
         self.phase2 = self._load_json(phase2_path)
         self.phase3 = self._load_json(phase3_path)
+        self.phase1_5 = self._load_json(phase1_5_path) if phase1_5_path else {}
         self.webhook_data = self._load_json(webhook_path) if webhook_path else {}
+
+        # Track data source for logging
+        self.using_phase1_5 = bool(self.phase1_5 and self.phase1_5.get('categoryAnalyses'))
+        if self.using_phase1_5:
+            print(f"  ✓ Phase 1.5 data loaded: {len(self.phase1_5.get('categoryAnalyses', []))} categories")
+
         self.category_scores = self._extract_category_scores()
         self.benchmarks = self._load_benchmarks()
 
@@ -67,7 +75,48 @@ class Phase4IDMCompiler:
             return {}
 
     def _extract_category_scores(self) -> List[CategoryScore]:
-        """Extract all category scores from webhook data and Phase 1 analyses"""
+        """Extract category scores - Phase 1.5 is authoritative if available"""
+
+        # PRIORITY: Use Phase 1.5 category analyses if available
+        if self.phase1_5 and 'categoryAnalyses' in self.phase1_5:
+            categories = []
+            for cat in self.phase1_5['categoryAnalyses']:
+                # Extract percentile from benchmarkComparisons if available
+                percentile = 50  # default
+                if cat.get('benchmarkComparisons'):
+                    # Average the positions across all benchmark comparisons
+                    position_map = {'poor': 20, 'average': 50, 'good': 70, 'excellent': 90}
+                    positions = [position_map.get(bc.get('position', 'average'), 50)
+                                for bc in cat['benchmarkComparisons']]
+                    percentile = int(sum(positions) / len(positions)) if positions else 50
+
+                # Map trajectory to trend
+                trajectory = self.phase1_5.get('overallSummary', {}).get('trajectory', 'Stable')
+                trend_map = {'Declining': 'declining', 'Stable': 'stable', 'Improving': 'improving'}
+                trend = trend_map.get(trajectory, 'stable')
+
+                # Get benchmark from our library for this dimension
+                # Map ITD to IDS for compatibility with IDM model
+                dim_code = cat['categoryCode']
+                if dim_code == 'ITD':
+                    dim_code = 'IDS'
+                benchmark_score = self._get_benchmark_for_dimension(dim_code)
+
+                categories.append(CategoryScore(
+                    name=cat['categoryName'],
+                    dimension_code=dim_code,
+                    score=float(cat['overallScore']),  # Use Phase 1.5 AI-weighted score
+                    benchmark_score=benchmark_score,
+                    weight=1.0 / 12,
+                    trend=trend,
+                    percentile=percentile
+                ))
+
+            print(f"  ✓ Using Phase 1.5 scores for {len(categories)} categories")
+            return categories
+
+        # FALLBACK: Original webhook-based extraction
+        print("  ⚠ Phase 1.5 not available, falling back to webhook calculation")
         categories = []
 
         # Map webhook categories to dimensions
@@ -102,6 +151,21 @@ class Phase4IDMCompiler:
             ))
 
         return categories if categories else self._get_default_scores()
+
+    def _get_benchmark_for_dimension(self, dim_code: str) -> float:
+        """Get benchmark score for a dimension code"""
+        benchmark_map = {
+            'STR': 3.5, 'SAL': 3.6, 'MKT': 3.4, 'CXP': 3.7,
+            'OPS': 3.5, 'FIN': 3.6, 'HRS': 3.3, 'LDG': 3.4,
+            'TIN': 3.5, 'ITD': 3.5, 'IDS': 3.5, 'RMS': 3.4, 'CMP': 3.6
+        }
+        return benchmark_map.get(dim_code, 3.5)
+
+    def _normalize_dim_code(self, dim_code: str) -> str:
+        """Normalize dimension code (e.g., ITD -> IDS for compatibility)"""
+        if dim_code == 'ITD':
+            return 'IDS'
+        return dim_code
 
     def _calculate_category_score(self, category_data: Dict, dimension_code: str) -> float:
         """Calculate category score from webhook responses"""
@@ -238,6 +302,24 @@ class Phase4IDMCompiler:
         # Build scores summary
         scores_summary = self._build_scores_summary(chapters, dimensions, findings)
 
+        # Store Phase 1.5 cross-category insights for later enrichment
+        self.cross_category_insights = None
+        self.phase15_overall_health = None
+
+        if self.phase1_5:
+            if 'crossCategoryInsights' in self.phase1_5:
+                self.cross_category_insights = self.phase1_5['crossCategoryInsights']
+            if 'overallSummary' in self.phase1_5:
+                self.phase15_overall_health = {
+                    'score': self.phase1_5['overallSummary'].get('healthScore'),
+                    'status': self.phase1_5['overallSummary'].get('healthStatus'),
+                    'trajectory': self.phase1_5['overallSummary'].get('trajectory'),
+                    'top_strengths': self.phase1_5['overallSummary'].get('topStrengths', []),
+                    'top_weaknesses': self.phase1_5['overallSummary'].get('topWeaknesses', []),
+                    'top_risks': self.phase1_5['overallSummary'].get('topRisks', []),
+                    'top_opportunities': self.phase1_5['overallSummary'].get('topOpportunities', [])
+                }
+
         return IDM(
             meta=meta,
             chapters=chapters,
@@ -250,6 +332,66 @@ class Phase4IDMCompiler:
             roadmap=roadmap,
             scores_summary=scores_summary
         )
+
+    def enrich_idm_dict(self, idm_dict: Dict) -> Dict:
+        """Add Phase 1.5 enrichments to IDM dictionary (preserves core schema)"""
+        if self.cross_category_insights:
+            idm_dict['cross_category_insights'] = self.cross_category_insights
+        if self.phase15_overall_health:
+            idm_dict['phase15_overall_health'] = self.phase15_overall_health
+        return idm_dict
+
+    def validate_phase15_integration(self) -> List[str]:
+        """Validate Phase 1.5 data was properly integrated"""
+        issues = []
+
+        if not self.using_phase1_5:
+            issues.append("INFO: Phase 1.5 data not used (fallback mode)")
+            return issues
+
+        phase15_categories = {cat['categoryCode']: cat
+                            for cat in self.phase1_5.get('categoryAnalyses', [])}
+
+        # Verify all 12 categories present
+        expected_codes = ['STR', 'SAL', 'MKT', 'CXP', 'OPS', 'FIN',
+                         'HRS', 'LDG', 'TIN', 'ITD', 'IDS', 'RMS', 'CMP']
+        for code in expected_codes:
+            if code not in phase15_categories:
+                # ITD and IDS may be used interchangeably
+                if code == 'ITD' and 'IDS' in phase15_categories:
+                    continue
+                if code == 'IDS' and 'ITD' in phase15_categories:
+                    continue
+                issues.append(f"MISSING: Category {code} not in Phase 1.5 data")
+
+        # Verify scores were used correctly
+        for cat_score in self.category_scores:
+            phase15_cat = phase15_categories.get(cat_score.dimension_code)
+            if phase15_cat:
+                expected_score = phase15_cat['overallScore']
+                if abs(cat_score.score - expected_score) > 0.1:
+                    issues.append(f"SCORE MISMATCH: {cat_score.dimension_code} "
+                                f"expected {expected_score}, got {cat_score.score}")
+
+        # Verify rich content was extracted
+        total_strengths = sum(len(cat.get('strengths', [])) for cat in phase15_categories.values())
+        total_weaknesses = sum(len(cat.get('weaknesses', [])) for cat in phase15_categories.values())
+        total_quickwins = sum(len(cat.get('quickWins', [])) for cat in phase15_categories.values())
+
+        if total_strengths < 12:
+            issues.append(f"LOW CONTENT: Only {total_strengths} strengths found (expected 36+)")
+        if total_weaknesses < 12:
+            issues.append(f"LOW CONTENT: Only {total_weaknesses} weaknesses found (expected 36+)")
+        if total_quickwins < 12:
+            issues.append(f"LOW CONTENT: Only {total_quickwins} quick wins found (expected 24+)")
+
+        # Verify cross-category insights if present
+        if not self.phase1_5.get('crossCategoryInsights'):
+            issues.append("WARNING: No cross-category insights found in Phase 1.5 data")
+        if not self.phase1_5.get('overallSummary'):
+            issues.append("WARNING: No overall summary found in Phase 1.5 data")
+
+        return issues
 
     def _build_questions(self) -> List[Question]:
         """Build questions from webhook data"""
@@ -365,9 +507,65 @@ class Phase4IDMCompiler:
         return chapters
 
     def _build_findings(self, dimensions: List[Dimension]) -> List[Finding]:
-        """Build findings from dimensions"""
+        """Build findings - use Phase 1.5 strengths/weaknesses if available"""
         findings = []
+        finding_id = 1
 
+        # PRIORITY: Extract findings from Phase 1.5 category analyses
+        if self.phase1_5 and 'categoryAnalyses' in self.phase1_5:
+            for cat in self.phase1_5['categoryAnalyses']:
+                dim_code = DimensionCode(self._normalize_dim_code(cat['categoryCode']))
+
+                # Map STRENGTHS to STRENGTH findings
+                for strength in cat.get('strengths', []):
+                    findings.append(Finding(
+                        id=f"finding-{finding_id:03d}",
+                        dimension_code=dim_code,
+                        type=FindingType.STRENGTH,
+                        severity="Low",
+                        confidence_level="High",
+                        short_label=strength.get('title', 'Strength Identified'),
+                        narrative=strength.get('description', ''),
+                        evidence_refs={
+                            "evidence": strength.get('evidence', []),
+                            "impact_level": strength.get('impactLevel', 'medium')
+                        }
+                    ))
+                    finding_id += 1
+
+                # Map WEAKNESSES to GAP or RISK findings based on severity
+                for weakness in cat.get('weaknesses', []):
+                    severity = weakness.get('severity', 'medium')
+                    finding_type = FindingType.RISK if severity in ['critical', 'high'] else FindingType.GAP
+
+                    # Map severity strings to IDM format
+                    severity_map = {'critical': 'Critical', 'high': 'High', 'medium': 'Medium', 'low': 'Low'}
+                    idm_severity = severity_map.get(severity.lower() if isinstance(severity, str) else 'medium', 'Medium')
+
+                    narrative = weakness.get('description', '')
+                    if weakness.get('rootCause'):
+                        narrative += f" Root cause: {weakness['rootCause']}"
+
+                    findings.append(Finding(
+                        id=f"finding-{finding_id:03d}",
+                        dimension_code=dim_code,
+                        type=finding_type,
+                        severity=idm_severity,
+                        confidence_level="High",
+                        short_label=weakness.get('title', 'Gap Identified'),
+                        narrative=narrative,
+                        evidence_refs={
+                            "evidence": weakness.get('evidence', []),
+                            "root_cause": weakness.get('rootCause')
+                        }
+                    ))
+                    finding_id += 1
+
+            print(f"  ✓ Generated {len(findings)} findings from Phase 1.5 analysis")
+            return findings
+
+        # FALLBACK: Original score-based finding generation
+        print("  ⚠ Using score-based finding generation (Phase 1.5 not available)")
         for dim in dimensions:
             # Strengths (Excellence tier)
             if dim.score_overall >= 80:
@@ -411,11 +609,92 @@ class Phase4IDMCompiler:
         return findings
 
     def _build_recommendations(self, dimensions: List[Dimension], findings: List[Finding]) -> List[Recommendation]:
-        """Build recommendations from dimensions and findings"""
+        """Build recommendations - Phase 1.5 quickWins become recommendations"""
         recommendations = []
         priority_rank = 1
 
-        # Sort dimensions by score (lowest first)
+        # PRIORITY: Convert Phase 1.5 quick wins to recommendations
+        if self.phase1_5 and 'categoryAnalyses' in self.phase1_5:
+            for cat in self.phase1_5['categoryAnalyses']:
+                dim_code = DimensionCode(self._normalize_dim_code(cat['categoryCode']))
+
+                for qw in cat.get('quickWins', []):
+                    # Map effort to horizon
+                    effort = qw.get('effort', 'medium').lower() if isinstance(qw.get('effort'), str) else 'medium'
+                    horizon_map = {
+                        'low': RecommendationHorizon.NINETY_DAYS,
+                        'medium': RecommendationHorizon.TWELVE_MONTHS,
+                        'high': RecommendationHorizon.TWENTY_FOUR_MONTHS_PLUS
+                    }
+                    horizon = horizon_map.get(effort, RecommendationHorizon.NINETY_DAYS)
+
+                    # Map impact to priority and scores
+                    impact = qw.get('impact', 'medium').lower() if isinstance(qw.get('impact'), str) else 'medium'
+                    impact_score_map = {'high': 85, 'medium': 65, 'low': 45}
+                    effort_score_map = {'low': 30, 'medium': 55, 'high': 80}
+
+                    impact_score = impact_score_map.get(impact, 65)
+                    effort_score = effort_score_map.get(effort, 55)
+
+                    # Find related findings for this dimension
+                    linked_finding_ids = [
+                        f.id for f in findings
+                        if f.dimension_code == dim_code and f.type in [FindingType.GAP, FindingType.RISK]
+                    ]
+
+                    # Build expected outcomes with ROI if available
+                    expected_outcomes = qw.get('description', '')
+                    if qw.get('estimatedROI'):
+                        expected_outcomes += f" Expected ROI: {qw['estimatedROI']}"
+
+                    recommendations.append(Recommendation(
+                        id=f"rec-{priority_rank:03d}",
+                        dimension_code=dim_code,
+                        linked_finding_ids=linked_finding_ids[:3] if linked_finding_ids else [],
+                        theme=qw.get('title', 'Improvement Initiative'),
+                        priority_rank=priority_rank,
+                        impact_score=impact_score,
+                        effort_score=effort_score,
+                        horizon=horizon,
+                        required_capabilities=[cat.get('categoryName', dim_code.value), "Change Management"],
+                        action_steps=[
+                            qw.get('description', 'Implement improvement initiative'),
+                            f"Target timeline: {qw.get('timeline', '90 days')}",
+                            "Monitor progress and measure outcomes",
+                            "Document learnings and best practices"
+                        ],
+                        expected_outcomes=expected_outcomes
+                    ))
+                    priority_rank += 1
+
+            # Add strategic recommendations from Phase 1.5 overall summary
+            if self.phase1_5.get('overallSummary', {}).get('topOpportunities'):
+                for opp in self.phase1_5['overallSummary']['topOpportunities'][:5]:
+                    recommendations.append(Recommendation(
+                        id=f"rec-{priority_rank:03d}",
+                        dimension_code=DimensionCode.STR,  # Strategic cross-cutting
+                        linked_finding_ids=[],
+                        theme=opp if isinstance(opp, str) else str(opp),
+                        priority_rank=priority_rank,
+                        impact_score=80,
+                        effort_score=60,
+                        horizon=RecommendationHorizon.TWELVE_MONTHS,
+                        required_capabilities=["Strategic Planning", "Cross-functional Leadership"],
+                        action_steps=[
+                            f"Strategic opportunity: {opp}",
+                            "Develop detailed implementation plan",
+                            "Assign executive sponsor and project team",
+                            "Establish milestones and success metrics"
+                        ],
+                        expected_outcomes=f"Strategic improvement through: {opp}"
+                    ))
+                    priority_rank += 1
+
+            print(f"  ✓ Generated {len(recommendations)} recommendations from Phase 1.5 analysis")
+            return recommendations
+
+        # FALLBACK: Original generation logic
+        print("  ⚠ Using generic recommendation generation (Phase 1.5 not available)")
         sorted_dims = sorted(dimensions, key=lambda d: d.score_overall)
 
         for dim in sorted_dims:
@@ -466,8 +745,33 @@ class Phase4IDMCompiler:
         return recommendations
 
     def _build_quick_wins(self, recommendations: List[Recommendation]) -> List[QuickWin]:
-        """Build quick wins from recommendations"""
+        """Build quick wins - extract from Phase 1.5 or filter from recommendations"""
         quick_wins = []
+
+        # PRIORITY: Use Phase 1.5 quick wins directly (filter to low/medium effort)
+        if self.phase1_5 and 'categoryAnalyses' in self.phase1_5:
+            # Find recommendations that came from Phase 1.5 quick wins with low effort
+            for rec in recommendations:
+                # Check if this is a low-effort, high-impact recommendation
+                if rec.effort_score <= 40 and rec.impact_score >= 60:
+                    quick_wins.append(QuickWin(recommendation_id=rec.id))
+                    if len(quick_wins) >= 10:
+                        break
+
+            # If not enough, add 90-day horizon items
+            if len(quick_wins) < 5:
+                for rec in recommendations:
+                    if rec.horizon == RecommendationHorizon.NINETY_DAYS:
+                        if not any(qw.recommendation_id == rec.id for qw in quick_wins):
+                            quick_wins.append(QuickWin(recommendation_id=rec.id))
+                            if len(quick_wins) >= 10:
+                                break
+
+            print(f"  ✓ Generated {len(quick_wins)} quick wins from Phase 1.5 analysis")
+            return quick_wins
+
+        # FALLBACK: Filter recommendations for quick wins
+        print("  ⚠ Deriving quick wins from recommendations (Phase 1.5 not available)")
 
         # High impact, low effort, short horizon
         for rec in recommendations:
@@ -490,9 +794,61 @@ class Phase4IDMCompiler:
         return quick_wins
 
     def _build_risks(self, dimensions: List[Dimension], findings: List[Finding]) -> List[Risk]:
-        """Build risks from findings"""
+        """Build risks - use Phase 1.5 categoryRisks if available"""
         risks = []
+        risk_id = 1
 
+        # PRIORITY: Extract risks from Phase 1.5 category analyses
+        if self.phase1_5 and 'categoryAnalyses' in self.phase1_5:
+            for cat in self.phase1_5['categoryAnalyses']:
+                dim_code = self._normalize_dim_code(cat['categoryCode'])
+
+                for category_risk in cat.get('categoryRisks', []):
+                    # Map likelihood/impact to IDM format
+                    likelihood_map = {'low': 'Low', 'medium': 'Medium', 'high': 'High'}
+                    impact_map = {'low': 'Low', 'medium': 'Medium', 'high': 'High'}
+
+                    likelihood = category_risk.get('likelihood', 'medium')
+                    impact = category_risk.get('impact', 'medium')
+
+                    # Determine severity based on likelihood x impact
+                    risk_level = likelihood_map.get(likelihood.lower() if isinstance(likelihood, str) else 'medium', 'Medium')
+                    impact_level = impact_map.get(impact.lower() if isinstance(impact, str) else 'medium', 'Medium')
+
+                    # Calculate severity from likelihood and impact
+                    severity_matrix = {
+                        ('High', 'High'): 'Critical',
+                        ('High', 'Medium'): 'High',
+                        ('Medium', 'High'): 'High',
+                        ('Medium', 'Medium'): 'Medium',
+                        ('Low', 'High'): 'Medium',
+                        ('High', 'Low'): 'Medium',
+                        ('Medium', 'Low'): 'Low',
+                        ('Low', 'Medium'): 'Low',
+                        ('Low', 'Low'): 'Low'
+                    }
+                    severity = severity_matrix.get((risk_level, impact_level), 'Medium')
+
+                    # Build narrative with mitigation
+                    narrative = category_risk.get('description', '')
+                    if category_risk.get('mitigation'):
+                        narrative += f" Mitigation: {category_risk['mitigation']}"
+
+                    risks.append(Risk(
+                        id=f"risk-{risk_id:03d}",
+                        dimension_code=DimensionCode(dim_code),
+                        severity=severity,
+                        likelihood=risk_level,
+                        narrative=narrative,
+                        category=cat.get('categoryName', DIMENSION_METADATA[DimensionCode(dim_code)].name)
+                    ))
+                    risk_id += 1
+
+            print(f"  ✓ Generated {len(risks)} risks from Phase 1.5 analysis")
+            return risks
+
+        # FALLBACK: Original finding-based risk generation
+        print("  ⚠ Using finding-based risk generation (Phase 1.5 not available)")
         risk_findings = [f for f in findings if f.type == FindingType.RISK or f.severity == "Critical"]
 
         for finding in risk_findings:
@@ -746,22 +1102,44 @@ class Phase4IDMCompiler:
 def main():
     """Main execution function"""
     if len(sys.argv) < 4:
-        print("Usage: python phase4-idm-compiler.py <phase1.json> <phase2.json> <phase3.json> [webhook.json]")
+        print("Usage: python phase4-idm-compiler.py <phase1.json> <phase2.json> <phase3.json> [phase1_5.json] [webhook.json]")
         sys.exit(1)
 
     phase1_path = sys.argv[1]
     phase2_path = sys.argv[2]
     phase3_path = sys.argv[3]
-    webhook_path = sys.argv[4] if len(sys.argv) > 4 else None
+
+    # Optional Phase 1.5 (new) - check if arg exists and is a phase1_5 file
+    phase1_5_path = None
+    webhook_path = None
+
+    if len(sys.argv) > 4:
+        # Determine if 4th arg is phase1_5 or webhook based on filename pattern
+        arg4 = sys.argv[4]
+        if 'phase1_5' in arg4.lower() or 'phase1-5' in arg4.lower():
+            phase1_5_path = arg4
+            webhook_path = sys.argv[5] if len(sys.argv) > 5 else None
+        else:
+            # Legacy: 4th arg is webhook
+            webhook_path = arg4
 
     print("Phase 4 + IDM Compilation Engine Starting...")
     print(f"  Phase 1: {Path(phase1_path).name}")
     print(f"  Phase 2: {Path(phase2_path).name}")
     print(f"  Phase 3: {Path(phase3_path).name}")
+    if phase1_5_path:
+        print(f"  Phase 1.5: {Path(phase1_5_path).name} [AUTHORITATIVE SOURCE]")
     if webhook_path:
         print(f"  Webhook: {Path(webhook_path).name}")
 
-    compiler = Phase4IDMCompiler(phase1_path, phase2_path, phase3_path, webhook_path)
+    compiler = Phase4IDMCompiler(phase1_path, phase2_path, phase3_path, phase1_5_path, webhook_path)
+
+    # Run Phase 1.5 integration validation
+    validation_issues = compiler.validate_phase15_integration()
+    if validation_issues:
+        print("\n  Phase 1.5 Integration Validation:")
+        for issue in validation_issues:
+            print(f"    - {issue}")
 
     # Generate Phase 4 output
     phase4_output = compiler.compile_phase4_json()
@@ -771,6 +1149,9 @@ def main():
     # Generate IDM
     idm = compiler.compile_idm()
     idm_dict = idm_to_dict(idm)
+
+    # Enrich IDM with Phase 1.5 cross-category insights
+    idm_dict = compiler.enrich_idm_dict(idm_dict)
 
     # Create output directory
     output_dir = Path("output/phase4")
@@ -788,15 +1169,22 @@ def main():
     with open(idm_path, 'w') as f:
         json.dump(idm_dict, f, indent=2)
 
-    # Write master analysis (combined)
+    # Write master analysis (combined) with Phase 1.5 integration metadata
     master_filename = f"master-analysis-{company_id}-{timestamp}.json"
     master_path = output_dir / master_filename
     master_output = {
         "meta": {
             "company_profile_id": company_id,
             "generated_at": datetime.utcnow().isoformat() + "Z",
-            "phases_included": ["phase1", "phase2", "phase3", "phase4"],
-            "idm_path": str(idm_path)
+            "phases_included": ["phase1", "phase1_5", "phase2", "phase3", "phase4"] if compiler.using_phase1_5
+                              else ["phase1", "phase2", "phase3", "phase4"],
+            "idm_path": str(idm_path),
+            "phase1_5_integration": {
+                "used": compiler.using_phase1_5,
+                "categories_integrated": len(compiler.phase1_5.get('categoryAnalyses', [])) if compiler.using_phase1_5 else 0,
+                "data_source": "phase1_5_output.json" if compiler.using_phase1_5 else "webhook_calculation",
+                "validation_issues": validation_issues
+            }
         },
         "phases": {
             "phase1": compiler.phase1,
@@ -810,9 +1198,18 @@ def main():
             "chapters_count": len(idm_dict['chapters']),
             "dimensions_count": len(idm_dict['dimensions']),
             "findings_count": len(idm_dict['findings']),
-            "recommendations_count": len(idm_dict['recommendations'])
+            "recommendations_count": len(idm_dict['recommendations']),
+            "quick_wins_count": len(idm_dict['quick_wins']),
+            "risks_count": len(idm_dict['risks']),
+            "has_cross_category_insights": 'cross_category_insights' in idm_dict,
+            "has_phase15_health": 'phase15_overall_health' in idm_dict
         }
     }
+
+    # Include Phase 1.5 data in master output if available
+    if compiler.using_phase1_5:
+        master_output["phases"]["phase1_5"] = compiler.phase1_5
+
     with open(master_path, 'w') as f:
         json.dump(master_output, f, indent=2)
 
@@ -824,6 +1221,12 @@ def main():
     print(f"    IDM dimensions: {len(idm_dict['dimensions'])}")
     print(f"    IDM findings: {len(idm_dict['findings'])}")
     print(f"    IDM recommendations: {len(idm_dict['recommendations'])}")
+    print(f"    IDM quick wins: {len(idm_dict['quick_wins'])}")
+    print(f"    IDM risks: {len(idm_dict['risks'])}")
+    if compiler.using_phase1_5:
+        print(f"    Phase 1.5 integrated: YES (authoritative source)")
+    else:
+        print(f"    Phase 1.5 integrated: NO (fallback mode)")
 
 
 if __name__ == "__main__":
