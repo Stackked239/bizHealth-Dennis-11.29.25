@@ -69,21 +69,23 @@ export const CHAPTER_CONFIG: Record<
   ChapterCode,
   { name: string; fullName: string; icon: string; color: string }
 > = {
-  GE: { name: 'Growth Engine', fullName: 'Growth Engine', icon: '🚀', color: '#28a745' },
+  // Using abbreviated 'name' for radar chart labels to avoid truncation
+  // 'fullName' contains the complete chapter name for other contexts
+  GE: { name: 'Growth', fullName: 'Growth Engine', icon: '🚀', color: '#28a745' },
   PH: {
-    name: 'Performance & Health',
+    name: 'Performance',
     fullName: 'Performance & Health',
     icon: '📊',
     color: '#0d6efd',
   },
   PL: {
-    name: 'People & Leadership',
+    name: 'People',
     fullName: 'People & Leadership',
     icon: '👥',
     color: '#ffc107',
   },
   RS: {
-    name: 'Resilience & Safeguards',
+    name: 'Resilience',
     fullName: 'Resilience & Safeguards',
     icon: '🛡️',
     color: '#dc3545',

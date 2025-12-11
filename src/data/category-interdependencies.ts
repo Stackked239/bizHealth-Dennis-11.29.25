@@ -333,11 +333,11 @@ export const CATEGORY_INTERDEPENDENCIES: CategoryInterdependency[] = [
   },
 
   // =========================================================================
-  // IT, DATA & SYSTEMS (IDS) RELATIONSHIPS
+  // IT & DATA SECURITY (ITD) RELATIONSHIPS
   // IT infrastructure supports technology initiatives
   // =========================================================================
   {
-    sourceCategory: 'IDS',
+    sourceCategory: 'ITD',
     targetCategory: 'TIN',
     relationshipType: 'enables',
     strength: 'strong',
@@ -345,7 +345,7 @@ export const CATEGORY_INTERDEPENDENCIES: CategoryInterdependency[] = [
     evidencePatterns: ['system_reliability', 'integration_capability', 'scalability']
   },
   {
-    sourceCategory: 'IDS',
+    sourceCategory: 'ITD',
     targetCategory: 'OPS',
     relationshipType: 'enables',
     strength: 'moderate',
@@ -353,7 +353,7 @@ export const CATEGORY_INTERDEPENDENCIES: CategoryInterdependency[] = [
     evidencePatterns: ['system_uptime', 'data_availability']
   },
   {
-    sourceCategory: 'IDS',
+    sourceCategory: 'ITD',
     targetCategory: 'RMS',
     relationshipType: 'mitigates',
     strength: 'strong',
@@ -361,7 +361,7 @@ export const CATEGORY_INTERDEPENDENCIES: CategoryInterdependency[] = [
     evidencePatterns: ['cybersecurity_posture', 'data_backup', 'disaster_recovery']
   },
   {
-    sourceCategory: 'IDS',
+    sourceCategory: 'ITD',
     targetCategory: 'CMP',
     relationshipType: 'enables',
     strength: 'moderate',
@@ -592,7 +592,7 @@ export function getCascadeRiskPaths(
 export function getMostInfluentialCategories(topN: number = 5): { code: CategoryCode; score: number }[] {
   const allCategories: CategoryCode[] = [
     'STR', 'SAL', 'MKT', 'CXP', 'OPS', 'FIN',
-    'HRS', 'LDG', 'TIN', 'IDS', 'RMS', 'CMP'
+    'HRS', 'LDG', 'TIN', 'ITD', 'RMS', 'CMP'
   ];
 
   return allCategories
@@ -607,7 +607,7 @@ export function getMostInfluentialCategories(topN: number = 5): { code: Category
 export function getMostVulnerableCategories(topN: number = 5): { code: CategoryCode; score: number }[] {
   const allCategories: CategoryCode[] = [
     'STR', 'SAL', 'MKT', 'CXP', 'OPS', 'FIN',
-    'HRS', 'LDG', 'TIN', 'IDS', 'RMS', 'CMP'
+    'HRS', 'LDG', 'TIN', 'ITD', 'RMS', 'CMP'
   ];
 
   return allCategories

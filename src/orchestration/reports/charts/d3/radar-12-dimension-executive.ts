@@ -83,6 +83,7 @@ export interface ExecutiveRadarOptions {
  * Dimension ordering (critical for pattern recognition)
  * Grouped by chapter quadrant
  */
+// NOTE: Using ITD (canonical code for Phase 1.5+) for IT & Data dimension
 export const DIMENSION_ORDER = [
   'STR',
   'SAL',
@@ -93,7 +94,7 @@ export const DIMENSION_ORDER = [
   'HRS',
   'LDG', // People Leadership quadrant (bottom-left)
   'TIN',
-  'IDS',
+  'ITD', // IT & Data Security (canonical code)
   'RMS',
   'CMP', // Resilience Safeguards quadrant (top-left)
 ] as const;
@@ -121,7 +122,8 @@ export const DIMENSION_CONFIG: Record<string, DimensionConfig> = {
     icon: '💻',
     chapter: 'RS',
   },
-  IDS: { name: 'IT & Data Security', shortName: 'IT/Data', icon: '🖥️', chapter: 'RS' },
+  ITD: { name: 'IT & Data Security', shortName: 'IT/Data', icon: '🖥️', chapter: 'RS' },
+  IDS: { name: 'IT & Data Security', shortName: 'IT/Data', icon: '🖥️', chapter: 'RS' }, // Legacy alias
   RMS: { name: 'Risk Management', shortName: 'Risk', icon: '⚠️', chapter: 'RS' },
   CMP: { name: 'Compliance', shortName: 'Compliance', icon: '📋', chapter: 'RS' },
 };
