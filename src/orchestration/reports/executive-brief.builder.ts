@@ -57,6 +57,60 @@ import {
   mapDimensionToOwner,
 } from './utils/index.js';
 import { logger } from '../../utils/logger.js';
+import {
+  validateReportContextForExecutiveBrief,
+  CANONICAL_CATEGORIES,
+  CATEGORY_NAMES,
+} from '../../utils/idm-validation.js';
+
+// ============================================================================
+// SCORE BAND UTILITIES (Enhanced for consistent styling)
+// ============================================================================
+
+/**
+ * Score band utilities for consistent color-coding across the report
+ * Uses 80/60/40 thresholds per North Star specification
+ */
+const ScoreBands = {
+  /**
+   * Get color for a score value
+   */
+  getColor(score: number): string {
+    if (score >= 80) return '#28a745'; // Excellence - Green
+    if (score >= 60) return '#0d6efd'; // Proficiency - Blue
+    if (score >= 40) return '#ffc107'; // Attention - Yellow
+    return '#dc3545'; // Critical - Red
+  },
+
+  /**
+   * Get label for a score value
+   */
+  getLabel(score: number): string {
+    if (score >= 80) return 'Excellence';
+    if (score >= 60) return 'Proficiency';
+    if (score >= 40) return 'Attention';
+    return 'Critical';
+  },
+
+  /**
+   * Get background color with transparency for a score value
+   */
+  getBackgroundColor(score: number): string {
+    if (score >= 80) return '#28a74520';
+    if (score >= 60) return '#0d6efd20';
+    if (score >= 40) return '#ffc10720';
+    return '#dc354520';
+  },
+
+  /**
+   * Get text color that contrasts with the band color
+   * Yellow band needs dark text for readability
+   */
+  getTextColor(score: number): string {
+    if (score >= 40 && score < 60) return '#212653'; // Dark text for yellow
+    return 'white'; // White text for others
+  }
+};
 
 // ============================================================================
 // LOCAL UTILITY WRAPPERS (for backward compatibility)
@@ -83,6 +137,12 @@ function getBandColor(band: string): string {
 /**
  * Generate the main executive snapshot page (Page 1)
  * Designed for 30-second absorption - single printed page
+ *
+ * Enhanced layout includes:
+ * - ROW 1: Health Score + Radar Chart + Trajectory/Pillar Summary + Investment
+ * - ROW 2: Four Pillar Tiles
+ * - ROW 3: Category Heatmap (12-Dimension Overview)
+ * - ROW 4: Executive Headlines
  */
 function generateExecutiveSnapshot(ctx: ReportContext, options: ReportRenderOptions): string {
   const { companyProfile, overallHealth, chapters } = ctx;
@@ -122,18 +182,21 @@ function generateExecutiveSnapshot(ctx: ReportContext, options: ReportRenderOpti
       </div>
 
       <!-- MAIN CONTENT AREA -->
-      <div style="background: #f8f9fa; padding: 20px; border-radius: 0 0 12px 12px;">
+      <div style="background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%); padding: 20px; border-radius: 0 0 12px 12px;">
 
-        <!-- ROW 1: Health Score + Trajectory + Investment Summary -->
-        <div style="display: grid; grid-template-columns: 200px 1fr 260px; gap: 16px; margin-bottom: 16px;">
+        <!-- ROW 1: Health Score + Radar + Trajectory + Investment -->
+        <div style="display: grid; grid-template-columns: 200px 180px 1fr 260px; gap: 16px; margin-bottom: 16px;">
 
           <!-- Overall Health Gauge -->
           ${generateHealthGaugeCompact(overallScore, overallBand, percentile)}
 
-          <!-- Trajectory + Pillar Summary -->
+          <!-- Mini Radar Chart (NEW) -->
+          ${generateMiniRadarChart(chapters)}
+
+          <!-- Trajectory + Pillar Summary Bars -->
           <div style="display: flex; flex-direction: column; gap: 12px;">
             ${generateTrajectoryIndicator(ctx)}
-            ${generatePillarStrip(chapters)}
+            ${generatePillarSummaryBars(chapters)}
           </div>
 
           <!-- Investment & ROI Summary -->
@@ -145,10 +208,13 @@ function generateExecutiveSnapshot(ctx: ReportContext, options: ReportRenderOpti
           ${generatePillarTiles(chapters)}
         </div>
 
-        <!-- ROW 3: Executive Headlines -->
+        <!-- ROW 3: Category Heatmap (NEW - 12-Dimension Overview) -->
+        ${generateCategoryHeatmap(ctx)}
+
+        <!-- ROW 4: Executive Headlines -->
         ${generateExecutiveHeadlines(ctx)}
 
-        <!-- Important Limitations (minimal) -->
+        <!-- Disclaimer -->
         <div style="
           margin-top: 16px;
           padding: 8px 12px;
@@ -314,6 +380,203 @@ function generatePillarStrip(chapters: ReportChapter[]): string {
 }
 
 /**
+ * Generate Category Heatmap showing all 12 business dimensions at a glance
+ * Provides executives with instant visual scan of all dimensions
+ */
+function generateCategoryHeatmap(ctx: ReportContext): string {
+  const { dimensions } = ctx;
+
+  // Build a map of dimension codes to their data
+  const dimensionMap = new Map<string, { score: number; name: string }>();
+  for (const dim of dimensions) {
+    const code = (dim.code || (dim as Record<string, unknown>).dimensionCode) as string | undefined;
+    if (code) {
+      dimensionMap.set(code.toUpperCase(), {
+        score: extractNumericValue(dim.score, 0),
+        name: dim.name || code
+      });
+    }
+  }
+
+  // Generate tiles for all 12 canonical categories
+  const tiles = CANONICAL_CATEGORIES.map(code => {
+    const dimData = dimensionMap.get(code);
+    const score = dimData?.score || 0;
+    const name = CATEGORY_NAMES[code] || code;
+    const bgColor = ScoreBands.getColor(score);
+    const textColor = ScoreBands.getTextColor(score);
+
+    return `
+      <div style="
+        background: ${bgColor};
+        color: ${textColor};
+        padding: 8px 6px;
+        border-radius: 6px;
+        text-align: center;
+        min-width: 70px;
+      ">
+        <div style="font-size: 9px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">${code}</div>
+        <div style="font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 700;">${score}</div>
+        <div style="font-size: 8px; opacity: 0.85; line-height: 1.2; margin-top: 2px;">${escapeHtml(name)}</div>
+      </div>
+    `;
+  });
+
+  return `
+    <div style="
+      background: white;
+      border-radius: 8px;
+      padding: 14px;
+      margin-top: 16px;
+    ">
+      <h4 style="font-family: 'Montserrat', sans-serif; color: #212653; margin: 0 0 12px 0; font-size: 13px;">
+        &#128202; 12-Dimension Health Overview
+      </h4>
+      <div style="
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 8px;
+      ">
+        ${tiles.join('')}
+      </div>
+      <div style="
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        margin-top: 12px;
+        font-size: 9px;
+        color: #666;
+      ">
+        <span><span style="display: inline-block; width: 12px; height: 12px; background: #28a745; border-radius: 2px; vertical-align: middle; margin-right: 4px;"></span>Excellence (80+)</span>
+        <span><span style="display: inline-block; width: 12px; height: 12px; background: #0d6efd; border-radius: 2px; vertical-align: middle; margin-right: 4px;"></span>Proficiency (60-79)</span>
+        <span><span style="display: inline-block; width: 12px; height: 12px; background: #ffc107; border-radius: 2px; vertical-align: middle; margin-right: 4px;"></span>Attention (40-59)</span>
+        <span><span style="display: inline-block; width: 12px; height: 12px; background: #dc3545; border-radius: 2px; vertical-align: middle; margin-right: 4px;"></span>Critical (&lt;40)</span>
+      </div>
+    </div>
+  `;
+}
+
+/**
+ * Generate Mini Radar Chart showing 4-chapter balance
+ * Highlights where the business is balanced or lopsided
+ */
+function generateMiniRadarChart(chapters: ReportChapter[]): string {
+  // Use the 4 chapters for radar points
+  const points = [
+    { label: 'Growth', code: 'GE', score: 0 },
+    { label: 'Performance', code: 'PH', score: 0 },
+    { label: 'People', code: 'PL', score: 0 },
+    { label: 'Resilience', code: 'RS', score: 0 }
+  ];
+
+  // Map chapter scores to points
+  for (const point of points) {
+    const chapter = chapters.find(ch => ch.code === point.code);
+    point.score = chapter ? extractNumericValue(chapter.score, 0) : 0;
+  }
+
+  const centerX = 80;
+  const centerY = 80;
+  const maxRadius = 60;
+
+  // Calculate point positions (4 points at 90-degree intervals)
+  // Top, Right, Bottom, Left
+  const angles = [270, 0, 90, 180];
+  const pointCoords = points.map((p, i) => {
+    const angleRad = (angles[i] * Math.PI) / 180;
+    const radius = (p.score / 100) * maxRadius;
+    return {
+      x: centerX + radius * Math.cos(angleRad),
+      y: centerY + radius * Math.sin(angleRad),
+      label: p.label,
+      score: p.score
+    };
+  });
+
+  // Create polygon path
+  const polygonPoints = pointCoords.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+
+  // Grid circles (25%, 50%, 75%, 100%)
+  const gridCircles = [25, 50, 75, 100].map(pct => {
+    const r = (pct / 100) * maxRadius;
+    return `<circle cx="${centerX}" cy="${centerY}" r="${r}" fill="none" stroke="#e9ecef" stroke-width="1"/>`;
+  }).join('');
+
+  // Axis lines
+  const axisLines = angles.map(angle => {
+    const angleRad = (angle * Math.PI) / 180;
+    const endX = centerX + maxRadius * Math.cos(angleRad);
+    const endY = centerY + maxRadius * Math.sin(angleRad);
+    return `<line x1="${centerX}" y1="${centerY}" x2="${endX}" y2="${endY}" stroke="#e9ecef" stroke-width="1"/>`;
+  }).join('');
+
+  // Labels positioned around the chart
+  const labels = pointCoords.map((p, i) => {
+    const angleRad = (angles[i] * Math.PI) / 180;
+    const labelRadius = maxRadius + 18;
+    const labelX = centerX + labelRadius * Math.cos(angleRad);
+    const labelY = centerY + labelRadius * Math.sin(angleRad);
+    const textAnchor = angles[i] === 0 ? 'start' : angles[i] === 180 ? 'end' : 'middle';
+    const dy = angles[i] === 270 ? -5 : angles[i] === 90 ? 12 : 4;
+
+    return `<text x="${labelX}" y="${labelY + dy}" text-anchor="${textAnchor}" font-family="Open Sans, sans-serif" font-size="9" fill="#666">${p.label}</text>`;
+  }).join('');
+
+  // Data points
+  const dataPoints = pointCoords.map(p =>
+    `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4" fill="#212653"/>`
+  ).join('');
+
+  return `
+    <div style="display: flex; align-items: center; justify-content: center;">
+      <svg width="160" height="160" viewBox="0 0 160 160" role="img" aria-label="Chapter balance radar chart">
+        ${gridCircles}
+        ${axisLines}
+        <polygon points="${polygonPoints}"
+                 fill="rgba(150, 148, 35, 0.3)"
+                 stroke="#969423"
+                 stroke-width="2"/>
+        ${dataPoints}
+        ${labels}
+      </svg>
+    </div>
+  `;
+}
+
+/**
+ * Generate pillar summary bars (compact version for side display)
+ */
+function generatePillarSummaryBars(chapters: ReportChapter[]): string {
+  const pillars = [
+    { code: 'GE', name: 'Growth' },
+    { code: 'PH', name: 'Performance' },
+    { code: 'PL', name: 'People' },
+    { code: 'RS', name: 'Resilience' }
+  ];
+
+  return `
+    <div style="background: white; border-radius: 8px; padding: 10px;">
+      ${pillars.map(p => {
+        const chapter = chapters.find(ch => ch.code === p.code);
+        const score = chapter ? extractNumericValue(chapter.score, 0) : 0;
+        const color = ScoreBands.getColor(score);
+        return `
+          <div style="margin-bottom: 6px;">
+            <div style="display: flex; justify-content: space-between; font-size: 10px; margin-bottom: 2px;">
+              <span style="color: #666;">${p.name}</span>
+              <span style="font-weight: 600; color: #212653;">${score}</span>
+            </div>
+            <div style="height: 4px; background: #e9ecef; border-radius: 2px; overflow: hidden;">
+              <div style="width: ${score}%; height: 100%; background: ${color}; border-radius: 2px;"></div>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
+/**
  * Generate compact investment summary box
  */
 function generateInvestmentSummaryCompact(ctx: ReportContext): string {
@@ -352,20 +615,65 @@ function generateInvestmentSummaryCompact(ctx: ReportContext): string {
         border-radius: 6px;
         text-align: center;
         font-size: 11px;
-      ">
-        <strong>ROI:</strong> ${escapeHtml(financials.roiRange)}
+      " title="${escapeHtml(financials.roiTooltip)}">
+        <strong>${escapeHtml(financials.roiRange)}</strong>
       </div>
     </div>
   `;
 }
 
 /**
+ * Format ROI display in a professional manner
+ * Uses multiplier format (e.g., "22-33x Return") for large returns (>10x)
+ * Uses percentage format for smaller returns
+ */
+function formatROIDisplay(
+  investmentRange: { low: number; high: number },
+  returnRange: { low: number; high: number }
+): { display: string; tooltip: string } {
+  // Avoid division by zero
+  if (investmentRange.high === 0 || investmentRange.low === 0) {
+    return {
+      display: 'High ROI',
+      tooltip: 'Significant return on investment expected'
+    };
+  }
+
+  // Calculate ROI multipliers (more intuitive for large returns)
+  const multiplierLow = returnRange.low / investmentRange.high;
+  const multiplierHigh = returnRange.high / investmentRange.low;
+
+  // Use multiplier format for returns > 10x
+  if (multiplierLow >= 10) {
+    return {
+      display: `${Math.round(multiplierLow)}-${Math.round(multiplierHigh)}x Return`,
+      tooltip: `For every $1 invested, expect $${Math.round(multiplierLow)}-$${Math.round(multiplierHigh)} in return`
+    };
+  }
+
+  // Use percentage for smaller returns (< 10x)
+  const roiLow = Math.round(((returnRange.low - investmentRange.high) / investmentRange.high) * 100);
+  const roiHigh = Math.round(((returnRange.high - investmentRange.low) / investmentRange.low) * 100);
+
+  // Format with commas for large percentages
+  const formattedLow = roiLow.toLocaleString();
+  const formattedHigh = roiHigh.toLocaleString();
+
+  return {
+    display: `${formattedLow}-${formattedHigh}% ROI`,
+    tooltip: `Return on investment range`
+  };
+}
+
+/**
  * Aggregate financial impact from recommendations
+ * Enhanced with professional ROI display formatting
  */
 function aggregateFinancialImpact(ctx: ReportContext): {
   investmentRange: string;
   returnRange: string;
   roiRange: string;
+  roiTooltip: string;
 } {
   const { recommendations, financialProjections, quickWins } = ctx;
 
@@ -384,37 +692,53 @@ function aggregateFinancialImpact(ctx: ReportContext): {
       ? Math.ceil(financialProjections.annualValue * 1.2)
       : 250000;
 
-    const roiMin = Math.round((returnMin / investMax) * 100);
-    const roiMax = Math.round((returnMax / investMin) * 100);
+    const roi = formatROIDisplay(
+      { low: investMin, high: investMax },
+      { low: returnMin, high: returnMax }
+    );
 
     return {
       investmentRange: `$${formatK(investMin)}-${formatK(investMax)}`,
       returnRange: `$${formatK(returnMin)}-${formatK(returnMax)}`,
-      roiRange: `${roiMin}-${roiMax}%`,
+      roiRange: roi.display,
+      roiTooltip: roi.tooltip,
     };
   }
 
   // Estimate from recommendations count
-  const recCount = recommendations.length + quickWins.length;
+  const recCount = Math.max(recommendations.length + quickWins.length, 1);
   const baseInvest = recCount * 8000;
   const baseReturn = recCount * 25000;
 
+  const investMin = Math.floor(baseInvest * 0.8);
+  const investMax = Math.ceil(baseInvest * 1.2);
+  const returnMin = Math.floor(baseReturn * 0.8);
+  const returnMax = Math.ceil(baseReturn * 1.2);
+
+  const roi = formatROIDisplay(
+    { low: investMin, high: investMax },
+    { low: returnMin, high: returnMax }
+  );
+
   return {
-    investmentRange: `$${formatK(Math.floor(baseInvest * 0.8))}-${formatK(Math.ceil(baseInvest * 1.2))}`,
-    returnRange: `$${formatK(Math.floor(baseReturn * 0.8))}-${formatK(Math.ceil(baseReturn * 1.2))}`,
-    roiRange: `150-300%`,
+    investmentRange: `$${formatK(investMin)}-${formatK(investMax)}`,
+    returnRange: `$${formatK(returnMin)}-${formatK(returnMax)}`,
+    roiRange: roi.display,
+    roiTooltip: roi.tooltip,
   };
 }
 
 /**
- * Generate the four pillar tiles
+ * Generate the four pillar tiles with score-based color coding
+ * Border colors and badges now match the actual score band (not fixed pillar colors)
  */
 function generatePillarTiles(chapters: ReportChapter[]): string {
-  const pillarMeta: Record<string, { name: string; icon: string; color: string }> = {
-    'GE': { name: 'Growth Engine', icon: '&#128640;', color: '#28a745' },
-    'PH': { name: 'Performance &amp; Health', icon: '&#128200;', color: '#0d6efd' },
-    'PL': { name: 'People &amp; Leadership', icon: '&#128101;', color: '#ffc107' },
-    'RS': { name: 'Resilience &amp; Safeguards', icon: '&#128737;', color: '#dc3545' },
+  // Pillar metadata - icons and names only, colors derived from scores
+  const pillarMeta: Record<string, { name: string; icon: string }> = {
+    'GE': { name: 'Growth Engine', icon: '&#128640;' },
+    'PH': { name: 'Performance &amp; Health', icon: '&#128200;' },
+    'PL': { name: 'People &amp; Leadership', icon: '&#128101;' },
+    'RS': { name: 'Resilience &amp; Safeguards', icon: '&#128737;' },
   };
 
   // Ensure we show all 4 pillars even if some chapters are missing
@@ -424,9 +748,13 @@ function generatePillarTiles(chapters: ReportChapter[]): string {
     <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
       ${pillarOrder.map(code => {
         const chapter = chapters.find(ch => ch.code === code);
-        const meta = pillarMeta[code] || { name: code, icon: '&#128200;', color: '#212653' };
+        const meta = pillarMeta[code] || { name: code, icon: '&#128200;' };
         const score = chapter ? extractNumericValue(chapter.score, 0) : 0;
-        const band = chapter?.band || getScoreBand(score);
+
+        // Use ScoreBands utility for consistent color-coding based on score
+        const bandColor = ScoreBands.getColor(score);
+        const bandLabel = ScoreBands.getLabel(score);
+        const bandBg = ScoreBands.getBackgroundColor(score);
 
         // Determine trend from chapter data or default to stable
         const chapterAny = chapter as Record<string, unknown> | undefined;
@@ -441,7 +769,7 @@ function generatePillarTiles(chapters: ReportChapter[]): string {
           <div style="
             background: white;
             border: 1px solid #e9ecef;
-            border-top: 4px solid ${meta.color};
+            border-top: 4px solid ${bandColor};
             border-radius: 8px;
             padding: 14px;
             text-align: center;
@@ -458,11 +786,11 @@ function generatePillarTiles(chapters: ReportChapter[]): string {
               font-size: 9px;
               font-weight: 600;
               text-transform: uppercase;
-              background: ${meta.color}20;
-              color: ${meta.color};
+              background: ${bandBg};
+              color: ${bandColor};
               margin: 4px 0;
             ">
-              ${escapeHtml(band)}
+              ${escapeHtml(bandLabel)}
             </div>
             <div style="color: ${trendColor}; font-size: 11px; font-weight: 500;">
               ${trendIcon} ${trendLabel}
@@ -651,11 +979,84 @@ function generateExecutiveActionFocus(ctx: ReportContext): string {
 }
 
 /**
- * Generate risk summary box
+ * Risk item structure for display
+ */
+interface RiskDisplayItem {
+  title: string;
+  description: string;
+  severity: 'Critical' | 'High' | 'Medium' | 'Low';
+  dimension: string;
+}
+
+/**
+ * Extract top risks from context, deriving from low-scoring dimensions if needed
+ * This ensures risk section is never empty when critical issues exist
+ */
+function extractTopRisks(ctx: ReportContext): RiskDisplayItem[] {
+  const { risks, dimensions } = ctx;
+  const displayRisks: RiskDisplayItem[] = [];
+
+  // First, get explicit risks from IDM if available
+  const explicitRisks = risks
+    .filter(r => {
+      const sev = typeof r.severity === 'number' ? r.severity : parseInt(String(r.severity)) || 0;
+      return sev >= 6;
+    })
+    .slice(0, 2)
+    .map(r => {
+      const sev = typeof r.severity === 'number' ? r.severity : parseInt(String(r.severity)) || 0;
+      return {
+        title: r.category || r.dimensionName || 'Risk identified',
+        description: r.narrative?.substring(0, 80) || 'Significant exposure requiring attention',
+        severity: (sev >= 8 ? 'Critical' : 'High') as 'Critical' | 'High',
+        dimension: r.category || r.dimensionName || 'Multiple'
+      };
+    });
+
+  displayRisks.push(...explicitRisks);
+
+  // If we don't have enough explicit risks, derive from low-scoring dimensions
+  if (displayRisks.length < 2 && dimensions.length > 0) {
+    const criticalDimensions = dimensions
+      .filter(d => {
+        const score = extractNumericValue(d.score, 100);
+        // Only include dimensions below 40 (Critical band)
+        return score < 40;
+      })
+      .sort((a, b) => extractNumericValue(a.score, 100) - extractNumericValue(b.score, 100))
+      .slice(0, 2 - displayRisks.length);
+
+    for (const dim of criticalDimensions) {
+      const score = extractNumericValue(dim.score, 0);
+      const name = dim.name || 'Unnamed dimension';
+
+      // Check if we already have a risk for this dimension
+      const alreadyIncluded = displayRisks.some(
+        r => r.dimension.toLowerCase() === name.toLowerCase()
+      );
+
+      if (!alreadyIncluded) {
+        displayRisks.push({
+          title: `${name} requires immediate attention`,
+          description: `Score of ${score}/100 indicates significant vulnerability in this area.`,
+          severity: score < 30 ? 'Critical' : 'High',
+          dimension: name
+        });
+      }
+    }
+  }
+
+  return displayRisks.slice(0, 3);
+}
+
+/**
+ * Generate risk summary box with enhanced risk detection
+ * Now derives risks from low-scoring dimensions if explicit risks aren't available
  */
 function generateRiskSummary(ctx: ReportContext): string {
-  const { risks } = ctx;
+  const { risks, dimensions } = ctx;
 
+  // Count explicit risks
   const criticalCount = risks.filter(r => {
     const sev = typeof r.severity === 'number' ? r.severity : parseInt(String(r.severity)) || 0;
     return sev >= 8;
@@ -666,16 +1067,22 @@ function generateRiskSummary(ctx: ReportContext): string {
     return sev >= 6 && sev < 8;
   }).length;
 
-  // Determine overall risk posture
+  // Also check for critical-band dimensions
+  const criticalDimensionCount = dimensions.filter(d => {
+    const score = extractNumericValue(d.score, 100);
+    return score < 40;
+  }).length;
+
+  // Determine overall risk posture (considering both explicit risks and dimension scores)
   let riskPosture = 'Low';
   let postureColor = '#28a745';
   let posturePosition = '10%';
 
-  if (criticalCount > 0) {
+  if (criticalCount > 0 || criticalDimensionCount >= 2) {
     riskPosture = 'Critical';
     postureColor = '#dc3545';
     posturePosition = '90%';
-  } else if (highCount > 2) {
+  } else if (highCount > 2 || criticalDimensionCount >= 1) {
     riskPosture = 'Elevated';
     postureColor = '#fd7e14';
     posturePosition = '70%';
@@ -685,10 +1092,8 @@ function generateRiskSummary(ctx: ReportContext): string {
     posturePosition = '40%';
   }
 
-  const topRisks = risks.filter(r => {
-    const sev = typeof r.severity === 'number' ? r.severity : parseInt(String(r.severity)) || 0;
-    return sev >= 6;
-  }).slice(0, 3);
+  // Get display risks (from explicit risks or derived from dimensions)
+  const topRisks = extractTopRisks(ctx);
 
   return `
     <div style="
@@ -737,36 +1142,20 @@ function generateRiskSummary(ctx: ReportContext): string {
       <!-- Top Risks -->
       <div style="font-size: 11px;">
         ${topRisks.length > 0 ? topRisks.map((risk, i) => {
-          const sev = typeof risk.severity === 'number' ? risk.severity : parseInt(String(risk.severity)) || 0;
-          const riskColor = sev >= 8 ? '#dc3545' : '#fd7e14';
+          const riskColor = risk.severity === 'Critical' ? '#dc3545' : '#fd7e14';
           return `
             <div style="
-              display: flex;
-              align-items: flex-start;
-              gap: 8px;
-              padding: 6px 0;
-              ${i < topRisks.length - 1 ? 'border-bottom: 1px solid #f5c6cb;' : ''}
+              margin-bottom: 8px;
+              padding: 6px 8px;
+              background: white;
+              border-radius: 4px;
+              border-left: 3px solid ${riskColor};
             ">
-              <span style="
-                width: 16px;
-                height: 16px;
-                background: ${riskColor};
-                color: white;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 9px;
-                font-weight: 700;
-                flex-shrink: 0;
-              ">${i + 1}</span>
-              <div>
-                <strong style="color: #212653;">${escapeHtml(risk.category || risk.dimensionName)}</strong>
-                <div style="color: #666; font-size: 10px;">${escapeHtml(risk.narrative?.substring(0, 60) || 'Significant exposure')}${risk.narrative && risk.narrative.length > 60 ? '...' : ''}</div>
-              </div>
+              <div style="font-weight: 600; color: #212653; font-size: 11px;">${escapeHtml(risk.title)}</div>
+              <div style="font-size: 10px; color: #666;">${escapeHtml(risk.dimension)}</div>
             </div>
           `;
-        }).join('') : '<p style="color: #666;">No critical risks identified.</p>'}
+        }).join('') : '<p style="color: #666; font-size: 11px;">No critical risks identified. Continue monitoring key metrics.</p>'}
       </div>
     </div>
   `;
@@ -1237,6 +1626,23 @@ export async function buildExecutiveBrief(
   const reportName = 'Executive Health Snapshot';
 
   logger.info('Building Executive Health Snapshot (premium executive brief)');
+
+  // Phase 1: Data Validation Layer
+  const validation = validateReportContextForExecutiveBrief(ctx);
+
+  if (!validation.isValid) {
+    logger.error({ errors: validation.errors }, '[ExecutiveBrief] Validation failed');
+    throw new Error(`Executive Brief generation blocked: ${validation.errors.join('; ')}`);
+  }
+
+  if (validation.warnings.length > 0) {
+    logger.warn({ warnings: validation.warnings }, '[ExecutiveBrief] Validation warnings');
+  }
+
+  logger.info(
+    { categoryCount: validation.categoryCount, missing: validation.missingCategories },
+    `[ExecutiveBrief] Validated ${validation.categoryCount}/12 categories`
+  );
 
   // Generate all sections
   const page1 = generateExecutiveSnapshot(ctx, options);
