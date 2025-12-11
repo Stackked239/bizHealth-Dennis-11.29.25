@@ -4,11 +4,18 @@
  * Consolidated section rendering functions for Manager Reports.
  * Each function generates HTML for a specific section type.
  *
+ * Enhanced with Phase 1.5 integration features:
+ * - Enterprise risk summary panel
+ * - Score derivation explanation
+ * - Functional prioritization panel
+ * - Precise cross-references
+ *
  * @module manager-sections
  */
 
 import type { ReportContext, ReportDimension, ReportRecommendation, ReportRisk } from '../../../../types/report.types.js';
 import type { DimensionCode } from '../../../../types/idm.types.js';
+import type { CategoryCode } from '../../../../data/question-category-mapping.js';
 import type {
   CompanySnapshotSection,
   DimensionDeepDiveSection,
@@ -43,6 +50,7 @@ import {
   filterQuickWinsByDimensions,
   filterRisksByDimensions,
   MANAGER_TITLES,
+  MANAGER_DIMENSIONS,
   type ManagerType,
 } from '../../utils/dimension-filters.js';
 import {
@@ -56,6 +64,24 @@ import {
   renderManagerQuickWinChecklist,
   renderQuickWinsSummaryStats,
 } from '../cards/manager-quick-win-card.component.js';
+
+// Manager Report Enhancement Modules
+import {
+  buildEnterpriseRiskSummary,
+  renderEnterpriseRiskPanel,
+  getScoreBandColor,
+} from '../../managers/manager-risk-summary.js';
+import {
+  getManagerPriorities,
+  buildPrioritiesFromCategories,
+  renderPrioritizationPanel,
+  type ManagerType as PrioritizationManagerType,
+} from '../../managers/manager-prioritization.js';
+import {
+  renderCrossReference,
+  renderCrossReferenceList,
+  type CrossRefKey,
+} from '../../shared/cross-reference-config.js';
 
 // ============================================================================
 // COMPANY SNAPSHOT SECTION
@@ -243,6 +269,12 @@ export function renderCompanySnapshotSection(
           ` : ''}
         </div>
       ` : ''}
+
+      ${renderEnterpriseRiskSection(ctx)}
+
+      ${renderScoreDerivation(dimensions, deptScore, managerTitle)}
+
+      ${renderManagerPrioritizationSection(ctx, managerType)}
     </section>
   `;
 }
@@ -268,6 +300,101 @@ function generateDepartmentInterpretation(
   } else {
     return `${managerTitle} faces critical challenges (${deptScore}/100) that require immediate action. Focus on stabilization initiatives first, then systematic improvement. The roadmap section provides a structured approach to recovery and growth.`;
   }
+}
+
+/**
+ * Render Enterprise Risk Section with consolidated risk summary
+ */
+function renderEnterpriseRiskSection(ctx: ReportContext): string {
+  // Only render if Phase 1.5 data is available
+  if (!ctx.categoryAnalyses || ctx.categoryAnalyses.length === 0) {
+    return '';
+  }
+
+  const riskSummary = buildEnterpriseRiskSummary(ctx.categoryAnalyses);
+  return renderEnterpriseRiskPanel(riskSummary);
+}
+
+/**
+ * Render Score Derivation explanation
+ */
+function renderScoreDerivation(
+  dimensions: ReportDimension[],
+  departmentScore: number,
+  managerTitle: string
+): string {
+  if (dimensions.length === 0) {
+    return '';
+  }
+
+  const dimScores = dimensions.map(d => `${safeHtml(d.name)} (${safeScore(d.score, 0)})`);
+
+  return `
+    <div class="score-derivation" style="
+      font-size: 0.8125rem;
+      color: #6b7280;
+      margin-top: 1rem;
+      padding: 0.75rem;
+      background: #f9fafb;
+      border-radius: 6px;
+    ">
+      <strong>Score Derivation:</strong> ${safeHtml(managerTitle)} health score (${departmentScore})
+      reflects weighted performance across:
+      ${dimScores.join(', ')}.
+    </div>
+  `;
+}
+
+/**
+ * Render Manager Prioritization Section
+ */
+function renderManagerPrioritizationSection(ctx: ReportContext, managerType: ManagerType): string {
+  // Map dimension manager type to prioritization manager type
+  const prioritizationManagerType = mapToPrioritizationManagerType(managerType);
+
+  // Try to use Phase 1.5 prioritization matrix if available
+  if (ctx.crossCategoryInsights?.prioritizationMatrix && ctx.categoryAnalyses) {
+    const priorities = getManagerPriorities(
+      ctx.crossCategoryInsights.prioritizationMatrix,
+      ctx.categoryAnalyses,
+      prioritizationManagerType,
+      5
+    );
+
+    if (priorities.length > 0) {
+      return renderPrioritizationPanel(priorities, prioritizationManagerType);
+    }
+  }
+
+  // Fallback: build priorities from category analyses
+  if (ctx.categoryAnalyses && ctx.categoryAnalyses.length > 0) {
+    const priorities = buildPrioritiesFromCategories(
+      ctx.categoryAnalyses,
+      prioritizationManagerType,
+      5
+    );
+
+    if (priorities.length > 0) {
+      return renderPrioritizationPanel(priorities, prioritizationManagerType);
+    }
+  }
+
+  return '';
+}
+
+/**
+ * Map dimension-filters ManagerType to prioritization ManagerType
+ */
+function mapToPrioritizationManagerType(managerType: ManagerType): PrioritizationManagerType {
+  const mapping: Record<ManagerType, PrioritizationManagerType> = {
+    operations: 'Operations',
+    salesMarketing: 'SalesMarketing',
+    financials: 'Financials',
+    strategy: 'StrategyLeadership',
+    itTechnology: 'ITTechnology',
+    employees: 'StrategyLeadership'  // Fallback
+  };
+  return mapping[managerType] || 'StrategyLeadership';
 }
 
 // ============================================================================
@@ -464,6 +591,19 @@ export function renderQuickWinsHighlightSection(
     return renderEmptySection(section, 'No quick wins identified for this department. Quick wins are high-impact, low-effort initiatives that can be implemented within 90 days.');
   }
 
+  // Warn if less than 3 quick wins
+  const quickWinWarning = quickWins.length < 3
+    ? `<div style="
+        padding: 0.75rem;
+        background: #fef3c7;
+        border-left: 3px solid #d97706;
+        border-radius: 0 6px 6px 0;
+        font-size: 0.875rem;
+        color: #92400e;
+        margin-bottom: 1rem;
+      ">Only ${quickWins.length} quick win${quickWins.length === 1 ? '' : 's'} identified. See Comprehensive Report for additional opportunities.</div>`
+    : '';
+
   return `
     <section id="${section.id}" class="report-section quick-wins-section" style="padding: 2rem; margin-bottom: 2rem;">
       <h2 style="
@@ -476,12 +616,16 @@ export function renderQuickWinsHighlightSection(
         border-bottom: 3px solid #969423;
       ">${safeHtml(section.title)}</h2>
 
+      ${quickWinWarning}
+
       ${renderQuickWinsSummaryStats(quickWins)}
 
       ${section.showChecklist
         ? renderManagerQuickWinChecklist(quickWins, { maxItems: section.maxQuickWins || 5 })
         : renderManagerQuickWinCards(quickWins, { maxCount: section.maxQuickWins || 5 })
       }
+
+      ${renderCrossReference('IMPLEMENTATION_GUIDE', 'for detailed implementation steps')}
     </section>
   `;
 }
@@ -532,16 +676,7 @@ export function renderDepartmentRoadmapSection(
       ${shortTerm.length > 0 ? renderRoadmapPhase(shortTerm, 'Phase 2: 3-12 Months', '#2563eb', section.maxItemsPerPhase || 5) : ''}
       ${horizonDays > 180 && longTerm.length > 0 ? renderRoadmapPhase(longTerm, 'Phase 3: 12-24+ Months', '#7c3aed', section.maxItemsPerPhase || 5) : ''}
 
-      <div style="
-        margin-top: 1.5rem;
-        padding: 1rem;
-        background: #f9fafb;
-        border-radius: 8px;
-        font-size: 0.875rem;
-        color: #6b7280;
-      ">
-        <strong>See also:</strong> <a href="roadmap.html" style="color: #2563eb; text-decoration: none; font-weight: 600;">Full Implementation Roadmap</a> for company-wide initiatives and dependencies.
-      </div>
+      ${renderCrossReference('ACTION_ROADMAP', 'for company-wide initiative timeline')}
     </section>
   `;
 }
@@ -608,7 +743,7 @@ export function renderRiskOverviewSection(
           <span style="font-size: 2rem; display: block; margin-bottom: 0.5rem;">✓</span>
           <p style="margin: 0 0 0.5rem 0; color: #166534; font-weight: 600;">No critical department-specific risks identified</p>
           <p style="margin: 0; color: #6b7280; font-size: 0.875rem;">
-            See the <a href="risk.html" style="color: #2563eb;">Full Risk Assessment</a> for company-wide risk analysis.
+            ${renderCrossReference('RISK_SUMMARY', 'for company-wide risk analysis', 'compact')}
           </p>
         </div>
       </section>
@@ -646,16 +781,7 @@ export function renderRiskOverviewSection(
         ${sortedRisks.map((risk, i) => renderRiskCard(risk, i)).join('')}
       </div>
 
-      <div style="
-        margin-top: 1.5rem;
-        padding: 1rem;
-        background: #f9fafb;
-        border-radius: 8px;
-        font-size: 0.875rem;
-        color: #6b7280;
-      ">
-        <strong>See also:</strong> <a href="risk.html" style="color: #2563eb; text-decoration: none; font-weight: 600;">Full Risk Assessment Report</a> for comprehensive analysis and mitigation strategies.
-      </div>
+      ${renderCrossReference('RISK_SUMMARY', 'for mitigation strategies')}
     </section>
   `;
 }
