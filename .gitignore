@@ -7,3 +7,11 @@ backups/
 data/logs/
 data/raw/
 data/normalized/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Test output artifacts
+scripts/output/
