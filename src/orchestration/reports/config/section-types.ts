@@ -131,6 +131,8 @@ export interface QuickWinsHighlightSection extends BaseRecipeSection {
   maxQuickWins?: number;
   /** Show checklist format */
   showChecklist?: boolean;
+  /** Manager type for ownership badges */
+  managerType?: string;
 }
 
 /**

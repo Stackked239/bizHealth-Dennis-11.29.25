@@ -169,16 +169,17 @@ function getScoreBand(score: number): ScoreBand {
 
 /**
  * Generate enterprise impact statement for a category
+ * Returns full narrative without truncation for PDF quality
  */
 function generateEnterpriseImpact(ca: CategoryAnalysis): string {
   // Use Phase 1.5 risk narrative if available
   if (ca.categoryRisks?.[0]?.description) {
-    // Truncate to one sentence
+    // Extract first 2-3 sentences for meaningful context without arbitrary truncation
     const desc = ca.categoryRisks[0].description;
-    const firstSentence = desc.split(/[.!?]/)[0];
-    return firstSentence.length > 150
-      ? firstSentence.substring(0, 147) + '...'
-      : firstSentence + '.';
+    const sentences = desc.match(/[^.!?]*[.!?]+/g) || [desc];
+    // Take up to 3 sentences for comprehensive but focused narrative
+    const narrative = sentences.slice(0, 3).join(' ').trim();
+    return narrative || desc;
   }
 
   // Fallback to predefined impact statement

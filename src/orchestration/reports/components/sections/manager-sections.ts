@@ -78,6 +78,9 @@ import {
   type ManagerType as PrioritizationManagerType,
 } from '../../managers/manager-prioritization.js';
 import {
+  type ManagerType as InitiativesManagerType,
+} from '../../managers/manager-initiatives.js';
+import {
   renderCrossReference,
   renderCrossReferenceList,
   type CrossRefKey,
@@ -579,6 +582,26 @@ function renderDimensionBlock(
 // ============================================================================
 
 /**
+ * Map string manager type to InitiativesManagerType
+ */
+function mapToInitiativesManagerType(managerType: string | undefined): InitiativesManagerType | undefined {
+  if (!managerType) return undefined;
+  const mapping: Record<string, InitiativesManagerType> = {
+    'Operations': 'Operations',
+    'SalesMarketing': 'SalesMarketing',
+    'Financials': 'Financials',
+    'StrategyLeadership': 'StrategyLeadership',
+    'ITTechnology': 'ITTechnology',
+    'operations': 'Operations',
+    'salesMarketing': 'SalesMarketing',
+    'financials': 'Financials',
+    'strategy': 'StrategyLeadership',
+    'itTechnology': 'ITTechnology',
+  };
+  return mapping[managerType];
+}
+
+/**
  * Render Quick Wins Highlight section
  */
 export function renderQuickWinsHighlightSection(
@@ -604,6 +627,9 @@ export function renderQuickWinsHighlightSection(
       ">Only ${quickWins.length} quick win${quickWins.length === 1 ? '' : 's'} identified. See Comprehensive Report for additional opportunities.</div>`
     : '';
 
+  // Map manager type for ownership badges
+  const currentManager = mapToInitiativesManagerType(section.managerType);
+
   return `
     <section id="${section.id}" class="report-section quick-wins-section" style="padding: 2rem; margin-bottom: 2rem;">
       <h2 style="
@@ -621,8 +647,8 @@ export function renderQuickWinsHighlightSection(
       ${renderQuickWinsSummaryStats(quickWins)}
 
       ${section.showChecklist
-        ? renderManagerQuickWinChecklist(quickWins, { maxItems: section.maxQuickWins || 5 })
-        : renderManagerQuickWinCards(quickWins, { maxCount: section.maxQuickWins || 5 })
+        ? renderManagerQuickWinChecklist(quickWins, { maxItems: section.maxQuickWins || 5, currentManager })
+        : renderManagerQuickWinCards(quickWins, { maxCount: section.maxQuickWins || 5, currentManager })
       }
 
       ${renderCrossReference('IMPLEMENTATION_GUIDE', 'for detailed implementation steps')}

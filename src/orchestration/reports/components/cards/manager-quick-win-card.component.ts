@@ -15,6 +15,13 @@ import {
   safeArray,
   safeHtml,
 } from '../../utils/safe-extract.js';
+import { generateSpecificTitle } from '../../managers/manager-quickwins.js';
+import {
+  getOwnershipStatusByCategory,
+  renderOwnershipBadge,
+  getPrimaryOwnerForCategory,
+  type ManagerType,
+} from '../../managers/manager-initiatives.js';
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -34,6 +41,10 @@ export interface ManagerQuickWinCardOptions {
   maxActionSteps?: number;
   /** Custom CSS class */
   className?: string;
+  /** Current manager type for ownership badges */
+  currentManager?: ManagerType;
+  /** Show ownership badges */
+  showOwnership?: boolean;
 }
 
 // ============================================================================
@@ -66,6 +77,55 @@ function getImpactDisplay(impactScore: number): { level: string; color: string }
   return { level: impact, color: colors[impact] };
 }
 
+/**
+ * Render company-specific metrics row for quick wins
+ * Shows key metric (📊) and target change (🎯) if available
+ */
+function renderMetricsRow(qw: ReportQuickWin): string {
+  // Extract metrics from quick win (these may be set by Phase 1.5 processing)
+  const keyMetric = (qw as any).keyMetric;
+  const targetChange = (qw as any).targetChange;
+
+  // Don't render if no metrics available
+  if (!keyMetric && !targetChange) {
+    return '';
+  }
+
+  return `
+    <div style="
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    ">
+      ${keyMetric ? `
+        <span style="
+          display: inline-flex;
+          align-items: center;
+          gap: 0.25rem;
+          padding: 0.25rem 0.625rem;
+          background: #eff6ff;
+          color: #1e40af;
+          border-radius: 4px;
+          font-size: 0.8125rem;
+        ">📊 ${safeHtml(keyMetric)}</span>
+      ` : ''}
+      ${targetChange ? `
+        <span style="
+          display: inline-flex;
+          align-items: center;
+          gap: 0.25rem;
+          padding: 0.25rem 0.625rem;
+          background: #f0fdf4;
+          color: #166534;
+          border-radius: 4px;
+          font-size: 0.8125rem;
+        ">🎯 ${safeHtml(targetChange)}</span>
+      ` : ''}
+    </div>
+  `;
+}
+
 // ============================================================================
 // MAIN RENDER FUNCTIONS
 // ============================================================================
@@ -82,16 +142,31 @@ export function renderManagerQuickWinCard(
     showOutcomes = true,
     showFinancials = true,
     maxActionSteps = 3,
-    className = ''
+    className = '',
+    currentManager,
+    showOwnership = true
   } = options;
 
-  const theme = safeStringValue(qw.theme, 'Quick Win Opportunity');
+  // Generate specific title using helper - extract dimension code from quick win or infer from content
+  const dimensionCode = (qw as any).dimensionCode || (qw as any).sourceCategory || 'STR';
+  const theme = generateSpecificTitle(
+    { theme: qw.theme, expectedOutcomes: qw.expectedOutcomes },
+    dimensionCode
+  );
   const timeframe = safeStringValue(qw.timeframe, '30 days');
   const expectedOutcomes = safeStringValue(qw.expectedOutcomes, '');
   const actionSteps = safeArray(qw.actionSteps).slice(0, maxActionSteps);
 
   const effort = getEffortDisplay(qw.effortScore || 30);
   const impact = getImpactDisplay(qw.impactScore || 70);
+
+  // Generate ownership badge if manager type is provided
+  let ownershipBadgeHtml = '';
+  if (showOwnership && currentManager) {
+    const ownershipStatus = getOwnershipStatusByCategory(dimensionCode, currentManager);
+    const primaryOwner = getPrimaryOwnerForCategory(dimensionCode);
+    ownershipBadgeHtml = renderOwnershipBadge(ownershipStatus, primaryOwner);
+  }
 
   // Investment and ROI
   const hasFinancials = showFinancials && (qw.estimatedInvestment || qw.estimatedROI);
@@ -126,18 +201,20 @@ export function renderManagerQuickWinCard(
         ">⚡</span>
 
         <div style="flex: 1;">
-          <span style="
-            display: inline-block;
-            padding: 0.125rem 0.5rem;
-            background: #22c55e;
-            color: white;
-            border-radius: 4px;
-            font-size: 0.6875rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.375rem;
-          ">Quick Win</span>
+          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.375rem;">
+            <span style="
+              display: inline-block;
+              padding: 0.125rem 0.5rem;
+              background: #22c55e;
+              color: white;
+              border-radius: 4px;
+              font-size: 0.6875rem;
+              font-weight: 700;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+            ">Quick Win</span>
+            ${ownershipBadgeHtml}
+          </div>
           <h4 style="
             font-family: 'Montserrat', sans-serif;
             font-size: 1rem;
@@ -192,6 +269,9 @@ export function renderManagerQuickWinCard(
           font-weight: 600;
         ">${impact.level} Impact</span>
       </div>
+
+      <!-- Company-Specific Metrics (from Phase 1.5 data) -->
+      ${renderMetricsRow(qw)}
 
       <!-- Action Steps -->
       ${showActionSteps && actionSteps.length > 0 ? `
@@ -288,7 +368,11 @@ export function renderManagerQuickWinCards(
  * Render a compact quick win row (for summary sections)
  */
 export function renderManagerQuickWinRow(qw: ReportQuickWin): string {
-  const theme = safeStringValue(qw.theme, 'Quick Win');
+  const dimensionCode = (qw as any).dimensionCode || (qw as any).sourceCategory || 'STR';
+  const theme = generateSpecificTitle(
+    { theme: qw.theme, expectedOutcomes: qw.expectedOutcomes },
+    dimensionCode
+  );
   const timeframe = safeStringValue(qw.timeframe, '30 days');
   const effort = getEffortDisplay(qw.effortScore || 30);
   const impact = getImpactDisplay(qw.impactScore || 70);
@@ -341,9 +425,9 @@ export function renderManagerQuickWinRow(qw: ReportQuickWin): string {
  */
 export function renderManagerQuickWinChecklist(
   quickWins: ReportQuickWin[],
-  options: { maxItems?: number } = {}
+  options: { maxItems?: number; currentManager?: ManagerType; showOwnership?: boolean } = {}
 ): string {
-  const { maxItems = 5 } = options;
+  const { maxItems = 5, currentManager, showOwnership = true } = options;
   const items = safeArray(quickWins).slice(0, maxItems);
 
   if (items.length === 0) {
@@ -357,8 +441,20 @@ export function renderManagerQuickWinChecklist(
       gap: 0.5rem;
     ">
       ${items.map(qw => {
-        const theme = safeStringValue(qw.theme, 'Quick Win');
+        const dimensionCode = (qw as any).dimensionCode || (qw as any).sourceCategory || 'STR';
+        const theme = generateSpecificTitle(
+          { theme: qw.theme, expectedOutcomes: qw.expectedOutcomes },
+          dimensionCode
+        );
         const timeframe = safeStringValue(qw.timeframe, '30 days');
+
+        // Generate ownership badge if manager type is provided
+        let ownershipBadgeHtml = '';
+        if (showOwnership && currentManager) {
+          const ownershipStatus = getOwnershipStatusByCategory(dimensionCode, currentManager);
+          const primaryOwner = getPrimaryOwnerForCategory(dimensionCode);
+          ownershipBadgeHtml = renderOwnershipBadge(ownershipStatus, primaryOwner);
+        }
 
         return `
           <div style="
@@ -381,10 +477,11 @@ export function renderManagerQuickWinChecklist(
               font-size: 0.875rem;
               color: #9ca3af;
             ">☐</span>
-            <div style="flex: 1;">
-              <span style="font-size: 0.875rem; color: #374151;">${safeHtml(theme)}</span>
+            <div style="flex: 1; display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+              <span style="font-size: 0.875rem; color: #374151; font-weight: 500;">${safeHtml(theme)}</span>
+              ${ownershipBadgeHtml}
             </div>
-            <span style="font-size: 0.75rem; color: #6b7280;">⏱ ${safeHtml(timeframe)}</span>
+            <span style="font-size: 0.75rem; color: #6b7280; flex-shrink: 0;">⏱ ${safeHtml(timeframe)}</span>
           </div>
         `;
       }).join('')}

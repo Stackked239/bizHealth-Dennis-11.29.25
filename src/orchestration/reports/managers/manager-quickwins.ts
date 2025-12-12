@@ -90,6 +90,140 @@ export const MANAGER_TYPE_TO_DIMENSION_TYPE: Record<ManagerType, string> = {
 };
 
 // ============================================================================
+// TITLE GENERATION
+// ============================================================================
+
+/**
+ * Imperative action fallbacks by category code
+ * Used when Phase 1.5 data lacks specific titles
+ */
+const CATEGORY_IMPERATIVE_ACTIONS: Record<string, string> = {
+  MKT: 'Implement marketing measurement and channel optimization',
+  SAL: 'Strengthen sales pipeline discipline and forecasting accuracy',
+  STR: 'Clarify strategic positioning and growth priorities',
+  FIN: 'Establish cash flow controls and financial visibility',
+  OPS: 'Streamline operational workflows and capacity planning',
+  TIN: 'Modernize technology stack and automation capabilities',
+  ITD: 'Strengthen cybersecurity posture and data governance',
+  RMS: 'Build risk mitigation and business continuity protocols',
+  LDG: 'Develop leadership decision-making frameworks',
+  HRS: 'Improve talent retention and engagement systems',
+  CMP: 'Enhance compliance monitoring and audit readiness',
+  CXP: 'Optimize customer response and satisfaction processes'
+};
+
+/**
+ * Generate a specific, actionable title for quick wins
+ * Falls back to imperative category-specific actions if Phase 1.5 data lacks specificity
+ */
+export function generateSpecificTitle(
+  quickWin: { title?: string; theme?: string; description?: string; rationale?: string; expectedOutcomes?: string },
+  categoryCode: string
+): string {
+  // Check if existing title is specific (not generic fallback patterns)
+  const existingTitle = quickWin.title || quickWin.theme;
+  if (existingTitle &&
+      !existingTitle.toLowerCase().includes('improvement initiative') &&
+      !existingTitle.toLowerCase().includes('quick win opportunity') &&
+      existingTitle.length > 15) {
+    return existingTitle;
+  }
+
+  // Extract from description: take first 10-15 meaningful words
+  const description = quickWin.description || quickWin.expectedOutcomes;
+  if (description && description.length > 30) {
+    const cleanDesc = description
+      .replace(/^(The company should|We recommend|Consider|Focus on|Implement|Improve)/i, '')
+      .trim();
+    const words = cleanDesc.split(/\s+/).slice(0, 12);
+    const title = words.join(' ');
+    // Capitalize first letter and add ellipsis if truncated
+    const finalTitle = title.charAt(0).toUpperCase() + title.slice(1);
+    return cleanDesc.split(/\s+/).length > 12 ? finalTitle + '…' : finalTitle;
+  }
+
+  // Extract from rationale if description unavailable
+  if (quickWin.rationale && quickWin.rationale.length > 30) {
+    const words = quickWin.rationale.split(/\s+/).slice(0, 10);
+    return words.join(' ') + '…';
+  }
+
+  // Fallback: Category-specific imperative actions
+  return CATEGORY_IMPERATIVE_ACTIONS[categoryCode] || `Address ${categoryCode} performance gaps`;
+}
+
+// ============================================================================
+// METRIC EXTRACTION
+// ============================================================================
+
+/**
+ * Extract key metric from benchmark comparisons
+ * Returns formatted string like "Current: 45% vs Industry: 72%"
+ */
+export function extractKeyMetric(
+  benchmarks: any[] | undefined,
+  categoryCode: string
+): string | undefined {
+  if (!benchmarks || benchmarks.length === 0) return undefined;
+
+  // Find relevant benchmark for this category
+  const relevant = benchmarks.find(b =>
+    b.categoryCode === categoryCode ||
+    b.indicatorCode?.startsWith(categoryCode)
+  );
+
+  if (!relevant) return undefined;
+
+  // Format metric with current and benchmark values
+  if (relevant.companyValue !== undefined && relevant.benchmarkValue !== undefined) {
+    const formatValue = (v: number) => {
+      if (v > 100) return v.toLocaleString();
+      if (v < 1) return `${(v * 100).toFixed(0)}%`;
+      return v.toFixed(0);
+    };
+    return `Current: ${formatValue(relevant.companyValue)} vs Industry: ${formatValue(relevant.benchmarkValue)}`;
+  }
+
+  return undefined;
+}
+
+/**
+ * Extract target change from weaknesses or quick win data
+ * Returns formatted improvement target like "Improve by 25%"
+ */
+export function extractTargetChange(
+  quickWin: Phase15QuickWin | any,
+  categoryAnalysis?: any
+): string | undefined {
+  // Check quick win's own targetChange or estimatedROI
+  if (quickWin.targetChange) {
+    return quickWin.targetChange;
+  }
+
+  if (quickWin.estimatedROI) {
+    return typeof quickWin.estimatedROI === 'number'
+      ? `${quickWin.estimatedROI.toFixed(0)}% ROI potential`
+      : quickWin.estimatedROI;
+  }
+
+  // Check for improvement targets in weaknesses
+  if (categoryAnalysis?.weaknesses && categoryAnalysis.weaknesses.length > 0) {
+    const weakness = categoryAnalysis.weaknesses[0];
+    if (weakness.improvementTarget) {
+      return weakness.improvementTarget;
+    }
+    // Generate target from severity
+    if (weakness.severity === 'high') {
+      return 'Target: Move to proficiency band';
+    } else if (weakness.severity === 'critical') {
+      return 'Target: Stabilize within 90 days';
+    }
+  }
+
+  return undefined;
+}
+
+// ============================================================================
 // PRIORITY SCORING
 // ============================================================================
 
@@ -165,23 +299,39 @@ function normalizeTimeline(timeline: string | undefined): string {
 
 /**
  * Convert Phase 1.5 QuickWin to ManagerQuickWin
+ * @param qw - The quick win data
+ * @param categoryCode - Category code for the quick win
+ * @param index - Index for ID generation
+ * @param categoryAnalysis - Optional category analysis for metric extraction
  */
 function convertPhase15QuickWin(
   qw: Phase15QuickWin,
   categoryCode: CategoryCode,
-  index: number
+  index: number,
+  categoryAnalysis?: any
 ): ManagerQuickWin {
+  // Generate specific title using helper function
+  const title = generateSpecificTitle(
+    { title: qw.title, description: qw.description, rationale: qw.rationale },
+    categoryCode
+  );
+
+  // Extract metrics from category analysis if available
+  const keyMetric = extractKeyMetric(categoryAnalysis?.benchmarkComparisons, categoryCode);
+  const targetChange = extractTargetChange(qw, categoryAnalysis) ||
+    (qw.estimatedROI ? `ROI: ${qw.estimatedROI}` : undefined);
+
   return {
     id: `qw-${categoryCode}-${index}`,
-    title: qw.title || 'Improvement Initiative',
+    title,
     description: qw.description || '',
     sourceCategory: categoryCode,
     categoryName: CATEGORY_DISPLAY_NAMES[categoryCode],
     effort: normalizeLevel(qw.effort),
     impact: normalizeLevel(qw.impact),
     timeline: normalizeTimeline(qw.timeline),
-    keyMetric: undefined, // Can be extended later
-    targetChange: qw.estimatedROI ? `ROI: ${qw.estimatedROI}` : undefined,
+    keyMetric,
+    targetChange,
     priorityScore: computePriorityScore(qw.effort, qw.impact, qw.timeline),
     estimatedROI: qw.estimatedROI
   };
@@ -198,9 +348,15 @@ function convertReportQuickWin(
   const effort = qw.effortScore < 40 ? 'low' : qw.effortScore < 70 ? 'medium' : 'high';
   const impact = qw.impactScore > 60 ? 'high' : qw.impactScore > 30 ? 'medium' : 'low';
 
+  // Generate specific title using helper function
+  const title = generateSpecificTitle(
+    { theme: qw.theme, expectedOutcomes: qw.expectedOutcomes },
+    categoryCode
+  );
+
   return {
     id: qw.id || `qw-${categoryCode}-${index}`,
-    title: qw.theme || 'Improvement Initiative',
+    title,
     description: qw.expectedOutcomes || '',
     sourceCategory: categoryCode,
     categoryName: CATEGORY_DISPLAY_NAMES[categoryCode],
@@ -216,12 +372,12 @@ function convertReportQuickWin(
 
 /**
  * Select and rank quick wins for a specific manager type from Phase 1.5 data
- * @param categoryAnalyses - Phase 1.5 category analyses
+ * @param categoryAnalyses - Phase 1.5 category analyses (full objects with benchmarks, weaknesses, etc.)
  * @param managerType - Manager type to filter for
  * @param maxCount - Maximum quick wins to return (default 5)
  */
 export function selectManagerQuickWinsFromPhase15(
-  categoryAnalyses: Array<{ categoryCode: CategoryCode; quickWins: Phase15QuickWin[] }>,
+  categoryAnalyses: Array<{ categoryCode: CategoryCode; quickWins: Phase15QuickWin[]; [key: string]: any }>,
   managerType: ManagerType,
   maxCount: number = 5
 ): ManagerQuickWin[] {
@@ -235,7 +391,8 @@ export function selectManagerQuickWinsFromPhase15(
 
     const quickWins = analysis.quickWins || [];
     quickWins.forEach((qw, index) => {
-      allQuickWins.push(convertPhase15QuickWin(qw, analysis.categoryCode, index));
+      // Pass full category analysis for metric extraction
+      allQuickWins.push(convertPhase15QuickWin(qw, analysis.categoryCode, index, analysis));
     });
   }
 
