@@ -65,6 +65,7 @@ export const OPERATIONS_MANAGER_RECIPE: ManagerReportRecipe = {
       dimensionCodes: ['OPS', 'TIN'] as DimensionCode[],
       maxQuickWins: 5,
       showChecklist: true,
+      managerType: 'Operations',
     },
     {
       id: 'roadmap',
@@ -158,6 +159,7 @@ export const SALES_MARKETING_MANAGER_RECIPE: ManagerReportRecipe = {
       dimensionCodes: ['STR', 'SAL', 'MKT', 'CXP'] as DimensionCode[],
       maxQuickWins: 5,
       showChecklist: true,
+      managerType: 'SalesMarketing',
     },
     {
       id: 'roadmap',
@@ -251,6 +253,7 @@ export const FINANCIALS_MANAGER_RECIPE: ManagerReportRecipe = {
       dimensionCodes: ['FIN', 'RMS', 'CMP'] as DimensionCode[],
       maxQuickWins: 5,
       showChecklist: true,
+      managerType: 'Financials',
     },
     {
       id: 'roadmap',
@@ -344,6 +347,7 @@ export const STRATEGY_MANAGER_RECIPE: ManagerReportRecipe = {
       dimensionCodes: ['STR', 'LDG', 'RMS'] as DimensionCode[],
       maxQuickWins: 5,
       showChecklist: true,
+      managerType: 'StrategyLeadership',
     },
     {
       id: 'roadmap',
@@ -437,6 +441,7 @@ export const IT_TECHNOLOGY_MANAGER_RECIPE: ManagerReportRecipe = {
       dimensionCodes: ['TIN', 'IDS', 'RMS'] as DimensionCode[],
       maxQuickWins: 5,
       showChecklist: true,
+      managerType: 'ITTechnology',
     },
     {
       id: 'roadmap',

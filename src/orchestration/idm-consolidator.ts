@@ -674,11 +674,19 @@ function extractRecommendations(
     const impactScore = 100 - dimension.score_overall; // Higher gap = higher potential impact
     const effortScore = dimension.score_overall < 40 ? 70 : 50; // Critical issues often need more effort
 
+    // Generate action-oriented theme based on score and dimension
+    const themePrefix = dimension.score_overall < 40
+      ? 'Strengthen'
+      : dimension.score_overall < 60
+        ? 'Optimize'
+        : 'Enhance';
+    const theme = `${themePrefix} ${dimension.name.toLowerCase()} capabilities and processes`;
+
     recommendations.push({
       id: `rec-${dimension.dimension_code}-${priorityRank}`,
       dimension_code: dimension.dimension_code,
       linked_finding_ids: linkedFindings,
-      theme: `${dimension.name} Improvement Initiative`,
+      theme,
       priority_rank: priorityRank,
       impact_score: impactScore,
       effort_score: effortScore,

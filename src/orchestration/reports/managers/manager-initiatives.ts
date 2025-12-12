@@ -100,6 +100,35 @@ export function getOwnershipStatus(
 }
 
 /**
+ * Determine ownership status based on category code and manager type
+ * Simplified version for quick wins that don't have full initiative data
+ */
+export function getOwnershipStatusByCategory(
+  categoryCode: string,
+  currentManager: ManagerType
+): OwnershipStatus {
+  const primaryOwner = CATEGORY_PRIMARY_OWNER[categoryCode as CategoryCode];
+
+  if (primaryOwner === currentManager) {
+    return 'owns';
+  }
+
+  const relevantCategories = MANAGER_CATEGORIES[currentManager];
+  if (relevantCategories?.includes(categoryCode as CategoryCode)) {
+    return 'collaborates';
+  }
+
+  return 'informed';
+}
+
+/**
+ * Get the primary owner manager type for a category code
+ */
+export function getPrimaryOwnerForCategory(categoryCode: string): ManagerType | undefined {
+  return CATEGORY_PRIMARY_OWNER[categoryCode as CategoryCode];
+}
+
+/**
  * Get collaborators for a category based on which managers have it in their focus
  */
 function getCollaborators(sourceCategory: CategoryCode, primaryOwner: ManagerType): ManagerType[] {

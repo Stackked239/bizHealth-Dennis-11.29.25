@@ -89,28 +89,50 @@ function getCategoryDisplayName(categoryCode: string): string {
 }
 
 /**
- * Generate default recommendation based on priority data
+ * Generate enriched, contextual recommendation based on priority data
+ * Returns actionable language that reflects the specific situation
  */
 function generateDefaultRecommendation(
   categoryCode: string,
   score: number,
-  urgency?: number
+  urgency?: number,
+  impact?: number,
+  effort?: number
 ): string {
   const categoryName = getCategoryDisplayName(categoryCode);
 
-  if (urgency && urgency >= 8) {
-    return `Address ${categoryName} gaps within 30-90 days to prevent escalation.`;
+  // Critical urgency - immediate action required
+  if (urgency && urgency >= 8 || score < 30) {
+    return `Critical gap: Address ${categoryName} within 30 days to prevent cascading business risks`;
   }
 
+  // Quick win opportunity - high impact, low effort
+  if (impact && effort && impact >= 7 && effort <= 4) {
+    return `Quick win opportunity: Implement ${categoryName} improvements immediately for rapid ROI`;
+  }
+
+  // Strategic investment - high impact, high effort
+  if (impact && effort && impact >= 7 && effort >= 7) {
+    return `Strategic investment: Plan ${categoryName} transformation with dedicated resources over 6-12 months`;
+  }
+
+  // Critical band (0-39)
   if (score < 40) {
-    return `Prioritize ${categoryName} improvements as critical to business health.`;
+    return `Critical gap: Prioritize ${categoryName} stabilization to prevent further business impact`;
   }
 
+  // Attention band (40-59)
   if (score < 60) {
-    return `Plan ${categoryName} enhancements for next quarter to reach proficiency.`;
+    return `Optimization target: Strengthen ${categoryName} processes to reach proficiency within 6 months`;
   }
 
-  return `Maintain ${categoryName} performance and seek optimization opportunities.`;
+  // Proficiency band (60-79)
+  if (score < 80) {
+    return `Fine-tuning opportunity: Refine ${categoryName} practices to achieve excellence`;
+  }
+
+  // Excellence band (80+)
+  return `Best practice: Maintain ${categoryName} excellence and share learnings across organization`;
 }
 
 // ============================================================================
@@ -152,7 +174,9 @@ export function getManagerPriorities(
       recommendation: entry.recommendation || generateDefaultRecommendation(
         entry.categoryCode,
         score,
-        entry.urgency
+        entry.urgency,
+        entry.impact,
+        entry.effort
       ),
       urgency: entry.urgency,
       impact: entry.impact,
@@ -216,15 +240,16 @@ function getScoreBadgeStyle(score: number): string {
 
 /**
  * Get priority badge style based on priority band
+ * Uses premium gradient styling with box shadows
  */
 function getPriorityBadgeStyle(band: PriorityBand): string {
   switch (band) {
     case 'High Priority':
-      return 'background: #dc2626; color: white;';
+      return 'background: linear-gradient(135deg, #dc2626, #b91c1c); color: white; box-shadow: 0 2px 4px rgba(220, 38, 38, 0.2);';
     case 'Medium Priority':
-      return 'background: #d97706; color: white;';
+      return 'background: linear-gradient(135deg, #d97706, #b45309); color: white; box-shadow: 0 2px 4px rgba(217, 119, 6, 0.2);';
     default:
-      return 'background: #6b7280; color: white;';
+      return 'background: linear-gradient(135deg, #6b7280, #4b5563); color: white; box-shadow: 0 2px 4px rgba(107, 114, 128, 0.2);';
   }
 }
 
