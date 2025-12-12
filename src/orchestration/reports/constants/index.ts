@@ -41,3 +41,22 @@ export {
   getRiskLevelColor,
 } from './brand.js';
 export type { ScoreBandType, GaugeSizeType } from './brand.js';
+
+// Dimension Codes - Single Source of Truth
+export {
+  DIMENSION_CODES,
+  CANONICAL_DIMENSION_CODES,
+  CHAPTER_CODES,
+  DIMENSION_ALIASES,
+  DIMENSION_METADATA,
+  CHAPTER_METADATA,
+  DIMENSION_CHAPTER_MAP,
+  normalizeDimensionCode,
+  isValidDimensionCode,
+  isValidChapterCode,
+  getChapterForDimension,
+  getDimensionsForChapter,
+  getDimensionMetadata,
+  getChapterMetadata,
+} from './dimension-codes.js';
+export type { DimensionCode, ChapterCode, DimensionMetadata, ChapterMetadata } from './dimension-codes.js';

@@ -180,6 +180,79 @@ function generateDataPoints(
 }
 
 /**
+ * Intentional label abbreviations for radar chart display
+ * These are designed to fit in limited SVG label space while remaining clear
+ */
+const RADAR_LABEL_ABBREVIATIONS: Record<string, string> = {
+  // Chapter names
+  'Growth Engine': 'Growth',
+  'Performance & Health': 'Performance',
+  'People & Leadership': 'People',
+  'Resilience & Safeguards': 'Resilience',
+
+  // Chapter name variations
+  'growth-engine': 'Growth',
+  'performance-health': 'Performance',
+  'people-leadership': 'People',
+  'resilience-safeguards': 'Resilience',
+
+  // Dimension names (if passed directly)
+  'Customer Experience': 'Customer',
+  'Financial Health': 'Financial',
+  'Human Resources': 'HR',
+  'Leadership & Governance': 'Leadership',
+  'Technology & Innovation': 'Technology',
+  'IT & Data Security': 'IT/Data',
+  'Risk Management': 'Risk',
+  'Risk Management & Sustainability': 'Risk Mgmt',
+};
+
+/**
+ * Get display label for radar chart - uses intentional abbreviations, not truncation
+ */
+function getRadarDisplayLabel(label: string): string {
+  // Try exact match first
+  if (RADAR_LABEL_ABBREVIATIONS[label]) {
+    return RADAR_LABEL_ABBREVIATIONS[label];
+  }
+
+  // Try case-insensitive match
+  const lowerLabel = label.toLowerCase();
+  for (const [key, value] of Object.entries(RADAR_LABEL_ABBREVIATIONS)) {
+    if (key.toLowerCase() === lowerLabel) {
+      return value;
+    }
+  }
+
+  // If label is already short enough, use as-is
+  if (label.length <= 12) {
+    return label;
+  }
+
+  // Fallback: use first word only (better than substring with ellipsis)
+  const firstWord = label.split(/[\s&\-\/]+/)[0];
+  if (firstWord && firstWord.length >= 3) {
+    console.warn(
+      `[Radar Labels] Unknown label "${label}". Using first word: "${firstWord}"`
+    );
+    return firstWord;
+  }
+
+  // Last resort: truncate at word boundary if possible
+  const words = label.split(/\s+/);
+  let result = '';
+  for (const word of words) {
+    if ((result + ' ' + word).trim().length <= 12) {
+      result = (result + ' ' + word).trim();
+    } else {
+      break;
+    }
+  }
+
+  return result || label.substring(0, 10);
+}
+
+/**
  * Generate labels
  */
 function generateLabels(
@@ -206,8 +279,8 @@ function generateLabels(
       dx = -5;
     }
 
-    // Truncate long labels
-    const displayLabel = label.length > 12 ? label.substring(0, 11) + '...' : label;
+    // Get intentional abbreviation instead of truncating with ellipsis
+    const displayLabel = getRadarDisplayLabel(label);
 
     return `
       <text
