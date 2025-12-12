@@ -2,7 +2,7 @@
   "config": {
     "webhookPath": "samples/webhook_010_brewery_craft.json",
     "outputDir": "./output",
-    "startPhase": 4,
+    "startPhase": 5,
     "endPhase": 5,
     "skipDatabase": true,
     "generateReports": true,
@@ -12,43 +12,38 @@
       "quick_wins_report"
     ],
     "renderPDF": false,
-    "skipPhase15": false
+    "skipPhase15": false,
+    "phase5Stage": "5c"
   },
   "results": [
     {
-      "phase": 4,
-      "status": "success",
-      "duration_ms": 249308,
-      "output_path": "output/phase4_output.json",
-      "details": {
-        "status": "complete",
-        "health_score": 72,
-        "health_descriptor": "Stable - Requires Strategic Attention",
-        "reports_generated": 3,
-        "report_types": [
-          "comprehensive_report",
-          "owners_report",
-          "quick_wins_report"
-        ],
-        "report_tokens": {
-          "input": 5518,
-          "output": 20831
-        }
-      }
-    },
-    {
       "phase": 5,
       "status": "success",
-      "duration_ms": 602,
-      "output_path": "output/phase5_output.json",
+      "duration_ms": 34,
+      "output_path": "output/phase5c_output.json",
       "details": {
-        "status": "complete",
-        "reports_generated": 17,
-        "output_dir": "output/reports/f96d04ed-4717-4e2b-8521-c0c7f9637240",
-        "manifest": "output/reports/f96d04ed-4717-4e2b-8521-c0c7f9637240/manifest.json"
+        "stage": "5C",
+        "status": "success",
+        "deliverablesGenerated": 9,
+        "validationPassed": true,
+        "deliverables": {
+          "comprehensive": "output/deliverables/comprehensive.html",
+          "owner": "output/deliverables/owner.html",
+          "executiveBrief": "output/deliverables/executiveBrief.html",
+          "salesMarketingManager": "output/deliverables/salesMarketingManager.html",
+          "operationsManager": "output/deliverables/operationsManager.html",
+          "financialsManager": "output/deliverables/financialsManager.html",
+          "itTechnologyManager": "output/deliverables/itTechnologyManager.html",
+          "strategyLeadershipManager": "output/deliverables/strategyLeadershipManager.html",
+          "employees": "output/deliverables/employees.html"
+        },
+        "outputDir": "output/deliverables",
+        "transformationsApplied": 23,
+        "generatedAt": "2025-12-12T02:13:08.450Z",
+        "durationMs": 33
       }
     }
   ],
-  "total_duration_ms": 249913,
-  "completed_at": "2025-12-11T18:38:42.635Z"
+  "total_duration_ms": 37,
+  "completed_at": "2025-12-12T02:13:08.451Z"
 }

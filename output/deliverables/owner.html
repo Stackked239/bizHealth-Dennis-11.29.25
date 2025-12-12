@@ -604,7 +604,7 @@
 /* ============================================================
    BIZHEALTH.AI UNIFIED CSS FRAMEWORK
    Phase 4 Styling Patterns for Phase 5 Report Generation
-   Generated: 2025-12-09
+   Generated: 2025-12-12
    ============================================================ */
 
 /* ===== BRAND COLOR VARIABLES ===== */
@@ -2218,6 +2218,267 @@ button:focus {
 
   .chapter-summary-stats {
     flex-wrap: wrap;
+  }
+}
+
+/* ========================================================================
+   PHASE 1.5 CATEGORY ANALYSIS STYLES
+   ======================================================================== */
+
+/* Section Containers */
+.category-analysis-overview,
+.cross-category-insights,
+.department-category-analysis,
+.category-analysis-section {
+  margin: 2rem 0;
+  padding: 1rem 0;
+}
+
+.section-intro {
+  font-size: 1.05rem;
+  color: #555;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+/* Visualization Containers */
+.visualization-container {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+
+.visualization-container h3 {
+  color: #212653;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #969423;
+}
+
+.visualization-row {
+  margin: 1.5rem 0;
+}
+
+.visualization-row.two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+/* Category Card Grid */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.category-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  border-left: 4px solid #969423;
+}
+
+.category-card.score-excellent { border-left-color: #28a745; }
+.category-card.score-good { border-left-color: #969423; }
+.category-card.score-developing { border-left-color: #ffc107; }
+.category-card.score-needs-improvement { border-left-color: #fd7e14; }
+.category-card.score-critical { border-left-color: #dc3545; }
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.category-header h4 {
+  margin: 0;
+  color: #212653;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+}
+
+/* Score Badges */
+.score-badge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  background: #212653;
+  color: white;
+}
+
+.score-badge.score-excellent { background: #28a745; }
+.score-badge.score-good { background: #969423; }
+.score-badge.score-developing { background: #ffc107; color: #212529; }
+.score-badge.score-needs-improvement { background: #fd7e14; }
+.score-badge.score-critical { background: #dc3545; }
+
+/* Category Highlights */
+.category-highlights {
+  margin: 1rem 0;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.category-highlights .highlight {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.category-highlights .strength { color: #28a745; }
+.category-highlights .gap { color: #dc3545; }
+.category-highlights .quick-win { color: #212653; }
+
+/* Cross Reference */
+.cross-reference {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed #ddd;
+}
+
+/* Systemic Patterns */
+.systemic-patterns {
+  margin: 1.5rem 0;
+}
+
+.pattern-card {
+  background: #fff9e6;
+  border: 1px solid #969423;
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  margin: 0.75rem 0;
+}
+
+.pattern-card h4 {
+  color: #212653;
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+}
+
+.pattern-card .recommendation {
+  background: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  margin-top: 0.75rem;
+}
+
+.pattern-card .affected-categories {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+/* Prioritization Table */
+.prioritization-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+
+.prioritization-table th {
+  background: #212653;
+  color: white;
+  padding: 0.75rem;
+  text-align: left;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.prioritization-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.prioritization-table .priority-score {
+  font-size: 1.1rem;
+  color: #212653;
+}
+
+/* Category Detail Cards (Manager Reports) */
+.category-detail {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  border-left: 4px solid #212653;
+  background: #fafafa;
+}
+
+.category-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.category-detail-header h3 {
+  margin: 0;
+  color: #212653;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.score-context {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+/* Phase 1.5 Print Optimizations */
+@media print {
+  .category-analysis-overview,
+  .cross-category-insights,
+  .department-category-analysis,
+  .category-analysis-section {
+    page-break-inside: avoid;
+  }
+
+  .category-card,
+  .category-detail,
+  .category-detail-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .visualization-container {
+    background: white !important;
+    border: 1px solid #ccc !important;
+  }
+
+  .visualization-row.two-column {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Phase 1.5 Responsive Adjustments */
+@media (max-width: 768px) {
+  .visualization-row.two-column {
+    grid-template-columns: 1fr;
+  }
+
+  .category-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .category-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 }
 
@@ -3994,7 +4255,7 @@ button:focus {
   
   
     <!-- Clickwrap Modal Overlay -->
-    <div id="clickwrap-modal-493ec10e-94f7-4d9a-90ac-204ebeef0adc" class="clickwrap-overlay" role="dialog" aria-modal="true" aria-labelledby="clickwrap-title">
+    <div id="clickwrap-modal-f96d04ed-4717-4e2b-8521-c0c7f9637240" class="clickwrap-overlay" role="dialog" aria-modal="true" aria-labelledby="clickwrap-title">
       <div class="clickwrap-modal">
         <!-- Header -->
         <div class="clickwrap-header">
@@ -4011,7 +4272,7 @@ button:focus {
         </div>
 
         <!-- Terms Container -->
-        <div class="clickwrap-terms-container" id="terms-container-493ec10e-94f7-4d9a-90ac-204ebeef0adc">
+        <div class="clickwrap-terms-container" id="terms-container-f96d04ed-4717-4e2b-8521-c0c7f9637240">
           <div class="clickwrap-terms-content">
             
     <h3>Professional Services Disclaimer</h3>
@@ -4048,7 +4309,7 @@ button:focus {
     <p>These terms, together with any applicable service agreements, constitute the entire agreement between you and BizHealth.ai regarding this Report and supersede all prior agreements and understandings.</p>
   
           </div>
-          <div class="scroll-indicator" id="scroll-indicator-493ec10e-94f7-4d9a-90ac-204ebeef0adc">
+          <div class="scroll-indicator" id="scroll-indicator-f96d04ed-4717-4e2b-8521-c0c7f9637240">
             <span>↓ Scroll to read all terms</span>
           </div>
         </div>
@@ -4056,20 +4317,20 @@ button:focus {
         <!-- Acceptance Section -->
         <div class="clickwrap-acceptance">
           <label class="clickwrap-checkbox-label">
-            <input type="checkbox" id="terms-checkbox-493ec10e-94f7-4d9a-90ac-204ebeef0adc" class="clickwrap-checkbox" />
+            <input type="checkbox" id="terms-checkbox-f96d04ed-4717-4e2b-8521-c0c7f9637240" class="clickwrap-checkbox" />
             <span class="checkmark"></span>
             <span class="checkbox-text">
               I have read, understand, and agree to these Terms &amp; Conditions governing my use of this Assessment Report.
             </span>
           </label>
 
-          <button id="accept-terms-btn-493ec10e-94f7-4d9a-90ac-204ebeef0adc" class="clickwrap-accept-btn" disabled>
+          <button id="accept-terms-btn-f96d04ed-4717-4e2b-8521-c0c7f9637240" class="clickwrap-accept-btn" disabled>
             Accept &amp; View Report
           </button>
 
           <p class="clickwrap-footer-note">
             Terms Version: 2025.1 |
-            Report Generated: December 8, 2025
+            Report Generated: December 11, 2025
           </p>
         </div>
       </div>
@@ -4321,11 +4582,11 @@ button:focus {
         function initClickwrapModal() {
           console.log('[Clickwrap] Starting initialization...');
           
-          const modal = document.getElementById('clickwrap-modal-493ec10e-94f7-4d9a-90ac-204ebeef0adc');
-          const termsContainer = document.getElementById('terms-container-493ec10e-94f7-4d9a-90ac-204ebeef0adc');
-          const scrollIndicator = document.getElementById('scroll-indicator-493ec10e-94f7-4d9a-90ac-204ebeef0adc');
-          const checkbox = document.getElementById('terms-checkbox-493ec10e-94f7-4d9a-90ac-204ebeef0adc');
-          const acceptBtn = document.getElementById('accept-terms-btn-493ec10e-94f7-4d9a-90ac-204ebeef0adc');
+          const modal = document.getElementById('clickwrap-modal-f96d04ed-4717-4e2b-8521-c0c7f9637240');
+          const termsContainer = document.getElementById('terms-container-f96d04ed-4717-4e2b-8521-c0c7f9637240');
+          const scrollIndicator = document.getElementById('scroll-indicator-f96d04ed-4717-4e2b-8521-c0c7f9637240');
+          const checkbox = document.getElementById('terms-checkbox-f96d04ed-4717-4e2b-8521-c0c7f9637240');
+          const acceptBtn = document.getElementById('accept-terms-btn-f96d04ed-4717-4e2b-8521-c0c7f9637240');
           const reportContent = document.querySelector('.report-container');
 
           console.log('[Clickwrap] Found elements:', {
@@ -4343,7 +4604,7 @@ button:focus {
           }
 
           // Check if already accepted (session storage)
-          const acceptanceKey = 'bizhealth_terms_accepted_493ec10e-94f7-4d9a-90ac-204ebeef0adc';
+          const acceptanceKey = 'bizhealth_terms_accepted_f96d04ed-4717-4e2b-8521-c0c7f9637240';
           const previousAcceptance = sessionStorage.getItem(acceptanceKey);
 
           if (previousAcceptance) {
@@ -4391,7 +4652,7 @@ button:focus {
 
               // Record acceptance
               const acceptance = {
-                reportId: '493ec10e-94f7-4d9a-90ac-204ebeef0adc',
+                reportId: 'f96d04ed-4717-4e2b-8521-c0c7f9637240',
                 reportType: 'all',
                 termsVersion: '2025.1',
                 acceptedAt: new Date().toISOString(),
@@ -4451,7 +4712,6 @@ button:focus {
           initClickwrapModal();
         }
       })();
-    </script>
     </script>
   
   <div class="report-container report-content-gated">
@@ -4575,7 +4835,7 @@ button:focus {
               font-family: 'Montserrat', sans-serif;
               font-weight: 600;
               margin: 0;
-            ">December 8, 2025</p>
+            ">December 11, 2025</p>
           </div>
           <div style="text-align: center;">
             <p style="
@@ -4589,7 +4849,7 @@ button:focus {
               font-family: 'Montserrat', monospace;
               font-weight: 600;
               margin: 0;
-            ">493EC10E</p>
+            ">F96D04ED</p>
           </div>
         </div>
       </div>
@@ -4645,7 +4905,7 @@ button:focus {
       <h1>Business Owner Report</h1>
       <p class="subtitle">Your Executive Decision Guide</p>
       <p class="company-name">EWM Global</p>
-      <p class="date">Assessment Date: December 8, 2025</p>
+      <p class="date">Assessment Date: December 11, 2025</p>
     </header>
   
 
@@ -4730,379 +4990,6 @@ button:focus {
          Premium "Owner Decision Brief" - Phase 1
          ================================================================ -->
     
-    <section class="owner-dashboard page-break-after" id="owner-dashboard" style="page-break-after: always;">
-      <div class="dashboard-header" style="margin-bottom: 24px;">
-        <h1 style="font-family: 'Montserrat', sans-serif; color: #212653; margin: 0; font-size: 28px;">
-          Owner Health Dashboard
-        </h1>
-        <p style="color: #666; margin: 0.5rem 0 0 0; font-size: 14px;">
-          EWM Global — December 8, 2025
-        </p>
-      </div>
-
-      <!-- ROW 1: Overall Score + Chapter Tiles -->
-      <div class="dashboard-row-1" style="display: grid; grid-template-columns: 280px 1fr; gap: 24px; margin: 24px 0;">
-
-        <!-- Overall Health Gauge -->
-        <div class="overall-health-card" style="
-          background: linear-gradient(135deg, #212653 0%, #1a1f42 100%);
-          border-radius: 16px;
-          padding: 24px;
-          text-align: center;
-          color: white;
-        ">
-          
-    <svg viewBox="0 0 200 120" width="180" height="110" style="display: block; margin: 0 auto;">
-      <!-- Background arc (gray) -->
-      <path
-        d="M 30 85 A 70 70 0 0 1 170 85"
-        fill="none"
-        stroke="rgba(255,255,255,0.2)"
-        stroke-width="12"
-        stroke-linecap="round"
-      />
-      <!-- Colored arc (score) -->
-      <path
-        d="M 30 85 A 70 70 0 0 1 86.8833079789993 16.239892448991796"
-        fill="none"
-        stroke="#ffc107"
-        stroke-width="12"
-        stroke-linecap="round"
-      />
-      <!-- Tick marks -->
-      <line x1="45" y1="85" x2="38" y2="84.99999999999999" stroke="rgba(255,255,255,0.4)" stroke-width="2"/><line x1="61.10912703473989" y1="46.109127034739885" x2="56.159379566434055" y2="41.15937956643405" stroke="rgba(255,255,255,0.4)" stroke-width="2"/><line x1="100" y1="30" x2="100" y2="23" stroke="rgba(255,255,255,0.4)" stroke-width="2"/><line x1="138.89087296526012" y1="46.10912703473989" x2="143.84062043356596" y2="41.159379566434055" stroke="rgba(255,255,255,0.4)" stroke-width="2"/><line x1="155" y1="85" x2="162" y2="85" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
-      <!-- Needle -->
-      <line
-        x1="100"
-        y1="85"
-        x2="90.63093427071378"
-        y2="35.885637463565565"
-        stroke="white"
-        stroke-width="3"
-        stroke-linecap="round"
-      />
-      <circle cx="100" cy="85" r="6" fill="white"/>
-    </svg>
-  
-          <div style="margin-top: 16px;">
-            <div style="font-size: 14px; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px;">
-              Overall Business Health
-            </div>
-            <div style="font-family: 'Montserrat', sans-serif; font-size: 42px; font-weight: 700; margin: 8px 0;">
-              44<span style="font-size: 20px; opacity: 0.7;">/100</span>
-            </div>
-            <div style="
-              display: inline-block;
-              padding: 6px 16px;
-              border-radius: 20px;
-              font-weight: 600;
-              text-transform: uppercase;
-              font-size: 12px;
-              background: #ffc10740;
-              color: white;
-            ">
-              Attention
-            </div>
-            
-          </div>
-        </div>
-
-        <!-- Chapter Score Tiles -->
-        <div class="chapter-tiles" style="
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 16px;
-        ">
-          
-    <div class="chapter-tile" style="
-      background: white;
-      border: 2px solid #e9ecef;
-      border-left: 5px solid #28a745;
-      border-radius: 12px;
-      padding: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      page-break-inside: avoid;
-    ">
-      <div>
-        <div style="font-size: 24px; margin-bottom: 4px;">🚀</div>
-        <div style="font-family: 'Montserrat', sans-serif; font-weight: 600; color: #212653; font-size: 14px;">
-          Growth Engine
-        </div>
-        <div style="
-          display: inline-block;
-          padding: 2px 8px;
-          border-radius: 4px;
-          font-size: 10px;
-          font-weight: 600;
-          margin-top: 4px;
-          background: #ffc10720;
-          color: #ffc107;
-        ">
-          Attention
-        </div>
-      </div>
-      <div style="text-align: right;">
-        <div style="font-family: 'Montserrat', sans-serif; font-size: 32px; font-weight: 700; color: #212653;">
-          41
-        </div>
-        <div style="color: #6c757d; font-size: 14px; font-weight: 600;">
-          → stable
-        </div>
-      </div>
-    </div>
-  
-    <div class="chapter-tile" style="
-      background: white;
-      border: 2px solid #e9ecef;
-      border-left: 5px solid #0d6efd;
-      border-radius: 12px;
-      padding: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      page-break-inside: avoid;
-    ">
-      <div>
-        <div style="font-size: 24px; margin-bottom: 4px;">📊</div>
-        <div style="font-family: 'Montserrat', sans-serif; font-weight: 600; color: #212653; font-size: 14px;">
-          Performance &amp; Health
-        </div>
-        <div style="
-          display: inline-block;
-          padding: 2px 8px;
-          border-radius: 4px;
-          font-size: 10px;
-          font-weight: 600;
-          margin-top: 4px;
-          background: #dc354520;
-          color: #dc3545;
-        ">
-          Critical
-        </div>
-      </div>
-      <div style="text-align: right;">
-        <div style="font-family: 'Montserrat', sans-serif; font-size: 32px; font-weight: 700; color: #212653;">
-          39
-        </div>
-        <div style="color: #6c757d; font-size: 14px; font-weight: 600;">
-          → stable
-        </div>
-      </div>
-    </div>
-  
-    <div class="chapter-tile" style="
-      background: white;
-      border: 2px solid #e9ecef;
-      border-left: 5px solid #ffc107;
-      border-radius: 12px;
-      padding: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      page-break-inside: avoid;
-    ">
-      <div>
-        <div style="font-size: 24px; margin-bottom: 4px;">👥</div>
-        <div style="font-family: 'Montserrat', sans-serif; font-weight: 600; color: #212653; font-size: 14px;">
-          People &amp; Leadership
-        </div>
-        <div style="
-          display: inline-block;
-          padding: 2px 8px;
-          border-radius: 4px;
-          font-size: 10px;
-          font-weight: 600;
-          margin-top: 4px;
-          background: #ffc10720;
-          color: #ffc107;
-        ">
-          Attention
-        </div>
-      </div>
-      <div style="text-align: right;">
-        <div style="font-family: 'Montserrat', sans-serif; font-size: 32px; font-weight: 700; color: #212653;">
-          41
-        </div>
-        <div style="color: #6c757d; font-size: 14px; font-weight: 600;">
-          → stable
-        </div>
-      </div>
-    </div>
-  
-    <div class="chapter-tile" style="
-      background: white;
-      border: 2px solid #e9ecef;
-      border-left: 5px solid #dc3545;
-      border-radius: 12px;
-      padding: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      page-break-inside: avoid;
-    ">
-      <div>
-        <div style="font-size: 24px; margin-bottom: 4px;">🛡️</div>
-        <div style="font-family: 'Montserrat', sans-serif; font-weight: 600; color: #212653; font-size: 14px;">
-          Resilience &amp; Safeguards
-        </div>
-        <div style="
-          display: inline-block;
-          padding: 2px 8px;
-          border-radius: 4px;
-          font-size: 10px;
-          font-weight: 600;
-          margin-top: 4px;
-          background: #ffc10720;
-          color: #ffc107;
-        ">
-          Attention
-        </div>
-      </div>
-      <div style="text-align: right;">
-        <div style="font-family: 'Montserrat', sans-serif; font-size: 32px; font-weight: 700; color: #212653;">
-          54
-        </div>
-        <div style="color: #6c757d; font-size: 14px; font-weight: 600;">
-          → stable
-        </div>
-      </div>
-    </div>
-  
-        </div>
-      </div>
-
-      <!-- ROW 2: Trajectory + Valuation Impact -->
-      <div class="dashboard-row-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 24px 0;">
-        
-    <div class="trajectory-card" style="
-      background: white;
-      border: 2px solid #e9ecef;
-      border-radius: 12px;
-      padding: 24px;
-    ">
-      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-        <span style="font-size: 28px;">➡️</span>
-        <div>
-          <div style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">Business Trajectory</div>
-          <div style="font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 700; color: #6c757d;">
-            Stable
-          </div>
-        </div>
-      </div>
-      <div style="
-        background: #f8f9fa;
-        border-radius: 8px;
-        padding: 12px;
-        text-align: center;
-      ">
-        <div style="font-size: 12px; color: #666;">12-Month Projected Change</div>
-        <div style="font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 700; color: #6c757d;">
-          ±2 pts
-        </div>
-        <div style="font-size: 11px; color: #888;">Based on current trends</div>
-      </div>
-    </div>
-  
-        
-    <div class="valuation-impact-card" style="
-      background: linear-gradient(135deg, #212653 0%, #1a1f42 100%);
-      border-radius: 12px;
-      padding: 24px;
-      color: white;
-    ">
-      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-        <span style="font-size: 28px;">💎</span>
-        <div>
-          <div style="font-size: 12px; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.5px;">Value Creation Potential</div>
-          <div style="font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 700;">
-            $4.0M - $6.5M
-          </div>
-        </div>
-      </div>
-      <div style="
-        background: rgba(255,255,255,0.1);
-        border-radius: 8px;
-        padding: 12px;
-        text-align: center;
-      ">
-        <div style="font-size: 12px; opacity: 0.8;">Annual Recurring Impact</div>
-        <div style="font-size: 11px; opacity: 0.7; margin-top: 4px;">
-          Achievable over 12-18 months with focused implementation
-        </div>
-      </div>
-    </div>
-  
-      </div>
-
-      <!-- ROW 3: Headline Insights -->
-      <div class="dashboard-row-3" style="margin: 24px 0;">
-        
-    <div class="headline-insights" style="
-      background: #f8f9fa;
-      border-radius: 12px;
-      padding: 24px;
-    ">
-      <h3 style="font-family: 'Montserrat', sans-serif; color: #212653; margin: 0 0 16px 0; font-size: 16px;">
-        📋 Key Insights for EWM Global
-      </h3>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
-        
-          <div class="insight-card" style="
-            background: white;
-            border-left: 4px solid #969423;
-            padding: 16px;
-            border-radius: 0 8px 8px 0;
-            page-break-inside: avoid;
-          ">
-            <div style="font-size: 18px; margin-bottom: 8px;">⚡</div>
-            <div style="font-weight: 600; color: #212653; margin-bottom: 4px; font-size: 14px;">
-              90-Day Priority
-            </div>
-            <div style="color: #555; font-size: 13px; line-height: 1.5;">
-              Human Resources Improvement Initiative
-            </div>
-          </div>
-        
-          <div class="insight-card" style="
-            background: white;
-            border-left: 4px solid #0d6efd;
-            padding: 16px;
-            border-radius: 0 8px 8px 0;
-            page-break-inside: avoid;
-          ">
-            <div style="font-size: 18px; margin-bottom: 8px;">🏆</div>
-            <div style="font-weight: 600; color: #212653; margin-bottom: 4px; font-size: 14px;">
-              Core Strength to Protect
-            </div>
-            <div style="color: #555; font-size: 13px; line-height: 1.5;">
-              Compliance Excellence
-            </div>
-          </div>
-        
-          <div class="insight-card" style="
-            background: white;
-            border-left: 4px solid #6c757d;
-            padding: 16px;
-            border-radius: 0 8px 8px 0;
-            page-break-inside: avoid;
-          ">
-            <div style="font-size: 18px; margin-bottom: 8px;">📊</div>
-            <div style="font-weight: 600; color: #212653; margin-bottom: 4px; font-size: 14px;">
-              Assessment Insight
-            </div>
-            <div style="color: #555; font-size: 13px; line-height: 1.5;">
-              See detailed analysis in Comprehensive Report for complete findings.
-            </div>
-          </div>
-        
-      </div>
-    </div>
-  
-      </div>
-    </section>
-  
 
     <!-- ================================================================
          SECTION: Your Business Health at a Glance
@@ -5122,11 +5009,11 @@ button:focus {
 
       <div class="health-score-display">
         <div class="health-score-circle">
-          <span class="score">44</span>
+          <span class="score">53</span>
           <span class="out-of">/ 100</span>
         </div>
         <div class="health-score-details">
-          <p class="status">Critical Condition</p>
+          <p class="status">Needs Improvement</p>
           <p class="trajectory">
             <span style="color: #6c757d;">&#x25AC;</span>
             Your Trajectory: Flat
@@ -5142,17 +5029,17 @@ button:focus {
     <div class="executive-highlights">
       <div class="highlight-card">
         <div class="highlight-icon">🎯</div>
-        <div class="highlight-value">44</div>
+        <div class="highlight-value">53</div>
         <div class="highlight-label">Health Score</div>
       </div>
       <div class="highlight-card">
         <div class="highlight-icon">✅</div>
-        <div class="highlight-value">2</div>
+        <div class="highlight-value">8</div>
         <div class="highlight-label">Strengths</div>
       </div>
       <div class="highlight-card">
         <div class="highlight-icon">⚠️</div>
-        <div class="highlight-value">28</div>
+        <div class="highlight-value">22</div>
         <div class="highlight-label">Issues to Address</div>
       </div>
       <div class="highlight-card">
@@ -5170,7 +5057,7 @@ button:focus {
           <div style="display: flex; justify-content: center;">
             
     <div class="chapter-radar-container" style="text-align: center; margin: 24pt 0; page-break-inside: avoid;"
-         role="figure" aria-label="4-Chapter Radar Chart for Company: Growth Engine: 41/100 (benchmark: 21/100). Performance & Health: 39/100 (benchmark: 9/100). People & Leadership: 41/100 (benchmark: 28/100). Resilience & Safeguards: 54/100 (benchmark: 44/100)">
+         role="figure" aria-label="4-Chapter Radar Chart for Company: Growth Engine: 49/100 (benchmark: 21/100). Performance & Health: 51/100 (benchmark: 34/100). People & Leadership: 43/100 (benchmark: 18/100). Resilience & Safeguards: 70/100 (benchmark: 71/100)">
       <h3 style="font-family: 'Montserrat', Arial, sans-serif; font-size: 16pt; font-weight: 700; color: #212653; margin-bottom: 16pt;">Strategic Balance Overview</h3>
 
       <svg width="400" height="350" viewBox="0 0 400 350"
@@ -5243,7 +5130,7 @@ button:focus {
       
         <text x="200" y="-11" text-anchor="middle"
               font-size="14" fill="#28a745" font-family="Montserrat, Arial, sans-serif" font-weight="700">
-          41/100
+          49/100
         </text>
       
     
@@ -5259,7 +5146,7 @@ button:focus {
       
         <text x="410" y="199" text-anchor="start"
               font-size="14" fill="#0d6efd" font-family="Montserrat, Arial, sans-serif" font-weight="700">
-          39/100
+          51/100
         </text>
       
     
@@ -5275,7 +5162,7 @@ button:focus {
       
         <text x="200" y="409" text-anchor="middle"
               font-size="14" fill="#ffc107" font-family="Montserrat, Arial, sans-serif" font-weight="700">
-          41/100
+          43/100
         </text>
       
     
@@ -5291,33 +5178,33 @@ button:focus {
       
         <text x="-10" y="199.00000000000003" text-anchor="end"
               font-size="14" fill="#dc3545" font-family="Montserrat, Arial, sans-serif" font-weight="700">
-          54/100
+          70/100
         </text>
       
     
 
         
           <!-- Benchmark polygon -->
-          <polygon points="200,141.4 214.4,175 200,219.8 129.6,175" fill="none" stroke="#999"
+          <polygon points="200,141.4 254.4,175 200,203.8 86.4,175" fill="none" stroke="#999"
                    stroke-width="2" stroke-dasharray="6,3" opacity="0.6"/>
         
 
         <!-- Company polygon -->
-        <polygon points="200,109.4 262.4,175 200,240.6 113.6,175" fill="#212653" fill-opacity="0.2"
+        <polygon points="200,96.6 281.6,175 200,243.8 88,175" fill="#212653" fill-opacity="0.2"
                  stroke="#212653" stroke-width="3"/>
 
         <!-- Score markers -->
         
-      <circle cx="200" cy="109.4" r="6"
+      <circle cx="200" cy="96.6" r="6"
               fill="#28a745" stroke="white" stroke-width="2"/>
     
-      <circle cx="262.4" cy="175" r="6"
+      <circle cx="281.6" cy="175" r="6"
               fill="#0d6efd" stroke="white" stroke-width="2"/>
     
-      <circle cx="200" cy="240.6" r="6"
+      <circle cx="200" cy="243.8" r="6"
               fill="#ffc107" stroke="white" stroke-width="2"/>
     
-      <circle cx="113.6" cy="175" r="6"
+      <circle cx="88" cy="175" r="6"
               fill="#dc3545" stroke="white" stroke-width="2"/>
     
 
@@ -5347,12 +5234,12 @@ button:focus {
           <div class="owner-charts-grid">
             <div class="chart-item">
     <div class="svg-chart-container" role="figure" aria-label="Business Health Overview">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 480" style="max-width: 100%; height: auto;"><rect width="450" height="480" fill="white" rx="4"/><text x="225" y="22" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Business Health Overview</text><circle cx="225" cy="240" r="35" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="225" cy="240" r="70" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="225" cy="240" r="105" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="225" cy="240" r="140" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="225" cy="240" r="175" fill="none" stroke="#e0e0e0" stroke-width="1"/><line x1="225" y1="240" x2="225" y2="65" stroke="#e0e0e0" stroke-width="1"/><line x1="225" y1="240" x2="400" y2="240" stroke="#e0e0e0" stroke-width="1"/><line x1="225" y1="240" x2="225" y2="415" stroke="#e0e0e0" stroke-width="1"/><line x1="225" y1="240" x2="50" y2="240.00000000000003" stroke="#e0e0e0" stroke-width="1"/><polygon points="225,168.25 293.25,240 225,311.75 130.5,240" fill="#212653" fill-opacity="0.3" stroke="#212653" stroke-width="2"/><circle cx="225" cy="168.25" r="4" fill="#212653"/><circle cx="293.25" cy="240" r="4" fill="#212653"/><circle cx="225" cy="311.75" r="4" fill="#212653"/><circle cx="130.5" cy="240" r="4" fill="#212653"/><text x="225" y="40" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Growth Eng... (41)</text><text x="425" y="240" text-anchor="start" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Performanc... (39)</text><text x="225" y="440" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">People &amp; L... (41)</text><text x="25" y="240.00000000000003" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Resilience... (54)</text></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 480" style="max-width: 100%; height: auto;"><rect width="450" height="480" fill="white" rx="4"/><text x="225" y="22" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Business Health Overview</text><circle cx="225" cy="240" r="35" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="225" cy="240" r="70" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="225" cy="240" r="105" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="225" cy="240" r="140" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="225" cy="240" r="175" fill="none" stroke="#e0e0e0" stroke-width="1"/><line x1="225" y1="240" x2="225" y2="65" stroke="#e0e0e0" stroke-width="1"/><line x1="225" y1="240" x2="400" y2="240" stroke="#e0e0e0" stroke-width="1"/><line x1="225" y1="240" x2="225" y2="415" stroke="#e0e0e0" stroke-width="1"/><line x1="225" y1="240" x2="50" y2="240.00000000000003" stroke="#e0e0e0" stroke-width="1"/><polygon points="225,154.25 314.25,240 225,315.25 102.50000000000001,240.00000000000003" fill="#212653" fill-opacity="0.3" stroke="#212653" stroke-width="2"/><circle cx="225" cy="154.25" r="4" fill="#212653"/><circle cx="314.25" cy="240" r="4" fill="#212653"/><circle cx="225" cy="315.25" r="4" fill="#212653"/><circle cx="102.50000000000001" cy="240.00000000000003" r="4" fill="#212653"/><text x="225" y="40" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Growth Eng... (49)</text><text x="425" y="240" text-anchor="start" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Performanc... (51)</text><text x="225" y="440" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">People &amp; L... (43)</text><text x="25" y="240.00000000000003" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Resilience... (70)</text></svg>
     </div>
   </div>
             <div class="chart-item">
     <div class="svg-chart-container" role="figure" aria-label="Chapter Performance Overview">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 232" style="max-width: 100%; height: auto;"><rect width="550" height="232" fill="white" rx="4"/><text x="275" y="28" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Chapter Performance Overview</text><text x="132" y="70" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Growth Engine</text><rect x="140" y="50" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="50" width="143.5" height="30" fill="#e67e22" rx="4"/><text x="291.5" y="70" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">41</text><text x="132" y="108" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Performance &amp; He...</text><rect x="140" y="88" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="88" width="136.5" height="30" fill="#e74c3c" rx="4"/><text x="284.5" y="108" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">39</text><text x="132" y="146" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">People &amp; Leaders...</text><rect x="140" y="126" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="126" width="143.5" height="30" fill="#e67e22" rx="4"/><text x="291.5" y="146" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">41</text><text x="132" y="184" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Resilience &amp; Saf...</text><rect x="140" y="164" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="164" width="189" height="30" fill="#e67e22" rx="4"/><text x="337" y="184" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">54</text></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 232" style="max-width: 100%; height: auto;"><rect width="550" height="232" fill="white" rx="4"/><text x="275" y="28" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Chapter Performance Overview</text><text x="132" y="70" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Growth Engine</text><rect x="140" y="50" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="50" width="171.5" height="30" fill="#e67e22" rx="4"/><text x="319.5" y="70" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">49</text><text x="132" y="108" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Performance &amp; He...</text><rect x="140" y="88" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="88" width="178.5" height="30" fill="#e67e22" rx="4"/><text x="326.5" y="108" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">51</text><text x="132" y="146" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">People &amp; Leaders...</text><rect x="140" y="126" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="126" width="150.5" height="30" fill="#e67e22" rx="4"/><text x="298.5" y="146" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">43</text><text x="132" y="184" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Resilience &amp; Saf...</text><rect x="140" y="164" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="164" width="244.99999999999997" height="30" fill="#f39c12" rx="4"/><text x="393" y="184" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">70</text></svg>
     </div>
   </div>
           </div>
@@ -5369,14 +5256,14 @@ button:focus {
         <div class="takeaway-item">
           <span class="takeaway-icon">✅</span>
           <span class="takeaway-text">
-            <strong>Top Strength:</strong> Compliance Excellence
+            <strong>Top Strength:</strong> Strong Sales Target Alignment
           </span>
         </div>
       
         <div class="takeaway-item">
           <span class="takeaway-icon">⚠️</span>
           <span class="takeaway-text">
-            <strong>Critical Issue:</strong> Strategy Critical Underperformance
+            <strong>Critical Issue:</strong> Marketing Critical Underperformance
           </span>
         </div>
       
@@ -5420,7 +5307,7 @@ button:focus {
         <div class="implication-card risk">
           <div class="card-icon">&#9888;&#65039;</div>
           <div class="card-title">For Your Risk</div>
-          <p>Key vulnerabilities exist in your operations. Addressing these risks should be a priority to protect your business.</p>
+          <p>Some operational and compliance risks need attention to protect business continuity and avoid potential issues.</p>
         </div>
 
         <div class="implication-card value">
@@ -5524,7 +5411,7 @@ button:focus {
               font-weight: 700;
               color: #28a745;
               line-height: 1;
-            ">80th</div>
+            ">92nd</div>
             <div style="
               font-size: 9pt;
               color: #28a745;
@@ -5543,7 +5430,7 @@ button:focus {
             font-weight: 700;
             color: #ffc107;
             line-height: 1;
-          ">41</div>
+          ">49</div>
           <div style="
             font-size: 12pt;
             color: #666;
@@ -5588,7 +5475,7 @@ button:focus {
       gap: 16pt;
       padding: 16pt 24pt;
       background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-      border-left: 6px solid #ffc107;
+      border-left: 6px solid #0d6efd;
       border-radius: 0 16pt 16pt 0;
       margin: 40pt 0 28pt 0;
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -5639,7 +5526,7 @@ button:focus {
               font-weight: 700;
               color: #28a745;
               line-height: 1;
-            ">95th</div>
+            ">76th</div>
             <div style="
               font-size: 9pt;
               color: #28a745;
@@ -5656,9 +5543,9 @@ button:focus {
             font-family: 'Montserrat', Arial, sans-serif;
             font-size: 28pt;
             font-weight: 700;
-            color: #ffc107;
+            color: #0d6efd;
             line-height: 1;
-          ">39</div>
+          ">51</div>
           <div style="
             font-size: 12pt;
             color: #666;
@@ -5670,7 +5557,7 @@ button:focus {
           <!-- Band Badge -->
           <div style="
             padding: 10pt 20pt;
-            background: #ffc107;
+            background: #0d6efd;
             border-radius: 8pt;
             text-align: center;
           ">
@@ -5681,7 +5568,7 @@ button:focus {
               color: white;
               text-transform: uppercase;
               letter-spacing: 1.5px;
-            ">Attention</div>
+            ">Proficiency</div>
             
               <div style="
                 font-size: 8pt;
@@ -5743,8 +5630,8 @@ button:focus {
           <!-- Percentile Badge -->
           <div style="
             padding: 8pt 18pt;
-            background: #0d6efd15;
-            border: 2px solid #0d6efd;
+            background: #28a74515;
+            border: 2px solid #28a745;
             border-radius: 24pt;
             text-align: center;
           ">
@@ -5752,12 +5639,12 @@ button:focus {
               font-family: 'Montserrat', Arial, sans-serif;
               font-size: 14pt;
               font-weight: 700;
-              color: #0d6efd;
+              color: #28a745;
               line-height: 1;
-            ">70th</div>
+            ">88th</div>
             <div style="
               font-size: 9pt;
-              color: #0d6efd;
+              color: #28a745;
               text-transform: uppercase;
               letter-spacing: 0.5px;
               margin-top: 2pt;
@@ -5773,7 +5660,7 @@ button:focus {
             font-weight: 700;
             color: #ffc107;
             line-height: 1;
-          ">41</div>
+          ">43</div>
           <div style="
             font-size: 12pt;
             color: #666;
@@ -5858,8 +5745,8 @@ button:focus {
           <!-- Percentile Badge -->
           <div style="
             padding: 8pt 18pt;
-            background: #0d6efd15;
-            border: 2px solid #0d6efd;
+            background: #ffc10715;
+            border: 2px solid #ffc107;
             border-radius: 24pt;
             text-align: center;
           ">
@@ -5867,12 +5754,12 @@ button:focus {
               font-family: 'Montserrat', Arial, sans-serif;
               font-size: 14pt;
               font-weight: 700;
-              color: #0d6efd;
+              color: #ffc107;
               line-height: 1;
-            ">65th</div>
+            ">49th</div>
             <div style="
               font-size: 9pt;
-              color: #0d6efd;
+              color: #ffc107;
               text-transform: uppercase;
               letter-spacing: 0.5px;
               margin-top: 2pt;
@@ -5888,7 +5775,7 @@ button:focus {
             font-weight: 700;
             color: #0d6efd;
             line-height: 1;
-          ">54</div>
+          ">70</div>
           <div style="
             font-size: 12pt;
             color: #666;
@@ -5927,11 +5814,1305 @@ button:focus {
   
         </div>
         
+    <div class="comprehensive-reference">
+      <span class="ref-icon">&#128214;</span>
+      <span class="ref-text">
+        For detailed performance scorecard and metrics, see <strong>Comprehensive Report</strong> &rarr;
+        <em>Business Health Scorecard</em>
+      </span>
+    </div>
+  
       </section>
     
 
     <!-- ================================================================
-         SECTION: Your Critical Priorities
+         SECTION: Phase 1.5 Category Analysis Overview
+         12-category radar, heatmap, and benchmark visualizations
+         ================================================================ -->
+    
+    <section class="section page-break" id="category-analysis-overview">
+      
+    <div class="owner-section-header">
+      <h2>Category-Level Performance Analysis</h2>
+      
+        <p class="owner-question">
+          <span class="question-icon">&#128173;</span>
+          <em>"How is each area of my business performing?"</em>
+        </p>
+      
+    </div>
+  
+
+      <p class="section-intro">
+        This section provides a granular view of your business health across all 12 assessment
+        categories, enabling you to target improvement efforts where they'll have the most impact.
+      </p>
+
+      <div class="visualization-container" style="margin: 1.5rem 0;">
+        <h3 style="color: #212653; font-family: 'Montserrat', sans-serif; margin-bottom: 1rem;">12-Category Health Radar</h3>
+        <div style="display: flex; justify-content: center; background: #f8f9fa; padding: 20px; border-radius: 8px;">
+          <svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+      <title>12-Category Radar Chart</title>
+
+      <!-- Background -->
+      <rect width="100%" height="100%" fill="#ffffff" />
+
+      <!-- Grid circles -->
+      <circle cx="250" cy="250" r="38" fill="none" stroke="#e9ecef" stroke-width="1" /><circle cx="250" cy="250" r="76" fill="none" stroke="#e9ecef" stroke-width="1" /><circle cx="250" cy="250" r="114" fill="none" stroke="#e9ecef" stroke-width="1" /><circle cx="250" cy="250" r="152" fill="none" stroke="#e9ecef" stroke-width="1" /><circle cx="250" cy="250" r="190" fill="none" stroke="#e9ecef" stroke-width="1" />
+
+      <!-- Score labels on grid -->
+      <text x="255" y="212" font-size="10" fill="#6c757d">20</text>
+      <text x="255" y="174" font-size="10" fill="#6c757d">40</text>
+      <text x="255" y="136" font-size="10" fill="#6c757d">60</text>
+      <text x="255" y="98" font-size="10" fill="#6c757d">80</text>
+      <text x="255" y="60" font-size="10" fill="#6c757d">100</text>
+
+      <!-- Axis lines -->
+      <line x1="250" y1="250" x2="250" y2="60" stroke="#e9ecef" stroke-width="1" /><line x1="250" y1="250" x2="345" y2="85.45517328095664" stroke="#e9ecef" stroke-width="1" /><line x1="250" y1="250" x2="414.54482671904333" y2="155" stroke="#e9ecef" stroke-width="1" /><line x1="250" y1="250" x2="440" y2="250" stroke="#e9ecef" stroke-width="1" /><line x1="250" y1="250" x2="414.5448267190434" y2="345" stroke="#e9ecef" stroke-width="1" /><line x1="250" y1="250" x2="345.00000000000006" y2="414.5448267190433" stroke="#e9ecef" stroke-width="1" /><line x1="250" y1="250" x2="250" y2="440" stroke="#e9ecef" stroke-width="1" /><line x1="250" y1="250" x2="155.00000000000006" y2="414.5448267190434" stroke="#e9ecef" stroke-width="1" /><line x1="250" y1="250" x2="85.4551732809567" y2="345.00000000000006" stroke="#e9ecef" stroke-width="1" /><line x1="250" y1="250" x2="60" y2="250.00000000000003" stroke="#e9ecef" stroke-width="1" /><line x1="250" y1="250" x2="85.45517328095659" y2="155.0000000000001" stroke="#e9ecef" stroke-width="1" /><line x1="250" y1="250" x2="154.99999999999991" y2="85.4551732809567" stroke="#e9ecef" stroke-width="1" />
+
+      <!-- Benchmark polygon -->
+      <polygon points="250.0,136.0 307.0,151.3 348.7,193.0 364.0,250.0 348.7,307.0 307.0,348.7 250.0,364.0 193.0,348.7 151.3,307.0 136.0,250.0 151.3,193.0 193.0,151.3"
+         fill="none" stroke="#6c757d" stroke-width="2" stroke-dasharray="5,5" opacity="0.7" />
+
+      <!-- Company polygon -->
+      <polygon points="250.0,153.1 302.3,159.5 324.0,207.3 392.5,250.0 347.1,306.0 289.9,319.1 250.0,346.9 211.1,317.5 156.2,304.2 250.0,250.0 187.5,213.9 176.8,123.3" fill="#212653" fill-opacity="0.2"
+               stroke="#212653" stroke-width="2" />
+
+      <!-- Score dots -->
+      <circle cx="250.0" cy="153.1" r="6" fill="#f0ad4e" stroke="#ffffff" stroke-width="2" /><circle cx="302.3" cy="159.5" r="6" fill="#f0ad4e" stroke="#ffffff" stroke-width="2" /><circle cx="324.0" cy="207.3" r="6" fill="#f0ad4e" stroke="#ffffff" stroke-width="2" /><circle cx="392.5" cy="250.0" r="6" fill="#5cb85c" stroke="#ffffff" stroke-width="2" /><circle cx="347.1" cy="306.0" r="6" fill="#f0ad4e" stroke="#ffffff" stroke-width="2" /><circle cx="289.9" cy="319.1" r="6" fill="#f0ad4e" stroke="#ffffff" stroke-width="2" /><circle cx="250.0" cy="346.9" r="6" fill="#f0ad4e" stroke="#ffffff" stroke-width="2" /><circle cx="211.1" cy="317.5" r="6" fill="#f0ad4e" stroke="#ffffff" stroke-width="2" /><circle cx="156.2" cy="304.2" r="6" fill="#f0ad4e" stroke="#ffffff" stroke-width="2" /><circle cx="250.0" cy="250.0" r="6" fill="#c9302c" stroke="#ffffff" stroke-width="2" /><circle cx="187.5" cy="213.9" r="6" fill="#d9534f" stroke="#ffffff" stroke-width="2" /><circle cx="176.8" cy="123.3" r="6" fill="#5cb85c" stroke="#ffffff" stroke-width="2" />
+
+      <!-- Category labels -->
+      <text x="250" y="30" text-anchor="middle" font-size="11" fill="#212653" font-family="Open Sans, sans-serif">STR (51)</text><text x="360" y="59.47441116742348" text-anchor="start" font-size="11" fill="#212653" font-family="Open Sans, sans-serif">SAL (55)</text><text x="440.5255888325765" y="140" text-anchor="start" font-size="11" fill="#212653" font-family="Open Sans, sans-serif">MKT (45)</text><text x="470" y="250" text-anchor="start" font-size="11" fill="#212653" font-family="Open Sans, sans-serif">CXP (75)</text><text x="440.52558883257655" y="359.99999999999994" text-anchor="start" font-size="11" fill="#212653" font-family="Open Sans, sans-serif">OPS (59)</text><text x="360.00000000000006" y="440.52558883257643" text-anchor="start" font-size="11" fill="#212653" font-family="Open Sans, sans-serif">FIN (42)</text><text x="250" y="470" text-anchor="middle" font-size="11" fill="#212653" font-family="Open Sans, sans-serif">HRS (51)</text><text x="140.00000000000006" y="440.52558883257655" text-anchor="end" font-size="11" fill="#212653" font-family="Open Sans, sans-serif">LDG (41)</text><text x="59.47441116742354" y="360.00000000000006" text-anchor="end" font-size="11" fill="#212653" font-family="Open Sans, sans-serif">TIN (57)</text><text x="30" y="250.00000000000003" text-anchor="end" font-size="11" fill="#212653" font-family="Open Sans, sans-serif">ITD (0)</text><text x="59.4744111674234" y="140.0000000000001" text-anchor="end" font-size="11" fill="#212653" font-family="Open Sans, sans-serif">RMS (38)</text><text x="139.9999999999999" y="59.47441116742354" text-anchor="end" font-size="11" fill="#212653" font-family="Open Sans, sans-serif">CMP (77)</text>
+
+      <!-- Legend -->
+      <g transform="translate(380, 440)">
+        <rect x="0" y="0" width="12" height="12" fill="#212653" fill-opacity="0.2" stroke="#212653" />
+        <text x="18" y="10" font-size="10" fill="#212653">Company Score</text>
+        
+        <line x1="0" y1="24" x2="12" y2="24" stroke="#6c757d" stroke-width="2" stroke-dasharray="3,3" />
+        <text x="18" y="28" font-size="10" fill="#6c757d">Industry Avg</text>
+        
+      </g>
+    </svg>
+        </div>
+        <p style="text-align: center; color: #666; font-size: 0.85rem; margin-top: 0.75rem;">
+          Your performance across all business categories compared to industry benchmarks
+        </p>
+      </div>
+
+      <div class="visualization-row two-column" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0;">
+        
+        <div class="visualization-container">
+          <h3 style="color: #212653; font-family: 'Montserrat', sans-serif; margin-bottom: 1rem;">Chapter Performance Heatmap</h3>
+          <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+            <svg width="600" height="300" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+      <title>Chapter-Category Heatmap</title>
+      <rect width="100%" height="100%" fill="#ffffff" />
+
+      <!-- Chapter headers -->
+      
+      <text x="160.5" y="20" text-anchor="middle" font-size="11" font-weight="bold"
+            fill="#212653" font-family="Montserrat, sans-serif">
+        Growth Engine
+      </text>
+      <text x="160.5" y="32" text-anchor="middle" font-size="10" fill="#6c757d">
+        57/100
+      </text>
+    
+      <text x="285.5" y="20" text-anchor="middle" font-size="11" font-weight="bold"
+            fill="#212653" font-family="Montserrat, sans-serif">
+        Performance &amp; Health
+      </text>
+      <text x="285.5" y="32" text-anchor="middle" font-size="10" fill="#6c757d">
+        51/100
+      </text>
+    
+      <text x="410.5" y="20" text-anchor="middle" font-size="11" font-weight="bold"
+            fill="#212653" font-family="Montserrat, sans-serif">
+        People &amp; Leadership
+      </text>
+      <text x="410.5" y="32" text-anchor="middle" font-size="10" fill="#6c757d">
+        46/100
+      </text>
+    
+      <text x="535.5" y="20" text-anchor="middle" font-size="11" font-weight="bold"
+            fill="#212653" font-family="Montserrat, sans-serif">
+        Resilience &amp; Safeguards
+      </text>
+      <text x="535.5" y="32" text-anchor="middle" font-size="10" fill="#6c757d">
+        43/100
+      </text>
+    
+
+      <!-- Heatmap cells -->
+      
+        <g>
+          <rect x="100" y="40" width="121" height="56"
+                fill="#f0ad4e" rx="4" />
+          <text x="160.5" y="68"
+                text-anchor="middle" dominant-baseline="middle"
+                fill="#212653"
+                font-size="12" font-weight="bold" font-family="Montserrat, sans-serif">
+            51
+          </text>
+          <text x="160.5" y="82"
+                text-anchor="middle" dominant-baseline="middle"
+                fill="#212653"
+                font-size="9" font-family="Open Sans, sans-serif">
+            STR
+          </text>
+        </g>
+      
+        <g>
+          <rect x="100" y="100" width="121" height="56"
+                fill="#f0ad4e" rx="4" />
+          <text x="160.5" y="128"
+                text-anchor="middle" dominant-baseline="middle"
+                fill="#212653"
+                font-size="12" font-weight="bold" font-family="Montserrat, sans-serif">
+            55
+          </text>
+          <text x="160.5" y="142"
+                text-anchor="middle" dominant-baseline="middle"
+                fill="#212653"
+                font-size="9" font-family="Open Sans, sans-serif">
+            SAL
+          </text>
+        </g>
+      
+        <g>
+          <rect x="100" y="160" width="121" height="56"
+                fill="#f0ad4e" rx="4" />
+          <text x="160.5" y="188"
+                text-anchor="middle" dominant-baseline="middle"
+                fill="#ffffff"
+                font-size="12" font-weight="bold" font-family="Montserrat, sans-serif">
+            45
+          </text>
+          <text x="160.5" y="202"
+                text-anchor="middle" dominant-baseline="middle"
+                fill="#ffffff"
+                font-size="9" font-family="Open Sans, sans-serif">
+            MKT
+          </text>
+        </g>
+      
+        <g>
+          <rect x="100" y="220" width="121" height="56"
+                fill="#5cb85c" rx="4" />
+          <text x="160.5" y="248"
+                text-anchor="middle" dominant-baseline="middle"
+                fill="#212653"
+                font-size="12" font-weight="bold" font-family="Montserrat, sans-serif">
+            75
+          </text>
+          <text x="160.5" y="262"
+                text-anchor="middle" dominant-baseline="middle"
+                fill="#212653"
+                font-size="9" font-family="Open Sans, sans-serif">
+            CXP
+          </text>
+        </g>
+      
+        <g>
+          <rect x="225" y="40" width="121" height="56"
+                fill="#f0ad4e" rx="4" />
+          <text x="285.5" y="68"
+                text-anchor="middle" dominant-baseline="middle"
+                fill="#212653"
+                font-size="12" font-weight="bold" font-family="Montserrat, sans-serif">
+            59
+          </text>
+          <text x="285.5" y="82"
+                text-anchor="middle" dominant-baseline="middle"
+                fill="#212653"
+                font-size="9" font-family="Open Sans, sans-serif">
+            OPS
+          </text>
+        </g>
+      
+        <g>
+          <rect x="225" y="100" width="121" height="56"
+                fill="#f0ad4e" rx="4" />
+          <text x="285.5" y="128"
+                text-anchor="middle" dominant-baseline="middle"
+                fill="#ffffff"
+                font-size="12" font-weight="bold" font-family="Montserrat, sans-serif">
+            42
+          </text>
+          <text x="285.5" y="142"
+                text-anchor="middle" dominant-baseline="middle"
+                fill="#ffffff"
+                font-size="9" font-family="Open Sans, sans-serif">
+            FIN
+          </text>
+        </g>
+      
+        <g>
+          <rect x="350" y="40" width="121" height="56"
+                fill="#f0ad4e" rx="4" />
+          <text x="410.5" y="68"
+                text-anchor="middle" dominant-baseline="middle"
+                fill="#212653"
+                font-size="12" font-weight="bold" font-family="Montserrat, sans-serif">
+            51
+          </text>
+          <text x="410.5" y="82"
+                text-anchor="middle" dominant-baseline="middle"
+                fill="#212653"
+                font-size="9" font-family="Open Sans, sans-serif">
+            HRS
+          </text>
+        </g>
+      
+        <g>
+          <rect x="350" y="100" width="121" height="56"
+                fill="#f0ad4e" rx="4" />
+          <text x="410.5" y="128"
+                text-anchor="middle" dominant-baseline="middle"
+                fill="#ffffff"
+                font-size="12" font-weight="bold" font-family="Montserrat, sans-serif">
+            41
+          </text>
+          <text x="410.5" y="142"
+                text-anchor="middle" dominant-baseline="middle"
+                fill="#ffffff"
+                font-size="9" font-family="Open Sans, sans-serif">
+            LDG
+          </text>
+        </g>
+      
+        <g>
+          <rect x="475" y="40" width="121" height="56"
+                fill="#f0ad4e" rx="4" />
+          <text x="535.5" y="68"
+                text-anchor="middle" dominant-baseline="middle"
+                fill="#212653"
+                font-size="12" font-weight="bold" font-family="Montserrat, sans-serif">
+            57
+          </text>
+          <text x="535.5" y="82"
+                text-anchor="middle" dominant-baseline="middle"
+                fill="#212653"
+                font-size="9" font-family="Open Sans, sans-serif">
+            TIN
+          </text>
+        </g>
+      
+        <g>
+          <rect x="475" y="100" width="121" height="56"
+                fill="#c9302c" rx="4" />
+          <text x="535.5" y="128"
+                text-anchor="middle" dominant-baseline="middle"
+                fill="#ffffff"
+                font-size="12" font-weight="bold" font-family="Montserrat, sans-serif">
+            0
+          </text>
+          <text x="535.5" y="142"
+                text-anchor="middle" dominant-baseline="middle"
+                fill="#ffffff"
+                font-size="9" font-family="Open Sans, sans-serif">
+            ITD
+          </text>
+        </g>
+      
+        <g>
+          <rect x="475" y="160" width="121" height="56"
+                fill="#d9534f" rx="4" />
+          <text x="535.5" y="188"
+                text-anchor="middle" dominant-baseline="middle"
+                fill="#ffffff"
+                font-size="12" font-weight="bold" font-family="Montserrat, sans-serif">
+            38
+          </text>
+          <text x="535.5" y="202"
+                text-anchor="middle" dominant-baseline="middle"
+                fill="#ffffff"
+                font-size="9" font-family="Open Sans, sans-serif">
+            RMS
+          </text>
+        </g>
+      
+        <g>
+          <rect x="475" y="220" width="121" height="56"
+                fill="#5cb85c" rx="4" />
+          <text x="535.5" y="248"
+                text-anchor="middle" dominant-baseline="middle"
+                fill="#212653"
+                font-size="12" font-weight="bold" font-family="Montserrat, sans-serif">
+            77
+          </text>
+          <text x="535.5" y="262"
+                text-anchor="middle" dominant-baseline="middle"
+                fill="#212653"
+                font-size="9" font-family="Open Sans, sans-serif">
+            CMP
+          </text>
+        </g>
+      
+
+      <!-- Legend -->
+      
+    <rect x="100" y="275" width="16" height="16" fill="#c9302c" rx="2" />
+    <text x="120" y="288" font-size="9" fill="#212653">Critical</text>
+  
+    <rect x="190" y="275" width="16" height="16" fill="#d9534f" rx="2" />
+    <text x="210" y="288" font-size="9" fill="#212653">Needs Work</text>
+  
+    <rect x="280" y="275" width="16" height="16" fill="#f0ad4e" rx="2" />
+    <text x="300" y="288" font-size="9" fill="#212653">Developing</text>
+  
+    <rect x="370" y="275" width="16" height="16" fill="#5cb85c" rx="2" />
+    <text x="390" y="288" font-size="9" fill="#212653">Good</text>
+  
+    <rect x="460" y="275" width="16" height="16" fill="#28a745" rx="2" />
+    <text x="480" y="288" font-size="9" fill="#212653">Excellent</text>
+  
+    </svg>
+          </div>
+        </div>
+        
+
+        <div class="visualization-container">
+          <h3 style="color: #212653; font-family: 'Montserrat', sans-serif; margin-bottom: 1rem;">Industry Benchmark Comparison</h3>
+          <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; overflow-x: auto;">
+            <svg width="600" height="472" viewBox="0 0 600 472" xmlns="http://www.w3.org/2000/svg">
+      <title>Category Benchmark Comparison</title>
+      <rect width="100%" height="100%" fill="#ffffff" />
+
+      <!-- Header -->
+      <text x="140" y="18" font-size="10" fill="#6c757d">0</text>
+      <text x="320" y="18" font-size="10" fill="#6c757d" text-anchor="middle">50</text>
+      <text x="500" y="18" font-size="10" fill="#6c757d" text-anchor="end">100</text>
+      <text x="560" y="18" font-size="10" fill="#6c757d" text-anchor="end">Gap</text>
+
+      <!-- Bars -->
+      
+      <g>
+        <!-- Category label -->
+        <text x="132" y="48"
+              text-anchor="end" font-size="11" fill="#212653"
+              font-family="Open Sans, sans-serif">
+          Strategy
+        </text>
+
+        <!-- Background bar -->
+        <rect x="140" y="30" width="360" height="28"
+              fill="#e9ecef" rx="4" />
+
+        <!-- Company score bar -->
+        <rect x="140" y="30" width="183.6" height="28"
+              fill="#f0ad4e" rx="4" />
+
+        <!-- Benchmark line -->
+        <line x1="356" y1="28" x2="356" y2="60"
+              stroke="#212653" stroke-width="2" stroke-dasharray="4,2" />
+
+        <!-- Score label -->
+        <text x="331.6" y="48"
+              font-size="11" font-weight="bold" fill="#212653">
+          51
+        </text>
+
+        <!-- Gap indicator -->
+        
+        <text x="560" y="48"
+              font-size="10" fill="#d9534f"
+              text-anchor="end">
+          -9
+        </text>
+        
+      </g>
+    
+      <g>
+        <!-- Category label -->
+        <text x="132" y="84"
+              text-anchor="end" font-size="11" fill="#212653"
+              font-family="Open Sans, sans-serif">
+          Sales
+        </text>
+
+        <!-- Background bar -->
+        <rect x="140" y="66" width="360" height="28"
+              fill="#e9ecef" rx="4" />
+
+        <!-- Company score bar -->
+        <rect x="140" y="66" width="198.00000000000003" height="28"
+              fill="#f0ad4e" rx="4" />
+
+        <!-- Benchmark line -->
+        <line x1="356" y1="64" x2="356" y2="96"
+              stroke="#212653" stroke-width="2" stroke-dasharray="4,2" />
+
+        <!-- Score label -->
+        <text x="346" y="84"
+              font-size="11" font-weight="bold" fill="#212653">
+          55
+        </text>
+
+        <!-- Gap indicator -->
+        
+        <text x="560" y="84"
+              font-size="10" fill="#d9534f"
+              text-anchor="end">
+          -5
+        </text>
+        
+      </g>
+    
+      <g>
+        <!-- Category label -->
+        <text x="132" y="120"
+              text-anchor="end" font-size="11" fill="#212653"
+              font-family="Open Sans, sans-serif">
+          Marketing
+        </text>
+
+        <!-- Background bar -->
+        <rect x="140" y="102" width="360" height="28"
+              fill="#e9ecef" rx="4" />
+
+        <!-- Company score bar -->
+        <rect x="140" y="102" width="162" height="28"
+              fill="#f0ad4e" rx="4" />
+
+        <!-- Benchmark line -->
+        <line x1="356" y1="100" x2="356" y2="132"
+              stroke="#212653" stroke-width="2" stroke-dasharray="4,2" />
+
+        <!-- Score label -->
+        <text x="310" y="120"
+              font-size="11" font-weight="bold" fill="#212653">
+          45
+        </text>
+
+        <!-- Gap indicator -->
+        
+        <text x="560" y="120"
+              font-size="10" fill="#d9534f"
+              text-anchor="end">
+          -15
+        </text>
+        
+      </g>
+    
+      <g>
+        <!-- Category label -->
+        <text x="132" y="156"
+              text-anchor="end" font-size="11" fill="#212653"
+              font-family="Open Sans, sans-serif">
+          Customer Experience
+        </text>
+
+        <!-- Background bar -->
+        <rect x="140" y="138" width="360" height="28"
+              fill="#e9ecef" rx="4" />
+
+        <!-- Company score bar -->
+        <rect x="140" y="138" width="270" height="28"
+              fill="#5cb85c" rx="4" />
+
+        <!-- Benchmark line -->
+        <line x1="356" y1="136" x2="356" y2="168"
+              stroke="#212653" stroke-width="2" stroke-dasharray="4,2" />
+
+        <!-- Score label -->
+        <text x="418" y="156"
+              font-size="11" font-weight="bold" fill="#212653">
+          75
+        </text>
+
+        <!-- Gap indicator -->
+        
+        <text x="560" y="156"
+              font-size="10" fill="#5cb85c"
+              text-anchor="end">
+          +15
+        </text>
+        
+      </g>
+    
+      <g>
+        <!-- Category label -->
+        <text x="132" y="192"
+              text-anchor="end" font-size="11" fill="#212653"
+              font-family="Open Sans, sans-serif">
+          Operations
+        </text>
+
+        <!-- Background bar -->
+        <rect x="140" y="174" width="360" height="28"
+              fill="#e9ecef" rx="4" />
+
+        <!-- Company score bar -->
+        <rect x="140" y="174" width="212.39999999999998" height="28"
+              fill="#f0ad4e" rx="4" />
+
+        <!-- Benchmark line -->
+        <line x1="356" y1="172" x2="356" y2="204"
+              stroke="#212653" stroke-width="2" stroke-dasharray="4,2" />
+
+        <!-- Score label -->
+        <text x="360.4" y="192"
+              font-size="11" font-weight="bold" fill="#212653">
+          59
+        </text>
+
+        <!-- Gap indicator -->
+        
+        <text x="560" y="192"
+              font-size="10" fill="#d9534f"
+              text-anchor="end">
+          -1
+        </text>
+        
+      </g>
+    
+      <g>
+        <!-- Category label -->
+        <text x="132" y="228"
+              text-anchor="end" font-size="11" fill="#212653"
+              font-family="Open Sans, sans-serif">
+          Financials
+        </text>
+
+        <!-- Background bar -->
+        <rect x="140" y="210" width="360" height="28"
+              fill="#e9ecef" rx="4" />
+
+        <!-- Company score bar -->
+        <rect x="140" y="210" width="151.2" height="28"
+              fill="#f0ad4e" rx="4" />
+
+        <!-- Benchmark line -->
+        <line x1="356" y1="208" x2="356" y2="240"
+              stroke="#212653" stroke-width="2" stroke-dasharray="4,2" />
+
+        <!-- Score label -->
+        <text x="299.2" y="228"
+              font-size="11" font-weight="bold" fill="#212653">
+          42
+        </text>
+
+        <!-- Gap indicator -->
+        
+        <text x="560" y="228"
+              font-size="10" fill="#d9534f"
+              text-anchor="end">
+          -18
+        </text>
+        
+      </g>
+    
+      <g>
+        <!-- Category label -->
+        <text x="132" y="264"
+              text-anchor="end" font-size="11" fill="#212653"
+              font-family="Open Sans, sans-serif">
+          Human Resources
+        </text>
+
+        <!-- Background bar -->
+        <rect x="140" y="246" width="360" height="28"
+              fill="#e9ecef" rx="4" />
+
+        <!-- Company score bar -->
+        <rect x="140" y="246" width="183.6" height="28"
+              fill="#f0ad4e" rx="4" />
+
+        <!-- Benchmark line -->
+        <line x1="356" y1="244" x2="356" y2="276"
+              stroke="#212653" stroke-width="2" stroke-dasharray="4,2" />
+
+        <!-- Score label -->
+        <text x="331.6" y="264"
+              font-size="11" font-weight="bold" fill="#212653">
+          51
+        </text>
+
+        <!-- Gap indicator -->
+        
+        <text x="560" y="264"
+              font-size="10" fill="#d9534f"
+              text-anchor="end">
+          -9
+        </text>
+        
+      </g>
+    
+      <g>
+        <!-- Category label -->
+        <text x="132" y="300"
+              text-anchor="end" font-size="11" fill="#212653"
+              font-family="Open Sans, sans-serif">
+          Leadership &amp; Governance
+        </text>
+
+        <!-- Background bar -->
+        <rect x="140" y="282" width="360" height="28"
+              fill="#e9ecef" rx="4" />
+
+        <!-- Company score bar -->
+        <rect x="140" y="282" width="147.6" height="28"
+              fill="#f0ad4e" rx="4" />
+
+        <!-- Benchmark line -->
+        <line x1="356" y1="280" x2="356" y2="312"
+              stroke="#212653" stroke-width="2" stroke-dasharray="4,2" />
+
+        <!-- Score label -->
+        <text x="295.6" y="300"
+              font-size="11" font-weight="bold" fill="#212653">
+          41
+        </text>
+
+        <!-- Gap indicator -->
+        
+        <text x="560" y="300"
+              font-size="10" fill="#d9534f"
+              text-anchor="end">
+          -19
+        </text>
+        
+      </g>
+    
+      <g>
+        <!-- Category label -->
+        <text x="132" y="336"
+              text-anchor="end" font-size="11" fill="#212653"
+              font-family="Open Sans, sans-serif">
+          Technology &amp; Innovation
+        </text>
+
+        <!-- Background bar -->
+        <rect x="140" y="318" width="360" height="28"
+              fill="#e9ecef" rx="4" />
+
+        <!-- Company score bar -->
+        <rect x="140" y="318" width="205.2" height="28"
+              fill="#f0ad4e" rx="4" />
+
+        <!-- Benchmark line -->
+        <line x1="356" y1="316" x2="356" y2="348"
+              stroke="#212653" stroke-width="2" stroke-dasharray="4,2" />
+
+        <!-- Score label -->
+        <text x="353.2" y="336"
+              font-size="11" font-weight="bold" fill="#212653">
+          57
+        </text>
+
+        <!-- Gap indicator -->
+        
+        <text x="560" y="336"
+              font-size="10" fill="#d9534f"
+              text-anchor="end">
+          -3
+        </text>
+        
+      </g>
+    
+      <g>
+        <!-- Category label -->
+        <text x="132" y="372"
+              text-anchor="end" font-size="11" fill="#212653"
+              font-family="Open Sans, sans-serif">
+          IT &amp; Data Security
+        </text>
+
+        <!-- Background bar -->
+        <rect x="140" y="354" width="360" height="28"
+              fill="#e9ecef" rx="4" />
+
+        <!-- Company score bar -->
+        <rect x="140" y="354" width="0" height="28"
+              fill="#c9302c" rx="4" />
+
+        <!-- Benchmark line -->
+        <line x1="356" y1="352" x2="356" y2="384"
+              stroke="#212653" stroke-width="2" stroke-dasharray="4,2" />
+
+        <!-- Score label -->
+        <text x="148" y="372"
+              font-size="11" font-weight="bold" fill="#212653">
+          0
+        </text>
+
+        <!-- Gap indicator -->
+        
+        <text x="560" y="372"
+              font-size="10" fill="#d9534f"
+              text-anchor="end">
+          -60
+        </text>
+        
+      </g>
+    
+      <g>
+        <!-- Category label -->
+        <text x="132" y="408"
+              text-anchor="end" font-size="11" fill="#212653"
+              font-family="Open Sans, sans-serif">
+          Risk Management &amp; Sustainability
+        </text>
+
+        <!-- Background bar -->
+        <rect x="140" y="390" width="360" height="28"
+              fill="#e9ecef" rx="4" />
+
+        <!-- Company score bar -->
+        <rect x="140" y="390" width="136.8" height="28"
+              fill="#d9534f" rx="4" />
+
+        <!-- Benchmark line -->
+        <line x1="356" y1="388" x2="356" y2="420"
+              stroke="#212653" stroke-width="2" stroke-dasharray="4,2" />
+
+        <!-- Score label -->
+        <text x="284.8" y="408"
+              font-size="11" font-weight="bold" fill="#212653">
+          38
+        </text>
+
+        <!-- Gap indicator -->
+        
+        <text x="560" y="408"
+              font-size="10" fill="#d9534f"
+              text-anchor="end">
+          -22
+        </text>
+        
+      </g>
+    
+      <g>
+        <!-- Category label -->
+        <text x="132" y="444"
+              text-anchor="end" font-size="11" fill="#212653"
+              font-family="Open Sans, sans-serif">
+          Compliance - Legal &amp; Regulatory
+        </text>
+
+        <!-- Background bar -->
+        <rect x="140" y="426" width="360" height="28"
+              fill="#e9ecef" rx="4" />
+
+        <!-- Company score bar -->
+        <rect x="140" y="426" width="277.2" height="28"
+              fill="#5cb85c" rx="4" />
+
+        <!-- Benchmark line -->
+        <line x1="356" y1="424" x2="356" y2="456"
+              stroke="#212653" stroke-width="2" stroke-dasharray="4,2" />
+
+        <!-- Score label -->
+        <text x="425.2" y="444"
+              font-size="11" font-weight="bold" fill="#212653">
+          77
+        </text>
+
+        <!-- Gap indicator -->
+        
+        <text x="560" y="444"
+              font-size="10" fill="#5cb85c"
+              text-anchor="end">
+          +17
+        </text>
+        
+      </g>
+    
+
+      <!-- Legend -->
+      <g transform="translate(140, 452)">
+        <line x1="0" y1="0" x2="20" y2="0" stroke="#212653" stroke-width="2" stroke-dasharray="4,2" />
+        <text x="28" y="4" font-size="10" fill="#6c757d">Industry Average</text>
+      </g>
+    </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-summaries" style="margin-top: 2rem;">
+        <h3 style="color: #212653; font-family: 'Montserrat', sans-serif; margin-bottom: 1rem;">Category Quick Insights</h3>
+        <p style="color: #666; margin-bottom: 1rem; font-size: 0.95rem;">
+          Key insights from your most critical categories. Categories requiring attention are prioritized.
+        </p>
+        <div class="category-grid">
+          
+      <div class="category-card score-critical">
+        <div class="category-header">
+          <h4>IT &amp; Data Security (ITD)</h4>
+          <div class="score-badge score-critical">0/100</div>
+        </div>
+        <p class="status"><strong>Status:</strong> Critical</p>
+        <p class="executive-summary">IT &amp; Data Security assessment cannot be completed due to lack of questionnaire responses. This represents a critical blind spot for Hopcraft Brewing C...</p>
+
+        <div class="category-highlights">
+          <div class="highlight strength">
+            <strong>&#10003; Top Strength:</strong> N/A
+          </div>
+          <div class="highlight gap">
+            <strong>&#9888; Priority Gap:</strong> Complete Lack of IT Security Visibility
+          </div>
+          <div class="highlight quick-win">
+            <strong>&#9889; Quick Win:</strong> Complete IT Security Assessment
+          </div>
+        </div>
+
+        <p class="cross-reference">
+          <em>See Comprehensive Report for detailed IT &amp; Data Security analysis.</em>
+        </p>
+      </div>
+    
+      <div class="category-card score-needs-improvement">
+        <div class="category-header">
+          <h4>Risk Management &amp; Sustainability (RMS)</h4>
+          <div class="score-badge score-needs-improvement">38/100</div>
+        </div>
+        <p class="status"><strong>Status:</strong> Needs Improvement</p>
+        <p class="executive-summary">Hopcraft Brewing Co&#039;s risk management capabilities show significant vulnerabilities, particularly in financial resilience, business continuity, and su...</p>
+
+        <div class="category-highlights">
+          <div class="highlight strength">
+            <strong>&#10003; Top Strength:</strong> Basic Risk Awareness Framework
+          </div>
+          <div class="highlight gap">
+            <strong>&#9888; Priority Gap:</strong> Insufficient Financial Resilience
+          </div>
+          <div class="highlight quick-win">
+            <strong>&#9889; Quick Win:</strong> Establish Emergency Cash Reserve Target
+          </div>
+        </div>
+
+        <p class="cross-reference">
+          <em>See Comprehensive Report for detailed Risk Management &amp; Sustainability analysis.</em>
+        </p>
+      </div>
+    
+      <div class="category-card score-developing">
+        <div class="category-header">
+          <h4>Leadership &amp; Governance (LDG)</h4>
+          <div class="score-badge score-developing">41/100</div>
+        </div>
+        <p class="status"><strong>Status:</strong> Developing</p>
+        <p class="executive-summary">Hopcraft Brewing&#039;s leadership and governance capabilities are developing but inconsistent, with a critical weakness in decision-making effectiveness a...</p>
+
+        <div class="category-highlights">
+          <div class="highlight strength">
+            <strong>&#10003; Top Strength:</strong> Strong Development Culture
+          </div>
+          <div class="highlight gap">
+            <strong>&#9888; Priority Gap:</strong> Critical Decision-Making Deficiency
+          </div>
+          <div class="highlight quick-win">
+            <strong>&#9889; Quick Win:</strong> Implement Decision-Making Framework
+          </div>
+        </div>
+
+        <p class="cross-reference">
+          <em>See Comprehensive Report for detailed Leadership &amp; Governance analysis.</em>
+        </p>
+      </div>
+    
+      <div class="category-card score-developing">
+        <div class="category-header">
+          <h4>Financials (FIN)</h4>
+          <div class="score-badge score-developing">42/100</div>
+        </div>
+        <p class="status"><strong>Status:</strong> Developing</p>
+        <p class="executive-summary">Hopcraft Brewing shows strong operational profitability with $235K monthly EBITDA but faces significant financial structure challenges with high debt ...</p>
+
+        <div class="category-highlights">
+          <div class="highlight strength">
+            <strong>&#10003; Top Strength:</strong> Strong Monthly Profitability
+          </div>
+          <div class="highlight gap">
+            <strong>&#9888; Priority Gap:</strong> High Debt Burden
+          </div>
+          <div class="highlight quick-win">
+            <strong>&#9889; Quick Win:</strong> Implement 13-Week Cash Flow Forecasting
+          </div>
+        </div>
+
+        <p class="cross-reference">
+          <em>See Comprehensive Report for detailed Financials analysis.</em>
+        </p>
+      </div>
+    
+      <div class="category-card score-developing">
+        <div class="category-header">
+          <h4>Marketing (MKT)</h4>
+          <div class="score-badge score-developing">45/100</div>
+        </div>
+        <p class="status"><strong>Status:</strong> Developing</p>
+        <p class="executive-summary">Hopcraft Brewing demonstrates strong channel diversity and customer feedback utilization but suffers from critical measurement gaps and poor financial...</p>
+
+        <div class="category-highlights">
+          <div class="highlight strength">
+            <strong>&#10003; Top Strength:</strong> Excellent Channel Diversity
+          </div>
+          <div class="highlight gap">
+            <strong>&#9888; Priority Gap:</strong> Broken Marketing Measurement System
+          </div>
+          <div class="highlight quick-win">
+            <strong>&#9889; Quick Win:</strong> Implement Basic Marketing Analytics
+          </div>
+        </div>
+
+        <p class="cross-reference">
+          <em>See Comprehensive Report for detailed Marketing analysis.</em>
+        </p>
+      </div>
+    
+      <div class="category-card score-developing">
+        <div class="category-header">
+          <h4>Strategy (STR)</h4>
+          <div class="score-badge score-developing">51/100</div>
+        </div>
+        <p class="status"><strong>Status:</strong> Developing</p>
+        <p class="executive-summary">Hopcraft Brewing demonstrates strong competitive awareness but faces critical strategic planning and execution challenges. Despite understanding their...</p>
+
+        <div class="category-highlights">
+          <div class="highlight strength">
+            <strong>&#10003; Top Strength:</strong> Strong Competitive Awareness
+          </div>
+          <div class="highlight gap">
+            <strong>&#9888; Priority Gap:</strong> Performance-Strategy Disconnect
+          </div>
+          <div class="highlight quick-win">
+            <strong>&#9889; Quick Win:</strong> Develop 90-Day Turnaround Plan
+          </div>
+        </div>
+
+        <p class="cross-reference">
+          <em>See Comprehensive Report for detailed Strategy analysis.</em>
+        </p>
+      </div>
+    
+        </div>
+      </div>
+    </section>
+  
+
+    <!-- ================================================================
+         SECTION: Phase 1.5 Cross-Category Insights
+         Interdependency network and prioritization matrix
+         ================================================================ -->
+    
+    <section class="section page-break" id="cross-category-insights">
+      
+    <div class="owner-section-header">
+      <h2>Strategic Interdependencies & Priorities</h2>
+      
+        <p class="owner-question">
+          <span class="question-icon">&#128173;</span>
+          <em>"How do my business areas affect each other?"</em>
+        </p>
+      
+    </div>
+  
+
+      <p class="section-intro">
+        Understanding how your business categories influence each other enables strategic resource allocation
+        and helps prevent cascading failures from unaddressed weaknesses.
+      </p>
+
+      
+      <div class="visualization-container" style="margin: 1.5rem 0;">
+        <h3 style="color: #212653; font-family: 'Montserrat', sans-serif; margin-bottom: 1rem;">Category Interdependency Network</h3>
+        <p style="color: #666; margin-bottom: 15px; font-size: 0.9rem;">
+          This diagram shows how different business categories influence each other.
+          Strong connections indicate where improvements can have cascading positive effects.
+        </p>
+        <div style="display: flex; justify-content: center; background: #f8f9fa; padding: 20px; border-radius: 8px;">
+          <svg width="600" height="500" viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg">
+      <title>Category Interdependency Network</title>
+
+      <!-- Defs for arrows -->
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#6c757d" />
+        </marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#ffffff" />
+
+      <!-- Title -->
+      <text x="300" y="25" text-anchor="middle" font-size="14" font-weight="bold" fill="#212653">
+        Category Interdependency Map
+      </text>
+
+      <!-- Connections -->
+      
+      <line x1="300.0" y1="83.3" x2="383.3" y2="105.7"
+            stroke="#5cb85c" stroke-width="2" opacity="0.6"
+            marker-end="url(#arrowhead)" />
+    
+      <line x1="300.0" y1="83.3" x2="444.3" y2="166.7"
+            stroke="#5cb85c" stroke-width="2" opacity="0.6"
+            marker-end="url(#arrowhead)" />
+    
+      <line x1="383.3" y1="105.7" x2="444.3" y2="166.7"
+            stroke="#969423" stroke-width="2" opacity="0.6"
+            marker-end="url(#arrowhead)" />
+    
+      <line x1="383.3" y1="105.7" x2="383.3" y2="394.3"
+            stroke="#5cb85c" stroke-width="2" opacity="0.6"
+            marker-end="url(#arrowhead)" />
+    
+      <line x1="444.3" y1="166.7" x2="383.3" y2="105.7"
+            stroke="#5cb85c" stroke-width="2" opacity="0.6"
+            marker-end="url(#arrowhead)" />
+    
+      <line x1="444.3" y1="333.3" x2="466.7" y2="250.0"
+            stroke="#5cb85c" stroke-width="2" opacity="0.6"
+            marker-end="url(#arrowhead)" />
+    
+      <line x1="444.3" y1="333.3" x2="383.3" y2="394.3"
+            stroke="#5cb85c" stroke-width="2" opacity="0.6"
+            marker-end="url(#arrowhead)" />
+    
+      <line x1="300.0" y1="416.7" x2="444.3" y2="333.3"
+            stroke="#5cb85c" stroke-width="2" opacity="0.6"
+            marker-end="url(#arrowhead)" />
+    
+      <line x1="300.0" y1="416.7" x2="466.7" y2="250.0"
+            stroke="#5cb85c" stroke-width="2" opacity="0.6"
+            marker-end="url(#arrowhead)" />
+    
+      <line x1="216.7" y1="394.3" x2="300.0" y2="416.7"
+            stroke="#5cb85c" stroke-width="2" opacity="0.6"
+            marker-end="url(#arrowhead)" />
+    
+      <line x1="216.7" y1="394.3" x2="300.0" y2="83.3"
+            stroke="#5cb85c" stroke-width="2" opacity="0.6"
+            marker-end="url(#arrowhead)" />
+    
+      <line x1="155.7" y1="166.7" x2="383.3" y2="394.3"
+            stroke="#6c757d" stroke-width="2" opacity="0.6"
+            marker-end="url(#arrowhead)" />
+    
+
+      <!-- Nodes -->
+      
+      <circle cx="300.0" cy="83.3" r="24" fill="#212653" stroke="#ffffff" stroke-width="2" />
+      <text x="300.0" y="87.3" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">
+        STR
+      </text>
+    
+      <circle cx="383.3" cy="105.7" r="24" fill="#212653" stroke="#ffffff" stroke-width="2" />
+      <text x="383.3" y="109.7" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">
+        SAL
+      </text>
+    
+      <circle cx="444.3" cy="166.7" r="24" fill="#212653" stroke="#ffffff" stroke-width="2" />
+      <text x="444.3" y="170.7" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">
+        MKT
+      </text>
+    
+      <circle cx="466.7" cy="250.0" r="24" fill="#212653" stroke="#ffffff" stroke-width="2" />
+      <text x="466.7" y="254.0" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">
+        CXP
+      </text>
+    
+      <circle cx="444.3" cy="333.3" r="24" fill="#212653" stroke="#ffffff" stroke-width="2" />
+      <text x="444.3" y="337.3" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">
+        OPS
+      </text>
+    
+      <circle cx="383.3" cy="394.3" r="24" fill="#212653" stroke="#ffffff" stroke-width="2" />
+      <text x="383.3" y="398.3" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">
+        FIN
+      </text>
+    
+      <circle cx="300.0" cy="416.7" r="24" fill="#212653" stroke="#ffffff" stroke-width="2" />
+      <text x="300.0" y="420.7" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">
+        HRS
+      </text>
+    
+      <circle cx="216.7" cy="394.3" r="24" fill="#212653" stroke="#ffffff" stroke-width="2" />
+      <text x="216.7" y="398.3" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">
+        LDG
+      </text>
+    
+      <circle cx="155.7" cy="333.3" r="24" fill="#212653" stroke="#ffffff" stroke-width="2" />
+      <text x="155.7" y="337.3" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">
+        TIN
+      </text>
+    
+      <circle cx="133.3" cy="250.0" r="24" fill="#212653" stroke="#ffffff" stroke-width="2" />
+      <text x="133.3" y="254.0" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">
+        ITD
+      </text>
+    
+      <circle cx="155.7" cy="166.7" r="24" fill="#212653" stroke="#ffffff" stroke-width="2" />
+      <text x="155.7" y="170.7" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">
+        RMS
+      </text>
+    
+      <circle cx="216.7" cy="105.7" r="24" fill="#212653" stroke="#ffffff" stroke-width="2" />
+      <text x="216.7" y="109.7" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">
+        CMP
+      </text>
+    
+
+      <!-- Legend -->
+      <g transform="translate(20, 430)">
+        <line x1="0" y1="10" x2="20" y2="10" stroke="#5cb85c" stroke-width="2" />
+        <text x="28" y="14" font-size="10">Enables</text>
+
+        <line x1="0" y1="28" x2="20" y2="28" stroke="#d9534f" stroke-width="2" />
+        <text x="28" y="32" font-size="10">Constrains</text>
+
+        <line x1="100" y1="10" x2="120" y2="10" stroke="#969423" stroke-width="2" />
+        <text x="128" y="14" font-size="10">Amplifies</text>
+
+        <line x1="100" y1="28" x2="120" y2="28" stroke="#6c757d" stroke-width="2" />
+        <text x="128" y="32" font-size="10">Mitigates</text>
+      </g>
+    </svg>
+        </div>
+      </div>
+      
+
+      <div class="systemic-patterns" style="margin: 1.5rem 0;">
+        <h3 style="color: #212653; font-family: 'Montserrat', sans-serif; margin-bottom: 1rem;">Systemic Patterns Identified</h3>
+        <p style="color: #666; margin-bottom: 1rem; font-size: 0.9rem;">
+          These patterns span multiple categories and represent opportunities for high-leverage improvements.
+        </p>
+        
+        <div class="pattern-card">
+          <h4>Multiple Critical Gaps</h4>
+          <p>8 categories have critical weaknesses that require immediate attention</p>
+          <p class="recommendation"><strong>Recommendation:</strong> Conduct root cause analysis to identify if these issues share common underlying causes</p>
+          <p class="affected-categories">
+            <em>Affected Categories: STR, MKT, OPS, FIN, HRS, LDG, ITD, RMS</em>
+          </p>
+        </div>
+      
+        <div class="pattern-card">
+          <h4>Financial Constraints Cascade</h4>
+          <p>Weak financial health may constrain investments across multiple categories</p>
+          <p class="recommendation"><strong>Recommendation:</strong> Address financial foundation before investing heavily in other areas</p>
+          <p class="affected-categories">
+            <em>Affected Categories: FIN, OPS, TIN, HRS, STR</em>
+          </p>
+        </div>
+      
+        <div class="pattern-card">
+          <h4>Leadership-Culture Gap</h4>
+          <p>Both leadership and HR/culture scores are below healthy thresholds</p>
+          <p class="recommendation"><strong>Recommendation:</strong> Invest in leadership development to drive cultural improvement</p>
+          <p class="affected-categories">
+            <em>Affected Categories: LDG, HRS</em>
+          </p>
+        </div>
+      
+      </div>
+
+      <div class="prioritization-matrix" style="margin: 1.5rem 0;">
+        <h3 style="color: #212653; font-family: 'Montserrat', sans-serif; margin-bottom: 1rem;">Category Improvement Prioritization</h3>
+        <p class="matrix-explanation" style="color: #666; margin-bottom: 1rem; font-size: 0.9rem;">
+          Categories ranked by combination of urgency, potential impact, and implementation effort.
+          Higher priority scores indicate categories that should be addressed first.
+        </p>
+        
+      <div class="table-responsive">
+        <table class="prioritization-table">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Urgency</th>
+              <th>Impact</th>
+              <th>Effort</th>
+              <th>Priority Score</th>
+              <th>Recommendation</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr class="priority-excellent">
+                <td><strong>ITD</strong></td>
+                <td>10/10</td>
+                <td>5/10</td>
+                <td>4/10</td>
+                <td class="priority-score"><strong>12.5</strong></td>
+                <td>Immediate Action Required</td>
+              </tr>
+            
+              <tr class="priority-excellent">
+                <td><strong>LDG</strong></td>
+                <td>7/10</td>
+                <td>7/10</td>
+                <td>6/10</td>
+                <td class="priority-score"><strong>8.2</strong></td>
+                <td>Immediate Action Required</td>
+              </tr>
+            
+              <tr class="priority-good">
+                <td><strong>STR</strong></td>
+                <td>6/10</td>
+                <td>7/10</td>
+                <td>6/10</td>
+                <td class="priority-score"><strong>7.0</strong></td>
+                <td>Schedule for Next Quarter</td>
+              </tr>
+            
+              <tr class="priority-good">
+                <td><strong>MKT</strong></td>
+                <td>7/10</td>
+                <td>6/10</td>
+                <td>6/10</td>
+                <td class="priority-score"><strong>7.0</strong></td>
+                <td>Schedule for Next Quarter</td>
+              </tr>
+            
+              <tr class="priority-good">
+                <td><strong>HRS</strong></td>
+                <td>6/10</td>
+                <td>7/10</td>
+                <td>6/10</td>
+                <td class="priority-score"><strong>7.0</strong></td>
+                <td>Schedule for Next Quarter</td>
+              </tr>
+            
+              <tr class="priority-good">
+                <td><strong>RMS</strong></td>
+                <td>7/10</td>
+                <td>6/10</td>
+                <td>6/10</td>
+                <td class="priority-score"><strong>7.0</strong></td>
+                <td>Schedule for Next Quarter</td>
+              </tr>
+            
+              <tr class="priority-developing">
+                <td><strong>SAL</strong></td>
+                <td>5/10</td>
+                <td>7/10</td>
+                <td>6/10</td>
+                <td class="priority-score"><strong>5.8</strong></td>
+                <td>Schedule for Next Quarter</td>
+              </tr>
+            
+              <tr class="priority-developing">
+                <td><strong>OPS</strong></td>
+                <td>5/10</td>
+                <td>7/10</td>
+                <td>6/10</td>
+                <td class="priority-score"><strong>5.8</strong></td>
+                <td>Schedule for Next Quarter</td>
+              </tr>
+            
+          </tbody>
+        </table>
+      </div>
+    
+      </div>
+    </section>
+  
+
+    <!-- ================================================================
+         SECTION: Your Critical Priorities (P0 ENHANCED)
+         Now with Critical Path Actions and implementation tables
          ================================================================ -->
     <section class="section page-break" id="critical-priorities">
       
@@ -5952,16 +7133,30 @@ button:focus {
       
     <div class="insight-card strength">
       <div class="insight-label">✅ Strength</div>
-      <div class="insight-title">Compliance Excellence</div>
-      <div class="insight-detail">Compliance demonstrates strong performance at 80/100, placing it in the Excellence tier. This represents a competitive advantage.</div>
+      <div class="insight-title">Strong Sales Target Alignment</div>
+      <div class="insight-detail">Sales Target Alignment within Sales shows exceptional performance at 100/100.</div>
       
+    <div class="evidence-citation">
+      <div class="citation-header">
+        <span class="citation-icon">📊</span>
+        <span>Evidence Source</span>
+      </div>
+      <div class="question-ref">
+        sales_q1: "Strong Sales Target Alignment"
+      </div>
+      <div class="response-text">
+        Your response: 3.5/5 — "Agree / Often"
+      </div>
+      
+    </div>
+  
     </div>
   
 
     <div class="insight-card strength">
       <div class="insight-label">✅ Strength</div>
-      <div class="insight-title">Strong Incident Reporting</div>
-      <div class="insight-detail">Incident Reporting within Compliance shows exceptional performance at 100/100.</div>
+      <div class="insight-title">Strong Customer Retention</div>
+      <div class="insight-detail">Customer Retention within Sales shows exceptional performance at 98/100.</div>
       
     <div class="evidence-citation">
       <div class="citation-header">
@@ -5969,10 +7164,10 @@ button:focus {
         <span>Evidence Source</span>
       </div>
       <div class="question-ref">
-        compliance_q7: "Strong Incident Reporting"
+        sales_q7: "Strong Customer Retention"
       </div>
       <div class="response-text">
-        Your response: 4.0/5 — "Agree / Often"
+        Your response: 3.5/5 — "Agree / Often"
       </div>
       
     </div>
@@ -5980,56 +7175,64 @@ button:focus {
     </div>
   
 
-    <div class="insight-card warning">
-      <div class="insight-label">⚠️ Risk</div>
-      <div class="insight-title">Strategy Critical Underperformance</div>
-      <div class="insight-detail">Strategy is at critical levels with a score of 37/100. Immediate intervention is required to mitigate business risk.</div>
+    <div class="insight-card strength">
+      <div class="insight-label">✅ Strength</div>
+      <div class="insight-title">Strong Operational Reliability</div>
+      <div class="insight-detail">Operational Reliability within Operations shows exceptional performance at 100/100.</div>
       
+    <div class="evidence-citation">
+      <div class="citation-header">
+        <span class="citation-icon">📊</span>
+        <span>Evidence Source</span>
+      </div>
+      <div class="question-ref">
+        operations_q4: "Strong Operational Reliability"
+      </div>
+      <div class="response-text">
+        Your response: 3.1/5 — "Neutral / Sometimes"
+      </div>
+      
+    </div>
+  
     </div>
   
 
     <div class="insight-card weakness">
       <div class="insight-label">❌ Gap</div>
-      <div class="insight-title">Market Position Gap</div>
-      <div class="insight-detail">Market Position within Strategy requires attention with a score of 7/100.</div>
+      <div class="insight-title">Strategy Performance Gap</div>
+      <div class="insight-detail">Strategy shows moderate performance at 45/100. This gap presents improvement opportunities that should be addressed within 6-12 months.</div>
       
-    <div class="evidence-citation">
-      <div class="citation-header">
-        <span class="citation-icon">📊</span>
-        <span>Evidence Source</span>
-      </div>
-      <div class="question-ref">
-        strategy_q2: "Market Position Gap"
-      </div>
-      <div class="response-text">
-        Your response: 1.9/5 — "Disagree / Rarely"
-      </div>
-      
-    </div>
-  
     </div>
   
     </div>
   
 
-      <div class="grid grid-2">
+      <div class="grid grid-2" style="margin-bottom: 2rem;">
         <div>
           <h3 style="color: #28a745;">Your Top Strengths</h3>
           
-            <ul>
+                <p style="font-size: 0.95rem; color: #555; margin-bottom: 1rem;">
+                  <strong>8 key strengths</strong> identified across your business:
+                </p>
+                <ul>
+                  
+                    <li>
+                      <strong>Strong Sales Target Alignment</strong>
+                      <br><small>Sales</small>
+                    </li>
+                  
+                    <li>
+                      <strong>Strong Customer Retention</strong>
+                      <br><small>Sales</small>
+                    </li>
+                  
+                    <li>
+                      <strong>Strong Operational Reliability</strong>
+                      <br><small>Operations</small>
+                    </li>
+                  
+                </ul>
               
-                <li>
-                  <strong>Compliance Excellence</strong>
-                  <br><small>Compliance</small>
-                </li>
-              
-                <li>
-                  <strong>Strong Incident Reporting</strong>
-                  <br><small>Compliance</small>
-                </li>
-              
-            </ul>
-          
         </div>
         <div>
           <h3 style="color: #dc3545;">Your Priority Areas</h3>
@@ -6037,28 +7240,13 @@ button:focus {
             <ul>
               
                 <li>
-                  <strong>Strategy Critical Underperformance</strong>
+                  <strong>Strategy Performance Gap</strong>
                   <br><small>Strategy</small>
                 </li>
               
                 <li>
                   <strong>Market Position Gap</strong>
                   <br><small>Strategy</small>
-                </li>
-              
-                <li>
-                  <strong>Growth Planning Gap</strong>
-                  <br><small>Strategy</small>
-                </li>
-              
-                <li>
-                  <strong>Exit/Growth Strategy Gap</strong>
-                  <br><small>Strategy</small>
-                </li>
-              
-                <li>
-                  <strong>Sales Performance Gap</strong>
-                  <br><small>Sales</small>
                 </li>
               
                 <li>
@@ -6071,9 +7259,292 @@ button:focus {
                   <br><small>Marketing</small>
                 </li>
               
+                <li>
+                  <strong>Marketing Economics (CAC/LTV) Gap</strong>
+                  <br><small>Marketing</small>
+                </li>
+              
+                <li>
+                  <strong>Marketing ROI Gap</strong>
+                  <br><small>Marketing</small>
+                </li>
+              
+                <li>
+                  <strong>Channel Strategy Gap</strong>
+                  <br><small>Marketing</small>
+                </li>
+              
             </ul>
           
         </div>
+      </div>
+
+      <!-- P0 FIX: Critical Path Actions with Implementation Tables -->
+      <div class="critical-path-actions" style="margin-top: 2rem;">
+        <h3 style="color: #212653; font-family: 'Montserrat', sans-serif; margin-bottom: 1rem; font-size: 1.2rem;">
+          Your Critical Path Actions
+        </h3>
+        <p style="font-size: 0.95rem; color: #666; margin-bottom: 1.5rem;">
+          These are your highest-priority initiatives with step-by-step implementation plans:
+        </p>
+        
+    <div class="cpa-section" style="margin-bottom: 2rem; page-break-inside: avoid;">
+      <h3 style="
+        color: #212653;
+        font-family: 'Montserrat', sans-serif;
+        margin-bottom: 0.75rem;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      ">
+        <span style="
+          background: #212653;
+          color: white;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+          font-size: 0.9rem;
+        ">CPA</span>
+        CPA-01: Marketing Strategic Action
+      </h3>
+
+      <p style="color: #555; margin: 0.5rem 0; line-height: 1.5;">Improve Marketing score from 31 to 51 within the target horizon.</p>
+
+      <p style="color: #666; margin: 0.75rem 0; font-style: italic;">
+        <strong style="color: #212653;">Why This Matters:</strong> Addresses critical gap in Marketing with projected score improvement from current levels.
+      </p>
+
+      <div class="table-responsive" style="margin: 1rem 0;">
+        <table class="bh-table" style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+          <thead>
+            <tr style="background: #212653; color: white;">
+              <th style="padding: 0.75rem; text-align: left;">Timeframe</th>
+              <th style="padding: 0.75rem; text-align: left;">Action</th>
+              <th style="padding: 0.75rem; text-align: left;">Owner</th>
+              <th style="padding: 0.75rem; text-align: left;">Deliverable</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr style="border-bottom: 1px solid #e0e0e0;">
+                <td style="padding: 0.75rem; font-weight: 500; color: #212653;">Week 1-2</td>
+                <td style="padding: 0.75rem;">Conduct detailed marketing assessment</td>
+                <td style="padding: 0.75rem;">Marketing Director / CMO</td>
+                <td style="padding: 0.75rem;">Conduct detailed marketing... completed</td>
+              </tr>
+            
+              <tr style="border-bottom: 1px solid #e0e0e0;">
+                <td style="padding: 0.75rem; font-weight: 500; color: #212653;">Week 3-4</td>
+                <td style="padding: 0.75rem;">Develop improvement plan with measurable KPIs</td>
+                <td style="padding: 0.75rem;">Marketing Director / CMO</td>
+                <td style="padding: 0.75rem;">Develop improvement plan... completed</td>
+              </tr>
+            
+              <tr style="border-bottom: 1px solid #e0e0e0;">
+                <td style="padding: 0.75rem; font-weight: 500; color: #212653;">Week 5-6</td>
+                <td style="padding: 0.75rem;">Implement quick wins within first 30 days</td>
+                <td style="padding: 0.75rem;">Marketing Director / CMO</td>
+                <td style="padding: 0.75rem;">Implement quick wins... completed</td>
+              </tr>
+            
+              <tr style="border-bottom: 1px solid #e0e0e0;">
+                <td style="padding: 0.75rem; font-weight: 500; color: #212653;">Week 7-8</td>
+                <td style="padding: 0.75rem;">Monitor progress and adjust approach</td>
+                <td style="padding: 0.75rem;">Marketing Director / CMO</td>
+                <td style="padding: 0.75rem;">Monitor progress and... completed</td>
+              </tr>
+            
+          </tbody>
+        </table>
+      </div>
+
+      
+        <div style="margin-top: 0.75rem;">
+          <strong style="color: #212653; font-size: 0.9rem;">Monitoring Indicators:</strong>
+          <ul style="margin: 0.5rem 0; padding-left: 1.25rem; font-size: 0.9rem; color: #555;">
+            <li style="margin: 0.25rem 0;">Track progress against Marketing KPIs</li><li style="margin: 0.25rem 0;">Weekly status updates to leadership</li><li style="margin: 0.25rem 0;">Monthly ROI assessment</li>
+          </ul>
+        </div>
+      
+    </div>
+  
+
+    <div class="cpa-section" style="margin-bottom: 2rem; page-break-inside: avoid;">
+      <h3 style="
+        color: #212653;
+        font-family: 'Montserrat', sans-serif;
+        margin-bottom: 0.75rem;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      ">
+        <span style="
+          background: #212653;
+          color: white;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+          font-size: 0.9rem;
+        ">CPA</span>
+        CPA-02: Financials Strategic Action
+      </h3>
+
+      <p style="color: #555; margin: 0.5rem 0; line-height: 1.5;">Improve Financials score from 39 to 59 within the target horizon.</p>
+
+      <p style="color: #666; margin: 0.75rem 0; font-style: italic;">
+        <strong style="color: #212653;">Why This Matters:</strong> Addresses critical gap in Financial Health with projected score improvement from current levels.
+      </p>
+
+      <div class="table-responsive" style="margin: 1rem 0;">
+        <table class="bh-table" style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+          <thead>
+            <tr style="background: #212653; color: white;">
+              <th style="padding: 0.75rem; text-align: left;">Timeframe</th>
+              <th style="padding: 0.75rem; text-align: left;">Action</th>
+              <th style="padding: 0.75rem; text-align: left;">Owner</th>
+              <th style="padding: 0.75rem; text-align: left;">Deliverable</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr style="border-bottom: 1px solid #e0e0e0;">
+                <td style="padding: 0.75rem; font-weight: 500; color: #212653;">Week 1-2</td>
+                <td style="padding: 0.75rem;">Conduct detailed financials assessment</td>
+                <td style="padding: 0.75rem;">CFO / Finance Director</td>
+                <td style="padding: 0.75rem;">Conduct detailed financials... completed</td>
+              </tr>
+            
+              <tr style="border-bottom: 1px solid #e0e0e0;">
+                <td style="padding: 0.75rem; font-weight: 500; color: #212653;">Week 3-4</td>
+                <td style="padding: 0.75rem;">Develop improvement plan with measurable KPIs</td>
+                <td style="padding: 0.75rem;">CFO / Finance Director</td>
+                <td style="padding: 0.75rem;">Develop improvement plan... completed</td>
+              </tr>
+            
+              <tr style="border-bottom: 1px solid #e0e0e0;">
+                <td style="padding: 0.75rem; font-weight: 500; color: #212653;">Week 5-6</td>
+                <td style="padding: 0.75rem;">Implement quick wins within first 30 days</td>
+                <td style="padding: 0.75rem;">CFO / Finance Director</td>
+                <td style="padding: 0.75rem;">Implement quick wins... completed</td>
+              </tr>
+            
+              <tr style="border-bottom: 1px solid #e0e0e0;">
+                <td style="padding: 0.75rem; font-weight: 500; color: #212653;">Week 7-8</td>
+                <td style="padding: 0.75rem;">Monitor progress and adjust approach</td>
+                <td style="padding: 0.75rem;">CFO / Finance Director</td>
+                <td style="padding: 0.75rem;">Monitor progress and... completed</td>
+              </tr>
+            
+          </tbody>
+        </table>
+      </div>
+
+      
+        <div style="margin-top: 0.75rem;">
+          <strong style="color: #212653; font-size: 0.9rem;">Monitoring Indicators:</strong>
+          <ul style="margin: 0.5rem 0; padding-left: 1.25rem; font-size: 0.9rem; color: #555;">
+            <li style="margin: 0.25rem 0;">Track progress against Financial Health KPIs</li><li style="margin: 0.25rem 0;">Weekly status updates to leadership</li><li style="margin: 0.25rem 0;">Monthly ROI assessment</li>
+          </ul>
+        </div>
+      
+    </div>
+  
+
+    <div class="cpa-section" style="margin-bottom: 2rem; page-break-inside: avoid;">
+      <h3 style="
+        color: #212653;
+        font-family: 'Montserrat', sans-serif;
+        margin-bottom: 0.75rem;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      ">
+        <span style="
+          background: #212653;
+          color: white;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+          font-size: 0.9rem;
+        ">CPA</span>
+        CPA-03: Leadership &amp; Governance Strategic Action
+      </h3>
+
+      <p style="color: #555; margin: 0.5rem 0; line-height: 1.5;">Improve Leadership &amp; Governance score from 40 to 60 within the target horizon.</p>
+
+      <p style="color: #666; margin: 0.75rem 0; font-style: italic;">
+        <strong style="color: #212653;">Why This Matters:</strong> Addresses critical gap in Leadership &amp; Governance with projected score improvement from current levels.
+      </p>
+
+      <div class="table-responsive" style="margin: 1rem 0;">
+        <table class="bh-table" style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+          <thead>
+            <tr style="background: #212653; color: white;">
+              <th style="padding: 0.75rem; text-align: left;">Timeframe</th>
+              <th style="padding: 0.75rem; text-align: left;">Action</th>
+              <th style="padding: 0.75rem; text-align: left;">Owner</th>
+              <th style="padding: 0.75rem; text-align: left;">Deliverable</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr style="border-bottom: 1px solid #e0e0e0;">
+                <td style="padding: 0.75rem; font-weight: 500; color: #212653;">Week 1-2</td>
+                <td style="padding: 0.75rem;">Conduct detailed leadership &amp; governance assessment</td>
+                <td style="padding: 0.75rem;">CEO / Board</td>
+                <td style="padding: 0.75rem;">Conduct detailed leadership... completed</td>
+              </tr>
+            
+              <tr style="border-bottom: 1px solid #e0e0e0;">
+                <td style="padding: 0.75rem; font-weight: 500; color: #212653;">Week 3-4</td>
+                <td style="padding: 0.75rem;">Develop improvement plan with measurable KPIs</td>
+                <td style="padding: 0.75rem;">CEO / Board</td>
+                <td style="padding: 0.75rem;">Develop improvement plan... completed</td>
+              </tr>
+            
+              <tr style="border-bottom: 1px solid #e0e0e0;">
+                <td style="padding: 0.75rem; font-weight: 500; color: #212653;">Week 5-6</td>
+                <td style="padding: 0.75rem;">Implement quick wins within first 30 days</td>
+                <td style="padding: 0.75rem;">CEO / Board</td>
+                <td style="padding: 0.75rem;">Implement quick wins... completed</td>
+              </tr>
+            
+              <tr style="border-bottom: 1px solid #e0e0e0;">
+                <td style="padding: 0.75rem; font-weight: 500; color: #212653;">Week 7-8</td>
+                <td style="padding: 0.75rem;">Monitor progress and adjust approach</td>
+                <td style="padding: 0.75rem;">CEO / Board</td>
+                <td style="padding: 0.75rem;">Monitor progress and... completed</td>
+              </tr>
+            
+          </tbody>
+        </table>
+      </div>
+
+      
+        <div style="margin-top: 0.75rem;">
+          <strong style="color: #212653; font-size: 0.9rem;">Monitoring Indicators:</strong>
+          <ul style="margin: 0.5rem 0; padding-left: 1.25rem; font-size: 0.9rem; color: #555;">
+            <li style="margin: 0.25rem 0;">Track progress against Leadership &amp; Governance KPIs</li><li style="margin: 0.25rem 0;">Weekly status updates to leadership</li><li style="margin: 0.25rem 0;">Monthly ROI assessment</li>
+          </ul>
+        </div>
+      
+    </div>
+  
       </div>
 
       
@@ -6268,6 +7739,186 @@ button:focus {
         </div>
       
 
+      <!-- P1 ENHANCEMENT: Impact/Effort Prioritization Matrix -->
+      
+        <div class="impact-effort-matrix-section" style="margin: 2rem 0;">
+          <h3 style="font-family: 'Montserrat', sans-serif; color: #212653; margin-bottom: 1rem; font-size: 1.1rem;">
+            Prioritization Matrix
+          </h3>
+          <p style="font-size: 0.9rem; color: #666; margin-bottom: 1rem;">
+            Your recommendations plotted by business impact and implementation effort.
+            Items in the <strong style="color: #28a745;">Quick Wins</strong> quadrant (high impact, low effort) are your best starting points.
+          </p>
+          <div style="display: flex; justify-content: center; overflow-x: auto;">
+            <svg width="550" height="450" viewBox="0 0 550 450"
+         xmlns="http://www.w3.org/2000/svg"
+         style="font-family: 'Open Sans', Arial, sans-serif; max-width: 100%; height: auto;">
+
+      <!-- Background -->
+      <rect width="550" height="450" fill="#fafbfc" rx="8"/>
+
+      <!-- Title -->
+      <text x="275" y="30" text-anchor="middle"
+            font-family="'Montserrat', sans-serif" font-size="16" font-weight="600" fill="#212653">
+        Impact/Effort Prioritization Matrix
+      </text>
+
+      <!-- Quadrants -->
+      
+        <rect x="60" y="60" width="225" height="165"
+              fill="rgba(40, 167, 69, 0.15)" stroke="#28a745" stroke-width="1"/>
+        <text x="172.5" y="80" text-anchor="middle"
+              font-size="12" font-weight="600" fill="#28a745">Quick Wins</text>
+        <text x="172.5" y="95" text-anchor="middle"
+              font-size="9" fill="#666">Start Immediately</text>
+      
+        <rect x="285" y="60" width="225" height="165"
+              fill="rgba(0, 123, 255, 0.15)" stroke="#007bff" stroke-width="1"/>
+        <text x="397.5" y="80" text-anchor="middle"
+              font-size="12" font-weight="600" fill="#007bff">Major Initiatives</text>
+        <text x="397.5" y="95" text-anchor="middle"
+              font-size="9" fill="#666">Phase Over Time</text>
+      
+        <rect x="60" y="225" width="225" height="165"
+              fill="rgba(108, 117, 125, 0.1)" stroke="#6c757d" stroke-width="1"/>
+        <text x="172.5" y="245" text-anchor="middle"
+              font-size="12" font-weight="600" fill="#6c757d">Fill-Ins</text>
+        <text x="172.5" y="260" text-anchor="middle"
+              font-size="9" fill="#666">If Resources Allow</text>
+      
+        <rect x="285" y="225" width="225" height="165"
+              fill="rgba(220, 53, 69, 0.1)" stroke="#dc3545" stroke-width="1"/>
+        <text x="397.5" y="245" text-anchor="middle"
+              font-size="12" font-weight="600" fill="#dc3545">Reconsider</text>
+        <text x="397.5" y="260" text-anchor="middle"
+              font-size="9" fill="#666">Low Priority</text>
+      
+
+      <!-- Axis Labels -->
+      <text x="275" y="435" text-anchor="middle"
+            font-size="11" fill="#212653" font-weight="500">
+        Implementation Effort →
+      </text>
+      <text x="15" y="225" text-anchor="middle"
+            font-size="11" fill="#212653" font-weight="500"
+            transform="rotate(-90, 15, 225)">
+        ← Business Impact
+      </text>
+
+      <!-- Axis markers -->
+      <text x="60" y="410" font-size="9" fill="#999">Low</text>
+      <text x="510" y="410" text-anchor="end" font-size="9" fill="#999">High</text>
+      <text x="55" y="70" text-anchor="end" font-size="9" fill="#999">High</text>
+      <text x="55" y="390" text-anchor="end" font-size="9" fill="#999">Low</text>
+
+      <!-- Center lines -->
+      <line x1="285" y1="60" x2="285" y2="390"
+            stroke="#dee2e6" stroke-width="2" stroke-dasharray="4,4"/>
+      <line x1="60" y1="225" x2="510" y2="225"
+            stroke="#dee2e6" stroke-width="2" stroke-dasharray="4,4"/>
+
+      <!-- Data Points -->
+      
+        <g class="data-point">
+          <circle cx="375.0" cy="162.3" r="18" fill="#007bff" opacity="0.9"/>
+          <text x="375.0" y="166.3" text-anchor="middle"
+                font-size="9" font-weight="600" fill="white">1</text>
+        </g>
+      
+        <g class="data-point">
+          <circle cx="375.0" cy="188.7" r="18" fill="#007bff" opacity="0.9"/>
+          <text x="375.0" y="192.7" text-anchor="middle"
+                font-size="9" font-weight="600" fill="white">2</text>
+        </g>
+      
+        <g class="data-point">
+          <circle cx="285.0" cy="192.0" r="18" fill="#007bff" opacity="0.9"/>
+          <text x="285.0" y="196.0" text-anchor="middle"
+                font-size="9" font-weight="600" fill="white">3</text>
+        </g>
+      
+        <g class="data-point">
+          <circle cx="285.0" cy="208.5" r="18" fill="#007bff" opacity="0.9"/>
+          <text x="285.0" y="212.5" text-anchor="middle"
+                font-size="9" font-weight="600" fill="white">4</text>
+        </g>
+      
+        <g class="data-point">
+          <circle cx="285.0" cy="211.8" r="18" fill="#007bff" opacity="0.9"/>
+          <text x="285.0" y="215.8" text-anchor="middle"
+                font-size="9" font-weight="600" fill="white">5</text>
+        </g>
+      
+        <g class="data-point">
+          <circle cx="285.0" cy="225.0" r="18" fill="#007bff" opacity="0.9"/>
+          <text x="285.0" y="229.0" text-anchor="middle"
+                font-size="9" font-weight="600" fill="white">6</text>
+        </g>
+      
+        <g class="data-point">
+          <circle cx="285.0" cy="241.5" r="18" fill="#dc3545" opacity="0.9"/>
+          <text x="285.0" y="245.5" text-anchor="middle"
+                font-size="9" font-weight="600" fill="white">7</text>
+        </g>
+      
+        <g class="data-point">
+          <circle cx="285.0" cy="254.7" r="18" fill="#dc3545" opacity="0.9"/>
+          <text x="285.0" y="258.7" text-anchor="middle"
+                font-size="9" font-weight="600" fill="white">8</text>
+        </g>
+      
+        <g class="data-point">
+          <circle cx="285.0" cy="264.6" r="18" fill="#dc3545" opacity="0.9"/>
+          <text x="285.0" y="268.6" text-anchor="middle"
+                font-size="9" font-weight="600" fill="white">9</text>
+        </g>
+      
+        <g class="data-point">
+          <circle cx="285.0" cy="291.0" r="18" fill="#dc3545" opacity="0.9"/>
+          <text x="285.0" y="295.0" text-anchor="middle"
+                font-size="9" font-weight="600" fill="white">10</text>
+        </g>
+      
+
+      <!-- Legend -->
+      <g transform="translate(370, 395)">
+        
+          <g transform="translate(0, 0)">
+            <circle cx="6" cy="6" r="5" fill="#007bff"/>
+            <text x="14" y="10" font-size="8" fill="#333">1. Marketing…</text>
+          </g>
+        
+          <g transform="translate(90, 0)">
+            <circle cx="6" cy="6" r="5" fill="#007bff"/>
+            <text x="14" y="10" font-size="8" fill="#333">2. Financial…</text>
+          </g>
+        
+          <g transform="translate(0, 14)">
+            <circle cx="6" cy="6" r="5" fill="#007bff"/>
+            <text x="14" y="10" font-size="8" fill="#333">3. Leadershi…</text>
+          </g>
+        
+          <g transform="translate(90, 14)">
+            <circle cx="6" cy="6" r="5" fill="#007bff"/>
+            <text x="14" y="10" font-size="8" fill="#333">4. Strategy …</text>
+          </g>
+        
+          <g transform="translate(0, 28)">
+            <circle cx="6" cy="6" r="5" fill="#007bff"/>
+            <text x="14" y="10" font-size="8" fill="#333">5. Human Res…</text>
+          </g>
+        
+          <g transform="translate(90, 28)">
+            <circle cx="6" cy="6" r="5" fill="#007bff"/>
+            <text x="14" y="10" font-size="8" fill="#333">6. Customer …</text>
+          </g>
+        
+      </g>
+    </svg>
+          </div>
+        </div>
+      
+
       
     <div class="comprehensive-reference">
       <span class="ref-icon">&#128214;</span>
@@ -6297,22 +7948,30 @@ button:focus {
   
         <div class="narrative-content">
           <h1 class="bh-section-heading bh-h1" id="priority-action-matrix">Priority Action Matrix</h1>
-<h2 class="bh-section-heading bh-h2" id="summit-build-group">Summit Build Group</h2>
-<h3 class="bh-subsection-heading bh-h3" id="strategic-implementation-prioritization">Strategic Implementation Prioritization</h3>
+<h2 class="bh-section-heading bh-h2" id="hopcraft-brewing-co">Hopcraft Brewing Co.</h2>
 <hr class="bh-section-divider">
 <h1 class="bh-section-heading bh-h1" id="executive-summary">Executive Summary</h1>
-<p class="bh-paragraph">This Priority Action Matrix consolidates all recommendations from Phase 2 analyses into a structured decision framework.  The matrix enables Summit Build Group to allocate resources effectively and sequence initiatives for maximum impact. </p>
+<p class="bh-paragraph">This Priority Action Matrix consolidates all recommendations from Comprehensive Diagnostic Analysis into a structured, prioritized framework for executive decision-making.  The matrix transforms strategic insights into actionable items with clear sequencing, resource requirements, and accountability assignments. </p>
 <hr class="bh-section-divider">
-<h1 class="bh-section-heading bh-h1" id="master-priority-matrix">Master Priority Matrix</h1>
-<h2 class="bh-section-heading bh-h2" id="impact-vs-urgency-framework">Impact vs.  Urgency Framework</h2>
+<h1 class="bh-section-heading bh-h1" id="priority-scoring-methodology">Priority Scoring Methodology</h1>
+<h2 class="bh-section-heading bh-h2" id="scoring-framework">Scoring Framework</h2>
 <hr class="bh-section-divider">
-<h1 class="bh-section-heading bh-h1" id="detailed-action-cards">Detailed Action Cards</h1>
-<h2 class="bh-section-heading bh-h2" id="critical-path-actions-priority-score-9-10">CRITICAL PATH ACTIONS (Priority Score: 9-10)</h2>
-<p class="bh-paragraph">These actions form the critical path and must be executed in sequence.  Delays in any of these will cascade throughout the transformation. </p>
+<h1 class="bh-section-heading bh-h1" id="section-1-critical-path-actions">Section 1: Critical Path Actions</h1>
+<h2 class="bh-section-heading bh-h2" id="must-do-items-in-sequence-priority-score-16-20">Must-Do Items in Sequence (Priority Score 16-20)</h2>
+<p class="bh-paragraph">These actions form the critical path for transformation.  Delays in any of these will cascade through the entire program. </p>
 
-<h3 class="bh-subsection-heading bh-h3" id="a1-strategic-alignment-resolution">A1: Strategic Alignment Resolution</h3>
+<h2 class="bh-section-heading bh-h2" id="cpa-01-emergency-cash-position-improvement">CPA-01: Emergency Cash Position Improvement</h2>
 
-<h3 class="bh-subsection-heading bh-h3" id="a2-turnover-emergency-response">A2: Turnover Emergency Response</h3>
+      <div class="table-responsive">
+        <table class="bh-table">
+          <thead><tr class="bh-tr"><th class="bh-th">Component</th><th class="bh-th">Week 1-2</th><th class="bh-th">Week 3-4</th><th class="bh-th">Week 5-8</th><th class="bh-th">Week 9-12</th></tr></thead>
+          <tbody><tr class="bh-tr"><td class="bh-td">AR Acceleration</td><td class="bh-td">Aging analysis, outreach</td><td class="bh-td">2/10 net 30 implementation</td><td class="bh-td">Collection follow-up</td><td class="bh-td">Monitor DSO</td></tr><tr class="bh-tr"><td class="bh-td">Inventory</td><td class="bh-td">Slow-mover ID</td><td class="bh-td">Liquidation promotions</td><td class="bh-td">Safety stock reduction</td><td class="bh-td">Optimize</td></tr><tr class="bh-tr"><td class="bh-td">Expenses</td><td class="bh-td">Supplier negotiations</td><td class="bh-td">Deferral decisions</td><td class="bh-td">Purchase controls</td><td class="bh-td">Monitor DPO</td></tr><tr class="bh-tr"><td class="bh-td">Margin</td><td class="bh-td">Price analysis</td><td class="bh-td">Taproom increase</td><td class="bh-td">Distribution review</td><td class="bh-td">Track impact</td></tr></tbody>
+        </table>
+      </div>
+    
+<h2 class="bh-section-heading bh-h2" id="cpa-02-cybersecurity-hardening-initiative">CPA-02: Cybersecurity Hardening Initiative</h2>
+
+<h2 class="bh-section-heading bh-h2" id="cpa-03-key-person-risk-documentation">CPA-03: Key Person Risk Documentation</h2>
 
         </div>
         
@@ -6328,9 +7987,8 @@ button:focus {
     
 
     <!-- ================================================================
-         SECTION: Quick Wins - Start Today
+         SECTION: Quick Wins - Start Today (P0 ENHANCED)
          ================================================================ -->
-    
       <section class="section" id="quick-wins">
         
     <div class="owner-section-header">
@@ -6343,66 +8001,313 @@ button:focus {
       
     </div>
   
-        <p class="section-intro">These high-impact, low-effort improvements can be implemented within 90 days:</p>
+        <p class="section-intro">These high-impact, low-effort improvements can be started within 7 days and completed within 90 days:</p>
 
-        <!-- World-Class: Quick Wins Cards -->
-        
-          <div class="quick-win-card">
-            <div class="title">Human Resources Improvement Initiative</div>
-            <p>Improve Human Resources score from 44 to 64 within the target horizon.</p>
-            <div class="metrics">
-              <span>Impact: 56/100</span>
-              <span>Effort: 50/100</span>
-              <span>ROI: 1.12x</span>
-            </div>
+        <!-- P0 FIX: Tactical Quick Wins with Implementation Steps -->
+        <div class="tactical-quick-wins-section" style="margin: 1.5rem 0;">
+          
+    <div class="quick-win-card tactical" style="
+      background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+      border-left: 4px solid #212653;
+      padding: 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+    ">
+      <div class="quick-win-header" style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 0.75rem;">
+        <span class="quick-win-number" style="
+          background: #212653;
+          color: white;
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+          font-size: 0.9rem;
+          flex-shrink: 0;
+        ">1</span>
+        <div class="quick-win-title-block" style="flex: 1;">
+          <div class="title" style="font-weight: 600; color: #212653; font-size: 1.05rem; margin-bottom: 0.25rem;">
+            Develop 90-Day Turnaround Plan
           </div>
+          <span class="quick-win-category" style="
+            font-size: 0.8rem;
+            color: #666;
+            background: #e9ecef;
+            padding: 2px 8px;
+            border-radius: 4px;
+          ">Strategy</span>
+        </div>
+      </div>
+
+      <p class="quick-win-description" style="color: #555; margin: 0.75rem 0; line-height: 1.5;">
+        Create immediate action plan addressing negative growth through targeted market initiatives, leveraging existing competitive knowledge
+      </p>
+
+      
+
+      <div class="quick-win-meta" style="display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.85rem; color: #666; margin-top: 0.75rem;">
+        <span>⏱️ 30 days</span>
+        <span>👤 CEO / Strategy Lead</span>
+        <span>🎯 high</span>
+      </div>
+
+      <div class="metrics" style="display: flex; gap: 1.5rem; font-size: 0.85rem; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #e9ecef;">
+        <span style="color: #6c757d;">
+          <strong>Impact:</strong> high
+        </span>
+        <span style="color: #dc3545;">
+          <strong>Effort:</strong> medium
+        </span>
         
-          <div class="quick-win-card">
-            <div class="title">Sales Improvement Initiative</div>
-            <p>Improve Sales score from 47 to 67 within the target horizon.</p>
-            <div class="metrics">
-              <span>Impact: 53/100</span>
-              <span>Effort: 50/100</span>
-              <span>ROI: 1.06x</span>
-            </div>
+      </div>
+    </div>
+  
+
+    <div class="quick-win-card tactical" style="
+      background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+      border-left: 4px solid #212653;
+      padding: 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+    ">
+      <div class="quick-win-header" style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 0.75rem;">
+        <span class="quick-win-number" style="
+          background: #212653;
+          color: white;
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+          font-size: 0.9rem;
+          flex-shrink: 0;
+        ">2</span>
+        <div class="quick-win-title-block" style="flex: 1;">
+          <div class="title" style="font-weight: 600; color: #212653; font-size: 1.05rem; margin-bottom: 0.25rem;">
+            Implement Monthly Strategic Reviews
           </div>
+          <span class="quick-win-category" style="
+            font-size: 0.8rem;
+            color: #666;
+            background: #e9ecef;
+            padding: 2px 8px;
+            border-radius: 4px;
+          ">Strategy</span>
+        </div>
+      </div>
+
+      <p class="quick-win-description" style="color: #555; margin: 0.75rem 0; line-height: 1.5;">
+        Establish monthly strategic review meetings to increase agility and responsiveness to market changes
+      </p>
+
+      
+
+      <div class="quick-win-meta" style="display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.85rem; color: #666; margin-top: 0.75rem;">
+        <span>⏱️ 15 days</span>
+        <span>👤 CEO / Strategy Lead</span>
+        <span>🎯 medium</span>
+      </div>
+
+      <div class="metrics" style="display: flex; gap: 1.5rem; font-size: 0.85rem; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #e9ecef;">
+        <span style="color: #6c757d;">
+          <strong>Impact:</strong> medium
+        </span>
+        <span style="color: #dc3545;">
+          <strong>Effort:</strong> low
+        </span>
         
-          <div class="quick-win-card">
-            <div class="title">Operations Improvement Initiative</div>
-            <p>Improve Operations score from 47 to 67 within the target horizon.</p>
-            <div class="metrics">
-              <span>Impact: 53/100</span>
-              <span>Effort: 50/100</span>
-              <span>ROI: 1.06x</span>
-            </div>
+      </div>
+    </div>
+  
+
+    <div class="quick-win-card tactical" style="
+      background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+      border-left: 4px solid #212653;
+      padding: 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+    ">
+      <div class="quick-win-header" style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 0.75rem;">
+        <span class="quick-win-number" style="
+          background: #212653;
+          color: white;
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+          font-size: 0.9rem;
+          flex-shrink: 0;
+        ">3</span>
+        <div class="quick-win-title-block" style="flex: 1;">
+          <div class="title" style="font-weight: 600; color: #212653; font-size: 1.05rem; margin-bottom: 0.25rem;">
+            Document Core Strategic Framework
           </div>
+          <span class="quick-win-category" style="
+            font-size: 0.8rem;
+            color: #666;
+            background: #e9ecef;
+            padding: 2px 8px;
+            border-radius: 4px;
+          ">Strategy</span>
+        </div>
+      </div>
+
+      <p class="quick-win-description" style="color: #555; margin: 0.75rem 0; line-height: 1.5;">
+        Formalize existing business goals and competitive insights into a comprehensive one-page strategic document
+      </p>
+
+      
+
+      <div class="quick-win-meta" style="display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.85rem; color: #666; margin-top: 0.75rem;">
+        <span>⏱️ 21 days</span>
+        <span>👤 CEO / Strategy Lead</span>
+        <span>🎯 medium</span>
+      </div>
+
+      <div class="metrics" style="display: flex; gap: 1.5rem; font-size: 0.85rem; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #e9ecef;">
+        <span style="color: #6c757d;">
+          <strong>Impact:</strong> medium
+        </span>
+        <span style="color: #dc3545;">
+          <strong>Effort:</strong> low
+        </span>
         
-          <div class="quick-win-card">
-            <div class="title">Marketing Improvement Initiative</div>
-            <p>Improve Marketing score from 27 to 47 within the target horizon.</p>
-            <div class="metrics">
-              <span>Impact: 73/100</span>
-              <span>Effort: 70/100</span>
-              <span>ROI: 1.04x</span>
-            </div>
+      </div>
+    </div>
+  
+
+    <div class="quick-win-card tactical" style="
+      background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+      border-left: 4px solid #212653;
+      padding: 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+    ">
+      <div class="quick-win-header" style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 0.75rem;">
+        <span class="quick-win-number" style="
+          background: #212653;
+          color: white;
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+          font-size: 0.9rem;
+          flex-shrink: 0;
+        ">4</span>
+        <div class="quick-win-title-block" style="flex: 1;">
+          <div class="title" style="font-weight: 600; color: #212653; font-size: 1.05rem; margin-bottom: 0.25rem;">
+            Market Share Analysis Deep Dive
           </div>
+          <span class="quick-win-category" style="
+            font-size: 0.8rem;
+            color: #666;
+            background: #e9ecef;
+            padding: 2px 8px;
+            border-radius: 4px;
+          ">Strategy</span>
+        </div>
+      </div>
+
+      <p class="quick-win-description" style="color: #555; margin: 0.75rem 0; line-height: 1.5;">
+        Conduct detailed analysis of local market dynamics to identify specific growth opportunities and competitive gaps
+      </p>
+
+      
+
+      <div class="quick-win-meta" style="display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.85rem; color: #666; margin-top: 0.75rem;">
+        <span>⏱️ 45 days</span>
+        <span>👤 CEO / Strategy Lead</span>
+        <span>🎯 high</span>
+      </div>
+
+      <div class="metrics" style="display: flex; gap: 1.5rem; font-size: 0.85rem; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #e9ecef;">
+        <span style="color: #6c757d;">
+          <strong>Impact:</strong> high
+        </span>
+        <span style="color: #dc3545;">
+          <strong>Effort:</strong> medium
+        </span>
         
-          <div class="quick-win-card">
-            <div class="title">IT, Data &amp; Systems Improvement Initiative</div>
-            <p>Improve IT, Data &amp; Systems score from 48 to 68 within the target horizon.</p>
-            <div class="metrics">
-              <span>Impact: 52/100</span>
-              <span>Effort: 50/100</span>
-              <span>ROI: 1.04x</span>
-            </div>
+      </div>
+    </div>
+  
+
+    <div class="quick-win-card tactical" style="
+      background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+      border-left: 4px solid #212653;
+      padding: 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1rem;
+    ">
+      <div class="quick-win-header" style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 0.75rem;">
+        <span class="quick-win-number" style="
+          background: #212653;
+          color: white;
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+          font-size: 0.9rem;
+          flex-shrink: 0;
+        ">5</span>
+        <div class="quick-win-title-block" style="flex: 1;">
+          <div class="title" style="font-weight: 600; color: #212653; font-size: 1.05rem; margin-bottom: 0.25rem;">
+            Implement Customer Account Expansion Program
           </div>
+          <span class="quick-win-category" style="
+            font-size: 0.8rem;
+            color: #666;
+            background: #e9ecef;
+            padding: 2px 8px;
+            border-radius: 4px;
+          ">Sales</span>
+        </div>
+      </div>
+
+      <p class="quick-win-description" style="color: #555; margin: 0.75rem 0; line-height: 1.5;">
+        Create structured upselling and cross-selling initiatives for existing customers, leveraging the strong 78% retention rate to drive revenue growth.
+      </p>
+
+      
+
+      <div class="quick-win-meta" style="display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.85rem; color: #666; margin-top: 0.75rem;">
+        <span>⏱️ 60 days</span>
+        <span>👤 VP Sales / Sales Manager</span>
+        <span>🎯 high</span>
+      </div>
+
+      <div class="metrics" style="display: flex; gap: 1.5rem; font-size: 0.85rem; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #e9ecef;">
+        <span style="color: #6c757d;">
+          <strong>Impact:</strong> high
+        </span>
+        <span style="color: #dc3545;">
+          <strong>Effort:</strong> low
+        </span>
+        
+      </div>
+    </div>
+  
+        </div>
+
         
       </section>
-    
 
     <!-- ================================================================
-         SECTION: Key Risks to Your Business
-         Enhanced with Risk Heatmap Visualization
+         SECTION: Key Risks to Your Business (P0 ENHANCED)
+         Now with complete mitigation strategies
          ================================================================ -->
     <section class="section" id="key-risks">
       
@@ -6429,7 +8334,7 @@ button:focus {
           </p>
           <div style="display: flex; justify-content: center;">
             
-    <div class="svg-chart-container risk-heatmap" role="figure" aria-label="Risk Heat Map showing 5 risks by severity and likelihood">
+    <div class="svg-chart-container risk-heatmap" role="figure" aria-label="Risk Heat Map showing 2 risks by severity and likelihood">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" style="max-width: 100%; height: auto;">
         <!-- Background -->
         <rect width="600" height="400" fill="white" rx="4"/>
@@ -6523,30 +8428,6 @@ button:focus {
         
       </g>
     
-      <g class="risk-point" >
-        <circle cx="517.5" cy="77.5" r="14" fill="#dc3545" stroke="#fff" stroke-width="2"/>
-        <text x="517.5" y="81.5" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">
-          3
-        </text>
-        
-      </g>
-    
-      <g class="risk-point" >
-        <circle cx="517.5" cy="77.5" r="14" fill="#dc3545" stroke="#fff" stroke-width="2"/>
-        <text x="517.5" y="81.5" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">
-          4
-        </text>
-        
-      </g>
-    
-      <g class="risk-point" >
-        <circle cx="517.5" cy="77.5" r="14" fill="#dc3545" stroke="#fff" stroke-width="2"/>
-        <text x="517.5" y="81.5" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">
-          5
-        </text>
-        
-      </g>
-    
 
         <!-- X-Axis Labels -->
         
@@ -6594,7 +8475,7 @@ button:focus {
       <text x="0" y="0" font-size="10" font-weight="600" fill="#333" font-family="'Segoe UI', sans-serif">Risk Count by Severity</text>
       <g transform="translate(0, 12)">
         <circle cx="8" cy="6" r="6" fill="#dc3545"/>
-        <text x="20" y="10" font-size="9" fill="#666">Critical (5)</text>
+        <text x="20" y="10" font-size="9" fill="#666">Critical (2)</text>
       </g>
       <g transform="translate(0, 26)">
         <circle cx="8" cy="6" r="6" fill="#e67e22"/>
@@ -6617,156 +8498,332 @@ button:focus {
         </div>
       
 
-      <!-- Top Risks List -->
-      
-        <div class="critical-risks-list" style="margin: 1.5rem 0;">
-          <h4 style="font-family: 'Montserrat', sans-serif; color: #dc3545; margin-bottom: 1rem;">
-            &#9888;&#65039; Priority Risks Requiring Attention
+      <!-- P0 FIX: Enhanced Risks with Mitigation Strategies -->
+      <div class="enhanced-risks-section" style="margin: 1.5rem 0;">
+        <h4 style="font-family: 'Montserrat', sans-serif; color: #dc3545; margin-bottom: 1rem;">
+          ⚠️ Priority Risks with Mitigation Strategies
+        </h4>
+        
+      <div class="risk-detail" style="
+        margin-bottom: 1.5rem;
+        background: #fff;
+        border-left: 4px solid #fd7e14;
+        padding: 1.25rem;
+        border-radius: 0 8px 8px 0;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      ">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+          <h4 style="color: #212653; margin: 0; font-size: 1rem; font-family: 'Montserrat', sans-serif;">
+            Risk #1: Continued Market Share Erosion
           </h4>
-          <div style="display: grid; gap: 0.75rem;">
-            
-              <div style="
-                background: #fff;
-                border-left: 4px solid #ffc107;
-                padding: 1rem;
-                border-radius: 0 8px 8px 0;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-              ">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-                  <strong style="color: #212653;">1. Strategy is at critical levels with a score of 37/100. Immediate intervention is required to mitigate business risk.</strong>
-                  <span style="
-                    padding: 2px 8px;
-                    border-radius: 4px;
-                    font-size: 0.75rem;
-                    font-weight: 600;
-                    text-transform: uppercase;
-                    background: #ffc107;
-                    color: #000;
-                  ">Critical</span>
-                </div>
-                <p style="font-size: 0.9rem; color: #555; margin: 0; line-height: 1.5;">
-                  Strategy is at critical levels with a score of 37/100. Immediate intervention is required to mitigate business risk.
-                </p>
-              </div>
-            
-              <div style="
-                background: #fff;
-                border-left: 4px solid #ffc107;
-                padding: 1rem;
-                border-radius: 0 8px 8px 0;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-              ">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-                  <strong style="color: #212653;">2. Marketing is at critical levels with a score of 27/100. Immediate intervention is required to mitigate business risk.</strong>
-                  <span style="
-                    padding: 2px 8px;
-                    border-radius: 4px;
-                    font-size: 0.75rem;
-                    font-weight: 600;
-                    text-transform: uppercase;
-                    background: #ffc107;
-                    color: #000;
-                  ">Critical</span>
-                </div>
-                <p style="font-size: 0.9rem; color: #555; margin: 0; line-height: 1.5;">
-                  Marketing is at critical levels with a score of 27/100. Immediate intervention is required to mitigate business risk.
-                </p>
-              </div>
-            
-              <div style="
-                background: #fff;
-                border-left: 4px solid #ffc107;
-                padding: 1rem;
-                border-radius: 0 8px 8px 0;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-              ">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-                  <strong style="color: #212653;">3. Financials is at critical levels with a score of 30/100. Immediate intervention is required to mitigate business risk.</strong>
-                  <span style="
-                    padding: 2px 8px;
-                    border-radius: 4px;
-                    font-size: 0.75rem;
-                    font-weight: 600;
-                    text-transform: uppercase;
-                    background: #ffc107;
-                    color: #000;
-                  ">Critical</span>
-                </div>
-                <p style="font-size: 0.9rem; color: #555; margin: 0; line-height: 1.5;">
-                  Financials is at critical levels with a score of 30/100. Immediate intervention is required to mitigate business risk.
-                </p>
-              </div>
-            
-              <div style="
-                background: #fff;
-                border-left: 4px solid #ffc107;
-                padding: 1rem;
-                border-radius: 0 8px 8px 0;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-              ">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-                  <strong style="color: #212653;">4. Leadership &amp; Governance is at critical levels with a score of 38/100. Immediate intervention is required to mitigate business risk.</strong>
-                  <span style="
-                    padding: 2px 8px;
-                    border-radius: 4px;
-                    font-size: 0.75rem;
-                    font-weight: 600;
-                    text-transform: uppercase;
-                    background: #ffc107;
-                    color: #000;
-                  ">Critical</span>
-                </div>
-                <p style="font-size: 0.9rem; color: #555; margin: 0; line-height: 1.5;">
-                  Leadership &amp; Governance is at critical levels with a score of 38/100. Immediate intervention is required to mitigate business risk.
-                </p>
-              </div>
-            
-              <div style="
-                background: #fff;
-                border-left: 4px solid #ffc107;
-                padding: 1rem;
-                border-radius: 0 8px 8px 0;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-              ">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-                  <strong style="color: #212653;">5. Technology &amp; Innovation is at critical levels with a score of 34/100. Immediate intervention is required to mitigate business risk.</strong>
-                  <span style="
-                    padding: 2px 8px;
-                    border-radius: 4px;
-                    font-size: 0.75rem;
-                    font-weight: 600;
-                    text-transform: uppercase;
-                    background: #ffc107;
-                    color: #000;
-                  ">Critical</span>
-                </div>
-                <p style="font-size: 0.9rem; color: #555; margin: 0; line-height: 1.5;">
-                  Technology &amp; Innovation is at critical levels with a score of 34/100. Immediate intervention is required to mitigate business risk.
-                </p>
-              </div>
-            
-          </div>
+          <span style="
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            background: #fd7e14;
+            color: #fff;
+          ">high</span>
         </div>
-      
 
-      
-        <div class="narrative-content">
-          <h1 class="bh-section-heading bh-h1" id="comprehensive-risk-assessment">Comprehensive Risk Assessment</h1>
-<h2 class="bh-section-heading bh-h2" id="summit-build-group">Summit Build Group</h2>
-<h3 class="bh-subsection-heading bh-h3" id="consolidated-analysis-from-all-phase-1-assessments">Consolidated Analysis from All Phase 1 Assessments</h3>
-<hr class="bh-section-divider">
-<h1 class="bh-section-heading bh-h1" id="executive-risk-summary">Executive Risk Summary</h1>
-<h2 class="bh-section-heading bh-h2" id="risk-category-distribution">Risk Category Distribution</h2>
+        <p style="color: #555; margin: 0.5rem 0; font-size: 0.95rem; line-height: 1.5;">
+          Negative growth trend combined with low market share could lead to irreversible competitive disadvantage in local craft beer market
+        </p>
 
-      <div class="table-responsive">
-        <table class="bh-table">
-          <thead><tr class="bh-tr"><th class="bh-th">Risk Category</th><th class="bh-th">Count</th><th class="bh-th">Critical</th><th class="bh-th">High</th><th class="bh-th">Medium</th><th class="bh-th">Low</th><th class="bh-th">Aggregate Exposure</th></tr></thead>
-          <tbody><tr class="bh-tr"><td class="bh-td"><strong class="bh-emphasis">People &amp; Organizational</strong></td><td class="bh-td">12</td><td class="bh-td">3</td><td class="bh-td">4</td><td class="bh-td">4</td><td class="bh-td">1</td><td class="bh-td">$3. 5M - $5. 2M</td></tr><tr class="bh-tr"><td class="bh-td"><strong class="bh-emphasis">Operational</strong></td><td class="bh-td">10</td><td class="bh-td">2</td><td class="bh-td">3</td><td class="bh-td">4</td><td class="bh-td">1</td><td class="bh-td">$1. 8M - $2. 9M</td></tr><tr class="bh-tr"><td class="bh-td"><strong class="bh-emphasis">Financial</strong></td><td class="bh-td">8</td><td class="bh-td">2</td><td class="bh-td">2</td><td class="bh-td">3</td><td class="bh-td">1</td><td class="bh-td">$4. 2M - $5. 8M</td></tr><tr class="bh-tr"><td class="bh-td"><strong class="bh-emphasis">Compliance &amp; Regulatory</strong></td><td class="bh-td">6</td><td class="bh-td">1</td><td class="bh-td">2</td><td class="bh-td">2</td><td class="bh-td">1</td><td class="bh-td">$0. 8M - $2. 5M</td></tr><tr class="bh-tr"><td class="bh-td"><strong class="bh-emphasis">Strategic &amp; Market</strong></td><td class="bh-td">6</td><td class="bh-td">0</td><td class="bh-td">2</td><td class="bh-td">3</td><td class="bh-td">1</td><td class="bh-td">$1. 9M - $3.</td></tr></tbody>
-        </table>
+        <p style="color: #666; margin: 0.5rem 0; font-size: 0.85rem;">
+          <strong>Category:</strong> Strategy
+          <span style="margin-left: 1rem;"><strong>Likelihood:</strong> high</span>
+        </p>
+
+        
+          <div style="margin-top: 1rem;">
+            <strong style="color: #212653; font-size: 0.9rem;">Mitigation Strategies:</strong>
+            <div class="table-responsive" style="margin-top: 0.5rem;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                <thead>
+                  <tr style="background: #f8f9fa;">
+                    <th style="padding: 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6;">#</th>
+                    <th style="padding: 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6;">Strategy</th>
+                    <th style="padding: 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6;">Timeline</th>
+                    <th style="padding: 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6;">Expected Impact</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                    <tr style="border-bottom: 1px solid #e0e0e0;">
+                      <td style="padding: 0.5rem; font-weight: 500;">1</td>
+                      <td style="padding: 0.5rem;">Immediate implementation of turnaround strategy with focus on customer retention and acquisition</td>
+                      <td style="padding: 0.5rem;">—</td>
+                      <td style="padding: 0.5rem;">—</td>
+                    </tr>
+                  
+                </tbody>
+              </table>
+            </div>
+          </div>
+        
+
+        
       </div>
     
+
+      <div class="risk-detail" style="
+        margin-bottom: 1.5rem;
+        background: #fff;
+        border-left: 4px solid #fd7e14;
+        padding: 1.25rem;
+        border-radius: 0 8px 8px 0;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      ">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+          <h4 style="color: #212653; margin: 0; font-size: 1rem; font-family: 'Montserrat', sans-serif;">
+            Risk #2: Revenue Plateau from Underutilized Customer Base
+          </h4>
+          <span style="
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            background: #fd7e14;
+            color: #fff;
+          ">high</span>
         </div>
-      
+
+        <p style="color: #555; margin: 0.5rem 0; font-size: 0.95rem; line-height: 1.5;">
+          High retention but low expansion focus may lead to stagnant revenue growth as market saturation increases without maximizing existing customer value.
+        </p>
+
+        <p style="color: #666; margin: 0.5rem 0; font-size: 0.85rem;">
+          <strong>Category:</strong> Sales
+          <span style="margin-left: 1rem;"><strong>Likelihood:</strong> high</span>
+        </p>
+
+        
+          <div style="margin-top: 1rem;">
+            <strong style="color: #212653; font-size: 0.9rem;">Mitigation Strategies:</strong>
+            <div class="table-responsive" style="margin-top: 0.5rem;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                <thead>
+                  <tr style="background: #f8f9fa;">
+                    <th style="padding: 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6;">#</th>
+                    <th style="padding: 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6;">Strategy</th>
+                    <th style="padding: 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6;">Timeline</th>
+                    <th style="padding: 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6;">Expected Impact</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                    <tr style="border-bottom: 1px solid #e0e0e0;">
+                      <td style="padding: 0.5rem; font-weight: 500;">1</td>
+                      <td style="padding: 0.5rem;">Implement systematic account management and expansion programs</td>
+                      <td style="padding: 0.5rem;">—</td>
+                      <td style="padding: 0.5rem;">—</td>
+                    </tr>
+                  
+                </tbody>
+              </table>
+            </div>
+          </div>
+        
+
+        
+      </div>
+    
+
+      <div class="risk-detail" style="
+        margin-bottom: 1.5rem;
+        background: #fff;
+        border-left: 4px solid #fd7e14;
+        padding: 1.25rem;
+        border-radius: 0 8px 8px 0;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      ">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+          <h4 style="color: #212653; margin: 0; font-size: 1rem; font-family: 'Montserrat', sans-serif;">
+            Risk #3: Customer Satisfaction Erosion
+          </h4>
+          <span style="
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            background: #fd7e14;
+            color: #fff;
+          ">high</span>
+        </div>
+
+        <p style="color: #555; margin: 0.5rem 0; font-size: 0.95rem; line-height: 1.5;">
+          Poor on-time delivery performance threatens customer retention and market reputation, particularly critical in craft brewing&#039;s relationship-driven market
+        </p>
+
+        <p style="color: #666; margin: 0.5rem 0; font-size: 0.85rem;">
+          <strong>Category:</strong> Operations
+          <span style="margin-left: 1rem;"><strong>Likelihood:</strong> high</span>
+        </p>
+
+        
+          <div style="margin-top: 1rem;">
+            <strong style="color: #212653; font-size: 0.9rem;">Mitigation Strategies:</strong>
+            <div class="table-responsive" style="margin-top: 0.5rem;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                <thead>
+                  <tr style="background: #f8f9fa;">
+                    <th style="padding: 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6;">#</th>
+                    <th style="padding: 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6;">Strategy</th>
+                    <th style="padding: 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6;">Timeline</th>
+                    <th style="padding: 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6;">Expected Impact</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                    <tr style="border-bottom: 1px solid #e0e0e0;">
+                      <td style="padding: 0.5rem; font-weight: 500;">1</td>
+                      <td style="padding: 0.5rem;">Implement delivery tracking and customer communication protocols immediately</td>
+                      <td style="padding: 0.5rem;">—</td>
+                      <td style="padding: 0.5rem;">—</td>
+                    </tr>
+                  
+                </tbody>
+              </table>
+            </div>
+          </div>
+        
+
+        
+      </div>
+    
+
+      <div class="risk-detail" style="
+        margin-bottom: 1.5rem;
+        background: #fff;
+        border-left: 4px solid #fd7e14;
+        padding: 1.25rem;
+        border-radius: 0 8px 8px 0;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      ">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+          <h4 style="color: #212653; margin: 0; font-size: 1rem; font-family: 'Montserrat', sans-serif;">
+            Risk #4: Talent Hemorrhaging Acceleration
+          </h4>
+          <span style="
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            background: #fd7e14;
+            color: #fff;
+          ">high</span>
+        </div>
+
+        <p style="color: #555; margin: 0.5rem 0; font-size: 0.95rem; line-height: 1.5;">
+          Without addressing infrastructure gaps, turnover could worsen as company grows, leading to institutional knowledge loss and increased recruitment costs
+        </p>
+
+        <p style="color: #666; margin: 0.5rem 0; font-size: 0.85rem;">
+          <strong>Category:</strong> Human Resources
+          <span style="margin-left: 1rem;"><strong>Likelihood:</strong> high</span>
+        </p>
+
+        
+          <div style="margin-top: 1rem;">
+            <strong style="color: #212653; font-size: 0.9rem;">Mitigation Strategies:</strong>
+            <div class="table-responsive" style="margin-top: 0.5rem;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                <thead>
+                  <tr style="background: #f8f9fa;">
+                    <th style="padding: 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6;">#</th>
+                    <th style="padding: 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6;">Strategy</th>
+                    <th style="padding: 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6;">Timeline</th>
+                    <th style="padding: 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6;">Expected Impact</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                    <tr style="border-bottom: 1px solid #e0e0e0;">
+                      <td style="padding: 0.5rem; font-weight: 500;">1</td>
+                      <td style="padding: 0.5rem;">Immediate investment in HR systems and infrastructure development</td>
+                      <td style="padding: 0.5rem;">—</td>
+                      <td style="padding: 0.5rem;">—</td>
+                    </tr>
+                  
+                </tbody>
+              </table>
+            </div>
+          </div>
+        
+
+        
+      </div>
+    
+
+      <div class="risk-detail" style="
+        margin-bottom: 1.5rem;
+        background: #fff;
+        border-left: 4px solid #fd7e14;
+        padding: 1.25rem;
+        border-radius: 0 8px 8px 0;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      ">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+          <h4 style="color: #212653; margin: 0; font-size: 1rem; font-family: 'Montserrat', sans-serif;">
+            Risk #5: Strategic Execution Failure
+          </h4>
+          <span style="
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            background: #fd7e14;
+            color: #fff;
+          ">high</span>
+        </div>
+
+        <p style="color: #555; margin: 0.5rem 0; font-size: 0.95rem; line-height: 1.5;">
+          Poor decision-making effectiveness and limited leadership capabilities could lead to failed strategic initiatives and missed market opportunities in the competitive brewing industry.
+        </p>
+
+        <p style="color: #666; margin: 0.5rem 0; font-size: 0.85rem;">
+          <strong>Category:</strong> Leadership &amp; Governance
+          <span style="margin-left: 1rem;"><strong>Likelihood:</strong> high</span>
+        </p>
+
+        
+          <div style="margin-top: 1rem;">
+            <strong style="color: #212653; font-size: 0.9rem;">Mitigation Strategies:</strong>
+            <div class="table-responsive" style="margin-top: 0.5rem;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                <thead>
+                  <tr style="background: #f8f9fa;">
+                    <th style="padding: 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6;">#</th>
+                    <th style="padding: 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6;">Strategy</th>
+                    <th style="padding: 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6;">Timeline</th>
+                    <th style="padding: 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6;">Expected Impact</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                    <tr style="border-bottom: 1px solid #e0e0e0;">
+                      <td style="padding: 0.5rem; font-weight: 500;">1</td>
+                      <td style="padding: 0.5rem;">Implement decision-making framework and add external advisory support immediately</td>
+                      <td style="padding: 0.5rem;">—</td>
+                      <td style="padding: 0.5rem;">—</td>
+                    </tr>
+                  
+                </tbody>
+              </table>
+            </div>
+          </div>
+        
+
+        
+      </div>
+    
+      </div>
 
       
     <div class="comprehensive-reference">
@@ -6854,6 +8911,11 @@ button:focus {
               </tr>
             
               <tr>
+                <td>Performance Scorecard</td>
+                <td><em>Business Health Scorecard</em></td>
+              </tr>
+            
+              <tr>
                 <td>Health Overview</td>
                 <td><em>Executive Summary</em></td>
               </tr>
@@ -6866,6 +8928,21 @@ button:focus {
               <tr>
                 <td>Methods & Legal</td>
                 <td><em>Assessment Methodology</em></td>
+              </tr>
+            
+              <tr>
+                <td>Performance Scorecard</td>
+                <td><em>Performance Scorecard & Metrics</em></td>
+              </tr>
+            
+              <tr>
+                <td>What This Means</td>
+                <td><em>Executive Summary</em></td>
+              </tr>
+            
+              <tr>
+                <td>Chapter Performance</td>
+                <td><em>Chapter Performance Analysis</em></td>
               </tr>
             
           </tbody>
@@ -7573,8 +9650,8 @@ button:focus {
     
     <footer class="report-footer">
       <p>&copy; 2025 BizHealth.ai - Confidential Business Assessment Report</p>
-      <p>Assessment ID: 493ec10e-94f7-4d9a-90ac-204ebeef0adc</p>
-      <p>Narrative Content: 123,735 words</p>
+      <p>Assessment ID: f96d04ed-4717-4e2b-8521-c0c7f9637240</p>
+      <p>Narrative Content: 127,094 words</p>
     </footer>
   
   
@@ -7583,8 +9660,8 @@ button:focus {
     <!-- Report Metadata (for audit trail) -->
     <script type="application/json" id="report-metadata">
       {
-  "reportId": "493ec10e-94f7-4d9a-90ac-204ebeef0adc",
-  "generatedAt": "2025-12-09T03:31:10.782Z",
+  "reportId": "f96d04ed-4717-4e2b-8521-c0c7f9637240",
+  "generatedAt": "2025-12-12T02:11:49.372Z",
   "pipelineVersion": "1.0.0",
   "betaMode": false,
   "termsVersion": "2025.1"

@@ -604,7 +604,7 @@
 /* ============================================================
    BIZHEALTH.AI UNIFIED CSS FRAMEWORK
    Phase 4 Styling Patterns for Phase 5 Report Generation
-   Generated: 2025-12-11
+   Generated: 2025-12-12
    ============================================================ */
 
 /* ===== BRAND COLOR VARIABLES ===== */
@@ -3661,7 +3661,6 @@ button:focus {
         }
       })();
     </script>
-    </script>
   
   <div class="report-container report-content-gated">
     
@@ -3872,10 +3871,10 @@ button:focus {
       </div>
 
       <!-- MAIN CONTENT AREA -->
-      <div style="background: #f8f9fa; padding: 20px; border-radius: 0 0 12px 12px;">
+      <div style="background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%); padding: 20px; border-radius: 0 0 12px 12px;">
 
-        <!-- ROW 1: Health Score + Trajectory + Investment Summary -->
-        <div style="display: grid; grid-template-columns: 200px 1fr 260px; gap: 16px; margin-bottom: 16px;">
+        <!-- ROW 1: Health Score + Radar + Trajectory + Investment -->
+        <div style="display: grid; grid-template-columns: 200px 180px 1fr 260px; gap: 16px; margin-bottom: 16px;">
 
           <!-- Overall Health Gauge -->
           
@@ -3918,7 +3917,23 @@ button:focus {
     </div>
   
 
-          <!-- Trajectory + Pillar Summary -->
+          <!-- Mini Radar Chart (NEW) -->
+          
+    <div style="display: flex; align-items: center; justify-content: center;">
+      <svg width="160" height="160" viewBox="0 0 160 160" role="img" aria-label="Chapter balance radar chart">
+        <circle cx="80" cy="80" r="15" fill="none" stroke="#e9ecef" stroke-width="1"/><circle cx="80" cy="80" r="30" fill="none" stroke="#e9ecef" stroke-width="1"/><circle cx="80" cy="80" r="45" fill="none" stroke="#e9ecef" stroke-width="1"/><circle cx="80" cy="80" r="60" fill="none" stroke="#e9ecef" stroke-width="1"/>
+        <line x1="80" y1="80" x2="79.99999999999999" y2="20" stroke="#e9ecef" stroke-width="1"/><line x1="80" y1="80" x2="140" y2="80" stroke="#e9ecef" stroke-width="1"/><line x1="80" y1="80" x2="80" y2="140" stroke="#e9ecef" stroke-width="1"/><line x1="80" y1="80" x2="20" y2="80.00000000000001" stroke="#e9ecef" stroke-width="1"/>
+        <polygon points="80.0,50.6 110.6,80.0 80.0,105.8 38.0,80.0"
+                 fill="rgba(150, 148, 35, 0.3)"
+                 stroke="#969423"
+                 stroke-width="2"/>
+        <circle cx="80.0" cy="50.6" r="4" fill="#212653"/><circle cx="110.6" cy="80.0" r="4" fill="#212653"/><circle cx="80.0" cy="105.8" r="4" fill="#212653"/><circle cx="38.0" cy="80.0" r="4" fill="#212653"/>
+        <text x="79.99999999999999" y="-3" text-anchor="middle" font-family="Open Sans, sans-serif" font-size="9" fill="#666">Growth</text><text x="158" y="84" text-anchor="start" font-family="Open Sans, sans-serif" font-size="9" fill="#666">Performance</text><text x="80" y="170" text-anchor="middle" font-family="Open Sans, sans-serif" font-size="9" fill="#666">People</text><text x="2" y="84.00000000000001" text-anchor="end" font-family="Open Sans, sans-serif" font-size="9" fill="#666">Resilience</text>
+      </svg>
+    </div>
+  
+
+          <!-- Trajectory + Pillar Summary Bars -->
           <div style="display: flex; flex-direction: column; gap: 12px;">
             
     <div style="
@@ -3939,99 +3954,45 @@ button:focus {
     </div>
   
             
-    <div style="
-      display: flex;
-      gap: 8px;
-      background: white;
-      border-radius: 8px;
-      padding: 10px;
-    ">
+    <div style="background: white; border-radius: 8px; padding: 10px;">
       
-          <div style="flex: 1; text-align: center;">
-            <div style="
-              width: 100%;
-              height: 6px;
-              background: #e9ecef;
-              border-radius: 3px;
-              overflow: hidden;
-              margin-bottom: 4px;
-            ">
-              <div style="
-                width: 49%;
-                height: 100%;
-                background: #28a745;
-                border-radius: 3px;
-              "></div>
+          <div style="margin-bottom: 6px;">
+            <div style="display: flex; justify-content: space-between; font-size: 10px; margin-bottom: 2px;">
+              <span style="color: #666;">Growth</span>
+              <span style="font-weight: 600; color: #212653;">49</span>
             </div>
-            <div style="font-size: 10px; color: #666;">Growth</div>
-            <div style="font-family: 'Montserrat', sans-serif; font-weight: 700; color: #212653; font-size: 14px;">
-              49
+            <div style="height: 4px; background: #e9ecef; border-radius: 2px; overflow: hidden;">
+              <div style="width: 49%; height: 100%; background: #ffc107; border-radius: 2px;"></div>
             </div>
           </div>
         
-          <div style="flex: 1; text-align: center;">
-            <div style="
-              width: 100%;
-              height: 6px;
-              background: #e9ecef;
-              border-radius: 3px;
-              overflow: hidden;
-              margin-bottom: 4px;
-            ">
-              <div style="
-                width: 51%;
-                height: 100%;
-                background: #0d6efd;
-                border-radius: 3px;
-              "></div>
+          <div style="margin-bottom: 6px;">
+            <div style="display: flex; justify-content: space-between; font-size: 10px; margin-bottom: 2px;">
+              <span style="color: #666;">Performance</span>
+              <span style="font-weight: 600; color: #212653;">51</span>
             </div>
-            <div style="font-size: 10px; color: #666;">Performance</div>
-            <div style="font-family: 'Montserrat', sans-serif; font-weight: 700; color: #212653; font-size: 14px;">
-              51
+            <div style="height: 4px; background: #e9ecef; border-radius: 2px; overflow: hidden;">
+              <div style="width: 51%; height: 100%; background: #ffc107; border-radius: 2px;"></div>
             </div>
           </div>
         
-          <div style="flex: 1; text-align: center;">
-            <div style="
-              width: 100%;
-              height: 6px;
-              background: #e9ecef;
-              border-radius: 3px;
-              overflow: hidden;
-              margin-bottom: 4px;
-            ">
-              <div style="
-                width: 43%;
-                height: 100%;
-                background: #ffc107;
-                border-radius: 3px;
-              "></div>
+          <div style="margin-bottom: 6px;">
+            <div style="display: flex; justify-content: space-between; font-size: 10px; margin-bottom: 2px;">
+              <span style="color: #666;">People</span>
+              <span style="font-weight: 600; color: #212653;">43</span>
             </div>
-            <div style="font-size: 10px; color: #666;">People</div>
-            <div style="font-family: 'Montserrat', sans-serif; font-weight: 700; color: #212653; font-size: 14px;">
-              43
+            <div style="height: 4px; background: #e9ecef; border-radius: 2px; overflow: hidden;">
+              <div style="width: 43%; height: 100%; background: #ffc107; border-radius: 2px;"></div>
             </div>
           </div>
         
-          <div style="flex: 1; text-align: center;">
-            <div style="
-              width: 100%;
-              height: 6px;
-              background: #e9ecef;
-              border-radius: 3px;
-              overflow: hidden;
-              margin-bottom: 4px;
-            ">
-              <div style="
-                width: 70%;
-                height: 100%;
-                background: #dc3545;
-                border-radius: 3px;
-              "></div>
+          <div style="margin-bottom: 6px;">
+            <div style="display: flex; justify-content: space-between; font-size: 10px; margin-bottom: 2px;">
+              <span style="color: #666;">Resilience</span>
+              <span style="font-weight: 600; color: #212653;">70</span>
             </div>
-            <div style="font-size: 10px; color: #666;">Resilience</div>
-            <div style="font-family: 'Montserrat', sans-serif; font-weight: 700; color: #212653; font-size: 14px;">
-              70
+            <div style="height: 4px; background: #e9ecef; border-radius: 2px; overflow: hidden;">
+              <div style="width: 70%; height: 100%; background: #0d6efd; border-radius: 2px;"></div>
             </div>
           </div>
         
@@ -4073,8 +4034,8 @@ button:focus {
         border-radius: 6px;
         text-align: center;
         font-size: 11px;
-      ">
-        <strong>ROI:</strong> 2222-5000%
+      " title="For every $1 invested, expect $22-$50 in return">
+        <strong>22-50x Return</strong>
       </div>
     </div>
   
@@ -4088,7 +4049,7 @@ button:focus {
           <div style="
             background: white;
             border: 1px solid #e9ecef;
-            border-top: 4px solid #28a745;
+            border-top: 4px solid #ffc107;
             border-radius: 8px;
             padding: 14px;
             text-align: center;
@@ -4105,8 +4066,8 @@ button:focus {
               font-size: 9px;
               font-weight: 600;
               text-transform: uppercase;
-              background: #28a74520;
-              color: #28a745;
+              background: #ffc10720;
+              color: #ffc107;
               margin: 4px 0;
             ">
               Attention
@@ -4119,7 +4080,7 @@ button:focus {
           <div style="
             background: white;
             border: 1px solid #e9ecef;
-            border-top: 4px solid #0d6efd;
+            border-top: 4px solid #ffc107;
             border-radius: 8px;
             padding: 14px;
             text-align: center;
@@ -4136,8 +4097,8 @@ button:focus {
               font-size: 9px;
               font-weight: 600;
               text-transform: uppercase;
-              background: #0d6efd20;
-              color: #0d6efd;
+              background: #ffc10720;
+              color: #ffc107;
               margin: 4px 0;
             ">
               Attention
@@ -4181,7 +4142,7 @@ button:focus {
           <div style="
             background: white;
             border: 1px solid #e9ecef;
-            border-top: 4px solid #dc3545;
+            border-top: 4px solid #0d6efd;
             border-radius: 8px;
             padding: 14px;
             text-align: center;
@@ -4198,8 +4159,8 @@ button:focus {
               font-size: 9px;
               font-weight: 600;
               text-transform: uppercase;
-              background: #dc354520;
-              color: #dc3545;
+              background: #0d6efd20;
+              color: #0d6efd;
               margin: 4px 0;
             ">
               Proficiency
@@ -4213,7 +4174,197 @@ button:focus {
   
         </div>
 
-        <!-- ROW 3: Executive Headlines -->
+        <!-- ROW 3: Category Heatmap (NEW - 12-Dimension Overview) -->
+        
+    <div style="
+      background: white;
+      border-radius: 8px;
+      padding: 14px;
+      margin-top: 16px;
+    ">
+      <h4 style="font-family: 'Montserrat', sans-serif; color: #212653; margin: 0 0 12px 0; font-size: 13px;">
+        &#128202; 12-Dimension Health Overview
+      </h4>
+      <div style="
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 8px;
+      ">
+        
+      <div style="
+        background: #ffc107;
+        color: #212653;
+        padding: 8px 6px;
+        border-radius: 6px;
+        text-align: center;
+        min-width: 70px;
+      ">
+        <div style="font-size: 9px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">STR</div>
+        <div style="font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 700;">45</div>
+        <div style="font-size: 8px; opacity: 0.85; line-height: 1.2; margin-top: 2px;">Strategy</div>
+      </div>
+    
+      <div style="
+        background: #0d6efd;
+        color: white;
+        padding: 8px 6px;
+        border-radius: 6px;
+        text-align: center;
+        min-width: 70px;
+      ">
+        <div style="font-size: 9px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">SAL</div>
+        <div style="font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 700;">70</div>
+        <div style="font-size: 8px; opacity: 0.85; line-height: 1.2; margin-top: 2px;">Sales</div>
+      </div>
+    
+      <div style="
+        background: #dc3545;
+        color: white;
+        padding: 8px 6px;
+        border-radius: 6px;
+        text-align: center;
+        min-width: 70px;
+      ">
+        <div style="font-size: 9px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">MKT</div>
+        <div style="font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 700;">31</div>
+        <div style="font-size: 8px; opacity: 0.85; line-height: 1.2; margin-top: 2px;">Marketing</div>
+      </div>
+    
+      <div style="
+        background: #ffc107;
+        color: #212653;
+        padding: 8px 6px;
+        border-radius: 6px;
+        text-align: center;
+        min-width: 70px;
+      ">
+        <div style="font-size: 9px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">CXP</div>
+        <div style="font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 700;">50</div>
+        <div style="font-size: 8px; opacity: 0.85; line-height: 1.2; margin-top: 2px;">Customer Experience</div>
+      </div>
+    
+      <div style="
+        background: #0d6efd;
+        color: white;
+        padding: 8px 6px;
+        border-radius: 6px;
+        text-align: center;
+        min-width: 70px;
+      ">
+        <div style="font-size: 9px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">OPS</div>
+        <div style="font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 700;">62</div>
+        <div style="font-size: 8px; opacity: 0.85; line-height: 1.2; margin-top: 2px;">Operations</div>
+      </div>
+    
+      <div style="
+        background: #dc3545;
+        color: white;
+        padding: 8px 6px;
+        border-radius: 6px;
+        text-align: center;
+        min-width: 70px;
+      ">
+        <div style="font-size: 9px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">FIN</div>
+        <div style="font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 700;">39</div>
+        <div style="font-size: 8px; opacity: 0.85; line-height: 1.2; margin-top: 2px;">Financials</div>
+      </div>
+    
+      <div style="
+        background: #ffc107;
+        color: #212653;
+        padding: 8px 6px;
+        border-radius: 6px;
+        text-align: center;
+        min-width: 70px;
+      ">
+        <div style="font-size: 9px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">HRS</div>
+        <div style="font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 700;">46</div>
+        <div style="font-size: 8px; opacity: 0.85; line-height: 1.2; margin-top: 2px;">Human Resources</div>
+      </div>
+    
+      <div style="
+        background: #ffc107;
+        color: #212653;
+        padding: 8px 6px;
+        border-radius: 6px;
+        text-align: center;
+        min-width: 70px;
+      ">
+        <div style="font-size: 9px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">LDG</div>
+        <div style="font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 700;">40</div>
+        <div style="font-size: 8px; opacity: 0.85; line-height: 1.2; margin-top: 2px;">Leadership &amp; Governance</div>
+      </div>
+    
+      <div style="
+        background: #ffc107;
+        color: #212653;
+        padding: 8px 6px;
+        border-radius: 6px;
+        text-align: center;
+        min-width: 70px;
+      ">
+        <div style="font-size: 9px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">TIN</div>
+        <div style="font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 700;">55</div>
+        <div style="font-size: 8px; opacity: 0.85; line-height: 1.2; margin-top: 2px;">Technology &amp; Innovation</div>
+      </div>
+    
+      <div style="
+        background: #dc3545;
+        color: white;
+        padding: 8px 6px;
+        border-radius: 6px;
+        text-align: center;
+        min-width: 70px;
+      ">
+        <div style="font-size: 9px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">ITD</div>
+        <div style="font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 700;">0</div>
+        <div style="font-size: 8px; opacity: 0.85; line-height: 1.2; margin-top: 2px;">IT &amp; Data Management</div>
+      </div>
+    
+      <div style="
+        background: #ffc107;
+        color: #212653;
+        padding: 8px 6px;
+        border-radius: 6px;
+        text-align: center;
+        min-width: 70px;
+      ">
+        <div style="font-size: 9px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">RMS</div>
+        <div style="font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 700;">59</div>
+        <div style="font-size: 8px; opacity: 0.85; line-height: 1.2; margin-top: 2px;">Risk Management</div>
+      </div>
+    
+      <div style="
+        background: #0d6efd;
+        color: white;
+        padding: 8px 6px;
+        border-radius: 6px;
+        text-align: center;
+        min-width: 70px;
+      ">
+        <div style="font-size: 9px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">CMP</div>
+        <div style="font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 700;">77</div>
+        <div style="font-size: 8px; opacity: 0.85; line-height: 1.2; margin-top: 2px;">Compliance</div>
+      </div>
+    
+      </div>
+      <div style="
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        margin-top: 12px;
+        font-size: 9px;
+        color: #666;
+      ">
+        <span><span style="display: inline-block; width: 12px; height: 12px; background: #28a745; border-radius: 2px; vertical-align: middle; margin-right: 4px;"></span>Excellence (80+)</span>
+        <span><span style="display: inline-block; width: 12px; height: 12px; background: #0d6efd; border-radius: 2px; vertical-align: middle; margin-right: 4px;"></span>Proficiency (60-79)</span>
+        <span><span style="display: inline-block; width: 12px; height: 12px; background: #ffc107; border-radius: 2px; vertical-align: middle; margin-right: 4px;"></span>Attention (40-59)</span>
+        <span><span style="display: inline-block; width: 12px; height: 12px; background: #dc3545; border-radius: 2px; vertical-align: middle; margin-right: 4px;"></span>Critical (&lt;40)</span>
+      </div>
+    </div>
+  
+
+        <!-- ROW 4: Executive Headlines -->
         
     <div style="
       background: white;
@@ -4290,7 +4441,7 @@ button:focus {
     </div>
   
 
-        <!-- Important Limitations (minimal) -->
+        <!-- Disclaimer -->
         <div style="
           margin-top: 16px;
           padding: 8px 12px;
@@ -4333,14 +4484,14 @@ button:focus {
           &#9888;&#65039; Risk &amp; Resilience
         </h4>
         <div style="
-          background: #28a745;
+          background: #dc3545;
           color: white;
           padding: 4px 10px;
           border-radius: 12px;
           font-size: 10px;
           font-weight: 600;
         ">
-          Low Risk
+          Critical Risk
         </div>
       </div>
 
@@ -4354,12 +4505,12 @@ button:focus {
       ">
         <div style="
           position: absolute;
-          left: 10%;
+          left: 90%;
           top: -4px;
           width: 16px;
           height: 16px;
           background: white;
-          border: 3px solid #28a745;
+          border: 3px solid #dc3545;
           border-radius: 50%;
           transform: translateX(-50%);
         "></div>
@@ -4367,7 +4518,29 @@ button:focus {
 
       <!-- Top Risks -->
       <div style="font-size: 11px;">
-        <p style="color: #666;">No critical risks identified.</p>
+        
+            <div style="
+              margin-bottom: 8px;
+              padding: 6px 8px;
+              background: white;
+              border-radius: 4px;
+              border-left: 3px solid #fd7e14;
+            ">
+              <div style="font-weight: 600; color: #212653; font-size: 11px;">Marketing requires immediate attention</div>
+              <div style="font-size: 10px; color: #666;">Marketing</div>
+            </div>
+          
+            <div style="
+              margin-bottom: 8px;
+              padding: 6px 8px;
+              background: white;
+              border-radius: 4px;
+              border-left: 3px solid #fd7e14;
+            ">
+              <div style="font-weight: 600; color: #212653; font-size: 11px;">Financials requires immediate attention</div>
+              <div style="font-size: 10px; color: #666;">Financials</div>
+            </div>
+          
       </div>
     </div>
   
@@ -4977,7 +5150,7 @@ button:focus {
     <script type="application/json" id="report-metadata">
       {
   "reportId": "f96d04ed-4717-4e2b-8521-c0c7f9637240",
-  "generatedAt": "2025-12-11T18:38:42.291Z",
+  "generatedAt": "2025-12-12T02:11:49.372Z",
   "pipelineVersion": "1.0.0",
   "betaMode": false,
   "termsVersion": "2025.1"

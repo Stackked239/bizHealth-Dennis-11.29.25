@@ -604,7 +604,7 @@
 /* ============================================================
    BIZHEALTH.AI UNIFIED CSS FRAMEWORK
    Phase 4 Styling Patterns for Phase 5 Report Generation
-   Generated: 2025-12-09
+   Generated: 2025-12-12
    ============================================================ */
 
 /* ===== BRAND COLOR VARIABLES ===== */
@@ -2222,6 +2222,267 @@ button:focus {
 }
 
 /* ========================================================================
+   PHASE 1.5 CATEGORY ANALYSIS STYLES
+   ======================================================================== */
+
+/* Section Containers */
+.category-analysis-overview,
+.cross-category-insights,
+.department-category-analysis,
+.category-analysis-section {
+  margin: 2rem 0;
+  padding: 1rem 0;
+}
+
+.section-intro {
+  font-size: 1.05rem;
+  color: #555;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+/* Visualization Containers */
+.visualization-container {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+
+.visualization-container h3 {
+  color: #212653;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #969423;
+}
+
+.visualization-row {
+  margin: 1.5rem 0;
+}
+
+.visualization-row.two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+/* Category Card Grid */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.category-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  border-left: 4px solid #969423;
+}
+
+.category-card.score-excellent { border-left-color: #28a745; }
+.category-card.score-good { border-left-color: #969423; }
+.category-card.score-developing { border-left-color: #ffc107; }
+.category-card.score-needs-improvement { border-left-color: #fd7e14; }
+.category-card.score-critical { border-left-color: #dc3545; }
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.category-header h4 {
+  margin: 0;
+  color: #212653;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+}
+
+/* Score Badges */
+.score-badge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  background: #212653;
+  color: white;
+}
+
+.score-badge.score-excellent { background: #28a745; }
+.score-badge.score-good { background: #969423; }
+.score-badge.score-developing { background: #ffc107; color: #212529; }
+.score-badge.score-needs-improvement { background: #fd7e14; }
+.score-badge.score-critical { background: #dc3545; }
+
+/* Category Highlights */
+.category-highlights {
+  margin: 1rem 0;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.category-highlights .highlight {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.category-highlights .strength { color: #28a745; }
+.category-highlights .gap { color: #dc3545; }
+.category-highlights .quick-win { color: #212653; }
+
+/* Cross Reference */
+.cross-reference {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed #ddd;
+}
+
+/* Systemic Patterns */
+.systemic-patterns {
+  margin: 1.5rem 0;
+}
+
+.pattern-card {
+  background: #fff9e6;
+  border: 1px solid #969423;
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  margin: 0.75rem 0;
+}
+
+.pattern-card h4 {
+  color: #212653;
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+}
+
+.pattern-card .recommendation {
+  background: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  margin-top: 0.75rem;
+}
+
+.pattern-card .affected-categories {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+/* Prioritization Table */
+.prioritization-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+
+.prioritization-table th {
+  background: #212653;
+  color: white;
+  padding: 0.75rem;
+  text-align: left;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.prioritization-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.prioritization-table .priority-score {
+  font-size: 1.1rem;
+  color: #212653;
+}
+
+/* Category Detail Cards (Manager Reports) */
+.category-detail {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  border-left: 4px solid #212653;
+  background: #fafafa;
+}
+
+.category-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.category-detail-header h3 {
+  margin: 0;
+  color: #212653;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.score-context {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+/* Phase 1.5 Print Optimizations */
+@media print {
+  .category-analysis-overview,
+  .cross-category-insights,
+  .department-category-analysis,
+  .category-analysis-section {
+    page-break-inside: avoid;
+  }
+
+  .category-card,
+  .category-detail,
+  .category-detail-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .visualization-container {
+    background: white !important;
+    border: 1px solid #ccc !important;
+  }
+
+  .visualization-row.two-column {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Phase 1.5 Responsive Adjustments */
+@media (max-width: 768px) {
+  .visualization-row.two-column {
+    grid-template-columns: 1fr;
+  }
+
+  .category-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .category-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+/* ========================================================================
    PHASE 4 VISUAL PATTERNS (Integrated 2025-12-05)
    ======================================================================== */
 
@@ -2942,7 +3203,7 @@ button:focus {
   
   
     <!-- Clickwrap Modal Overlay -->
-    <div id="clickwrap-modal-493ec10e-94f7-4d9a-90ac-204ebeef0adc" class="clickwrap-overlay" role="dialog" aria-modal="true" aria-labelledby="clickwrap-title">
+    <div id="clickwrap-modal-f96d04ed-4717-4e2b-8521-c0c7f9637240" class="clickwrap-overlay" role="dialog" aria-modal="true" aria-labelledby="clickwrap-title">
       <div class="clickwrap-modal">
         <!-- Header -->
         <div class="clickwrap-header">
@@ -2959,7 +3220,7 @@ button:focus {
         </div>
 
         <!-- Terms Container -->
-        <div class="clickwrap-terms-container" id="terms-container-493ec10e-94f7-4d9a-90ac-204ebeef0adc">
+        <div class="clickwrap-terms-container" id="terms-container-f96d04ed-4717-4e2b-8521-c0c7f9637240">
           <div class="clickwrap-terms-content">
             
     <h3>Professional Services Disclaimer</h3>
@@ -2996,7 +3257,7 @@ button:focus {
     <p>These terms, together with any applicable service agreements, constitute the entire agreement between you and BizHealth.ai regarding this Report and supersede all prior agreements and understandings.</p>
   
           </div>
-          <div class="scroll-indicator" id="scroll-indicator-493ec10e-94f7-4d9a-90ac-204ebeef0adc">
+          <div class="scroll-indicator" id="scroll-indicator-f96d04ed-4717-4e2b-8521-c0c7f9637240">
             <span>↓ Scroll to read all terms</span>
           </div>
         </div>
@@ -3004,20 +3265,20 @@ button:focus {
         <!-- Acceptance Section -->
         <div class="clickwrap-acceptance">
           <label class="clickwrap-checkbox-label">
-            <input type="checkbox" id="terms-checkbox-493ec10e-94f7-4d9a-90ac-204ebeef0adc" class="clickwrap-checkbox" />
+            <input type="checkbox" id="terms-checkbox-f96d04ed-4717-4e2b-8521-c0c7f9637240" class="clickwrap-checkbox" />
             <span class="checkmark"></span>
             <span class="checkbox-text">
               I have read, understand, and agree to these Terms &amp; Conditions governing my use of this Assessment Report.
             </span>
           </label>
 
-          <button id="accept-terms-btn-493ec10e-94f7-4d9a-90ac-204ebeef0adc" class="clickwrap-accept-btn" disabled>
+          <button id="accept-terms-btn-f96d04ed-4717-4e2b-8521-c0c7f9637240" class="clickwrap-accept-btn" disabled>
             Accept &amp; View Report
           </button>
 
           <p class="clickwrap-footer-note">
             Terms Version: 2025.1 |
-            Report Generated: December 8, 2025
+            Report Generated: December 11, 2025
           </p>
         </div>
       </div>
@@ -3269,11 +3530,11 @@ button:focus {
         function initClickwrapModal() {
           console.log('[Clickwrap] Starting initialization...');
           
-          const modal = document.getElementById('clickwrap-modal-493ec10e-94f7-4d9a-90ac-204ebeef0adc');
-          const termsContainer = document.getElementById('terms-container-493ec10e-94f7-4d9a-90ac-204ebeef0adc');
-          const scrollIndicator = document.getElementById('scroll-indicator-493ec10e-94f7-4d9a-90ac-204ebeef0adc');
-          const checkbox = document.getElementById('terms-checkbox-493ec10e-94f7-4d9a-90ac-204ebeef0adc');
-          const acceptBtn = document.getElementById('accept-terms-btn-493ec10e-94f7-4d9a-90ac-204ebeef0adc');
+          const modal = document.getElementById('clickwrap-modal-f96d04ed-4717-4e2b-8521-c0c7f9637240');
+          const termsContainer = document.getElementById('terms-container-f96d04ed-4717-4e2b-8521-c0c7f9637240');
+          const scrollIndicator = document.getElementById('scroll-indicator-f96d04ed-4717-4e2b-8521-c0c7f9637240');
+          const checkbox = document.getElementById('terms-checkbox-f96d04ed-4717-4e2b-8521-c0c7f9637240');
+          const acceptBtn = document.getElementById('accept-terms-btn-f96d04ed-4717-4e2b-8521-c0c7f9637240');
           const reportContent = document.querySelector('.report-container');
 
           console.log('[Clickwrap] Found elements:', {
@@ -3291,7 +3552,7 @@ button:focus {
           }
 
           // Check if already accepted (session storage)
-          const acceptanceKey = 'bizhealth_terms_accepted_493ec10e-94f7-4d9a-90ac-204ebeef0adc';
+          const acceptanceKey = 'bizhealth_terms_accepted_f96d04ed-4717-4e2b-8521-c0c7f9637240';
           const previousAcceptance = sessionStorage.getItem(acceptanceKey);
 
           if (previousAcceptance) {
@@ -3339,7 +3600,7 @@ button:focus {
 
               // Record acceptance
               const acceptance = {
-                reportId: '493ec10e-94f7-4d9a-90ac-204ebeef0adc',
+                reportId: 'f96d04ed-4717-4e2b-8521-c0c7f9637240',
                 reportType: 'all',
                 termsVersion: '2025.1',
                 acceptedAt: new Date().toISOString(),
@@ -3399,7 +3660,6 @@ button:focus {
           initClickwrapModal();
         }
       })();
-    </script>
     </script>
   
   <div class="report-container report-content-gated">
@@ -3544,7 +3804,7 @@ button:focus {
       <h1>Resilience &amp; Safeguards Deep Dive</h1>
       <p class="subtitle">Technology, IT, Risk &amp; Compliance</p>
       <p class="company-name">EWM Global</p>
-      <p class="date">Assessment Date: December 8, 2025</p>
+      <p class="date">Assessment Date: December 11, 2025</p>
     </header>
   
 
@@ -3599,8 +3859,8 @@ button:focus {
           <!-- Percentile Badge -->
           <div style="
             padding: 8pt 18pt;
-            background: #0d6efd15;
-            border: 2px solid #0d6efd;
+            background: #ffc10715;
+            border: 2px solid #ffc107;
             border-radius: 24pt;
             text-align: center;
           ">
@@ -3608,12 +3868,12 @@ button:focus {
               font-family: 'Montserrat', Arial, sans-serif;
               font-size: 16pt;
               font-weight: 700;
-              color: #0d6efd;
+              color: #ffc107;
               line-height: 1;
-            ">65th</div>
+            ">49th</div>
             <div style="
               font-size: 9pt;
-              color: #0d6efd;
+              color: #ffc107;
               text-transform: uppercase;
               letter-spacing: 0.5px;
               margin-top: 2pt;
@@ -3629,7 +3889,7 @@ button:focus {
             font-weight: 700;
             color: #0d6efd;
             line-height: 1;
-          ">54</div>
+          ">70</div>
           <div style="
             font-size: 12pt;
             color: #666;
@@ -3669,10 +3929,10 @@ button:focus {
 
       <p class="mt-3">This chapter examines your organization's technological capabilities, IT infrastructure, risk management practices, and regulatory compliance status.</p>
 
-      <div class="callout warning mt-3">
+      <div class="callout success mt-3">
         <div class="title">Chapter Assessment</div>
         <p>
-          This chapter shows moderate performance with room for improvement. Targeted interventions can yield significant gains.
+          This chapter shows strong performance. Focus on maintaining excellence and optimizing for continued growth.
         </p>
       </div>
 
@@ -3680,12 +3940,12 @@ button:focus {
         <div class="deepdive-chart-section">
           <div class="chart-wrapper">
     <div class="svg-chart-container" role="figure" aria-label="Resilience &amp; Safeguards Dimensions">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 410" style="max-width: 100%; height: auto;"><rect width="380" height="410" fill="white" rx="4"/><text x="190" y="22" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Resilience &amp; Safeguards Dimensions</text><circle cx="190" cy="205" r="28" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="190" cy="205" r="56" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="190" cy="205" r="84" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="190" cy="205" r="112" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="190" cy="205" r="140" fill="none" stroke="#e0e0e0" stroke-width="1"/><line x1="190" y1="205" x2="190" y2="65" stroke="#e0e0e0" stroke-width="1"/><line x1="190" y1="205" x2="330" y2="205" stroke="#e0e0e0" stroke-width="1"/><line x1="190" y1="205" x2="190" y2="345" stroke="#e0e0e0" stroke-width="1"/><line x1="190" y1="205" x2="50" y2="205.00000000000003" stroke="#e0e0e0" stroke-width="1"/><polygon points="190,157.4 257.2,205 190,280.6 78,205" fill="#212653" fill-opacity="0.3" stroke="#212653" stroke-width="2"/><circle cx="190" cy="157.4" r="4" fill="#212653"/><circle cx="257.2" cy="205" r="4" fill="#212653"/><circle cx="190" cy="280.6" r="4" fill="#212653"/><circle cx="78" cy="205" r="4" fill="#212653"/><text x="190" y="40" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Technology... (34)</text><text x="355" y="205" text-anchor="start" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">IT, Data &amp;... (48)</text><text x="190" y="370" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Risk Manag... (54)</text><text x="25" y="205.00000000000003" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Compliance (80)</text></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 410" style="max-width: 100%; height: auto;"><rect width="380" height="410" fill="white" rx="4"/><text x="190" y="22" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Resilience &amp; Safeguards Dimensions</text><circle cx="190" cy="205" r="28" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="190" cy="205" r="56" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="190" cy="205" r="84" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="190" cy="205" r="112" fill="none" stroke="#e0e0e0" stroke-width="1"/><circle cx="190" cy="205" r="140" fill="none" stroke="#e0e0e0" stroke-width="1"/><line x1="190" y1="205" x2="190" y2="65" stroke="#e0e0e0" stroke-width="1"/><line x1="190" y1="205" x2="330" y2="205" stroke="#e0e0e0" stroke-width="1"/><line x1="190" y1="205" x2="190" y2="345" stroke="#e0e0e0" stroke-width="1"/><line x1="190" y1="205" x2="50" y2="205.00000000000003" stroke="#e0e0e0" stroke-width="1"/><polygon points="190,128 313.2,205 190,287.6 82.2,205" fill="#212653" fill-opacity="0.3" stroke="#212653" stroke-width="2"/><circle cx="190" cy="128" r="4" fill="#212653"/><circle cx="313.2" cy="205" r="4" fill="#212653"/><circle cx="190" cy="287.6" r="4" fill="#212653"/><circle cx="82.2" cy="205" r="4" fill="#212653"/><text x="190" y="40" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Technology... (55)</text><text x="355" y="205" text-anchor="start" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">IT, Data &amp;... (88)</text><text x="190" y="370" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Risk Manag... (59)</text><text x="25" y="205.00000000000003" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="11" fill="#2c3e50">Compliance (77)</text></svg>
     </div>
   </div>
           <div class="chart-wrapper">
     <div class="svg-chart-container" role="figure" aria-label="Resilience &amp; Safeguards - Dimension Scores">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 232" style="max-width: 100%; height: auto;"><rect width="550" height="232" fill="white" rx="4"/><text x="275" y="28" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Resilience &amp; Safeguards - Dimension Scores</text><text x="132" y="70" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Technology &amp; Inn...</text><rect x="140" y="50" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="50" width="119.00000000000001" height="30" fill="#e74c3c" rx="4"/><text x="267" y="70" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">34</text><text x="132" y="108" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">IT, Data &amp; Systems</text><rect x="140" y="88" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="88" width="168" height="30" fill="#e67e22" rx="4"/><text x="316" y="108" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">48</text><text x="132" y="146" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Risk Management ...</text><rect x="140" y="126" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="126" width="189" height="30" fill="#e67e22" rx="4"/><text x="337" y="146" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">54</text><text x="132" y="184" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Compliance</text><rect x="140" y="164" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="164" width="280" height="30" fill="#27ae60" rx="4"/><text x="428" y="184" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">80</text></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 232" style="max-width: 100%; height: auto;"><rect width="550" height="232" fill="white" rx="4"/><text x="275" y="28" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#212653">Resilience &amp; Safeguards - Dimension Scores</text><text x="132" y="70" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Technology &amp; Inn...</text><rect x="140" y="50" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="50" width="192.50000000000003" height="30" fill="#e67e22" rx="4"/><text x="340.5" y="70" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">55</text><text x="132" y="108" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">IT, Data &amp; Systems</text><rect x="140" y="88" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="88" width="308" height="30" fill="#27ae60" rx="4"/><text x="456" y="108" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">88</text><text x="132" y="146" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Risk Management ...</text><rect x="140" y="126" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="126" width="206.5" height="30" fill="#e67e22" rx="4"/><text x="354.5" y="146" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">59</text><text x="132" y="184" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" fill="#2c3e50">Compliance</text><rect x="140" y="164" width="350" height="30" fill="#f8f9fa" rx="4"/><rect x="140" y="164" width="269.5" height="30" fill="#f39c12" rx="4"/><text x="417.5" y="184" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="#2c3e50">77</text></svg>
     </div>
   </div>
         </div>
@@ -3708,12 +3968,12 @@ button:focus {
           
             <tr>
               <td><strong>Technology &amp; Innovation</strong></td>
-              <td class="score">34/100</td>
-              <td><span class="band-badge Critical">Critical</span></td>
+              <td class="score">55/100</td>
+              <td><span class="band-badge Attention">Attention</span></td>
               <td style="width: 200px;">
     <div class="progress-bar">
-      <div class="fill" style="width: 34%; background: #dc3545;">
-        34%
+      <div class="fill" style="width: 55.00000000000001%; background: #ffc107;">
+        55%
       </div>
     </div>
   </td>
@@ -3721,12 +3981,12 @@ button:focus {
           
             <tr>
               <td><strong>IT, Data &amp; Systems</strong></td>
-              <td class="score">48/100</td>
-              <td><span class="band-badge Attention">Attention</span></td>
+              <td class="score">88/100</td>
+              <td><span class="band-badge Excellence">Excellence</span></td>
               <td style="width: 200px;">
     <div class="progress-bar">
-      <div class="fill" style="width: 48%; background: #ffc107;">
-        48%
+      <div class="fill" style="width: 88%; background: #28a745;">
+        88%
       </div>
     </div>
   </td>
@@ -3734,12 +3994,12 @@ button:focus {
           
             <tr>
               <td><strong>Risk Management &amp; Sustainability</strong></td>
-              <td class="score">54/100</td>
+              <td class="score">59/100</td>
               <td><span class="band-badge Attention">Attention</span></td>
               <td style="width: 200px;">
     <div class="progress-bar">
-      <div class="fill" style="width: 54%; background: #ffc107;">
-        54%
+      <div class="fill" style="width: 59%; background: #ffc107;">
+        59%
       </div>
     </div>
   </td>
@@ -3747,12 +4007,12 @@ button:focus {
           
             <tr>
               <td><strong>Compliance</strong></td>
-              <td class="score">80/100</td>
-              <td><span class="band-badge Excellence">Excellence</span></td>
+              <td class="score">77/100</td>
+              <td><span class="band-badge Proficiency">Proficiency</span></td>
               <td style="width: 200px;">
     <div class="progress-bar">
-      <div class="fill" style="width: 80%; background: #28a745;">
-        80%
+      <div class="fill" style="width: 77%; background: #969423;">
+        77%
       </div>
     </div>
   </td>
@@ -3774,7 +4034,7 @@ button:focus {
       gap: 16pt;
       padding: 16pt 24pt;
       background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-      border-left: 6px solid #ffc107;
+      border-left: 6px solid #0d6efd;
       border-radius: 0 16pt 16pt 0;
       margin: 40pt 0 28pt 0;
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -3814,8 +4074,8 @@ button:focus {
           <!-- Percentile Badge -->
           <div style="
             padding: 8pt 18pt;
-            background: #ffc10715;
-            border: 2px solid #ffc107;
+            background: #0d6efd15;
+            border: 2px solid #0d6efd;
             border-radius: 24pt;
             text-align: center;
           ">
@@ -3823,12 +4083,12 @@ button:focus {
               font-family: 'Montserrat', Arial, sans-serif;
               font-size: 14pt;
               font-weight: 700;
-              color: #ffc107;
+              color: #0d6efd;
               line-height: 1;
-            ">26th</div>
+            ">58th</div>
             <div style="
               font-size: 9pt;
-              color: #ffc107;
+              color: #0d6efd;
               text-transform: uppercase;
               letter-spacing: 0.5px;
               margin-top: 2pt;
@@ -3842,9 +4102,9 @@ button:focus {
             font-family: 'Montserrat', Arial, sans-serif;
             font-size: 28pt;
             font-weight: 700;
-            color: #ffc107;
+            color: #0d6efd;
             line-height: 1;
-          ">34</div>
+          ">55</div>
           <div style="
             font-size: 12pt;
             color: #666;
@@ -3856,7 +4116,7 @@ button:focus {
           <!-- Band Badge -->
           <div style="
             padding: 10pt 20pt;
-            background: #ffc107;
+            background: #0d6efd;
             border-radius: 8pt;
             text-align: center;
           ">
@@ -3867,7 +4127,7 @@ button:focus {
               color: white;
               text-transform: uppercase;
               letter-spacing: 1.5px;
-            ">Attention</div>
+            ">Proficiency</div>
             
               <div style="
                 font-size: 8pt;
@@ -3904,26 +4164,26 @@ button:focus {
               
                 <tr>
                   <td>Innovation Culture</td>
-                  <td class="score">50/100</td>
-                  <td><span class="band-badge Attention">Attention</span></td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
                 </tr>
               
                 <tr>
                   <td>Technology Adoption</td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
+                </tr>
+              
+                <tr>
+                  <td>Automation Utilization</td>
                   <td class="score">50/100</td>
                   <td><span class="band-badge Attention">Attention</span></td>
                 </tr>
               
                 <tr>
-                  <td>Automation Utilization</td>
-                  <td class="score">25/100</td>
-                  <td><span class="band-badge Critical">Critical</span></td>
-                </tr>
-              
-                <tr>
                   <td>Innovation Impact</td>
-                  <td class="score">45/100</td>
-                  <td><span class="band-badge Attention">Attention</span></td>
+                  <td class="score">73/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
                 </tr>
               
             </tbody>
@@ -3932,11 +4192,6 @@ button:focus {
 
         
 
-        
-          <h3>Key Risks</h3>
-          <ul class="mb-3">
-            <li>Technology &amp; Innovation Critical Underperformance</li>
-          </ul>
         
 
         
@@ -3953,7 +4208,7 @@ button:focus {
       gap: 16pt;
       padding: 16pt 24pt;
       background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-      border-left: 6px solid #ffc107;
+      border-left: 6px solid #28a745;
       border-radius: 0 16pt 16pt 0;
       margin: 40pt 0 28pt 0;
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -3993,8 +4248,8 @@ button:focus {
           <!-- Percentile Badge -->
           <div style="
             padding: 8pt 18pt;
-            background: #ffc10715;
-            border: 2px solid #ffc107;
+            background: #28a74515;
+            border: 2px solid #28a745;
             border-radius: 24pt;
             text-align: center;
           ">
@@ -4002,12 +4257,12 @@ button:focus {
               font-family: 'Montserrat', Arial, sans-serif;
               font-size: 14pt;
               font-weight: 700;
-              color: #ffc107;
+              color: #28a745;
               line-height: 1;
-            ">47th</div>
+            ">99th</div>
             <div style="
               font-size: 9pt;
-              color: #ffc107;
+              color: #28a745;
               text-transform: uppercase;
               letter-spacing: 0.5px;
               margin-top: 2pt;
@@ -4021,9 +4276,9 @@ button:focus {
             font-family: 'Montserrat', Arial, sans-serif;
             font-size: 28pt;
             font-weight: 700;
-            color: #ffc107;
+            color: #28a745;
             line-height: 1;
-          ">48</div>
+          ">88</div>
           <div style="
             font-size: 12pt;
             color: #666;
@@ -4035,7 +4290,7 @@ button:focus {
           <!-- Band Badge -->
           <div style="
             padding: 10pt 20pt;
-            background: #ffc107;
+            background: #28a745;
             border-radius: 8pt;
             text-align: center;
           ">
@@ -4046,7 +4301,7 @@ button:focus {
               color: white;
               text-transform: uppercase;
               letter-spacing: 1.5px;
-            ">Attention</div>
+            ">Excellence</div>
             
               <div style="
                 font-size: 8pt;
@@ -4077,38 +4332,43 @@ button:focus {
               
                 <tr>
                   <td>IT Infrastructure</td>
-                  <td class="score">50/100</td>
-                  <td><span class="band-badge Attention">Attention</span></td>
+                  <td class="score">90/100</td>
+                  <td><span class="band-badge Excellence">Excellence</span></td>
                 </tr>
               
                 <tr>
                   <td>Network Effectiveness</td>
-                  <td class="score">50/100</td>
-                  <td><span class="band-badge Attention">Attention</span></td>
+                  <td class="score">100/100</td>
+                  <td><span class="band-badge Excellence">Excellence</span></td>
                 </tr>
               
                 <tr>
                   <td>Cybersecurity</td>
-                  <td class="score">50/100</td>
-                  <td><span class="band-badge Attention">Attention</span></td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
                 </tr>
               
                 <tr>
                   <td>Data Management</td>
-                  <td class="score">40/100</td>
-                  <td><span class="band-badge Attention">Attention</span></td>
+                  <td class="score">100/100</td>
+                  <td><span class="band-badge Excellence">Excellence</span></td>
                 </tr>
               
                 <tr>
                   <td>IT Scalability</td>
-                  <td class="score">50/100</td>
-                  <td><span class="band-badge Attention">Attention</span></td>
+                  <td class="score">75/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
                 </tr>
               
             </tbody>
           </table>
         
 
+        
+          <h3>Key Strengths</h3>
+          <ul class="mb-3">
+            <li>IT, Data &amp; Systems Excellence</li><li>Strong IT Infrastructure</li><li>Strong Network Effectiveness</li>
+          </ul>
         
 
         
@@ -4178,7 +4438,7 @@ button:focus {
               font-weight: 700;
               color: #0d6efd;
               line-height: 1;
-            ">56th</div>
+            ">64th</div>
             <div style="
               font-size: 9pt;
               color: #0d6efd;
@@ -4197,7 +4457,7 @@ button:focus {
             font-weight: 700;
             color: #0d6efd;
             line-height: 1;
-          ">54</div>
+          ">59</div>
           <div style="
             font-size: 12pt;
             color: #666;
@@ -4269,8 +4529,8 @@ button:focus {
               
                 <tr>
                   <td>Business Continuity</td>
-                  <td class="score">44/100</td>
-                  <td><span class="band-badge Attention">Attention</span></td>
+                  <td class="score">69/100</td>
+                  <td><span class="band-badge Proficiency">Proficiency</span></td>
                 </tr>
               
                 <tr>
@@ -4352,7 +4612,7 @@ button:focus {
               font-weight: 700;
               color: #28a745;
               line-height: 1;
-            ">95th</div>
+            ">91st</div>
             <div style="
               font-size: 9pt;
               color: #28a745;
@@ -4371,7 +4631,7 @@ button:focus {
             font-weight: 700;
             color: #28a745;
             line-height: 1;
-          ">80</div>
+          ">77</div>
           <div style="
             font-size: 12pt;
             color: #666;
@@ -4437,7 +4697,7 @@ button:focus {
               
                 <tr>
                   <td>Compliance Monitoring</td>
-                  <td class="score">75/100</td>
+                  <td class="score">60/100</td>
                   <td><span class="band-badge Proficiency">Proficiency</span></td>
                 </tr>
               
@@ -4460,7 +4720,7 @@ button:focus {
         
           <h3>Key Strengths</h3>
           <ul class="mb-3">
-            <li>Compliance Excellence</li><li>Strong Incident Reporting</li>
+            <li>Strong Incident Reporting</li>
           </ul>
         
 
@@ -4475,15 +4735,15 @@ button:focus {
 
       <div class="grid grid-4 mb-3">
         <div class="score-card small" style="background: linear-gradient(135deg, #28a745, #1e7e34);">
-          <div class="score-value">2</div>
+          <div class="score-value">5</div>
           <div class="score-label">Strengths</div>
         </div>
         <div class="score-card small" style="background: linear-gradient(135deg, #dc3545, #c82333);">
-          <div class="score-value">4</div>
+          <div class="score-value">3</div>
           <div class="score-label">Gaps</div>
         </div>
         <div class="score-card small" style="background: linear-gradient(135deg, #ffc107, #d39e00);">
-          <div class="score-value">1</div>
+          <div class="score-value">0</div>
           <div class="score-label">Risks</div>
         </div>
         <div class="score-card small" style="background: linear-gradient(135deg, #0d6efd, #0b5ed7);">
@@ -4496,9 +4756,27 @@ button:focus {
         <h3>Strengths</h3>
         
           <div class="finding-card strength">
-            <div class="label">Compliance Excellence</div>
-            <div class="dimension">Compliance</div>
-            <p>Compliance demonstrates strong performance at 80/100, placing it in the Excellence tier. This represents a competitive advantage.</p>
+            <div class="label">IT, Data &amp; Systems Excellence</div>
+            <div class="dimension">IT, Data &amp; Systems</div>
+            <p>IT, Data &amp; Systems demonstrates strong performance at 88/100, placing it in the Excellence tier. This represents a competitive advantage.</p>
+          </div>
+        
+          <div class="finding-card strength">
+            <div class="label">Strong IT Infrastructure</div>
+            <div class="dimension">IT, Data &amp; Systems</div>
+            <p>IT Infrastructure within IT, Data &amp; Systems shows exceptional performance at 90/100.</p>
+          </div>
+        
+          <div class="finding-card strength">
+            <div class="label">Strong Network Effectiveness</div>
+            <div class="dimension">IT, Data &amp; Systems</div>
+            <p>Network Effectiveness within IT, Data &amp; Systems shows exceptional performance at 100/100.</p>
+          </div>
+        
+          <div class="finding-card strength">
+            <div class="label">Strong Data Management</div>
+            <div class="dimension">IT, Data &amp; Systems</div>
+            <p>Data Management within IT, Data &amp; Systems shows exceptional performance at 100/100.</p>
           </div>
         
           <div class="finding-card strength">
@@ -4513,40 +4791,25 @@ button:focus {
         <h3 class="mt-3">Gaps</h3>
         
           <div class="finding-card gap">
+            <div class="label">Technology &amp; Innovation Performance Gap</div>
+            <div class="dimension">Technology &amp; Innovation</div>
+            <p>Technology &amp; Innovation shows moderate performance at 55/100. This gap presents improvement opportunities that should be addressed within 6-12 months.</p>
+          </div>
+        
+          <div class="finding-card gap">
             <div class="label">Technology Investment Gap</div>
             <div class="dimension">Technology &amp; Innovation</div>
             <p>Technology Investment within Technology &amp; Innovation requires attention with a score of 0/100.</p>
           </div>
         
           <div class="finding-card gap">
-            <div class="label">Automation Utilization Gap</div>
-            <div class="dimension">Technology &amp; Innovation</div>
-            <p>Automation Utilization within Technology &amp; Innovation requires attention with a score of 25/100.</p>
-          </div>
-        
-          <div class="finding-card gap">
-            <div class="label">IT, Data &amp; Systems Performance Gap</div>
-            <div class="dimension">IT, Data &amp; Systems</div>
-            <p>IT, Data &amp; Systems shows moderate performance at 48/100. This gap presents improvement opportunities that should be addressed within 6-12 months.</p>
-          </div>
-        
-          <div class="finding-card gap">
             <div class="label">Risk Management &amp; Sustainability Performance Gap</div>
             <div class="dimension">Risk Management &amp; Sustainability</div>
-            <p>Risk Management &amp; Sustainability shows moderate performance at 54/100. This gap presents improvement opportunities that should be addressed within 6-12 months.</p>
+            <p>Risk Management &amp; Sustainability shows moderate performance at 59/100. This gap presents improvement opportunities that should be addressed within 6-12 months.</p>
           </div>
         
       
 
-      
-        <h3 class="mt-3">Risks</h3>
-        
-          <div class="finding-card risk">
-            <div class="label">Technology &amp; Innovation Critical Underperformance</div>
-            <div class="dimension">Technology &amp; Innovation</div>
-            <p>Technology &amp; Innovation is at critical levels with a score of 34/100. Immediate intervention is required to mitigate business risk.</p>
-          </div>
-        
       
 
       
@@ -4569,36 +4832,25 @@ button:focus {
           <tbody>
             
               <tr>
-                <td><strong>#3</strong></td>
+                <td><strong>#7</strong></td>
                 <td>
                   Technology &amp; Innovation Improvement Initiative
                   
                 </td>
                 <td>Technology &amp; Innovation</td>
-                <td>0-90 Days</td>
-                <td><strong>0.94x</strong></td>
-              </tr>
-            
-              <tr>
-                <td><strong>#9</strong></td>
-                <td>
-                  IT, Data &amp; Systems Improvement Initiative
-                  <span class="band-badge Excellence" style="margin-left: 0.5rem; font-size: 0.7rem;">QW</span>
-                </td>
-                <td>IT, Data &amp; Systems</td>
                 <td>3-12 Months</td>
-                <td><strong>1.04x</strong></td>
+                <td><strong>0.9x</strong></td>
               </tr>
             
               <tr>
-                <td><strong>#11</strong></td>
+                <td><strong>#8</strong></td>
                 <td>
                   Risk Management &amp; Sustainability Improvement Initiative
                   
                 </td>
                 <td>Risk Management &amp; Sustainability</td>
                 <td>3-12 Months</td>
-                <td><strong>0.92x</strong></td>
+                <td><strong>0.82x</strong></td>
               </tr>
             
           </tbody>
@@ -4609,15 +4861,15 @@ button:focus {
           <div class="card mb-2">
             <div class="card-header">
               <span class="card-title">Technology &amp; Innovation Improvement Initiative</span>
-              <span class="band-badge Excellence">
-                0-90 Days
+              <span class="band-badge Proficiency">
+                3-12 Months
               </span>
             </div>
             <div class="card-body">
               <div class="flex gap-3 mb-2">
-                <span><strong>Impact:</strong> 66/100</span>
-                <span><strong>Effort:</strong> 70/100</span>
-                <span><strong>ROI:</strong> 0.94x</span>
+                <span><strong>Impact:</strong> 45/100</span>
+                <span><strong>Effort:</strong> 50/100</span>
+                <span><strong>ROI:</strong> 0.9x</span>
               </div>
 
               <h5>Action Steps:</h5>
@@ -4625,30 +4877,7 @@ button:focus {
                 <li>Conduct detailed technology &amp; innovation assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
               </ol>
 
-              <p class="mt-2"><strong>Expected Outcomes:</strong> Improve Technology &amp; Innovation score from 34 to 54 within the target horizon.</p>
-            </div>
-          </div>
-        
-          <div class="card mb-2">
-            <div class="card-header">
-              <span class="card-title">IT, Data &amp; Systems Improvement Initiative</span>
-              <span class="band-badge Proficiency">
-                3-12 Months
-              </span>
-            </div>
-            <div class="card-body">
-              <div class="flex gap-3 mb-2">
-                <span><strong>Impact:</strong> 52/100</span>
-                <span><strong>Effort:</strong> 50/100</span>
-                <span><strong>ROI:</strong> 1.04x</span>
-              </div>
-
-              <h5>Action Steps:</h5>
-              <ol>
-                <li>Conduct detailed it, data &amp; systems assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
-              </ol>
-
-              <p class="mt-2"><strong>Expected Outcomes:</strong> Improve IT, Data &amp; Systems score from 48 to 68 within the target horizon.</p>
+              <p class="mt-2"><strong>Expected Outcomes:</strong> Improve Technology &amp; Innovation score from 55 to 75 within the target horizon.</p>
             </div>
           </div>
         
@@ -4661,9 +4890,9 @@ button:focus {
             </div>
             <div class="card-body">
               <div class="flex gap-3 mb-2">
-                <span><strong>Impact:</strong> 46/100</span>
+                <span><strong>Impact:</strong> 41/100</span>
                 <span><strong>Effort:</strong> 50/100</span>
-                <span><strong>ROI:</strong> 0.92x</span>
+                <span><strong>ROI:</strong> 0.82x</span>
               </div>
 
               <h5>Action Steps:</h5>
@@ -4671,29 +4900,13 @@ button:focus {
                 <li>Conduct detailed risk management &amp; sustainability assessment</li><li>Develop improvement plan with measurable KPIs</li><li>Implement quick wins within first 30 days</li><li>Monitor progress and adjust approach</li><li>Document and share best practices</li>
               </ol>
 
-              <p class="mt-2"><strong>Expected Outcomes:</strong> Improve Risk Management &amp; Sustainability score from 54 to 74 within the target horizon.</p>
+              <p class="mt-2"><strong>Expected Outcomes:</strong> Improve Risk Management &amp; Sustainability score from 59 to 79 within the target horizon.</p>
             </div>
           </div>
         
       </section>
     
 
-    
-      <section class="section">
-        <h2>Chapter Risk Assessment</h2>
-
-        
-          <div class="risk-card low">
-            <div class="header">
-              <span class="category">Technology &amp; Innovation</span>
-              <span class="priority-badge medium">
-                Severity: Critical
-              </span>
-            </div>
-            <p>Technology &amp; Innovation is at critical levels with a score of 34/100. Immediate intervention is required to mitigate business risk.</p>
-          </div>
-        
-      </section>
     
 
     <section class="section">
@@ -4714,7 +4927,7 @@ button:focus {
     
     <footer class="report-footer">
       <p>&copy; 2025 BizHealth.ai - Confidential Business Assessment Report</p>
-      <p>Assessment ID: 493ec10e-94f7-4d9a-90ac-204ebeef0adc</p>
+      <p>Assessment ID: f96d04ed-4717-4e2b-8521-c0c7f9637240</p>
     </footer>
   
   
@@ -4723,8 +4936,8 @@ button:focus {
     <!-- Report Metadata (for audit trail) -->
     <script type="application/json" id="report-metadata">
       {
-  "reportId": "493ec10e-94f7-4d9a-90ac-204ebeef0adc",
-  "generatedAt": "2025-12-09T03:31:10.782Z",
+  "reportId": "f96d04ed-4717-4e2b-8521-c0c7f9637240",
+  "generatedAt": "2025-12-12T02:11:49.372Z",
   "pipelineVersion": "1.0.0",
   "betaMode": false,
   "termsVersion": "2025.1"
