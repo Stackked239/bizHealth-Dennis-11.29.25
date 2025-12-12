@@ -293,17 +293,21 @@ export function generateCategoryRadarChart(
 export interface ChapterHeatmapOptions {
   width?: number;
   height?: number;
+  /** P0 FIX: Optional canonical chapter scores to ensure consistency with other visualizations */
+  canonicalChapterScores?: Array<{ code: string; name: string; score: number }>;
 }
 
 /**
  * Generate a chapter heatmap showing all categories grouped by chapter
+ * P0 FIX: Uses canonicalChapterScores when provided to ensure consistency
+ * with radar charts and benchmark bars
  */
 export function generateChapterHeatmap(
   categoryAnalyses: CategoryAnalysis[],
   chapterSummaries: ChapterSummary[],
   options: ChapterHeatmapOptions = {}
 ): string {
-  const { width = 600, height = 300 } = options;
+  const { width = 600, height = 300, canonicalChapterScores } = options;
   const cellWidth = (width - 100) / 4;  // 4 chapters
   const cellHeight = (height - 60) / 4;  // Max 4 categories per chapter
 
@@ -343,16 +347,27 @@ export function generateChapterHeatmap(
   }).join('');
 
   // Generate chapter headers
+  // P0 FIX: Use canonical scores if provided, fall back to chapterSummaries
   const chapterHeaders = chapters.map(([code, chapter], idx) => {
     const x = 100 + idx * cellWidth + (cellWidth - 4) / 2;
-    const summary = chapterSummaries.find(cs => cs.chapterCode === code);
+
+    // Priority: canonical scores > chapterSummaries > 0
+    let chapterScore = 0;
+    if (canonicalChapterScores && canonicalChapterScores.length > 0) {
+      const canonical = canonicalChapterScores.find(cs => cs.code === code);
+      chapterScore = canonical?.score || 0;
+    } else {
+      const summary = chapterSummaries.find(cs => cs.chapterCode === code);
+      chapterScore = summary?.overallScore || 0;
+    }
+
     return `
       <text x="${x}" y="20" text-anchor="middle" font-size="11" font-weight="bold"
             fill="${COLORS.bizNavy}" font-family="Montserrat, sans-serif">
         ${escapeHtml(chapter.name)}
       </text>
       <text x="${x}" y="32" text-anchor="middle" font-size="10" fill="${COLORS.gray}">
-        ${summary?.overallScore || 0}/100
+        ${chapterScore}/100
       </text>
     `;
   }).join('');
