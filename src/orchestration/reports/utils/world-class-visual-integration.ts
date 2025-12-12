@@ -28,6 +28,8 @@ import type {
   CardHorizon,
   QuickWinCard,
 } from '../components/index.js';
+import { normalizeDimensionCode, CANONICAL_DIMENSION_CODES } from '../constants/dimension-codes.js';
+import { getDimensionScore, type ScoreLookupResult } from './score-lookup.js';
 
 // ============================================================================
 // 12-DIMENSION EXECUTIVE RADAR INTEGRATION
@@ -35,6 +37,8 @@ import type {
 
 /**
  * Map dimension codes to their full configuration
+ * NOTE: ITD is the canonical code for IT & Data Security (Phase 1.5+)
+ * IDS is included for backward compatibility
  */
 const DIMENSION_MAP: Record<string, { fullName: string; chapter: ChapterCode }> = {
   STR: { fullName: 'Strategy', chapter: 'GE' },
@@ -46,13 +50,15 @@ const DIMENSION_MAP: Record<string, { fullName: string; chapter: ChapterCode }> 
   HRS: { fullName: 'Human Resources', chapter: 'PL' },
   LDG: { fullName: 'Leadership & Governance', chapter: 'PL' },
   TIN: { fullName: 'Technology & Innovation', chapter: 'RS' },
-  IDS: { fullName: 'IT & Data Security', chapter: 'RS' },
+  ITD: { fullName: 'IT & Data Security', chapter: 'RS' }, // Canonical code (Phase 1.5+)
+  IDS: { fullName: 'IT & Data Security', chapter: 'RS' }, // Legacy alias
   RMS: { fullName: 'Risk Management', chapter: 'RS' },
   CMP: { fullName: 'Compliance', chapter: 'RS' },
 };
 
 /**
  * Convert ReportContext to ExecutiveRadarChartData for 12-dimension radar
+ * Uses defensive score lookup with alias resolution (ITD/IDS, etc.)
  */
 export function contextToExecutiveRadarData(ctx: ReportContext): ExecutiveRadarChartData {
   const companyName = ctx.companyInfo?.name || ctx.metadata?.companyName || 'Company';
@@ -70,58 +76,74 @@ export function contextToExecutiveRadarData(ctx: ReportContext): ExecutiveRadarC
     overallBand = 'Critical';
   }
 
-  // Extract dimensions from context
-  const dimensions: ExecutiveRadarChartData['dimensions'] = [];
+  // Build a score map from all available sources for defensive lookup
+  const scoreMap: Record<string, number> = {};
+  const benchmarkMap: Record<string, number> = {};
+  const percentileMap: Record<string, number> = {};
 
-  // Try to get dimensions from various sources in the context
+  // Extract from ctx.dimensions or ctx.dimensionScores
   const contextDimensions = ctx.dimensions || ctx.dimensionScores || [];
-
   for (const dim of contextDimensions) {
-    const code =
-      dim.code ||
-      dim.dimensionCode ||
-      dim.id ||
-      dim.name?.substring(0, 3).toUpperCase();
-    if (code && DIMENSION_MAP[code]) {
-      dimensions.push({
-        code,
-        score: dim.score ?? dim.value ?? 50,
-        benchmark: dim.benchmark ?? dim.industryBenchmark ?? 50,
-        percentile: dim.percentile ?? calculatePercentile(dim.score ?? 50, dim.benchmark ?? 50),
-      });
+    const rawCode = dim.code || dim.dimensionCode || dim.id || dim.name?.substring(0, 3).toUpperCase();
+    if (rawCode) {
+      const normalizedCode = normalizeDimensionCode(rawCode);
+      scoreMap[normalizedCode] = dim.score ?? dim.value ?? 50;
+      benchmarkMap[normalizedCode] = dim.benchmark ?? dim.industryBenchmark ?? 50;
+      percentileMap[normalizedCode] = dim.percentile ?? calculatePercentile(scoreMap[normalizedCode], benchmarkMap[normalizedCode]);
+      // Also store original code for alias resolution
+      if (rawCode !== normalizedCode) {
+        scoreMap[rawCode] = scoreMap[normalizedCode];
+        benchmarkMap[rawCode] = benchmarkMap[normalizedCode];
+        percentileMap[rawCode] = percentileMap[normalizedCode];
+      }
     }
   }
 
-  // If no dimensions found, try extracting from chapters
-  if (dimensions.length === 0 && ctx.chapters) {
+  // Extract from chapters if available
+  if (ctx.chapters) {
     for (const chapter of ctx.chapters) {
       const chapterDimensions = chapter.dimensions || [];
       for (const dim of chapterDimensions) {
-        const code = dim.code || dim.dimensionCode;
-        if (code && DIMENSION_MAP[code]) {
-          dimensions.push({
-            code,
-            score: dim.score ?? 50,
-            benchmark: dim.benchmark ?? 50,
-            percentile: dim.percentile ?? calculatePercentile(dim.score ?? 50, dim.benchmark ?? 50),
-          });
+        const rawCode = dim.code || dim.dimensionCode;
+        if (rawCode) {
+          const normalizedCode = normalizeDimensionCode(rawCode);
+          if (scoreMap[normalizedCode] === undefined) {
+            scoreMap[normalizedCode] = dim.score ?? 50;
+            benchmarkMap[normalizedCode] = dim.benchmark ?? 50;
+            percentileMap[normalizedCode] = dim.percentile ?? calculatePercentile(scoreMap[normalizedCode], benchmarkMap[normalizedCode]);
+          }
+          // Also store original code for alias resolution
+          if (rawCode !== normalizedCode && scoreMap[rawCode] === undefined) {
+            scoreMap[rawCode] = scoreMap[normalizedCode];
+            benchmarkMap[rawCode] = benchmarkMap[normalizedCode];
+            percentileMap[rawCode] = percentileMap[normalizedCode];
+          }
         }
       }
     }
   }
 
-  // Fill in missing dimensions with defaults if needed
-  const foundCodes = new Set(dimensions.map(d => d.code));
-  for (const code of Object.keys(DIMENSION_MAP)) {
-    if (!foundCodes.has(code)) {
-      dimensions.push({
-        code,
-        score: 50,
-        benchmark: 50,
-        percentile: 50,
-      });
+  // Build final dimensions using canonical codes with defensive lookup
+  // Use CANONICAL_DIMENSION_CODES to ensure we use ITD (not IDS) in output
+  const dimensions: ExecutiveRadarChartData['dimensions'] = CANONICAL_DIMENSION_CODES.map(code => {
+    // Use defensive lookup that handles alias resolution
+    const scoreResult = getDimensionScore(scoreMap, code);
+
+    if (!scoreResult.hasValidData) {
+      console.warn(
+        `[contextToExecutiveRadarData] Missing score for ${code}. ` +
+        `Available: ${Object.keys(scoreMap).join(', ')}`
+      );
     }
-  }
+
+    return {
+      code, // Always use canonical code (ITD, not IDS)
+      score: scoreResult.score,
+      benchmark: benchmarkMap[scoreResult.resolvedCode] ?? benchmarkMap[code] ?? 50,
+      percentile: percentileMap[scoreResult.resolvedCode] ?? percentileMap[code] ??
+        calculatePercentile(scoreResult.score, benchmarkMap[scoreResult.resolvedCode] ?? 50),
+    };
+  });
 
   return {
     companyName,

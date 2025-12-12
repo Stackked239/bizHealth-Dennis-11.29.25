@@ -348,3 +348,41 @@ export {
 } from './dimension-filters.js';
 
 export type { ManagerType, ManagerDimensionMap } from './dimension-filters.js';
+
+// ============================================================================
+// DEFENSIVE SCORE LOOKUP UTILITIES (Phase 1.5 Enhancement)
+// ============================================================================
+
+// Score lookup utilities - defensive lookups with alias resolution
+export {
+  getDimensionScore,
+  getDimensionScores,
+  getAllDimensionScores,
+  validateScoreConsistency,
+  getFinalCategoryScore,
+  createScoreMap,
+  getDimensionDisplayName,
+  isDefaultedScore,
+  logScoreLookupSummary,
+} from './score-lookup.js';
+
+export type { ScoreLookupResult, ScoreValidationOptions } from './score-lookup.js';
+
+// ============================================================================
+// COMPANY NAME VALIDATION UTILITIES
+// ============================================================================
+
+// Company name validation - ensures consistent company name usage
+export {
+  validateCompanyName,
+  validateAndGetCompanyName,
+  getCanonicalCompanyName,
+  normalizeCompanyName,
+  isAcceptableVariation,
+  extractCompanyReferences,
+} from './company-name-validator.js';
+
+export type {
+  CompanyNameValidationResult,
+  CompanyNameValidationOptions,
+} from './company-name-validator.js';

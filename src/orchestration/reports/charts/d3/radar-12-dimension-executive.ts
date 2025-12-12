@@ -17,6 +17,7 @@
  */
 
 import { BRAND_COLORS, getScoreColor, addAlpha } from '../../utils/color-utils.js';
+import { normalizeDimensionCode, DIMENSION_ALIASES } from '../../constants/dimension-codes.js';
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -309,15 +310,43 @@ export function render12DimensionExecutiveRadar(
   const numDimensions = DIMENSION_ORDER.length;
   const angleStep = (2 * Math.PI) / numDimensions;
 
-  // Map data to ordered dimensions
+  // Map data to ordered dimensions with defensive lookup
+  // Handles ITD/IDS mismatch and other alias variations
   const orderedData = DIMENSION_ORDER.map(code => {
-    const dim = data.dimensions.find(d => d.code === code);
+    // Try direct match first
+    let dim = data.dimensions.find(d => d.code === code);
+
+    // If not found, try normalized matching (handles IDS → ITD, etc.)
+    if (!dim) {
+      dim = data.dimensions.find(d => {
+        const normalizedDataCode = normalizeDimensionCode(d.code);
+        const normalizedTargetCode = normalizeDimensionCode(code);
+        return normalizedDataCode === normalizedTargetCode;
+      });
+
+      // Log if we resolved via alias
+      if (dim) {
+        console.info(
+          `[Radar] Dimension ${code} resolved via alias from "${dim.code}"`
+        );
+      }
+    }
+
+    // If still not found, log warning
+    if (!dim) {
+      console.warn(
+        `[Radar] No data found for dimension ${code}. ` +
+        `Available codes: ${data.dimensions.map(d => d.code).join(', ')}`
+      );
+    }
+
     return {
       code,
-      config: DIMENSION_CONFIG[code],
-      score: dim?.score || 0,
-      benchmark: dim?.benchmark || 50,
-      percentile: dim?.percentile || 50,
+      config: DIMENSION_CONFIG[code] || DIMENSION_CONFIG['ITD'], // Fallback for safety
+      score: dim?.score ?? 0,
+      benchmark: dim?.benchmark ?? 50,
+      percentile: dim?.percentile ?? 50,
+      hasValidData: !!dim,
     };
   });
 
