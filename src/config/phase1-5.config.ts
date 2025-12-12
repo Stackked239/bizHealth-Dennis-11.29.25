@@ -175,7 +175,7 @@ export function createDisabledPhase15Output(): Phase1_5Output {
       generatedAt: new Date().toISOString(),
       totalTokenUsage: { prompt: 0, completion: 0, total: 0 },
       processingTimeMs: 0,
-      version: '1.0.0'
+      version: '1.5.0'
     }
   };
 }

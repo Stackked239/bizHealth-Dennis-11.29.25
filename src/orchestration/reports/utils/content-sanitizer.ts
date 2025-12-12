@@ -180,14 +180,8 @@ export function validateNoOrphanedHeaders(html: string): { valid: boolean; issue
  * @param sectionId - Identifier for logging purposes
  * @returns Sanitized HTML content
  */
-export function processNarrativeForVisualization(rawContent: string, sectionId: string): string {
-  const { html, removedCount, removedItems } = sanitizeOrphanedVisualizationHeaders(rawContent);
-
-  if (removedCount > 0) {
-    // Log removals for debugging (use console.log for now, could be replaced with logger)
-    console.log(`[${sectionId}] Sanitized ${removedCount} orphaned visualization headers:`, removedItems);
-  }
-
+export function processNarrativeForVisualization(rawContent: string, _sectionId: string): string {
+  const { html } = sanitizeOrphanedVisualizationHeaders(rawContent);
   return html;
 }
 

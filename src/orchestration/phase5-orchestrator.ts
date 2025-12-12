@@ -287,7 +287,7 @@ export class Phase5Orchestrator {
           startedAt,
           completedAt,
           durationMs,
-          pipelineVersion: '1.0.0',
+          pipelineVersion: '1.5.0',
         },
       };
 
@@ -662,7 +662,7 @@ export class Phase5Orchestrator {
       keyImperatives,
       metadata: {
         generatedAt: new Date().toISOString(),
-        pipelineVersion: '1.0.0',
+        pipelineVersion: '1.5.0',
         assessmentRunId: runId,
         companyProfileId: idm.meta.company_profile_id,
         reportType: 'all',
@@ -862,7 +862,7 @@ export class Phase5Orchestrator {
       generatedAt: new Date().toISOString(),
       healthScore: ctx.overallHealth.score,
       healthStatus: ctx.overallHealth.status,
-      pipelineVersion: '1.0.0',
+      pipelineVersion: '1.5.0',
       reports: reports.map(r => ({
         type: r.reportType,
         name: r.reportName,

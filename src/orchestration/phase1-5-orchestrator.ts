@@ -278,7 +278,7 @@ export async function executePhase1_5(
       totalTokenUsage: calculateTotalTokens(categoryAnalyses),
       processingTimeMs: Date.now() - startTime,
       batchId: batch.id,
-      version: '1.0.0'
+      version: '1.5.0'
     }
   };
 

@@ -33,6 +33,7 @@ import {
 } from './html-template.js';
 import { NarrativeExtractionService } from '../../services/narrative-extraction.service.js';
 import { logger } from '../../utils/logger.js';
+import { ScoreBands } from '../../utils/score-bands.js';
 
 // Import visual enhancement components
 import {
@@ -1832,13 +1833,10 @@ function generatePhase5Visualizations(ctx: ReportContext): Phase5Visuals {
 }
 
 /**
- * Get color based on score band
+ * Get color based on score band - now using shared ScoreBands utility
  */
 function getScoreBandColor(score: number): string {
-  if (score >= 80) return '#28a745';
-  if (score >= 60) return '#969423';
-  if (score >= 40) return '#ffc107';
-  return '#dc3545';
+  return ScoreBands.getColor(score);
 }
 
 /**
@@ -3838,15 +3836,8 @@ function generateCategoryDeepDiveSection(
   const accentColor = options.brand.accentColor;
   const cat = categoryAnalysis;
 
-  const getScoreColor = (score: number): string => {
-    if (score >= 80) return '#28a745';
-    if (score >= 60) return '#5cb85c';
-    if (score >= 40) return '#f0ad4e';
-    if (score >= 20) return '#d9534f';
-    return '#c9302c';
-  };
-
-  const scoreColor = getScoreColor(cat.overallScore);
+  // Use shared ScoreBands utility for consistent score-to-color mapping
+  const scoreColor = ScoreBands.getColor(cat.overallScore);
 
   return `
     <div class="phase15-category-section" id="category-${cat.categoryCode}" style="margin: 2rem 0; padding: 1.5rem; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); page-break-inside: avoid;">
