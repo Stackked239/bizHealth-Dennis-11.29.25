@@ -64,7 +64,7 @@ import {
   formatCurrencyRange,
   formatCurrency as formatCurrencyConstraint,
 } from './config/owner-report-constraints.js';
-import { sanitizeOrphanedVisualizationHeaders } from './utils/content-sanitizer.js';
+import { sanitizeOrphanedVisualizationHeaders, removeDuplicateCPASections } from './utils/content-sanitizer.js';
 
 // Import enhanced markdown parser for narrative sections
 import {
@@ -247,8 +247,13 @@ function buildCategoryAnalysisOverview(
     showScoreValues: true
   });
 
+  // P0 FIX: Get canonical chapter scores to ensure consistency across all visualizations
+  const canonicalChapterScores = getCanonicalChapterScores(ctx);
+
   const heatmap = ctx.chapterSummaries && ctx.chapterSummaries.length > 0
-    ? generateChapterHeatmap(ctx.categoryAnalyses, ctx.chapterSummaries)
+    ? generateChapterHeatmap(ctx.categoryAnalyses, ctx.chapterSummaries, {
+        canonicalChapterScores  // Pass canonical scores for header consistency
+      })
     : '';
 
   const benchmarkBars = generateCategoryBenchmarkBars(ctx.categoryAnalyses);
@@ -1069,10 +1074,14 @@ export async function buildOwnersReport(
   }, 'Owners report built with cross-references');
 
   // Sanitize orphaned visualization headers from AI-generated content
-  const { html: sanitizedHtml, removedCount, removedItems } = sanitizeOrphanedVisualizationHeaders(html);
+  const { html: partialSanitizedHtml, removedCount, removedItems } = sanitizeOrphanedVisualizationHeaders(html);
 
-  if (removedCount > 0) {
-    logger.info({ removedCount, removedItems }, 'Sanitized orphaned visualization headers from owner report');
+  // P0 FIX: Remove duplicate empty CPA sections from AI-generated narrative
+  const { html: sanitizedHtml, removedCount: cpaRemovedCount, removedItems: cpaRemovedItems } = removeDuplicateCPASections(partialSanitizedHtml);
+
+  const totalRemoved = removedCount + cpaRemovedCount;
+  if (totalRemoved > 0) {
+    logger.info({ removedCount, cpaRemovedCount, removedItems: [...removedItems, ...cpaRemovedItems] }, 'Sanitized orphaned headers and duplicate CPAs from owner report');
   }
 
   // Write HTML file
@@ -1351,8 +1360,16 @@ function extractTacticalQuickWins(ctx: ReportContext): TacticalQuickWin[] {
   }
 
   // Sort by impact/effort ratio (highest first)
+  // P1 FIX: Ensure every quick win has implementation steps
   return tacticalWins
     .filter(w => w.title && w.title.length > 0)
+    .map(win => ({
+      ...win,
+      // Generate steps if not present or empty
+      steps: (win.steps && win.steps.length > 0)
+        ? win.steps
+        : generateImplementationSteps(win.title, win.category, win.description)
+    }))
     .sort((a, b) => {
       const impactScore = (i: string) => i === 'High' ? 3 : i === 'Medium' ? 2 : 1;
       const effortScore = (e: string) => e === 'High' ? 3 : e === 'Medium' ? 2 : 1;
@@ -1409,6 +1426,164 @@ function getDimensionName(code?: string): string {
   };
 
   return nameMap[code.toUpperCase()] || code;
+}
+
+/**
+ * P1 FIX: Generate contextual implementation steps based on action type and category
+ * Ensures every quick win has actionable steps
+ */
+function generateImplementationSteps(title: string, category: string, description?: string): string[] {
+  const titleLower = (title || '').toLowerCase();
+  const categoryLower = (category || '').toLowerCase();
+  const descLower = (description || '').toLowerCase();
+  const combined = `${titleLower} ${descLower}`;
+
+  // Pattern 1: "Develop X" / "Create X" actions
+  if (combined.includes('develop') || combined.includes('create') || combined.includes('design')) {
+    return [
+      'Gather requirements and define scope with key stakeholders',
+      'Research best practices and benchmark against industry standards',
+      'Draft initial version with clear objectives and metrics',
+      'Review with leadership team and incorporate feedback',
+      'Finalize, document, and communicate to relevant parties'
+    ];
+  }
+
+  // Pattern 2: "Implement X" / "Deploy X" actions
+  if (combined.includes('implement') || combined.includes('deploy') || combined.includes('launch')) {
+    return [
+      'Define implementation scope, timeline, and success criteria',
+      'Assign project owner and assemble implementation team',
+      'Execute pilot phase with selected group or area',
+      'Gather feedback and make necessary adjustments',
+      'Roll out fully and establish ongoing monitoring'
+    ];
+  }
+
+  // Pattern 3: Meeting/Review/Communication actions
+  if (combined.includes('meeting') || combined.includes('review') || combined.includes('communication')) {
+    return [
+      'Schedule recurring calendar invites with key participants',
+      'Create standardized agenda template',
+      'Establish documentation and action item tracking process',
+      'Conduct first session and gather participant feedback',
+      'Refine format based on feedback and institutionalize'
+    ];
+  }
+
+  // Pattern 4: Strategy/Planning actions
+  if (categoryLower.includes('strategy') || combined.includes('plan') || combined.includes('strategic')) {
+    return [
+      'Conduct situation analysis using assessment findings',
+      'Identify top 3 priority areas based on impact potential',
+      'Develop action items with specific owners and deadlines',
+      'Present to leadership for alignment and approval',
+      'Begin execution with weekly progress tracking'
+    ];
+  }
+
+  // Pattern 5: Operations/Process actions
+  if (categoryLower.includes('operation') || combined.includes('process') || combined.includes('workflow')) {
+    return [
+      'Document current state process and pain points',
+      'Identify quick improvements vs. longer-term changes',
+      'Implement quick fixes within first two weeks',
+      'Design improved process workflow',
+      'Train team and monitor adoption'
+    ];
+  }
+
+  // Pattern 6: Financial actions
+  if (categoryLower.includes('financial') || combined.includes('budget') || combined.includes('cost')) {
+    return [
+      'Review current financial data and identify gaps',
+      'Set measurable financial targets and KPIs',
+      'Create action plan with cost/benefit analysis',
+      'Implement tracking mechanisms',
+      'Schedule monthly review of progress against targets'
+    ];
+  }
+
+  // Pattern 7: HR/People actions
+  if (categoryLower.includes('human') || categoryLower.includes('people') || combined.includes('training') || combined.includes('team')) {
+    return [
+      'Assess current team capabilities and needs',
+      'Define clear roles, responsibilities, and expectations',
+      'Create development/training plan with timeline',
+      'Schedule check-ins to monitor progress',
+      'Evaluate outcomes and adjust approach as needed'
+    ];
+  }
+
+  // Pattern 8: Technology/IT actions
+  if (categoryLower.includes('technology') || categoryLower.includes('it') || combined.includes('system') || combined.includes('software')) {
+    return [
+      'Document current technology landscape and gaps',
+      'Research and evaluate solution options',
+      'Create implementation roadmap with milestones',
+      'Execute implementation with testing phases',
+      'Provide training and establish support processes'
+    ];
+  }
+
+  // Default fallback - generic but actionable
+  return [
+    'Define specific objectives and success metrics',
+    'Identify required resources and assign ownership',
+    'Create 30-day action plan with milestones',
+    'Execute initial actions and track progress weekly',
+    'Review results and adjust approach as needed'
+  ];
+}
+
+/**
+ * P1 FIX: Get strategy timeline with robust fallback chain
+ * Returns a meaningful timeline instead of "—"
+ */
+function getStrategyTimeline(strategy: { strategy?: string; timeline?: string; timeframe?: string; duration?: string }, index: number): string {
+  // Check all possible field names
+  const timeline = strategy.timeline || strategy.timeframe || strategy.duration;
+  if (timeline) return timeline;
+
+  // Fallback based on priority (index)
+  if (index === 0) return 'Immediate (0-30 days)';
+  if (index === 1) return 'Short-term (30-90 days)';
+  if (index <= 3) return 'Medium-term (3-6 months)';
+  return 'Long-term (6-12 months)';
+}
+
+/**
+ * P1 FIX: Get strategy expected impact with robust fallback chain
+ * Returns a meaningful impact description instead of "—"
+ */
+function getStrategyExpectedImpact(strategy: { strategy?: string; expectedImpact?: string; impact?: string; outcome?: string; benefit?: string }): string {
+  // Check all possible field names
+  const impact = strategy.expectedImpact || strategy.impact || strategy.outcome || strategy.benefit;
+  if (impact) return impact;
+
+  // Generate contextual default based on strategy description
+  const desc = (strategy.strategy || '').toLowerCase();
+
+  if (desc.includes('implement') || desc.includes('deploy')) {
+    return 'Operational improvement';
+  }
+  if (desc.includes('monitor') || desc.includes('track') || desc.includes('review')) {
+    return 'Enhanced visibility & control';
+  }
+  if (desc.includes('train') || desc.includes('develop') || desc.includes('document')) {
+    return 'Capability building';
+  }
+  if (desc.includes('assess') || desc.includes('audit') || desc.includes('evaluate')) {
+    return 'Informed decision-making';
+  }
+  if (desc.includes('policy') || desc.includes('procedure') || desc.includes('process')) {
+    return 'Standardized operations';
+  }
+  if (desc.includes('backup') || desc.includes('recovery') || desc.includes('protect')) {
+    return 'Risk exposure reduction';
+  }
+
+  return 'Risk mitigation';
 }
 
 /**
@@ -1876,8 +2051,8 @@ function renderEnhancedRisks(ctx: ReportContext, primaryColor: string): string {
                     <tr style="border-bottom: 1px solid #e0e0e0;">
                       <td style="padding: 0.5rem; font-weight: 500;">${sIdx + 1}</td>
                       <td style="padding: 0.5rem;">${escapeHtml(strategy.strategy)}</td>
-                      <td style="padding: 0.5rem;">${escapeHtml(strategy.timeline || '—')}</td>
-                      <td style="padding: 0.5rem;">${escapeHtml(strategy.expectedImpact || '—')}</td>
+                      <td style="padding: 0.5rem;">${escapeHtml(getStrategyTimeline(strategy, sIdx))}</td>
+                      <td style="padding: 0.5rem;">${escapeHtml(getStrategyExpectedImpact(strategy))}</td>
                     </tr>
                   `).join('')}
                 </tbody>

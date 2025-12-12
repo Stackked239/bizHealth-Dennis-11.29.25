@@ -52,8 +52,14 @@ export function sanitizeOrphanedVisualizationHeaders(html: string): Sanitization
     'Performance Dashboard',
     'Score Distribution',
     'Trend Analysis Chart',
-    'Comparison Matrix'
+    'Comparison Matrix',
+    // CPA empty headers from AI-generated narrative
+    'Must-Do Items in Sequence',
   ];
+
+  // Pattern 2b: Remove empty CPA sections (headers followed immediately by another header or end)
+  // These come from AI narrative and duplicate the programmatic CPA section
+  const emptyCpaPattern = /<h2[^>]*id="cpa-\d{2}-[^"]*"[^>]*>CPA-\d{2}:[^<]*<\/h2>\s*(?=<h[12]|$|<section|<\/section)/gi;
 
   // Pattern 3: Standalone "Cascade Effects:" labels without diagrams
   const cascadePattern = /<p[^>]*><strong[^>]*>Cascade Effects:<\/strong><\/p>\s*(?=<p[^>]*><strong)/gi;
@@ -82,6 +88,20 @@ export function sanitizeOrphanedVisualizationHeaders(html: string): Sanitization
       removedItems.push(`Orphaned: ${header}`);
       return '';
     });
+  });
+
+  // Remove empty CPA sections from AI narrative (duplicate of programmatic CPA)
+  sanitized = sanitized.replace(emptyCpaPattern, (match) => {
+    const titleMatch = match.match(/CPA-\d{2}:[^<]*/);
+    removedItems.push(`Empty CPA: ${titleMatch ? titleMatch[0] : 'CPA section'}`);
+    return '';
+  });
+
+  // Remove "Must-Do Items" section header that contains only empty CPAs
+  const mustDoEmptyPattern = /<h2[^>]*id="must-do-items[^"]*"[^>]*>[^<]*Must-Do Items[^<]*<\/h2>\s*<p[^>]*>[^<]*<\/p>\s*(?=<h2[^>]*id="cpa-|$)/gi;
+  sanitized = sanitized.replace(mustDoEmptyPattern, (match) => {
+    removedItems.push('Empty Must-Do Items section');
+    return '';
   });
 
   // Remove empty cascade effects labels
@@ -135,7 +155,10 @@ export function validateNoOrphanedHeaders(html: string): { valid: boolean; issue
     { pattern: /<h[23][^>]*>Growth Trajectory Model<\/h[23]>\s*<hr/gi, name: 'Empty Growth Model' },
     { pattern: /<h[23][^>]*>Scenario Analysis<\/h[23]>\s*<hr/gi, name: 'Empty Scenario Analysis' },
     { pattern: /<h[23][^>]*>Pattern Frequency Matrix<\/h[23]>\s*<hr/gi, name: 'Empty Pattern Matrix' },
-    { pattern: /<!--\s*VISUALIZATION_PLACEHOLDER_\d+\s*-->/gi, name: 'Unreplaced placeholder' }
+    { pattern: /<!--\s*VISUALIZATION_PLACEHOLDER_\d+\s*-->/gi, name: 'Unreplaced placeholder' },
+    // P0 FIX: Detect duplicate empty CPA sections from AI narrative
+    { pattern: /<h2[^>]*id="cpa-\d{2}-[^"]*"[^>]*>CPA-\d{2}:[^<]*<\/h2>\s*(?=<h[12]|$|<section)/gi, name: 'Empty CPA section' },
+    { pattern: /<h2[^>]*>Must-Do Items in Sequence[^<]*<\/h2>/gi, name: 'Duplicate Must-Do section' }
   ];
 
   orphanPatterns.forEach(({ pattern, name }) => {
@@ -175,6 +198,45 @@ export function processNarrativeForVisualization(rawContent: string, sectionId: 
  */
 function escapeRegex(str: string): string {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
+ * P0 FIX: Remove entire duplicate CPA block from AI-generated narrative
+ * This handles the case where AI generates empty CPA headers that duplicate
+ * the programmatic CPA section.
+ *
+ * @param html - HTML content to clean
+ * @returns Cleaned HTML without duplicate empty CPA sections
+ */
+export function removeDuplicateCPASections(html: string): SanitizationResult {
+  const removedItems: string[] = [];
+  let sanitized = html;
+
+  // Pattern to match the entire "Must-Do Items" block with consecutive empty CPAs
+  // This matches from "Must-Do Items" header to before the next major section
+  const mustDoBlockPattern = /<h2[^>]*class="bh-section-heading[^"]*"[^>]*id="must-do-items[^"]*"[^>]*>[^<]*Must-Do Items[^<]*<\/h2>\s*<p[^>]*class="bh-paragraph"[^>]*>[^<]*<\/p>\s*(?:<h2[^>]*class="bh-section-heading[^"]*"[^>]*id="cpa-\d{2}[^"]*"[^>]*>CPA-\d{2}:[^<]*<\/h2>\s*)+/gi;
+
+  sanitized = sanitized.replace(mustDoBlockPattern, (match) => {
+    // Count how many CPA headers are in the match
+    const cpaCount = (match.match(/CPA-\d{2}:/g) || []).length;
+    removedItems.push(`Removed duplicate Must-Do block with ${cpaCount} empty CPA headers`);
+    return '';
+  });
+
+  // Fallback: Remove individual empty CPA headers that weren't caught by the block pattern
+  // These are CPA headers immediately followed by another h2 or end of section
+  const individualCpaPattern = /<h2[^>]*id="cpa-\d{2}-[^"]*"[^>]*>CPA-\d{2}:[^<]*<\/h2>\s*(?=<h2|<\/section|$)/gi;
+  sanitized = sanitized.replace(individualCpaPattern, (match) => {
+    const cpaMatch = match.match(/CPA-\d{2}:[^<]*/);
+    removedItems.push(`Removed individual empty CPA: ${cpaMatch ? cpaMatch[0] : 'CPA header'}`);
+    return '';
+  });
+
+  return {
+    html: sanitized,
+    removedCount: removedItems.length,
+    removedItems
+  };
 }
 
 /**
