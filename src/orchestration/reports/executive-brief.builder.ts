@@ -1,5 +1,12 @@
 /**
- * Executive Brief Builder - "Executive Health Snapshot"
+ * Executive Brief Report Builder
+ *
+ * @version 1.5.0
+ * @description High-level executive health snapshot with:
+ *   - Mini radar chart (chapter balance)
+ *   - 12-dimension category heatmap
+ *   - Data-driven risk surfacing
+ *   - ROI multiplier display
  *
  * Premium 2-3 page executive overview designed as board packet cover page.
  * Ultra-scannable, data-backed C-suite overview with:
@@ -9,7 +16,7 @@
  *
  * Target: Under 5 minutes to absorb for C-suite executives, board members, and PE/M&A teams.
  *
- * @version 2.0.0 - Complete transformation from sparse brief to premium snapshot
+ * @since Phase 1.5 Integration (December 2025)
  */
 
 import * as fs from 'fs/promises';
@@ -63,57 +70,17 @@ import {
   CATEGORY_NAMES,
 } from '../../utils/idm-validation.js';
 
-// ============================================================================
-// SCORE BAND UTILITIES (Enhanced for consistent styling)
-// ============================================================================
-
-/**
- * Score band utilities for consistent color-coding across the report
- * Uses 80/60/40 thresholds per North Star specification
- */
-const ScoreBands = {
-  /**
-   * Get color for a score value
-   */
-  getColor(score: number): string {
-    if (score >= 80) return '#28a745'; // Excellence - Green
-    if (score >= 60) return '#0d6efd'; // Proficiency - Blue
-    if (score >= 40) return '#ffc107'; // Attention - Yellow
-    return '#dc3545'; // Critical - Red
-  },
-
-  /**
-   * Get label for a score value
-   */
-  getLabel(score: number): string {
-    if (score >= 80) return 'Excellence';
-    if (score >= 60) return 'Proficiency';
-    if (score >= 40) return 'Attention';
-    return 'Critical';
-  },
-
-  /**
-   * Get background color with transparency for a score value
-   */
-  getBackgroundColor(score: number): string {
-    if (score >= 80) return '#28a74520';
-    if (score >= 60) return '#0d6efd20';
-    if (score >= 40) return '#ffc10720';
-    return '#dc354520';
-  },
-
-  /**
-   * Get text color that contrasts with the band color
-   * Yellow band needs dark text for readability
-   */
-  getTextColor(score: number): string {
-    if (score >= 40 && score < 60) return '#212653'; // Dark text for yellow
-    return 'white'; // White text for others
-  }
-};
+// Import shared ScoreBands utility for consistent score-to-color mapping
+// ScoreBands provides: getColor(score), getLabel(score), getBackgroundColor(score), getTextColor(score)
+import { ScoreBands } from '../../utils/score-bands.js';
 
 // ============================================================================
-// LOCAL UTILITY WRAPPERS (for backward compatibility)
+// SCORE BAND UTILITIES - Now imported from ../../utils/score-bands.js
+// ScoreBands object provides: getColor, getLabel, getBackgroundColor, getTextColor
+// ============================================================================
+
+// ============================================================================
+// LOCAL UTILITY WRAPPERS (for backward compatibility with existing utils)
 // ============================================================================
 
 /**
@@ -124,9 +91,10 @@ function getScoreBand(score: number): string {
 }
 
 /**
- * Get band color for styling (wrapper for shared utility)
+ * Get band color from band string (wrapper for shared utility)
+ * Note: Different from imported getBandColor which takes a score
  */
-function getBandColor(band: string): string {
+function getBandColorFromString(band: string): string {
   return getScoreBandColor(band);
 }
 
@@ -236,7 +204,7 @@ function generateExecutiveSnapshot(ctx: ReportContext, options: ReportRenderOpti
  * Generate compact health gauge (SVG-based)
  */
 function generateHealthGaugeCompact(score: number, band: string, percentile?: number): string {
-  const bandColor = getBandColor(band);
+  const bandColor = getBandColorFromString(band);
 
   // Calculate arc for the gauge (semicircle from 180 to 0 degrees)
   const scorePercent = Math.min(100, Math.max(0, score));

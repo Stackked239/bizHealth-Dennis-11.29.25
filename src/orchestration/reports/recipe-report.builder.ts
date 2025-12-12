@@ -35,6 +35,7 @@ import {
   extractStringSafe,
   extractNumericValueSafe,
 } from '../../utils/safety.utils.js';
+import { ScoreBands } from '../../utils/score-bands.js';
 
 // Import manager report utilities and config
 import {
@@ -676,11 +677,9 @@ function getScoreEmoji(score: number): string {
   return '🎯';
 }
 
-function getScoreColor(score: number, options: ReportRenderOptions): string {
-  if (score >= 80) return '#28a745';
-  if (score >= 60) return options.brand.accentColor;
-  if (score >= 40) return '#ffc107';
-  return '#dc3545';
+function getScoreColor(score: number, _options: ReportRenderOptions): string {
+  // Use shared ScoreBands utility for consistent score-to-color mapping
+  return ScoreBands.getColor(score);
 }
 
 /**

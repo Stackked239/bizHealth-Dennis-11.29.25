@@ -173,9 +173,6 @@ export function mapRisksToHeatmap(risks: Risk[]): RiskHeatmapDataPoint[] {
     '1': 1, '0': 1, '10': 1, '20': 1, '25': 1, '30': 1,
   };
 
-  // Log mapping for debugging
-  console.log(`[mapRisksToHeatmap] Processing ${risks.length} risks`);
-
   return risks.map((risk, index) => {
     // Normalize input values
     const severityInput = String(risk.severity ?? 'medium').toLowerCase().trim();
@@ -195,11 +192,6 @@ export function mapRisksToHeatmap(risks: Risk[]): RiskHeatmapDataPoint[] {
     if (likelihoodValue === 2 && /^\d+$/.test(likelihoodInput)) {
       const num = parseInt(likelihoodInput, 10);
       likelihoodValue = num > 75 ? 4 : num > 50 ? 3 : num > 25 ? 2 : 1;
-    }
-
-    // Debug first few risks
-    if (index < 3) {
-      console.log(`[Risk ${index}] id="${risk.id}" severity="${risk.severity}" -> ${severityValue}, likelihood="${risk.likelihood}" -> ${likelihoodValue}`);
     }
 
     // Determine color based on combined risk score
