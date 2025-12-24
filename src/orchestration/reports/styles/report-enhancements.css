@@ -1067,3 +1067,126 @@
     border-top-color: #969423 !important;
   }
 }
+
+/* ================================================================
+   COMPREHENSIVE REPORT - BENCHMARK & CATEGORY ENHANCEMENTS
+   Production Quality Fixes - December 2024
+   ================================================================ */
+
+/* Prevent text truncation in category summaries */
+.category-summary-full {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+  word-wrap: break-word;
+  line-height: 1.7;
+  margin-top: 16px;
+  font-size: 14px;
+  color: #333;
+  /* NO max-height, NO truncation */
+}
+
+/* Benchmark subsection styling */
+.benchmark-subsection {
+  page-break-inside: avoid;
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: #fafafa;
+  border-radius: 8px;
+  border-left: 4px solid #212653;
+}
+
+.benchmark-subsection h3 {
+  color: #212653;
+  margin: 0 0 1rem 0;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* Benchmark table styling */
+.benchmark-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+}
+
+.benchmark-table th,
+.benchmark-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.benchmark-table thead th {
+  background: #212653;
+  color: white;
+  font-weight: 600;
+}
+
+.benchmark-table tbody tr:hover {
+  background: #f5f5f5;
+}
+
+/* Status color classes */
+.status-good { color: #689f38; font-weight: 600; }
+.status-attention { color: #f57c00; font-weight: 600; }
+.status-critical { color: #d32f2f; font-weight: 600; }
+.status-normal { color: #666; font-weight: 600; }
+.status-appropriate { color: #1976d2; font-weight: 600; }
+
+/* Gap analysis styling */
+.gap-positive {
+  color: #689f38;
+  font-weight: 600;
+}
+
+.gap-negative {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+/* Phase 1.5 Category Section enhancements */
+.phase15-category-section {
+  page-break-inside: avoid;
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.phase15-category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #212653;
+}
+
+/* Print optimizations for benchmark sections */
+@media print {
+  .benchmark-subsection {
+    background: #fafafa !important;
+    border-left-color: #212653 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .benchmark-table thead th {
+    background: #212653 !important;
+    color: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .phase15-category-section {
+    box-shadow: none;
+    border: 1px solid #e0e0e0;
+  }
+
+  .category-summary-full {
+    page-break-inside: avoid;
+  }
+}
